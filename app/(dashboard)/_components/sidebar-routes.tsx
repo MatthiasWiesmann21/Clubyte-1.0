@@ -76,24 +76,6 @@ export const SidebarRoutes = ({
       href: "/documents",
       isNew: false,
     },
-    {
-      icon: UserCircle,
-      label: `${currentLanguage.nav_item_career}`,
-      href: "/career",
-      isNew: false,
-    },
-    {
-      icon: CalendarCheck2,
-      label: `${currentLanguage.nav_item_calendar}`,
-      href: "/calendar",
-      isNew: false,
-    },
-    {
-      icon: BookMarked,
-      label: `${currentLanguage.nav_item_knowledgeHub}`,
-      href: "/knowledge-hub",
-      isNew: false,
-    },
   ];
   
   const packageStarterRoutes = [

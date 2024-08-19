@@ -21,10 +21,11 @@ export const Sidebar = async () => {
     },
   });
 
+  
   return (
     <div className="flex h-full flex-col overflow-y-auto border-r bg-white shadow-sm dark:bg-[#0A0118]">
       <PrivacyPolicyModal profile={profile} />
-      <div className="p-2">
+      <div className="flex items-center justify-center h-[80px]">
         <Logo
           imageUrl={container?.imageUrl || ""}
           imageUrlDark={container?.imageUrlDark || ""}
