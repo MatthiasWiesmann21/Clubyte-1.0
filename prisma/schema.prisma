@@ -70,7 +70,6 @@ model Server {
 model Profile {
   id                    String  @id @default(uuid())
   userId                String  @unique
-  memberId              Int     @default(0)
   name                  String? @db.Text
   imageUrl              String  @db.Text
   email                 String  @db.Text
