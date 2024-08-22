@@ -23,7 +23,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Combobox } from "@/components/ui/combobox";
 import { useIsAdmin } from "@/lib/roleCheck";
 import { isOwner } from "@/lib/owner";
-import { auth } from "@clerk/nextjs";
 import { useLanguage } from "@/lib/check-language";
 
 interface RoleFormProps {
@@ -106,7 +105,7 @@ export const RoleForm = ({
             <FormField
               control={form.control}
               name="role"
-              render={({ field }) => (
+              render={({ field } : any) => (
                 <FormItem>
                   <FormControl>
                     <Combobox

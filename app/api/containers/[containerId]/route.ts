@@ -1,20 +1,21 @@
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin } from "@/lib/roleCheckServer"; // Assuming isOperator is not needed, remove if unnecessary
 
 export async function DELETE(
   req: Request,
   { params }: { params: { containerId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getSession({ req : req as any});
+    const userId = session?.user?.id;
 
-    if (!userId || !isOwner(userId)) {
-        return new NextResponse("Unauthorized", { status: 401 });
-      }
+    if (!userId || !await isOwner(userId)) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
 
     const container = await db.container.findUnique({
       where: {
@@ -34,7 +35,7 @@ export async function DELETE(
 
     return NextResponse.json(deletedContainer);
   } catch (error) {
-    console.log("[COURSE_ID_DELETE]", error);
+    console.log("[CONTAINER_DELETE]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -44,15 +45,16 @@ export async function PATCH(
   { params }: { params: { containerId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getSession({ req : req as any });
+    const userId = session?.user?.id;
     const { containerId } = params;
     const values = await req.json();
 
-    const isRoleAdmins = await isAdmin();
-    const canAccess = isRoleAdmins || isOwner(userId);
+    const isRoleAdmins = await isAdmin(); // Assuming isAdmin takes userId as argument
+    const canAccess = isRoleAdmins || await isOwner(userId);
 
     if (!userId || !canAccess) {
-        return new NextResponse("Unauthorized", { status: 401 });
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const container = await db.container.update({
@@ -60,13 +62,13 @@ export async function PATCH(
         id: containerId,
       },
       data: {
-        ...values
+        ...values,
       }
     });
 
     return NextResponse.json(container);
   } catch (error) {
-    console.log("[COURSE_ID]", error);
+    console.log("[CONTAINER_UPDATE]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

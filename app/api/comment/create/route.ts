@@ -1,28 +1,33 @@
+import { getSession } from "next-auth/react";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    // Get the session from NextAuth
+    const session = await getSession({ req :req as any });
+    const userId = session?.user?.id;
 
-    if (userId == null) {
-      throw new Error("Un Authorized");
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
     }
+
     const requestBody = await req.json();
+    const { text, postId, parentCommentId, liveEventId, chapterId } = requestBody;
 
-    const { text, postId, parentCommentId, liveEventId, chapterId } =
-      requestBody;
-
+    // Find the profile associated with the user
     const profile = await db.profile.findFirst({
       select: {
         id: true,
       },
       where: { userId: userId },
     });
-    if (profile == null) {
-      throw new Error("Profile not found");
+
+    if (!profile) {
+      return new NextResponse("Profile not found", { status: 404 });
     }
+
+    // Create the comment
     const comment = await db.comment.create({
       data: {
         text: text,
@@ -33,7 +38,9 @@ export async function POST(req: Request) {
         chapterId,
       },
     });
-    const postDetails = await db?.post?.findFirst({
+
+    // Fetch post details with comments and likes
+    const postDetails = await db.post.findFirst({
       where: {
         isPublished: true,
         containerId: process.env.CONTAINER_ID,
@@ -59,6 +66,7 @@ export async function POST(req: Request) {
         likes: true,
       },
     });
+
     const post = {
       ...postDetails,
       commentsCount: postDetails?.comments?.length,

@@ -1,14 +1,15 @@
-import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
-
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth/next";
+import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth"; // Ensure this matches your NextAuth configuration
 
 export async function GET(
   req: Request,
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -39,7 +40,8 @@ export async function PUT(
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
     const { isCompleted, progress } = await req.json();
 
     if (!userId) {

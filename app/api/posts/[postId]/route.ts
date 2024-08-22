@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
@@ -8,15 +8,18 @@ export async function DELETE(
   { params }: { params: { postId: string } }
 ) {
   try {
-    const { userId } = auth();
+    // Get the session from NextAuth
+    const session = await getSession({ req } as any);
+    const userId = session?.user?.id;
 
+    // Check if the userId exists
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const post = await db.post.findUnique({
       where: {
-        id: params.postId,        
+        id: params.postId,
         containerId: process.env.CONTAINER_ID,
       }
     });
@@ -34,7 +37,7 @@ export async function DELETE(
 
     return NextResponse.json(deletedPost);
   } catch (error) {
-    console.log("[COURSE_ID_DELETE]", error);
+    console.log("[POST_ID_DELETE]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -44,10 +47,13 @@ export async function PATCH(
   { params }: { params: { postId: string } }
 ) {
   try {
-    const { userId } = auth();
+    // Get the session from NextAuth
+    const session = await getSession({ req }  as any);
+    const userId = session?.user?.id;
     const { postId } = params;
     const values = await req.json();
 
+    // Check if the userId exists
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -64,7 +70,7 @@ export async function PATCH(
 
     return NextResponse.json(post);
   } catch (error) {
-    console.log("[COURSE_ID]", error);
+    console.log("[POST_ID_UPDATE]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

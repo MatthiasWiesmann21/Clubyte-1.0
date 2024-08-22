@@ -1,15 +1,19 @@
-import { useClerk } from "@clerk/clerk-react";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const SignOutButton = () => {
-  const { signOut } = useClerk();
   const router = useRouter();
 
+  const handleSignOut = async () => {
+    await signOut({ redirect: false });
+    router.push("/auth/sign-in");
+  };
+
   return (
-    <button onClick={() => signOut(() => router.push("/sign-in"))}>
+    <button onClick={handleSignOut}>
       Sign out
     </button>
   );
 };
 
-export default SignOutButton();
+export default SignOutButton;

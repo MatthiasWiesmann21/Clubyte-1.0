@@ -1,6 +1,5 @@
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
-
 import { db } from "@/lib/db";
 
 export async function DELETE(
@@ -8,7 +7,8 @@ export async function DELETE(
   { params }: { params: { courseId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getSession({ req : req as any});
+    const userId = session?.user?.id;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -47,8 +47,8 @@ export async function PATCH(
   { params }: { params: { courseId: string } }
 ) {
   try {
-    const { userId } = auth();
-    const { courseId } = params;
+    const session = await getSession({ req : req as any });
+    const userId = session?.user?.id;
     const values = await req.json();
 
     if (!userId) {
@@ -57,7 +57,7 @@ export async function PATCH(
 
     const course = await db.course.update({
       where: {
-        id: courseId,
+        id: params.courseId,
         containerId: process.env.CONTAINER_ID,
       },
       data: {

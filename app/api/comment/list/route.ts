@@ -1,20 +1,23 @@
+import { getSession } from "next-auth/react";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
-export async function POST(req: any) {
+export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    // Get the session from NextAuth
+    const session = await getSession({ req : req as any});
+    const userId = session?.user?.id;
 
-    if (userId == null) {
-      throw new Error("Un Authorized");
+    // Check if user is authenticated
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
     }
-    const requestBody = await req.json();
 
+    // Extract data from the request
+    const requestBody = await req.json();
     const { postId, liveEventId } = requestBody;
 
-    // const postId = req.nextUrl.searchParams.get("postId");
-
+    // Fetch comments for a specific post
     const comment = await db.comment.findMany({
       select: {
         text: true,
@@ -41,10 +44,10 @@ export async function POST(req: any) {
         },
       },
       where: { postId: postId },
-      // orderBy: { createdAt: "desc" },
     });
 
-    const chat = await db?.comment?.findMany({
+    // Fetch chat messages for a specific live event
+    const chat = await db.comment.findMany({
       select: {
         text: true,
         id: true,
@@ -59,7 +62,6 @@ export async function POST(req: any) {
         },
       },
       where: { liveEventId },
-      // orderBy: { createdAt: "desc" },
     });
 
     return NextResponse.json({ data: postId ? comment : chat });

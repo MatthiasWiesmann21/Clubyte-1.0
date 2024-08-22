@@ -1,19 +1,22 @@
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 
-export async function GET(req: any): Promise<void | Response> {
-  const { userId } = auth();
+export async function GET(req: Request) {
   try {
+    const session = await getSession({ req : req as any });
+    const userId = session?.user?.id;
+
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
-    const courseId = new URL(req?.url)?.pathname?.split("/")[2];
-    const course = await db?.course?.findUnique({
+
+    const courseId = new URL(req.url).pathname.split("/")[2];
+    const course = await db.course.findUnique({
       where: {
         id: courseId,
-        containerId: process?.env?.CONTAINER_ID,
+        containerId: process.env.CONTAINER_ID,
       },
       include: {
         chapters: {
@@ -33,7 +36,8 @@ export async function GET(req: any): Promise<void | Response> {
         },
       },
     });
-    return NextResponse?.json(course);
+
+    return NextResponse.json(course);
   } catch (error) {
     console.log("[COURSES]", error);
     return new NextResponse("Internal Error", { status: 500 });
@@ -41,14 +45,14 @@ export async function GET(req: any): Promise<void | Response> {
 }
 
 export async function POST(req: Request) {
-  const { userId } = auth();
   try {
-    // const { userId } = auth();
+    const session = await getSession({ req : req as any});
+    const userId = session?.user?.id;
     const { title } = await req.json();
 
     const isRoleAdmins = await isAdmin();
     const isRoleOperator = await isOperator();
-    const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
+    const canAccess = isRoleAdmins || isRoleOperator || await isOwner(userId);
 
     if (!userId || !canAccess) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -65,8 +69,6 @@ export async function POST(req: Request) {
         containerId: process.env.CONTAINER_ID,
       },
     });
-
-    console.log("[COURSES]", courses, container?.maxCourses);
 
     if (
       container &&

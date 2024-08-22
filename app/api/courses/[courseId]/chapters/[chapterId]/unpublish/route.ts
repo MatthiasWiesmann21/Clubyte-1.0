@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
@@ -8,9 +8,10 @@ export async function PATCH(
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getSession({ req : req as any });
+    const user = session?.user;
 
-    if (!userId) {
+    if (!user || !user.id) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -18,7 +19,7 @@ export async function PATCH(
       where: {
         id: params.courseId,
         containerId: process.env.CONTAINER_ID,
-      }
+      },
     });
 
     if (!ownCourse) {
@@ -32,14 +33,14 @@ export async function PATCH(
       },
       data: {
         isPublished: false,
-      }
+      },
     });
 
     const publishedChaptersInCourse = await db.chapter.findMany({
       where: {
         courseId: params.courseId,
         isPublished: true,
-      }
+      },
     });
 
     if (!publishedChaptersInCourse.length) {
@@ -50,13 +51,13 @@ export async function PATCH(
         },
         data: {
           isPublished: false,
-        }
+        },
       });
     }
 
     return NextResponse.json(unpublishedChapter);
   } catch (error) {
     console.log("[CHAPTER_UNPUBLISH]", error);
-    return new NextResponse("Internal Error", { status: 500 }); 
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

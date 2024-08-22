@@ -8,56 +8,55 @@ import {
   Mandarin,
   Russian,
 } from "./localization";
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react";
 import { db } from "@/lib/db";
 
 const getUser = async () => {
   try {
-      const { userId } = auth();
-      if (!userId) return;
-      const user = await db?.profile?.findFirst({
-        where: { userId: userId },
-        include: {
-          container: true,
-        },
-      });
-      if (!user) {
-        return;
-      }
-      return user.language;
-    } catch (error) {
+    const session = await getSession();
+    if (!session?.user?.id) return;
+
+    const user = await db?.profile?.findFirst({
+      where: { userId: session.user.id },
+      include: {
+        container: true,
+      },
+    });
+    if (!user) {
       return;
     }
+    return user.language;
+  } catch (error) {
+    return;
+  }
 };
 
-
 export const languageServer = async () => {
-  //@ts-ignore
   const getUserLanguage = await getUser();
   const currentLanguage = getUserLanguage;
   switch (currentLanguage) {
-    case 'English':
+    case "English":
       return English;
 
-    case 'Deutsch':
+    case "Deutsch":
       return Deutch;
 
-    case 'Francaise':
+    case "Francaise":
       return Francaise;
 
-    case 'Italiano':
+    case "Italiano":
       return Italiano;
 
-    case 'Espanol':
+    case "Espanol":
       return Espanol;
 
-    case 'Portugues':
+    case "Portugues":
       return Portugues;
 
-    case 'Russian':
+    case "Russian":
       return Russian;
 
-    case 'Mandarin':
+    case "Mandarin":
       return Mandarin;
 
     default:

@@ -97,7 +97,7 @@ const { isSubmitting, isValid } = form.formState;
             <FormField
               control={form.control}
               name="maxCourses"
-              render={({ field }) => (
+              render={({ field } : any) => (
                 <FormItem>
                   <FormControl>
                     <ComboboxNumber

@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react"; // Import NextAuth's getSession
 import { redirect } from "next/navigation";
 import { CoursesList } from "@/components/courses-list";
 import { getSearchCourses } from "@/actions/get-searchcourses";
@@ -17,16 +17,17 @@ interface SearchPageProps {
 }
 
 const CourseListPage = async ({ searchParams }: SearchPageProps) => {
-  const { userId } = auth();
+  // Replace auth() from Next Auth with getSession() from NextAuth
+  const session = await getSession(); // Get the session from NextAuth
 
-  if (!userId) {
-    return redirect("/");
+  if (!session?.user?.id) {
+    return redirect("/"); // Redirect if no user is found in session
   }
 
   const currentLanguage = await languageServer();
 
   const courses = await getSearchCourses({
-    userId,
+    userId: session.user.id, // Use session user ID
     ...searchParams,
   });
 

@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react"; // Import getSession from NextAuth
 import { redirect } from "next/navigation";
 import { ArrowLeft, PaletteIcon } from "lucide-react";
 
@@ -14,17 +14,24 @@ import Link from "next/link";
 import { PrimaryButtonColorForm } from "../buttondesign/_components/primary-color-form";
 
 const ThemeDesignPage = async () => {
-  const { userId } = auth();
+  const session = await getSession(); // Get the session from NextAuth
   const currentLanguage = await languageServer();
+  
+  if (!session?.user) {
+    return redirect("/api/auth/signin"); // Redirect to the sign-in page if not authenticated
+  }
+
+  const userId = session.user.id; // Extract userId from session
+
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
+  const canAccess = isRoleAdmins || isRoleOperator || (userId && await isOwner(userId));
 
-  if (!userId || !canAccess) {
+  if (!canAccess) {
     return redirect("/search");
   }
 
-  const container: any = await db.container.findUnique({
+  const container = await db.container.findUnique({
     where: {
       id: process.env.CONTAINER_ID,
     },

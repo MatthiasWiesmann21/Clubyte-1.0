@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
@@ -14,14 +14,17 @@ import { ChapterVideoForm } from "./_components/chapter-video-form";
 import { ChapterActions } from "./_components/chapter-actions";
 import { languageServer } from "@/lib/check-language-server";
 import { AuthorForm } from "./_components/author-form";
+import authOptions from "@/lib/auth"; // Ensure this is correctly configured
 
 const ChapterIdPage = async ({
   params
 }: {
   params: { courseId: string; chapterId: string }
 }) => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
   const currentLanguage = await languageServer();
+
   if (!userId) {
     return redirect("/");
   }
@@ -34,7 +37,7 @@ const ChapterIdPage = async ({
   });
 
   if (!chapter) {
-    return redirect("/")
+    return redirect("/");
   }
 
   const requiredFields = [
@@ -141,7 +144,7 @@ const ChapterIdPage = async ({
         </div>
       </div>
     </>
-   );
-}
- 
+  );
+};
+
 export default ChapterIdPage;

@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { DateandTime } from "./date&time";
-import { useAuth } from "@clerk/nextjs";
+import { useSession } from "next-auth/react"; // Use NextAuth's useSession hook
 import { Button } from "@/components/ui/button";
 import { SlidersHorizontal } from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
@@ -36,7 +36,7 @@ const EventFilterSidebar = ({
   PrimaryButtonColor,
   DarkPrimaryButtonColor,
 }: EventFilterSidebarProps) => {
-  const { userId } = useAuth();
+  const { data: session } = useSession(); // Get session data from NextAuth
   const currentLanguage = useLanguage();
   const [isViewAllHovered, setIsViewAllHovered] = useState(false);
   const { theme } = useTheme();
@@ -80,7 +80,7 @@ const EventFilterSidebar = ({
         <DateandTime
           setLiveEvent={setLiveEvent}
           getEvent={{
-            userId,
+            userId: session?.user?.id, // Access userId from session
             ...searchParams,
             containerId: process.env.CONTAINER_ID,
           }}

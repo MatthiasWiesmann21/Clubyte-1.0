@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
@@ -6,6 +6,7 @@ import { getProgress } from "@/actions/get-progress";
 
 import { CourseNavbar } from "./_components/course-navbar";
 import { Sidebar } from "@/app/(dashboard)/_components/sidebar";
+import authOptions  from "@/lib/auth"; // Ensure this is properly configured
 
 const CourseLayout = async ({
   children,
@@ -14,16 +15,18 @@ const CourseLayout = async ({
   children: React.ReactNode;
   params: { courseId: string };
 }) => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
+  if (!session?.user?.id) {
     return redirect("/");
   }
 
-  const course = await db?.course?.findUnique({
+  const userId = session.user.id;
+
+  const course = await db.course.findUnique({
     where: {
-      id: params?.courseId,
-      containerId: process?.env?.CONTAINER_ID,
+      id: params.courseId,
+      containerId: process.env.CONTAINER_ID,
     },
     include: {
       chapters: {

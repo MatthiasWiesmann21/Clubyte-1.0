@@ -23,7 +23,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Combobox } from "@/components/ui/combobox";
 import { useIsAdmin } from "@/lib/roleCheck";
 import { isOwner } from "@/lib/owner";
-import { auth } from "@clerk/nextjs";
 import { useLanguage } from "@/lib/check-language";
 
 interface isBannedFormProps {
@@ -106,7 +105,7 @@ export const IsBannedForm = ({
             <FormField
               control={form.control}
               name="isBanned"
-              render={({ field }) => (
+              render={({ field } : any ) => (
                 <FormItem>
                   <FormControl>
                     <Combobox

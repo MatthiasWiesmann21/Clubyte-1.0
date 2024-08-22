@@ -1,31 +1,31 @@
-import { currentUser, redirectToSignIn } from "@clerk/nextjs/server";
+import { getSession, signIn } from "next-auth/react";
 import { db } from "./db";
 
 export const initialProfile = async () => {
-  const user = await currentUser();
+  const session = await getSession();
 
-  if (!user) {
-    return redirectToSignIn();
+  if (!session?.user?.id) {
+    // Redirect to sign-in if no user is authenticated
+    signIn();
+    return;
   }
 
   // Attempt to find the existing profile first
-  const existingProfile = await db.profile.findUnique({
+  const existingProfile = await db.profile.findFirst({
     where: {
-      userId: user.id,
+      userId: session.user.id,
     },
   });
-
-  
 
   // If the profile exists, update it
   if (existingProfile) {
     const updatedProfile = await db.profile.update({
       where: {
-        userId: user.id,
+        id: session.user.id,
       },
       data: {
-        imageUrl: user.imageUrl,
-        email: user.emailAddresses[0].emailAddress,
+        imageUrl: session.user.image || existingProfile.imageUrl,
+        email: session.user.email || existingProfile.email,
         isOnline: "Online",
         // You may update other fields as needed
       },
@@ -33,13 +33,13 @@ export const initialProfile = async () => {
     return updatedProfile;
   } else {
     // If the profile does not exist, create a new one
-
-    const newProfile = await db?.profile?.create({
+    const newProfile = await db.profile.create({
       data: {
-        userId: user.id,
-        name: !!user?.username ? `${user?.username}` : "User",
-        imageUrl: user?.imageUrl,
-        email: user.emailAddresses[0].emailAddress,
+        userId: session.user.id,
+        name: session.user.name || "User",
+        password : '',
+        imageUrl: session.user.image || "",
+        email: session.user.email || "",
         containerId: process.env.CONTAINER_ID!,
         isOnline: "Online",
         isBanned: "NOT BANNED",

@@ -77,7 +77,8 @@ export const ChatItem = ({
         setIsEditing(false);
       }
     };
-
+    if (typeof window === "undefined") return;
+    
     window.addEventListener("keydown", handleKeyDown);
 
     return () => window.removeEventListener("keyDown", handleKeyDown);

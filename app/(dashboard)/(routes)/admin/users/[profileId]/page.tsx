@@ -1,10 +1,9 @@
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react"; // Import NextAuth's getSession
 import { redirect } from "next/navigation";
 import { AlertTriangle, ArrowLeft, User2Icon } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
-
 import { Actions } from "./_components/actions";
 import { TitleForm } from "./_components/title-form";
 import { ShowUserMail } from "./_components/showUserMail";
@@ -14,10 +13,11 @@ import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
 
 const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
-  const { userId } = auth();
+  const session = await getSession(); // Get session from NextAuth
   const currentLanguage = await languageServer();
-  if (!userId) {
-    return redirect("/");
+
+  if (!session?.user) {
+    return redirect("/api/auth/signin"); // Redirect to the sign-in page if not authenticated
   }
 
   const profile = await db.profile.findUnique({
@@ -42,13 +42,13 @@ const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
   return (
     <>
       <div className="p-6">
-      <Link
-        href={`/admin/users`}
-        className="mb-6 flex items-center text-sm transition hover:opacity-75"
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        {currentLanguage.user_setup_backToUserAdminList_button_text}
-      </Link>
+        <Link
+          href={`/admin/users`}
+          className="mb-6 flex items-center text-sm transition hover:opacity-75"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {currentLanguage.user_setup_backToUserAdminList_button_text}
+        </Link>
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl font-medium">
@@ -85,7 +85,7 @@ const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
             />
           </div>
           <div>
-          <div className="flex items-center gap-x-2">
+            <div className="flex items-center gap-x-2">
               <IconBadge variant="danger" icon={AlertTriangle} />
               <h2 className="text-xl">
                 {currentLanguage.user_setup_settings_title}

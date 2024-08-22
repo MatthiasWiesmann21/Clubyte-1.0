@@ -1,4 +1,4 @@
-import { redirectToSignIn } from "@clerk/nextjs";
+import { getSession } from "next-auth/react"; // Import NextAuth's getSession
 import { redirect } from "next/navigation";
 import { ChannelType } from "@prisma/client";
 
@@ -17,11 +17,17 @@ interface ChannelIdPageProps {
 }
 
 const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
+  // Get session using NextAuth
+  const session = await getSession();
+
+  if (!session?.user) {
+    return redirect("/api/auth/signin"); // Redirect to the sign-in page if not authenticated
+  }
+
   const profile = await currentProfile();
 
-
   if (!profile) {
-    return redirectToSignIn();
+    return redirect("/api/auth/signin"); // Redirect to the sign-in page if profile is not found
   }
 
   const channel = await db.channel.findUnique({
@@ -40,7 +46,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
   });
 
   if (!channel || !member) {
-    redirect("/");
+    return redirect("/");
   }
 
   return (

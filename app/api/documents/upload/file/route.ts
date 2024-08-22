@@ -1,17 +1,19 @@
+import { getSession } from "next-auth/react";
 import createFolder from "@/app/vendor/aws/s3/createFolder";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { getS3Client } from "@/app/vendor/aws/s3/getS3Client";
 import { Upload } from "@aws-sdk/lib-storage";
 import { NextApiResponse } from "next";
 
-const getOrCreateParentFolder = async (parentKey?: string | null) => {
+const getOrCreateParentFolder = async (userId: string, parentKey?: string | null) => {
   if (parentKey != null) {
     const parentFolder = await db.folder.findFirst({
       where: {
         key: parentKey,
+        userId: userId,
+        containerId: process.env.CONTAINER_ID,
       },
     });
     if (parentFolder == null) {
@@ -20,17 +22,15 @@ const getOrCreateParentFolder = async (parentKey?: string | null) => {
     return parentFolder;
   }
 
-  // folderId is null now check if root fodler exists
+  // Check if root folder exists
   let rootFolder = await db.folder.findFirst({
     where: {
       parentFolder: null,
+      userId: userId,
+      containerId: process.env.CONTAINER_ID,
     },
   });
   if (rootFolder == null) {
-    const { userId } = auth();
-    if (userId == null) {
-      throw new Error("Login first to access");
-    }
     // Create a root folder in S3 and add its path to db
     const key = `${userId}-root/`; // Adding slash at the end of key it will make a folder
     await createFolder(key);
@@ -51,10 +51,11 @@ const getOrCreateParentFolder = async (parentKey?: string | null) => {
 
 export async function POST(req: Request, res: NextApiResponse) {
   try {
-    const { userId } = auth();
+    const session = await getSession({ req } as any);
+    const userId = session?.user?.id;
 
     if (userId == null) {
-      throw new Error("Un Authorized");
+      throw new Error("Unauthorized");
     }
 
     const formData = await req.formData();
@@ -73,7 +74,6 @@ export async function POST(req: Request, res: NextApiResponse) {
     const id = formData.get("id")?.toString();
 
     let parentKey = null;
-    // console.log("!!id", !!id, !id, id, id !== undefined, id !== "undefined");
     if (id !== "undefined") {
       const keyData = await db.folder.findFirst({
         select: {
@@ -85,21 +85,18 @@ export async function POST(req: Request, res: NextApiResponse) {
     }
 
     if (formFile == null) {
-      throw new Error(" Invalid file");
+      throw new Error("Invalid file");
     }
 
     const fileName =
       typeof formFileName === "string" ? formFileName : `${formFileName}`;
 
-    // parentKey null means it will upload in root folder
-
-    // create or  get a folder if not exist
-
-    const parentFolder = await getOrCreateParentFolder(parentKey);
+    // Get or create a folder if not exists
+    const parentFolder = await getOrCreateParentFolder(userId, parentKey);
 
     const fileKey = `${parentFolder.key}${uuidv4()}`;
 
-    // create file
+    // Create file record in the database
     const file = await db.file.create({
       data: {
         key: fileKey,
@@ -112,7 +109,7 @@ export async function POST(req: Request, res: NextApiResponse) {
       },
     });
 
-    // Upload File here
+    // Upload File to S3
     const parallelUploads3 = new Upload({
       client: getS3Client(),
       params: {
@@ -133,7 +130,7 @@ export async function POST(req: Request, res: NextApiResponse) {
       },
     });
   } catch (error) {
-    console.log("[SUBSCRIPTION]", error);
+    console.log("[UPLOAD_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

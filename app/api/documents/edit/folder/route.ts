@@ -1,17 +1,17 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const session = await getSession({ req : req as any });
+    const userId = session?.user?.id;
 
-    if (userId == null) {
-      throw new Error("Un Authorized");
+    if (!userId) {
+      throw new Error("Unauthorized");
     }
 
     const requestBody = await req.json();
-
     const { id, folderName, isPublic } = requestBody;
 
     // Check if the user has permission to edit this folder

@@ -1,4 +1,4 @@
-import { redirectToSignIn } from "@clerk/nextjs";
+import { getSession } from "next-auth/react"; // Import NextAuth's getSession
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
@@ -12,10 +12,16 @@ const ServerIdLayout = async ({
   children: React.ReactNode;
   params: { serverId: string };
 }) => {
+  const session = await getSession(); // Get session from NextAuth
+
+  if (!session?.user) {
+    return redirect("/api/auth/signin"); // Redirect to the sign-in page if not authenticated
+  }
+
   const profile = await currentProfile();
 
   if (!profile) {
-    return redirectToSignIn();
+    return redirect("/api/auth/signin"); // Redirect to the sign-in page if profile is not found
   }
 
   const server = await db.server.findUnique({
@@ -30,7 +36,7 @@ const ServerIdLayout = async ({
   });
 
   if (!server) {
-    return redirect("/");
+    return redirect("/"); // Redirect to home if server is not found
   }
 
   return (

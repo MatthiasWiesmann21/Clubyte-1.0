@@ -1,8 +1,7 @@
 import { Category, Post } from "@prisma/client";
-
 import { db } from "@/lib/db";
-
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth"; // Import your NextAuth configuration
 
 type PostWithProgressWithCategory = Post & {
   category: Category | null;
@@ -10,22 +9,23 @@ type PostWithProgressWithCategory = Post & {
 };
 
 type GetPosts = {
-  // userId?: string;
   title?: string;
   categoryId?: string;
 };
 
 export const getPosts = async ({
-  // userId,
   title,
   categoryId,
 }: GetPosts): Promise<PostWithProgressWithCategory[]> => {
   try {
-    const { userId } = auth();
-
-    if (userId == null) {
-      throw new Error("Un Authorized");
+    // Fetch the session using NextAuth
+    const session = await getServerSession(authOptions);
+    
+    if (!session || !session.user?.id) {
+      throw new Error("Unauthorized");
     }
+
+    const userId = session.user.id;
 
     const profile = await db.profile.findFirst({
       select: {
@@ -70,7 +70,7 @@ export const getPosts = async ({
       },
     });
 
-    const postsWithData = posts.map((post, i) => {
+    const postsWithData = posts.map((post) => {
       const commentsCount = post.comments.length;
       const likesCount = post.likes.length;
 
@@ -85,10 +85,8 @@ export const getPosts = async ({
         }))
       }));
 
-      // Check if the current profile has liked the post
       const currentLike = post.likes.some((like) => like.profileId === profile.id);
 
-      // Return the post data along with the calculated counts and like state
       return {
         ...post,
         commentsCount,

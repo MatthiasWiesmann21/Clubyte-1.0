@@ -1,4 +1,4 @@
-import { redirectToSignIn } from "@clerk/nextjs";
+import { getSession } from "next-auth/react"; // Import NextAuth's getSession
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
@@ -20,10 +20,17 @@ interface MemberIdPageProps {
 }
 
 const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
+  // Get session using NextAuth
+  const session = await getSession();
+
+  if (!session?.user) {
+    return redirect("/api/auth/signin"); // Redirect to the sign-in page if not authenticated
+  }
+
   const profile = await currentProfile();
 
   if (!profile) {
-    return redirectToSignIn();
+    return redirect("/api/auth/signin"); // Redirect to the sign-in page if profile is not found
   }
 
   const currentMember = await db.member.findFirst({

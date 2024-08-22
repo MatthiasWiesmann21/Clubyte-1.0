@@ -102,7 +102,7 @@ export const CategoryForm = ({
             <FormField
               control={form.control}
               name="categoryId"
-              render={({ field }) => (
+              render={({ field } : any) => (
                 <FormItem>
                   <FormControl>
                     <Combobox options={...options} {...field} />

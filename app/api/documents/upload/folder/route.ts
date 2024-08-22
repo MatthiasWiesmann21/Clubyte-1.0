@@ -1,7 +1,8 @@
 import createFolder from "@/app/vendor/aws/s3/createFolder";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth"; // Ensure this is the path to your NextAuth configuration
 
 const getOrCreateParentFolder = async (
   userId: string,
@@ -21,7 +22,7 @@ const getOrCreateParentFolder = async (
     return parentFolder;
   }
 
-  // folderId is null now check if root fodler exists
+  // FolderId is null now check if root folder exists
   let rootFolder = await db.folder.findFirst({
     where: {
       parentFolder: null,
@@ -34,7 +35,7 @@ const getOrCreateParentFolder = async (
       throw new Error("Login first to access");
     }
     // Create a root folder in S3 and add its path to db
-    const key = `${userId}-root/`; // Adding slash at the end of key it will make a folder
+    const key = `${userId}-root/`; // Adding slash at the end of key to make it a folder
     await createFolder(key);
 
     rootFolder = await db.folder.create({
@@ -54,11 +55,13 @@ const getOrCreateParentFolder = async (
 export async function POST(req: Request) {
   // POST /api/upload
   try {
-    const { userId } = auth();
+    const session = await getServerSession({ req, ...authOptions });
+    const userId = session?.user?.id;
 
-    if (userId == null) {
-      throw new Error("Un Authorized");
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
     }
+
     const requestBody = await req.json();
 
     // FolderId null means it will upload in root folder
@@ -74,13 +77,12 @@ export async function POST(req: Request) {
       if (keyData) parentKey = keyData.key;
     }
 
-    // create or  get a folder if not exist
-
+    // Create or get a folder if not exist
     const parentFolder = await getOrCreateParentFolder(userId, parentKey);
 
     const folderKey = `${parentFolder.key}${folderName}/`;
 
-    // Check if folder already exist
+    // Check if folder already exists
     const tempFolder = await db.folder.findFirst({
       where: {
         key: folderKey,
@@ -89,8 +91,8 @@ export async function POST(req: Request) {
     if (tempFolder != null) {
       return new NextResponse("Folder already created", { status: 200 });
     }
-    // create folder
 
+    // Create folder
     const folder = await db.folder.create({
       data: {
         key: folderKey,
@@ -104,7 +106,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ data: folder });
   } catch (error) {
-    console.log("[SUBSCRIPTION]", error);
+    console.log("[FOLDER_CREATION_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

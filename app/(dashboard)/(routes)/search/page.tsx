@@ -1,10 +1,9 @@
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
 import { getCourses } from "@/actions/get-courses";
 import { CoursesList } from "@/components/courses-list";
-
 import { Categories } from "./_components/categories";
 import { Metadata } from "next";
 import { CourseCounter } from "@/components/courseCounter";
@@ -22,9 +21,12 @@ interface SearchPageProps {
 }
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
-  const { userId } = auth();
+  // Get the session from NextAuth
+  const session = await getSession();
+  const userId = session?.user?.id;
 
   if (!userId) {
+    // Redirect if not authenticated
     return redirect("/");
   }
 
@@ -35,6 +37,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   });
 
   if (profile?.name === null) {
+    // Redirect if profile name is not set
     return redirect("/profile/manageUsername");
   }
 
@@ -46,8 +49,6 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
       },
     },
   });
-
-  // console?.log("container", container);
 
   const existingCourses = await db.course.count({
     where: {
@@ -70,8 +71,6 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
       },
     },
   });
-
-  // console.log("categoriesWithCourseCounts", categoriesWithCourseCounts);
 
   const courses = await getCourses({
     userId,

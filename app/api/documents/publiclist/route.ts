@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 
 async function getFolderAndFiles(key: string | null, userId: string | null) {
@@ -19,8 +19,7 @@ async function getFolderAndFiles(key: string | null, userId: string | null) {
         files: true,
       },
     });
-  }
-  if (key != null) {
+  } else {
     folder = await db.folder.findMany({
       where: { key: key, isPublic: true },
       include: {
@@ -35,21 +34,20 @@ async function getFolderAndFiles(key: string | null, userId: string | null) {
   return folder;
 }
 
-export async function GET(req: any) {
-  // POST /api/upload
+export async function GET(req: Request) {
   try {
-    const { userId } = auth();
+    const session = await getSession({ req } as any);
+    const userId = session?.user?.id;
 
-    const key = req.nextUrl.searchParams.get("key");
+    const key = new URL(req.url).searchParams.get("key");
 
     if (userId == null) {
-      throw new Error("Un Authorized");
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    //await getOrCreateParentFolder(userId);
     let parseKey = key;
     if (parseKey != null) {
-      parseKey = key?.charAt(key.length - 1) !== `/` ? `${key}/` : key;
+      parseKey = (key || '').charAt((key || '').length - 1) !== `/` ? `${key}/` : key;
     }
 
     const data = await getFolderAndFiles(parseKey, userId);
@@ -67,7 +65,7 @@ export async function GET(req: any) {
 
     return NextResponse.json({ data: data });
   } catch (error) {
-    console.log("[SUBSCRIPTION] aa", error);
+    console.log("[FOLDER_FETCH_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

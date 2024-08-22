@@ -1,15 +1,20 @@
 import { redirect } from "next/navigation";
-
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
-
 import { NavigationAction } from "./navigation-action";
 import { NavigationItem } from "./navigation-item";
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react"; // Import getSession from NextAuth
 
 export const NavigationSidebar = async () => {
-  const { userId } = auth();
+  // Get the session from NextAuth
+  const session = await getSession();
+  
+  // Check if session exists and has a user ID
+  if (!session?.user?.id) {
+    return redirect("/");
+  }
+
   const profile = await currentProfile();
 
   if (!profile) {

@@ -1,10 +1,12 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth"; // Adjust the import based on your setup
 
 export async function GET(req: Request) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -28,10 +30,11 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const authData = auth();
-    const { userId, courseId, status } = await req.json();
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
+    const { courseId, status } = await req.json();
 
-    if (!authData?.userId) {
+    if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -45,7 +48,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(userHasCourse);
   } catch (error) {
-    console.log("[COURSES]", error);
+    console.log("[COURSES POST]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

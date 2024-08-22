@@ -1,7 +1,7 @@
-import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
-
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth/next";
+import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth";
 import { isOwner } from "@/lib/owner";
 import { isAdmin } from "@/lib/roleCheckServer";
 
@@ -10,10 +10,11 @@ export async function DELETE(
   { params }: { params: { profileId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
 
     const isRoleAdmins = await isAdmin();
-    const canAccess = isRoleAdmins || isOwner(userId);
+    const canAccess = isRoleAdmins || (userId && await isOwner(userId));
 
     if (!userId || !canAccess) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -37,7 +38,7 @@ export async function DELETE(
 
     return NextResponse.json(deletedProfile);
   } catch (error) {
-    console.log("[CONTAINER_ID_DELETE]", error);
+    console.log("[PROFILE_DELETE]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -47,11 +48,11 @@ export async function PATCH(
   { params }: { params: { profileId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
     const { profileId } = params;
     const values = await req.json();
 
-    
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -70,7 +71,7 @@ export async function PATCH(
 
     return NextResponse.json(profile);
   } catch (error) {
-    console.log("[PROFILE_ID]", error);
+    console.log("[PROFILE_UPDATE]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

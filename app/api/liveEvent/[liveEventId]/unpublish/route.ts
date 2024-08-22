@@ -1,6 +1,5 @@
-import { auth } from "@clerk/nextjs";
+import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
-
 import { db } from "@/lib/db";
 
 export async function PATCH(
@@ -8,7 +7,9 @@ export async function PATCH(
   { params }: { params: { liveEventId: string } }
 ) {
   try {
-    const { userId } = auth();
+    // Get the session from NextAuth
+    const session = await getSession({ req } as any);
+    const userId = session?.user?.id;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -32,12 +33,12 @@ export async function PATCH(
       },
       data: {
         isPublished: false,
-      }
+      },
     });
 
     return NextResponse.json(unpublishedEvent);
   } catch (error) {
-    console.log("[COURSE_ID_UNPUBLISH]", error);
+    console.log("[LIVE_EVENT_UNPUBLISH_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
-  } 
+  }
 }

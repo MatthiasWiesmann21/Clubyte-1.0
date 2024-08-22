@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { currentUser } from "@clerk/nextjs";
+import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
@@ -10,9 +10,10 @@ export async function POST(
   { params }: { params: { courseId: string } }
 ) {
   try {
-    const user = await currentUser();
+    const session = await getSession({ req : req as any});
+    const user = session?.user;
 
-    if (!user || !user.id || !user.emailAddresses?.[0]?.emailAddress) {
+    if (!user || !user.id || !user.email) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -21,16 +22,16 @@ export async function POST(
         id: params.courseId,
         isPublished: true,
         containerId: process.env.CONTAINER_ID,
-      }
+      },
     });
 
     const purchase = await db.purchase.findUnique({
       where: {
         userId_courseId: {
           userId: user.id,
-          courseId: params.courseId
-        }
-      }
+          courseId: params.courseId,
+        },
+      },
     });
 
     if (purchase) {
@@ -51,8 +52,8 @@ export async function POST(
             description: course.description!,
           },
           unit_amount: Math.round(course.price! * 100),
-        }
-      }
+        },
+      },
     ];
 
     let stripeCustomer = await db.stripeCustomer.findUnique({
@@ -61,37 +62,37 @@ export async function POST(
       },
       select: {
         stripeCustomerId: true,
-      }
+      },
     });
 
     if (!stripeCustomer) {
       const customer = await stripe.customers.create({
-        email: user.emailAddresses[0].emailAddress,
+        email: user.email,
       });
 
       stripeCustomer = await db.stripeCustomer.create({
         data: {
           userId: user.id,
           stripeCustomerId: customer.id,
-        }
+        },
       });
     }
 
-    const session = await stripe.checkout.sessions.create({
+    const sessionStripe = await stripe.checkout.sessions.create({
       customer: stripeCustomer.stripeCustomerId,
       line_items,
-      mode: 'payment',
+      mode: "payment",
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?success=1`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=1`,
       metadata: {
         courseId: course.id,
         userId: user.id,
-      }
+      },
     });
 
-    return NextResponse.json({ url: session.url });
+    return NextResponse.json({ url: sessionStripe.url });
   } catch (error) {
     console.log("[COURSE_ID_CHECKOUT]", error);
-    return new NextResponse("Internal Error", { status: 500 })
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

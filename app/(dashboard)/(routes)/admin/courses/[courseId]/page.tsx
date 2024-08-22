@@ -1,5 +1,6 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { ArrowLeft, CircleDollarSign, File, LayoutDashboard, ListChecks } from "lucide-react";
 
 import { db } from "@/lib/db";
@@ -15,21 +16,24 @@ import { AttachmentForm } from "./_components/attachment-form";
 import { ChaptersForm } from "./_components/chapters-form";
 import { Actions } from "./_components/actions";
 import { languageServer } from "@/lib/check-language-server";
-import Link from "next/link";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
+import authOptions from "@/lib/auth"; // Ensure this is correctly configured
 
 const CourseIdPage = async ({
   params
 }: {
   params: { courseId: string }
 }) => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
 
   if (!userId) {
     return redirect("/");
   }
+
   const currentLanguage = await languageServer();
+
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
@@ -63,8 +67,8 @@ const CourseIdPage = async ({
   const isRoleOperator = await isOperator();
   const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
 
-  if (!course ||!userId || !canAccess) {
-   return redirect("/");
+  if (!course || !canAccess) {
+    return redirect("/");
   }
 
   const requiredFields = [
@@ -90,13 +94,13 @@ const CourseIdPage = async ({
         />
       )}
       <div className="p-6">
-      <Link
-        href={`/admin/courses`}
-        className="mb-6 flex items-center text-sm transition hover:opacity-75"
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        {currentLanguage.courses_setup_backToCourseAdminList_button_text}
-      </Link>
+        <Link
+          href={`/admin/courses`}
+          className="mb-6 flex items-center text-sm transition hover:opacity-75"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {currentLanguage.courses_setup_backToCourseAdminList_button_text}
+        </Link>
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl font-medium">
@@ -160,7 +164,7 @@ const CourseIdPage = async ({
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={CircleDollarSign} />
                 <h2 className="text-xl">
-                {currentLanguage.course_setup_price_title}
+                  {currentLanguage.course_setup_price_title}
                 </h2>
               </div>
               <PriceForm
@@ -184,7 +188,7 @@ const CourseIdPage = async ({
         </div>
       </div>
     </>
-   );
-}
- 
+  );
+};
+
 export default CourseIdPage;

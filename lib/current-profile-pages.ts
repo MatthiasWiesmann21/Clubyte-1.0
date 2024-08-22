@@ -1,20 +1,21 @@
 import { NextApiRequest } from "next";
-import { getAuth } from "@clerk/nextjs/server";
-
+import { getSession } from "next-auth/react"; // Import getSession from NextAuth
 import { db } from "@/lib/db";
 
 export const currentProfilePages = async (req: NextApiRequest) => {
-  const { userId } = getAuth(req);
-
-  if (!userId) {
+  // Get the session from NextAuth
+  const session = await getSession({ req });
+  
+  // Check if session exists and has a user ID
+  if (!session?.user?.id) {
     return null;
   }
 
-  const profile = await db.profile.findUnique({
+  const profile = await db.profile.findFirst({
     where: {
-      userId
-    }
+      userId: session.user.id,
+    },
   });
 
   return profile;
-}
+};

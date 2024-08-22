@@ -1,4 +1,4 @@
-import { redirectToSignIn } from "@clerk/nextjs";
+import { getSession } from "next-auth/react"; // Import NextAuth's getSession
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
@@ -8,19 +8,23 @@ interface InviteCodePageProps {
   params: {
     inviteCode: string;
   };
-};
+}
 
-const InviteCodePage = async ({
-  params
-}: InviteCodePageProps) => {
+const InviteCodePage = async ({ params }: InviteCodePageProps) => {
+  const session = await getSession(); // Get session from NextAuth
+
+  if (!session?.user) {
+    return redirect("/api/auth/signin"); // Redirect to the sign-in page if not authenticated
+  }
+
   const profile = await currentProfile();
 
   if (!profile) {
-    return redirectToSignIn();
+    return redirect("/api/auth/signin"); // Redirect to the sign-in page if profile is not found
   }
 
   if (!params.inviteCode) {
-    return redirect("/search");
+    return redirect("/search"); // Redirect to search if invite code is not provided
   }
 
   const existingServer = await db.server.findFirst({
@@ -36,7 +40,7 @@ const InviteCodePage = async ({
   });
 
   if (existingServer) {
-    return redirect(`/chat/servers/${existingServer.id}`);
+    return redirect(`/chat/servers/${existingServer.id}`); // Redirect to the server if it exists
   }
 
   const server = await db.server.update({
@@ -56,10 +60,10 @@ const InviteCodePage = async ({
   });
 
   if (server) {
-    return redirect(`/chat/servers/${server.id}`);
+    return redirect(`/chat/servers/${server.id}`); // Redirect to the newly created server
   }
-  
-  return null;
+
+  return null; // If no server created, return null
 }
- 
+
 export default InviteCodePage;

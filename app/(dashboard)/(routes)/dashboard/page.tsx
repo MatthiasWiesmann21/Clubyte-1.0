@@ -1,9 +1,8 @@
-import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { CheckCircle, Clock, ListChecks, Users } from "lucide-react";
+import { getServerSession } from "next-auth/next";
 
 import { getDashboardCourses } from "@/actions/get-dashboard-courses";
-
 import { InfoCard } from "./_components/info-card";
 import { getSearchCourses } from "@/actions/get-searchcourses";
 import { db } from "@/lib/db";
@@ -11,6 +10,7 @@ import { languageServer } from "@/lib/check-language-server";
 import PolygonChar from "./_components/polygonChar";
 import CourseTable from "./_components/courseTable";
 import { getCourses } from "@/actions/get-courses";
+import authOptions from "@/lib/auth";
 
 interface SearchPageProps {
   searchParams: {
@@ -21,11 +21,15 @@ interface SearchPageProps {
 
 const Dashboard = async ({ searchParams }: SearchPageProps) => {
   const currentLanguage = await languageServer();
-  const { userId } = auth();
 
-  if (!userId) {
+  // Check user session
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
     return redirect("/");
   }
+
+  const userId = session.user.id;
 
   const { completedCourses, coursesInProgress } = await getDashboardCourses(
     userId
@@ -50,7 +54,6 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
       isCompleted: true,
     },
   });
-  // console.log("UserProgressCompletedChapters", UserProgressCompletedChapters);
 
   const CurrentOnlineUser = await db.profile.count({
     where: {
@@ -65,10 +68,6 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
     ...searchParams,
     containerId: process.env.CONTAINER_ID,
   });
-
-  // coursess?.map((each) =>
-  //   each?.chapters?.map((sub) => console.log("=-=--------", sub))
-  // );
 
   return (
     <div className="space-y-4 p-4 dark:bg-[#110524]">
