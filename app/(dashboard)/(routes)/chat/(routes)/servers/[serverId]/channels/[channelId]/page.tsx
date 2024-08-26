@@ -1,7 +1,5 @@
-import { getSession } from "next-auth/react"; // Import NextAuth's getSession
 import { redirect } from "next/navigation";
 import { ChannelType } from "@prisma/client";
-
 import { currentProfile } from "@/lib/current-profile";
 import { ChatHeader } from "@/components/chat/chat-header";
 import { ChatInput } from "@/components/chat/chat-input";
@@ -17,30 +15,17 @@ interface ChannelIdPageProps {
 }
 
 const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
-  // Get session using NextAuth
-  const session = await getSession();
-
-  if (!session?.user) {
-    return redirect("/api/auth/signin"); // Redirect to the sign-in page if not authenticated
-  }
-
-  const profile = await currentProfile();
-
-  if (!profile) {
-    return redirect("/api/auth/signin"); // Redirect to the sign-in page if profile is not found
-  }
-
+  const profile: any = await currentProfile();
   const channel = await db.channel.findUnique({
     where: {
       id: params.channelId,
       containerId: process.env.CONTAINER_ID,
     },
   });
-
   const member = await db.member.findFirst({
     where: {
       serverId: params.serverId,
-      profileId: profile.id,
+      profileId: profile?.id || '',
       containerId: process.env.CONTAINER_ID,
     },
   });

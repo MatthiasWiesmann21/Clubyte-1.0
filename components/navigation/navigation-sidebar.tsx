@@ -4,11 +4,11 @@ import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { NavigationAction } from "./navigation-action";
 import { NavigationItem } from "./navigation-item";
-import { getSession } from "next-auth/react"; // Import getSession from NextAuth
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 export const NavigationSidebar = async () => {
   // Get the session from NextAuth
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
   
   // Check if session exists and has a user ID
   if (!session?.user?.id) {

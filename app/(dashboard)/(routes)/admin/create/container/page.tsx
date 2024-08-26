@@ -44,10 +44,6 @@ const CreatePage = () => {
     return <div>Loading...</div>; // Show a loading state while checking authentication
   }
 
-  if (status === "unauthenticated") {
-    router.push("/auth/sign-in"); // Redirect to sign-in if not authenticated
-    return null;
-  }
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {

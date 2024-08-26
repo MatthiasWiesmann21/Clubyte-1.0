@@ -1,13 +1,14 @@
-import { getSession } from "next-auth/react";
+
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { Attachment, Chapter } from "@prisma/client";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 export async function GET(
   req: Request,
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
-  const session = await getSession({ req : req as any});
+  const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
 
   if (!userId) return new NextResponse("Unauthorized", { status: 401 });
@@ -146,7 +147,7 @@ export async function DELETE(
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const session = await getSession({ req : req as any});
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
     if (!userId) {
@@ -212,7 +213,7 @@ export async function PATCH(
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const session = await getSession({ req : req as any });
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const { isPublished, ...values } = await req.json();
 

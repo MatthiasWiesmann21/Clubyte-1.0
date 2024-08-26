@@ -1,6 +1,4 @@
-import { getSession } from "next-auth/react"; // Import NextAuth's getSession
 import { redirect } from "next/navigation";
-
 import { db } from "@/lib/db";
 import { getOrCreateConversation } from "@/lib/conversation";
 import { currentProfile } from "@/lib/current-profile";
@@ -20,23 +18,11 @@ interface MemberIdPageProps {
 }
 
 const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
-  // Get session using NextAuth
-  const session = await getSession();
-
-  if (!session?.user) {
-    return redirect("/api/auth/signin"); // Redirect to the sign-in page if not authenticated
-  }
-
-  const profile = await currentProfile();
-
-  if (!profile) {
-    return redirect("/api/auth/signin"); // Redirect to the sign-in page if profile is not found
-  }
-
+  const profile: any = await currentProfile();
   const currentMember = await db.member.findFirst({
     where: {
       serverId: params.serverId,
-      profileId: profile.id,
+      profileId: profile?.id || '',
       containerId: process.env.CONTAINER_ID,
     },
     include: {

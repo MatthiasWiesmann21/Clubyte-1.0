@@ -92,7 +92,7 @@ export const Categories = ({
           router?.push(url);
         };
         return (
-          <TooltipProvider>
+          <TooltipProvider key={item.id}>
             <Tooltip>
               <TooltipTrigger>
                 <button

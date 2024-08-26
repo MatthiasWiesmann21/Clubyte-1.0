@@ -1,22 +1,15 @@
-import { getSession } from "next-auth/react"; // Import getSession from NextAuth
 import { redirect } from "next/navigation";
-
 import { db } from "@/lib/db";
 import { languageServer } from "@/lib/check-language-server";
 import { isOwner } from "@/lib/owner";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 import { MenuRoutes } from "./menu-routes";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 const CustomizeMenuPage = async () => {
-  const session = await getSession(); // Get the session from NextAuth
+  const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
-
-  if (!session?.user) {
-    return redirect("/auth/sign-in"); // Redirect to sign-in page if not authenticated
-  }
-
-  const userId = session.user.id; // Extract userId from session
-
+  const userId = session?.user.id || ''; 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
   const canAccess = isRoleAdmins || isRoleOperator || (userId && await isOwner(userId));

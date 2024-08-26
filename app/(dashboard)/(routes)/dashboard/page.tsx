@@ -24,7 +24,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
 
   // Check user session
   const session = await getServerSession(authOptions);
-
+  console.log('user session',session)
   if (!session?.user) {
     return redirect("/");
   }

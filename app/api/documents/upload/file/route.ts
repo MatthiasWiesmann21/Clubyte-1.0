@@ -1,4 +1,4 @@
-import { getSession } from "next-auth/react";
+
 import createFolder from "@/app/vendor/aws/s3/createFolder";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
@@ -6,7 +6,8 @@ import { v4 as uuidv4 } from "uuid";
 import { getS3Client } from "@/app/vendor/aws/s3/getS3Client";
 import { Upload } from "@aws-sdk/lib-storage";
 import { NextApiResponse } from "next";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 const getOrCreateParentFolder = async (userId: string, parentKey?: string | null) => {
   if (parentKey != null) {
     const parentFolder = await db.folder.findFirst({
@@ -51,7 +52,7 @@ const getOrCreateParentFolder = async (userId: string, parentKey?: string | null
 
 export async function POST(req: Request, res: NextApiResponse) {
   try {
-    const session = await getSession({ req } as any);
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
     if (userId == null) {

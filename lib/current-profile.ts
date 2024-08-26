@@ -1,8 +1,11 @@
 import { db } from "@/lib/db";
-import { getSession } from "next-auth/react";
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { json } from "stream/consumers";
 export const currentProfile = async () => {
   try {
-    const session = await getSession();
+    
+    const session = await getServerSession(authOptions);
     if (!session?.user?.id) 
     {   
       return null;
@@ -14,14 +17,15 @@ export const currentProfile = async () => {
       },
       include: {
         container: true,
-      },
+      }
     });
+
     if (!profile) {
       return null;
     }
     return profile;
   } catch (error) {
-    console.log("An error occured in current profile" , error );
+    console.log("An error occurred in current profile" , error );
     return null;
   }
 };

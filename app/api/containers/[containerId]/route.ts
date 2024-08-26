@@ -1,16 +1,16 @@
-import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
 import { isAdmin } from "@/lib/roleCheckServer"; // Assuming isOperator is not needed, remove if unnecessary
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 export async function DELETE(
   req: Request,
   { params }: { params: { containerId: string } }
 ) {
   try {
-    const session = await getSession({ req : req as any});
+      const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
     if (!userId || !await isOwner(userId)) {
@@ -45,7 +45,7 @@ export async function PATCH(
   { params }: { params: { containerId: string } }
 ) {
   try {
-    const session = await getSession({ req : req as any });
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const { containerId } = params;
     const values = await req.json();
@@ -71,4 +71,18 @@ export async function PATCH(
     console.log("[CONTAINER_UPDATE]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
+}
+
+export async function GET(
+  req: Request,
+  { params }: { params: { containerId: string } }
+) {
+  const container = await db.container.findFirst({
+    where: {
+      id: process.env.CONTAINER_ID,
+    },
+  });
+
+  return NextResponse.json({ icon: container?.icon });
+
 }

@@ -1,13 +1,13 @@
-import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 export async function POST(
   req: Request,
   { params }: { params: { courseId: string } }
 ) {
   try {
-    const session = await getSession({ req : req as any});
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const { url, postId } = await req.json();
 

@@ -1,5 +1,5 @@
-import { getSession } from "next-auth/react";
-import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
@@ -7,7 +7,7 @@ import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 export async function POST(req: Request) {
   try {
     // Get the session from NextAuth
-    const session = await getSession({ req : req as any});
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
     if (!userId) {

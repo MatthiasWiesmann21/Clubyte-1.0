@@ -1,4 +1,3 @@
-import { getSession } from "next-auth/react"; // Import NextAuth's getSession
 import { redirect } from "next/navigation";
 import { CoursesList } from "@/components/courses-list";
 import { getSearchCourses } from "@/actions/get-searchcourses";
@@ -8,7 +7,8 @@ import { ArrowLeft } from "lucide-react";
 import { Categories } from "../_components/categories";
 import { db } from "@/lib/db";
 import getBase64 from "@/lib/getLocalbase64";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 interface SearchPageProps {
   searchParams: {
     title: string;
@@ -17,8 +17,8 @@ interface SearchPageProps {
 }
 
 const CourseListPage = async ({ searchParams }: SearchPageProps) => {
-  // Replace auth() from Next Auth with getSession() from NextAuth
-  const session = await getSession(); // Get the session from NextAuth
+  const session = await getServerSession(authOptions);
+
 
   if (!session?.user?.id) {
     return redirect("/"); // Redirect if no user is found in session

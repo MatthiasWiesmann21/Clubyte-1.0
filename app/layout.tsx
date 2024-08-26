@@ -29,13 +29,13 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const profile = await initialProfile();
+  // const profile = await initialProfile();
 
   const session = await getServerSession(authOptions);
 
   const user = session?.user;
 
-  if (profile && user) {
+  if (user) {
     
   }
   return (

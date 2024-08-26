@@ -1,7 +1,8 @@
 import Stripe from "stripe";
-import { getSession } from "next-auth/react";
-import { NextResponse } from "next/server";
 
+import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
 import { stripe } from "@/lib/stripe";
 
@@ -10,7 +11,7 @@ export async function POST(
   { params }: { params: { courseId: string } }
 ) {
   try {
-    const session = await getSession({ req : req as any});
+    const session = await getServerSession(authOptions);
     const user = session?.user;
 
     if (!user || !user.id || !user.email) {

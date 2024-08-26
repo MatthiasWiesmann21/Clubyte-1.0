@@ -1,13 +1,14 @@
-import { getSession } from "next-auth/react";
+
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 export async function POST(req: Request) {
   try {
     // Get the session from NextAuth
-    const session = await getSession({ req } as any);
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const { title } = await req.json();
 
@@ -37,7 +38,7 @@ export async function POST(req: Request) {
 export async function GET(req: any): Promise<void | Response> {
   try {
     // Get the session from NextAuth
-    const session = await getSession({ req });
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const page = req?.nextUrl?.searchParams?.get("page") || "1";
     const categoryId = req?.nextUrl?.searchParams?.get("categoryId") || "";
@@ -45,8 +46,8 @@ export async function GET(req: any): Promise<void | Response> {
     const skip = (parseInt(page) - 1) * pageSize;
     const currentDate = new Date(); // Get the current date and time
 
+    console.log('llllllllll ',userId)
     if (!userId) throw new Error("Unauthorized");
-
     const profile = await db.profile.findFirst({
       select: {
         id: true,

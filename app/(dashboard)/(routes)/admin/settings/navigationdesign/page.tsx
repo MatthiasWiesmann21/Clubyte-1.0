@@ -1,10 +1,7 @@
-import { getSession } from "next-auth/react"; // Import getSession from NextAuth
 import { redirect } from "next/navigation";
 import { ArrowLeft, PaletteIcon } from "lucide-react";
-
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
-
 import { PrimaryNavColorForm } from "./_components/nav-primary-color-form";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
@@ -13,31 +10,23 @@ import { BackgorundNavColorForm } from "./_components/nav-background-color-form"
 import { DarkPrimaryNavColorForm } from "./_components/nav-darkPrimary-color-form";
 import { DarkBackgorundNavColorForm } from "./_components/nav-darkBackground-color-form";
 import Link from "next/link";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 const CustomizeSettingsPage = async () => {
-  const session = await getSession(); // Get the session from NextAuth
+  const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
-  
-  if (!session?.user) {
-    return redirect("/api/auth/signin"); // Redirect to sign-in page if not authenticated
-  }
-
-  const userId = session.user.id; // Extract userId from session
-
+  const userId = session?.user.id || ''; 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
   const canAccess = isRoleAdmins || isRoleOperator || (userId && await isOwner(userId));
-
   if (!canAccess) {
     return redirect("/search");
   }
-
   const container = await db.container.findUnique({
     where: {
       id: process.env.CONTAINER_ID,
     }
   });
-
   if (!container) {
     return redirect("/");
   }

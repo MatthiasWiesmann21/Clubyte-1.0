@@ -22,8 +22,7 @@ export default function AuthProvider({
           attribute="class"
           defaultTheme="dark"
           enableSystem={false}
-          storageKey="discord-theme"
-        >
+          storageKey="discord-theme">
           <ConfettiProvider />
           <ToastProvider />
           {children}

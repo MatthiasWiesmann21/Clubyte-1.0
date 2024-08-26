@@ -1,7 +1,5 @@
-import { getSession } from "next-auth/react"; // Import NextAuth's getSession
 import { redirect } from "next/navigation";
 import { AlertTriangle, ArrowLeft, User2Icon } from "lucide-react";
-
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
 import { Actions } from "./_components/actions";
@@ -13,12 +11,7 @@ import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
 
 const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
-  const session = await getSession(); // Get session from NextAuth
   const currentLanguage = await languageServer();
-
-  if (!session?.user) {
-    return redirect("/api/auth/signin"); // Redirect to the sign-in page if not authenticated
-  }
 
   const profile = await db.profile.findUnique({
     where: {

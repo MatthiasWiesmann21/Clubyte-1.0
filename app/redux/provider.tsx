@@ -8,25 +8,23 @@ import axios from "axios";
 const PG = ({ children }: any) => {
   const dispatch = useDispatch();
   const { data: session, status } = useSession();
+  
   const persistedUser = useSelector((state: any) => state?.user);
   useEffect(() => {
     const getUser = async () => {
+      console.log("Whats in provider" , session , status , persistedUser)
       if (status !== "authenticated") {
         return;
       }
       try {
-        const user = await axios.get("/api/user");
-  
-        if (!user) return;
-  
         if (persistedUser) {
-          if (JSON.stringify(persistedUser) === JSON.stringify(user.data)) {
+          if (JSON.stringify(persistedUser) === JSON.stringify(session.user)) {
             return;
           } else {
-            dispatch({ type: "SetUser", payload: user?.data });
+            dispatch({ type: "SetUser", payload: session.user });
           }
         } else {
-          dispatch({ type: "SetUser", payload: user?.data });
+          dispatch({ type: "SetUser", payload: session.user });
         }
       } catch (error) {
         console.error("Failed to fetch user:", error);

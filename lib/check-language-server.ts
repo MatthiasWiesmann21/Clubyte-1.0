@@ -8,12 +8,13 @@ import {
   Mandarin,
   Russian,
 } from "./localization";
-import { getSession } from "next-auth/react";
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
 
 const getUser = async () => {
   try {
-    const session = await getSession();
+    const session = await getServerSession(authOptions);
     if (!session?.user?.id) return;
 
     const user = await db?.profile?.findFirst({

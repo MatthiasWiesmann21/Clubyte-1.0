@@ -1,14 +1,14 @@
-import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 export async function DELETE(
   req: Request,
   { params }: { params: { categoryId: string } }
 ) {
   try {
     // Get the session from NextAuth
-    const session = await getSession({ req : req as any });
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
     if (!userId) {
@@ -48,7 +48,7 @@ export async function PATCH(
 ) {
   try {
     // Get the session from NextAuth
-    const session = await getSession({ req : req as any});
+      const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
     if (!userId) {

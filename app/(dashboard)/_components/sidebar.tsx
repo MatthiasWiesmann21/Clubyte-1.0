@@ -3,10 +3,11 @@ import { Logo } from "./logo";
 import { SidebarRoutes } from "./sidebar-routes";
 import { languageServer } from "@/lib/check-language-server";
 import { db } from "@/lib/db";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth";
 
 export const Sidebar = async () => {
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
   const currentLanguage = await languageServer();
 

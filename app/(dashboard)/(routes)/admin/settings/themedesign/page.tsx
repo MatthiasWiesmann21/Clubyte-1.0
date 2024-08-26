@@ -1,28 +1,19 @@
-import { getSession } from "next-auth/react"; // Import getSession from NextAuth
 import { redirect } from "next/navigation";
 import { ArrowLeft, PaletteIcon } from "lucide-react";
-
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
-
 import { ThemeOutlineColorForm } from "./_components/primary-color-form";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import { languageServer } from "@/lib/check-language-server";
 import { DarkThemeOutlineColorForm } from "./_components/darkPrimary-color-form";
 import Link from "next/link";
-import { PrimaryButtonColorForm } from "../buttondesign/_components/primary-color-form";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 const ThemeDesignPage = async () => {
-  const session = await getSession(); // Get the session from NextAuth
+  const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
-  
-  if (!session?.user) {
-    return redirect("/api/auth/signin"); // Redirect to the sign-in page if not authenticated
-  }
-
-  const userId = session.user.id; // Extract userId from session
-
+  const userId = session?.user.id || ''; // Extract userId from session
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
   const canAccess = isRoleAdmins || isRoleOperator || (userId && await isOwner(userId));

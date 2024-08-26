@@ -1,9 +1,10 @@
 import createFolder from "@/app/vendor/aws/s3/createFolder";
 import { db } from "@/lib/db";
-import { getSession } from "next-auth/react";
+
 import { NextResponse } from "next/server";
 import { isOwner } from "@/lib/owner";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 const getOrCreateParentFolder = async (userId: string, parentKey?: string) => {
   if (parentKey != null) {
     const parentFolder = await db.folder.findFirst({
@@ -153,7 +154,7 @@ async function getFolderAndFiles(
 
 export async function GET(req: Request) {
   try {
-    const session = await getSession({ req } as any);
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
     const id = (req as any).nextUrl.searchParams.get("key");

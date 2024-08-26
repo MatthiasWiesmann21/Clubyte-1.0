@@ -53,9 +53,7 @@ export const NavbarRoutes = ({
   const isSearchPage = pathname === "/search";
   const isLiveEventPage = pathname === "/live-event";
 
-  if (!session || !profileName) {
-    router.push("/auth/sign-in");
-  }
+
 
   return (
     <>
@@ -75,8 +73,8 @@ export const NavbarRoutes = ({
         </div>
       )}
       <div className="ml-auto flex gap-x-1">
-        <TooltipProvider>
-          <Tooltip>
+        <TooltipProvider><>
+           <Tooltip>
             <TooltipTrigger>
               <LanguageToggle />
             </TooltipTrigger>
@@ -120,7 +118,7 @@ export const NavbarRoutes = ({
               profileImageUrl={profileImageUrl}
               profileOnlineStatus={profileOnlineStatus}
             />
-          </div>
+          </div> </>
         </TooltipProvider>
       </div>
     </>

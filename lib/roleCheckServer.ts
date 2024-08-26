@@ -1,10 +1,10 @@
-import { getSession } from "next-auth/react"; // Import getSession from NextAuth
 import { db } from "@/lib/db";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 const getUser = async () => {
     try {
         // Get the session object from NextAuth
-        const session = await getSession();
+        const session = await getServerSession(authOptions);
         if (!session?.user?.id) return; // Access user ID from session
         const user = await db?.profile?.findFirst({
             where: { userId: session.user.id },

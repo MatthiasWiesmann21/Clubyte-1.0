@@ -6,24 +6,13 @@ import { db } from "@/lib/db";
 import { currentProfile } from "@/lib/current-profile";
 
 export const SidebarChat = async ({ serverId }: { serverId: string }) => {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    return redirect("/auth/sign-in");  // Redirect to the sign-in page if the session does not exist
-  }
-
   const profile = await currentProfile();
-
-  if (!profile) {
-    return redirect("/auth/sign-in");
-  }
-
   const server = await db.server.findUnique({
     where: {
       id: serverId,
       members: {
         some: {
-          profileId: profile.id,
+          profileId: profile?.id,
         },
       },
     },

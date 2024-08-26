@@ -73,7 +73,7 @@ model Profile {
   name                  String? @db.Text
   imageUrl              String  @db.Text
   email                 String  @db.Text
-  password              String  @db.Text
+  password              String  @default("")
   language              String? @db.Text
   isOnline              String  @default("Online")
   role                  String  @default("USER")
@@ -247,7 +247,7 @@ model UserProgress {
 
 model Purchase {
   id     String @id @default(uuid())
-  userId String
+  userId String @default("")
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)

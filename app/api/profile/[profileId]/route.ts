@@ -12,14 +12,8 @@ export async function DELETE(
   try {
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
-
     const isRoleAdmins = await isAdmin();
     const canAccess = isRoleAdmins || (userId && await isOwner(userId));
-
-    if (!userId || !canAccess) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
     const profile = await db.profile.findUnique({
       where: {
         id: params.profileId,
@@ -48,17 +42,8 @@ export async function PATCH(
   { params }: { params: { profileId: string } }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    const userId = session?.user?.id;
     const { profileId } = params;
     const values = await req.json();
-
-    if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    console.log(values);
-
     const profile = await db.profile.update({
       where: {
         id: profileId,

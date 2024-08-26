@@ -1,4 +1,5 @@
-import { getSession } from "next-auth/react";
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
@@ -22,7 +23,7 @@ interface SearchPageProps {
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
   // Get the session from NextAuth
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
 
   if (!userId) {
@@ -72,11 +73,12 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     },
   });
 
-  const courses = await getCourses({
-    userId,
-    ...searchParams,
-    containerId: process.env.CONTAINER_ID,
-  });
+  const courses = [];
+  // await getCourses({
+  //   userId,
+  //   ...searchParams,
+  //   containerId: process.env.CONTAINER_ID,
+  // });
 
   const containerColors: any = await db?.container?.findUnique({
     where: {

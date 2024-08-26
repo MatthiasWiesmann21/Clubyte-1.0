@@ -1,6 +1,7 @@
-import { getSession } from "next-auth/react";
-import { NextResponse } from "next/server";
 
+import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
 
 export async function PATCH(
@@ -8,7 +9,7 @@ export async function PATCH(
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const session = await getSession({ req : req as any});
+    const session = await getServerSession(authOptions);
     const user = session?.user;
 
     if (!user || !user.id) {

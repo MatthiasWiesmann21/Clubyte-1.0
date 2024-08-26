@@ -1,48 +1,54 @@
-
-"use client"
+"use client";
 import Head from 'next/head';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Link } from 'lucide-react';
-export default function SignIn() {
-  const router=useRouter()
-  const [beingSubmitted , setBeingSubmitted] = useState(false);
+
+export default function SignUp() {
+  const router = useRouter();
+
   const [form, setForm] = useState({
+    name: '',
     email: '',
     password: '',
   });
+
   const handleGoogleSignIn = (event: any) => {
     event.preventDefault();
     signIn('google', { callbackUrl: '/' });
   };
 
   const handleSubmit = async (event: any) => {
-    setBeingSubmitted(true)
-    const email = form.email;
-    const password = form.password;
-    const response = await signIn("credentials", {
-      email, password, redirect: false
-    })
-    console.log("The response from submission" , response );
-    if (response && response.error) {
-      // toast.error("Invalid Credentials")
+    event.preventDefault();
+    const { name, email, password } = form;
+
+    // Handle your registration logic here, e.g., sending data to your backend
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    if (response.ok) {
+      router.replace("/dashboard");
+      // toast.success("Signup Successful");
     } else {
-      router.replace("/dashboard")
-      // toast.success("Login Successful")
+      // toast.error("Signup Failed");
     }
-    
-    setBeingSubmitted(false)
   };
+
   return (
     <>
       <Head>
-        <title>Sign In</title>
+        <title>Sign Up</title>
       </Head>
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
         <div className="max-w-md w-full bg-white shadow-lg rounded-xl p-8">
           <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-8">
-            Welcome Back
+            Create Your Account
           </h2>
 
           <div className="mb-6">
@@ -54,7 +60,7 @@ export default function SignIn() {
                 alt="Google"
                 className="w-5 h-5 mr-3"
               />
-              Sign in with Google
+              Sign up with Google
             </button>
           </div>
 
@@ -68,6 +74,19 @@ export default function SignIn() {
           </div>
 
           <form>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="name">
+                Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Enter your name"
+              />
+            </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="email">
                 Email Address
@@ -94,25 +113,20 @@ export default function SignIn() {
                 placeholder="Enter your password"
               />
             </div>
-            <div className="mb-4 text-right">
-              <a href="#" className="text-sm text-blue-500 hover:underline">
-                Forgot your password?
-              </a>
-            </div>
             <button
               onClick={handleSubmit}
               type="button"
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
-              Sign{beingSubmitted ? 'ing' : ''} In
+              Sign Up
             </button>
           </form>
 
           <p className="text-center text-gray-600 mt-6">
-            Don&apos;t have an account?{' '}
-            <a href="/auth/sign-up" className="text-blue-500 hover:underline font-medium">
-              Sign Up
-            </a>
+            Already have an account?{' '}
+            <Link href="/auth/sign-in" className="text-blue-500 hover:underline font-medium">
+              Sign In
+            </Link>
           </p>
         </div>
       </div>

@@ -10,9 +10,10 @@ const SetupPage = () => {
 
   useEffect(() => {
     const setup = async () => {
-      const profile = await initialProfile();
+      const profile : any = {} ; 
+      // await initialProfile();
 
-      if (!profile) {
+      if (!profile.id) {
         return; // Handle case where profile is not available
       }
 

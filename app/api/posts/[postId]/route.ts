@@ -1,6 +1,7 @@
-import { getSession } from "next-auth/react";
-import { NextResponse } from "next/server";
 
+import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
 
 export async function DELETE(
@@ -9,7 +10,7 @@ export async function DELETE(
 ) {
   try {
     // Get the session from NextAuth
-    const session = await getSession({ req } as any);
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
     // Check if the userId exists
@@ -48,7 +49,7 @@ export async function PATCH(
 ) {
   try {
     // Get the session from NextAuth
-    const session = await getSession({ req }  as any);
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const { postId } = params;
     const values = await req.json();

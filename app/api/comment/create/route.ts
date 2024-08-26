@@ -1,11 +1,11 @@
-import { getSession } from "next-auth/react";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 export async function POST(req: Request) {
   try {
     // Get the session from NextAuth
-    const session = await getSession({ req :req as any });
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
     if (!userId) {

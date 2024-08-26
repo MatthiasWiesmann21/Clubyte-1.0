@@ -2,8 +2,8 @@ import { db } from "@/lib/db";
 import { SessionStrategy } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { Session } from "next-auth";
-import { User, Account, Profile } from "next-auth";
+import bcrypt from "bcrypt";
+(<any>global).logger = console.log;
 
 type Credentials = {
   email?: string;
@@ -25,9 +25,11 @@ const authOptions = {
   providers: [
     CredentialsProvider({
       type: "credentials",
-      credentials: {},
-      async authorize(credentials : Credentials | undefined, req) {
-        console.log("Authorize method called I am route ts NEXT Auth" , req.query , req.body , req.method );
+      credentials: {
+      },
+      async authorize(credentials: Credentials | undefined, req) {
+        (<any>global).logger("CredentialsProvider called in route ts NEXT Auth" , credentials)
+        console.log("Authorize method called in route ts NEXT Auth", req.query, req.body, req.method);
 
         if (!credentials) {
           throw new Error("No credentials provided");
@@ -40,56 +42,50 @@ const authOptions = {
             },
           },
         });
-        if (!user || user.password !== password) {
-          return null;
-        } else {
-          user.id = user.id.toString();
 
-          return user;
+        if (!user) {
+          throw new Error("No user found with the provided email");
         }
+
+        // Check the hashed password
+        const isValidPassword = await bcrypt.compare(password || '', user.password);
+        if (!isValidPassword) {
+          throw new Error("Invalid credentials");
+        }
+
+        return {
+          id: user.userId,
+          email: user.email,
+          name: user.name,
+          role: user.role
+        };
       },
     }),
     GoogleProvider({
-        clientId: process.env.NEXT_GOOGLE_CLIENT_ID || '',
-        clientSecret: process.env.NEXT_GOOGLE_CLIENT_SECRET || '',
-      }),
+      clientId: process.env.NEXT_GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.NEXT_GOOGLE_CLIENT_SECRET || '',
+    }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }: { user: User; account: Account | null; profile?: Profile }) {
-      console.log("Sign in successful", { user, account, profile });
-      if (profile && account?.provider === "google") {
-        // return profile.email_verified && profile.email.endsWith("@example.com")
+    async jwt({ token, user }: any) {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
       }
-      // Example: Check if user exists in your database
-      const existingUser = await db.profile.findFirst({
-        where: {
-          email: {
-            equals: user.email as string 
-          },
-        },
-      });
-      if (!existingUser) {
-        // Optionally, you can create the user in your database here
-        await db.profile.create({
-          data: {
-            userId : Date.now().toString(),
-            email: user.email as string,
-            name: user.name as string,
-            imageUrl: user.image as string,
-            password : '',
-            containerId : ''
-            // Add other fields as necessary
-          },
-        });
+      return token;
+    },
+    async session({ session, token }: any) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.role = token.role as string;
       }
-
-      return true; // Return true to indicate success
-    }
+      return session;
+    },
   },
-  pages : {
+  pages: {
     signIn: '/auth/sign-in',
     signOut: '/auth/sign-out',
-    error : '/auth/error'
+    error: '/auth/error'
   }
 };
 

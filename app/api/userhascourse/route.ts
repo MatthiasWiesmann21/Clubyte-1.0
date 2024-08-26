@@ -7,9 +7,10 @@ export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
-
+    console.log("What's in user" , userId , session  )
     if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      console.log("No user id found" , userId );
+      // return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const userHasCourses = await db.userHasCourse.findMany({

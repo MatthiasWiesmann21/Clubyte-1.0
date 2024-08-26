@@ -1,17 +1,15 @@
-import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 
 export async function GET(req: Request) {
   try {
-    const session = await getSession({ req : req as any });
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
-
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
-
     const courseId = new URL(req.url).pathname.split("/")[2];
     const course = await db.course.findUnique({
       where: {
@@ -46,7 +44,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const session = await getSession({ req : req as any});
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const { title } = await req.json();
 

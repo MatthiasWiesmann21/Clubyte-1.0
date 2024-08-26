@@ -1,7 +1,8 @@
 import { db } from "@/lib/db";
-import { getSession } from "next-auth/react";
-import { NextResponse } from "next/server";
 
+import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 async function getFolderAndFiles(key: string | null, userId: string | null) {
   let folder;
 
@@ -36,7 +37,7 @@ async function getFolderAndFiles(key: string | null, userId: string | null) {
 
 export async function GET(req: Request) {
   try {
-    const session = await getSession({ req } as any);
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
     const key = new URL(req.url).searchParams.get("key");
