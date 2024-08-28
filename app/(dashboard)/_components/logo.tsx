@@ -17,14 +17,14 @@ export const Logo = ({ imageUrl, imageUrlDark, link }: LogoProps) => {
 
   return (
     link ? <Link target={link ?? ""} href={link ?? ""} className="w-full">
-      <Image
+      { imageUrlNew && <Image
         priority
         height={100}
         width={200}
         alt="logo"
         src={imageUrlNew ?? ""}
         className="object-contain"
-      />
+      /> }
     </Link> : <></>
   );
 };

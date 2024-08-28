@@ -1,60 +1,73 @@
-
-"use client"
-import Head from 'next/head';
-import { signIn } from 'next-auth/react';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Link } from 'lucide-react';
+"use client";
+import Head from "next/head";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 export default function SignIn() {
-  const router=useRouter()
-  const [beingSubmitted , setBeingSubmitted] = useState(false);
+  const router = useRouter();
+  const [beingSubmitted, setBeingSubmitted] = useState(false);
+  const [beingSubmittedGoogle, setBeingSubmittedGoogle] = useState(false);
   const [form, setForm] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-  const handleGoogleSignIn = (event: any) => {
-    event.preventDefault();
-    signIn('google', { callbackUrl: '/' });
+  const handleGoogleSignIn = async (event: any) => {
+    try {
+      setBeingSubmittedGoogle(true);
+      event.preventDefault();
+      const googleSignInResp = await signIn("google", { callbackUrl: "/dashboard" });
+      console.log("Google sign in response" , googleSignInResp );
+    } catch (error) {
+
+    }finally{
+      setBeingSubmittedGoogle(false);
+    }
   };
 
   const handleSubmit = async (event: any) => {
-    setBeingSubmitted(true)
+    setBeingSubmitted(true);
     const email = form.email;
     const password = form.password;
     const response = await signIn("credentials", {
-      email, password, redirect: false
-    })
-    console.log("The response from submission" , response );
+      email,
+      password,
+      redirect: false,
+    });
+    console.log("The response from submission", response);
     if (response && response.error) {
       // toast.error("Invalid Credentials")
     } else {
-      router.replace("/dashboard")
+      router.replace("/dashboard");
       // toast.success("Login Successful")
     }
-    
-    setBeingSubmitted(false)
+
+    setBeingSubmitted(false);
   };
   return (
     <>
       <Head>
         <title>Sign In</title>
       </Head>
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
-        <div className="max-w-md w-full bg-white shadow-lg rounded-xl p-8">
-          <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-8">
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
+        <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
+          <h2 className="mb-8 text-center text-3xl font-extrabold text-gray-900">
             Welcome Back
           </h2>
 
           <div className="mb-6">
             <button
               onClick={handleGoogleSignIn}
-              className="w-full flex items-center justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400">
+              className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+            >
               <img
                 src="/images/google.png"
                 alt="Google"
-                className="w-5 h-5 mr-3"
+                className="mr-3 h-5 w-5"
               />
-              Sign in with Google
+              Sign{beingSubmittedGoogle ? 'ing' : ''} in with Google 
+              {beingSubmittedGoogle && <Image src="/loader-blur.svg" alt="preloader" width={20} height={20}/> }
             </button>
           </div>
 
@@ -63,13 +76,16 @@ export default function SignIn() {
               <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">or</span>
+              <span className="bg-white px-2 text-gray-500">or</span>
             </div>
           </div>
 
           <form>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="email">
+              <label
+                className="mb-2 block text-sm font-medium text-gray-700"
+                htmlFor="email"
+              >
                 Email Address
               </label>
               <input
@@ -77,12 +93,15 @@ export default function SignIn() {
                 type="email"
                 name="email"
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-700 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your email"
               />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="password">
+              <label
+                className="mb-2 block text-sm font-medium text-gray-700"
+                htmlFor="password"
+              >
                 Password
               </label>
               <input
@@ -90,7 +109,7 @@ export default function SignIn() {
                 type="password"
                 name="password"
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-700 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your password"
               />
             </div>
@@ -102,17 +121,22 @@ export default function SignIn() {
             <button
               onClick={handleSubmit}
               type="button"
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              className="w-full rounded-lg bg-blue-600 px-4 py-3 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
-              Sign{beingSubmitted ? 'ing' : ''} In
+              <span className="flex flex-center">
+              {beingSubmitted ? "Signing In..." : "Sign In"} &nbsp;{beingSubmitted && <Image src="/loader-blur-white.svg" alt="preloader" width={20} height={20}/> }
+              </span>
             </button>
           </form>
 
-          <p className="text-center text-gray-600 mt-6">
-            Don&apos;t have an account?{' '}
-            <a href="/auth/sign-up" className="text-blue-500 hover:underline font-medium">
+          <p className="mt-6 text-center text-gray-600">
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/auth/sign-up"
+              className="font-medium text-blue-500 hover:underline"
+            >
               Sign Up
-            </a>
+            </Link>
           </p>
         </div>
       </div>

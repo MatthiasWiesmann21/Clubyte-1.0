@@ -3,11 +3,12 @@ import Head from 'next/head';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Link } from 'lucide-react';
+import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 export default function SignUp() {
   const router = useRouter();
-
+  const [beingSubmitted , setBeingSubmitted] = useState(false);
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -16,10 +17,12 @@ export default function SignUp() {
 
   const handleGoogleSignIn = (event: any) => {
     event.preventDefault();
-    signIn('google', { callbackUrl: '/' });
+    signIn('google', { callbackUrl: '/dashboard' });
   };
 
   const handleSubmit = async (event: any) => {
+    try{
+    setBeingSubmitted(true)
     event.preventDefault();
     const { name, email, password } = form;
 
@@ -31,13 +34,20 @@ export default function SignUp() {
       },
       body: JSON.stringify({ name, email, password }),
     });
+    const jsonObj = await response.json();
 
-    if (response.ok) {
+    if( jsonObj.error){ 
+      toast.error(jsonObj.error);
+    }else{
+      const response = await signIn("credentials", {
+        email, password, redirect: false
+      })
       router.replace("/dashboard");
-      // toast.success("Signup Successful");
-    } else {
-      // toast.error("Signup Failed");
     }
+  }catch(error){
+
+  }
+  setBeingSubmitted(false);
   };
 
   return (
@@ -118,12 +128,12 @@ export default function SignUp() {
               type="button"
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
-              Sign Up
+              Sign{beingSubmitted ? 'ing Up...' : ' Up'}
             </button>
           </form>
 
           <p className="text-center text-gray-600 mt-6">
-            Already have an account?{' '}
+            Already have an account ?{' '}
             <Link href="/auth/sign-in" className="text-blue-500 hover:underline font-medium">
               Sign In
             </Link>

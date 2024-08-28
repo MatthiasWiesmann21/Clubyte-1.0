@@ -48,10 +48,12 @@ const authOptions = {
         }
 
         // Check the hashed password
-        const isValidPassword = await bcrypt.compare(password || '', user.password);
+        const isValidPassword = bcrypt.compareSync(password || '', user.password || '');
+        console.log("Password is now validated", isValidPassword );
         if (!isValidPassword) {
           throw new Error("Invalid credentials");
         }
+        console.log("Returning user as of auth ", user );
 
         return {
           id: user.userId,

@@ -95,7 +95,7 @@ export const Categories = ({
           <TooltipProvider key={item.id}>
             <Tooltip>
               <TooltipTrigger>
-                <button
+                <span
                   key={item?.id}
                   onClick={onClick}
                   className={`font-600 flex items-center gap-x-1 rounded-full border px-3 py-2 text-xs transition duration-300`}
@@ -109,13 +109,12 @@ export const Categories = ({
                   }
                   onMouseEnter={() => setHoveredCategoryId(item?.id)}
                   onMouseLeave={() => setHoveredCategoryId(null)}
-                  type="button"
                 >
                   <span className="line-clamp-1 truncate text-start">
                     {item?.name?.toUpperCase()}
                   </span>
                   <div>({item?._count?.posts})</div>
-                </button>
+                </span>
               </TooltipTrigger>
               <TooltipContent>
                 <span className="text-start text-sm whitespace-normal">{item?.name?.toUpperCase()}</span>

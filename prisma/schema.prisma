@@ -73,7 +73,7 @@ model Profile {
   name                  String? @db.Text
   imageUrl              String  @db.Text
   email                 String  @db.Text
-  password              String  @default("")
+  password              String?  @default("")
   language              String? @db.Text
   isOnline              String  @default("Online")
   role                  String  @default("USER")

@@ -7,6 +7,7 @@ import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
 export async function POST(req: Request) {
   try {
+    console.log("POSTs post request recieved" , req.body );
     // Get the session from NextAuth
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
