@@ -73,12 +73,11 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     },
   });
 
-  const courses = [];
-  // await getCourses({
-  //   userId,
-  //   ...searchParams,
-  //   containerId: process.env.CONTAINER_ID,
-  // });
+  const courses = await getCourses({
+    userId,
+    ...searchParams,
+    containerId: process.env.CONTAINER_ID,
+  });
 
   const containerColors: any = await db?.container?.findUnique({
     where: {

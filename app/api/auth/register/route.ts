@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import bcrypt from "bcrypt";
+import nodemailer from "nodemailer";
 
 export async function POST(request: Request) {
   try {
@@ -9,12 +10,12 @@ export async function POST(request: Request) {
       throw "Please provide all fields";
     }
     const existingUser = await db.profile.findFirst({
-        where : {
-            email
-        }
+      where: {
+        email,
+      },
     });
-    if(existingUser){
-        throw "A user with this email already exists";
+    if (existingUser) {
+      throw "A user with this email already exists";
     }
     // YOU MAY WANT TO ADD SOME VALIDATION HERE
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -51,3 +52,40 @@ export async function POST(request: Request) {
   }
   return NextResponse.json({ message: "success" });
 }
+
+const sendEmail = async (toEmail: string, message: string) => {
+  const username = process.env.NEXT_PUBLIC_EMAIL_USERNAME;
+  const password = process.env.NEXT_PUBLIC_EMAIL_PASSWORD;
+  const fromEmail = process.env.NEXT_PUBLIC_FROM_EMAIL;
+  const transporter = nodemailer.createTransport({
+    host: process.env.NEXT_PUBLIC_EMAIL_HOST,
+    port: ~~(process.env.NEXT_PUBLIC_EMAIL_PORT!),
+    tls: {
+      ciphers: "SSLv3",
+      rejectUnauthorized: false,
+    },
+
+    auth: {
+      user: username,
+      pass: password,
+    },
+  });
+  try {
+    const mail = await transporter.sendMail({
+      from: username,
+      to: toEmail,
+      replyTo: fromEmail,
+      subject: `Website activity from ${toEmail}`,
+      html: `
+        <p>Name: ${message} </p>
+        <p>Email: ${toEmail} </p>
+        <p>Message: ${message} </p>
+        `,
+    });
+
+    console.log({ message: "Success: email was sent" , mail });
+  } catch (error) {
+    console.log("An error occured while sending email:", error);
+  }
+};
+// sendEmail("malikahsan19962016@gmail.com", "Hello world");

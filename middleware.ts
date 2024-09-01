@@ -10,5 +10,9 @@ export const config = {
   matcher: [
     "/",
     "/dashboard",
+    "/documents",
+    "/news",
+    "/live-event",
+    "/search",
   ],
 };

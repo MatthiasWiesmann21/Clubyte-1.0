@@ -58,10 +58,11 @@ export const ServerHeader = ({ servers, server, role }: ServerHeaderProps) => {
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 space-y-[2px] bg-[#f6f8fa] text-xs font-medium text-black dark:bg-[#101828] dark:text-neutral-400">
-          {servers?.map((each: ServerWithMembersWithProfiles) => (
+          {servers?.map((each: ServerWithMembersWithProfiles , index) => (
             <DropdownMenuItem
               onClick={() => push(`/chat/servers/${each?.id}`)}
               className="flex h-10 cursor-pointer items-center p-1 text-indigo-600 dark:text-indigo-400"
+              key={index}
             >
               <Image
                 priority

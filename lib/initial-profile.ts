@@ -25,7 +25,7 @@ export const initialProfile = async () => {
   if (session?.user?.id && existingProfile) {
     const updatedProfile = await db.profile.update({
       where: {
-        id: session.user.id,
+        id: existingProfile.id,
       },
       data: {
         imageUrl: session.user.image || existingProfile.imageUrl,

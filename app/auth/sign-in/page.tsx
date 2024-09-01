@@ -123,9 +123,9 @@ export default function SignIn() {
               type="button"
               className="w-full rounded-lg bg-blue-600 px-4 py-3 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
-              <span className="flex flex-center">
+              <div className="flex justify-center">
               {beingSubmitted ? "Signing In..." : "Sign In"} &nbsp;{beingSubmitted && <Image src="/loader-blur-white.svg" alt="preloader" width={20} height={20}/> }
-              </span>
+              </div>
             </button>
           </form>
 
