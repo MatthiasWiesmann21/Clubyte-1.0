@@ -68,7 +68,7 @@ model Server {
 }
 
 model Profile {
-  id                    String  @id @default(uuid())
+  id                    String @id @default(cuid())
   userId                String @db.Text
   name                  String? @db.Text
   imageUrl              String  @db.Text

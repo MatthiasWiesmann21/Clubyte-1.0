@@ -1,22 +1,25 @@
+// lib/auth.ts
 import { db } from "@/lib/db";
 import { SessionStrategy } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";
 import bcrypt from "bcrypt";
-(<any>global).logger = console.log;
+import toast from "react-hot-toast";
 
 type Credentials = {
   email?: string;
   password?: string;
 };
 type JWT = {
-    id?: string;
-    name?: string;
-    email?: string;
-    image?: string;
-    iat?: number;
-    exp?: number;
-}
+  id?: string;
+  name?: string;
+  email?: string;
+  image?: string;
+  iat?: number;
+  exp?: number;
+};
+
 const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
@@ -25,12 +28,8 @@ const authOptions = {
   providers: [
     CredentialsProvider({
       type: "credentials",
-      credentials: {
-      },
+      credentials: {},
       async authorize(credentials: Credentials | undefined, req) {
-        (<any>global).logger("CredentialsProvider called in route ts NEXT Auth" , credentials)
-        console.log("Authorize method called in route ts NEXT Auth", req.query, req.body, req.method);
-
         if (!credentials) {
           throw new Error("No credentials provided");
         }
@@ -47,25 +46,35 @@ const authOptions = {
           throw new Error("No user found with the provided email");
         }
 
-        // Check the hashed password
-        const isValidPassword = bcrypt.compareSync(password || '', user.password || '');
-        console.log("Password is now validated", isValidPassword );
+        // Validate password
+        const isValidPassword = bcrypt.compareSync(password || "", user.password || "");
         if (!isValidPassword) {
-          throw new Error("Invalid credentials");
+          throw new Error("Invalid credentials provided");
         }
-        console.log("Returning user as of auth ", user );
 
+        // Check if the user is banned
+        if (user.isBanned === 'BANNED') {
+          throw new Error("You are not allowed to access the app. Please contact administrator.");
+        }
+
+        // Return user object if everything is fine
         return {
           id: user.userId,
           email: user.email,
           name: user.name,
-          role: user.role
+          role: user.role,
+          emailVerified: user.emailVerified,
+          isBanned : user.isBanned
         };
       },
     }),
     GoogleProvider({
-      clientId: process.env.NEXT_GOOGLE_CLIENT_ID || '',
-      clientSecret: process.env.NEXT_GOOGLE_CLIENT_SECRET || '',
+      clientId: process.env.NEXT_GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.NEXT_GOOGLE_CLIENT_SECRET || "",
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID || "",
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET || "",
     }),
   ],
   callbacks: {
@@ -85,10 +94,10 @@ const authOptions = {
     },
   },
   pages: {
-    signIn: '/auth/sign-in',
-    signOut: '/auth/sign-out',
-    error: '/auth/error'
-  }
+    signIn: "/auth/sign-in",
+    signOut: "/auth/sign-out",
+    error: "/auth/error",
+  },
 };
 
 export default authOptions;

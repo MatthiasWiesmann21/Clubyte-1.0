@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
+import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 export async function getTokenFromDatabase(token: string) {
@@ -33,6 +34,7 @@ export async function resetToken(userId: string) {
   });
 }
 export async function GET(req: Request) {
+
   // Parse the URL to access query parameters
   const url = new URL(req.url);
   let token = url.searchParams.get("token")?.trim() || "";
@@ -67,7 +69,8 @@ export async function GET(req: Request) {
     // Optionally, you can delete the token after it's been used
     const tokenReset  = await resetToken(tokenDetails.id);
     console.log("Token reset", tokenReset);
-    return NextResponse.json({ message: "Email verified successfully" });
+    // return redirect('/auth/email-verified');
+    return NextResponse.redirect(process.env.BASE_PATH+'/auth/email-verified', 307);
   } catch (error) {
     console.error("Error verifying email:", error);
     return NextResponse.json({ message: "Internal server error" });

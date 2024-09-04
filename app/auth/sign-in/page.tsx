@@ -1,11 +1,17 @@
-"use client";
+"use client"
 import Head from "next/head";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { db } from "@/lib/db";
+
 export default function SignIn() {
+  const [forgortPasswordModal, setForgotPasswordModal] = useState(false);
+  const [sendingEmail, setSendingEmail] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
   const router = useRouter();
   const [beingSubmitted, setBeingSubmitted] = useState(false);
   const [beingSubmittedGoogle, setBeingSubmittedGoogle] = useState(false);
@@ -18,15 +24,17 @@ export default function SignIn() {
       setBeingSubmittedGoogle(true);
       event.preventDefault();
       const googleSignInResp = await signIn("google", { callbackUrl: "/dashboard" });
-      console.log("Google sign in response" , googleSignInResp );
+      console.log("Google sign in response", googleSignInResp);
     } catch (error) {
-
-    }finally{
+      console.error('Google sign-in error:', error);
+    } finally {
       setBeingSubmittedGoogle(false);
     }
   };
 
-  const handleSubmit = async (event: any) => {
+    
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault(); // Prevent default form submission behavior
     setBeingSubmitted(true);
     const email = form.email;
     const password = form.password;
@@ -35,18 +43,62 @@ export default function SignIn() {
       password,
       redirect: false,
     });
-    console.log("The response from submission", response);
-    if (response && response.error) {
-      // toast.error("Invalid Credentials")
+    console.log("The response from submission login", response);
+    if (response?.error) {
+      toast.error(response?.error || "Invalid Credentials");
     } else {
       router.replace("/dashboard");
-      // toast.success("Login Successful")
+      toast.success("Login Successful");
     }
 
     setBeingSubmitted(false);
   };
+  const handleForgotPasswordModal = (event: any) => {
+    event.preventDefault();
+    setForgotPasswordModal(true);
+  };
+
+  // Sending email
+  const handleForgotPassword = async () => {
+    if (!userEmail) {
+      toast.error("Enter Email first");
+      return;
+    } else {
+      setSendingEmail(true);
+
+      try {
+        const response = await fetch('/api/auth/forgot-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: userEmail }), // Ensure userEmail is passed as an object
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Handle success (e.g., show a success message)
+          console.log('Password reset email sent:');
+          toast.success('Password reset email sent');
+          setForgotPasswordModal(false);
+          setUserEmail('');
+        } else {
+          // Handle error response
+          toast.error(data.message);
+          console.error('Failed to send password reset email:', data.message);
+        }
+      } catch (error) {
+        // Handle fetch error
+        console.error('An error occurred:', error);
+      } finally {
+        setSendingEmail(false); // Reset the sending state
+      }
+    }
+  };
+
   return (
-    <>
+    <div className="relative">
       <Head>
         <title>Sign In</title>
       </Head>
@@ -66,8 +118,7 @@ export default function SignIn() {
                 alt="Google"
                 className="mr-3 h-5 w-5"
               />
-              Sign{beingSubmittedGoogle ? 'ing' : ''} in with Google 
-              {beingSubmittedGoogle && <Image src="/loader-blur.svg" alt="preloader" width={20} height={20}/> }
+              {beingSubmittedGoogle ? <Image src="/loader-blur.svg" alt="preloader" width={20} height={20} /> : 'Sign in with Google'}
             </button>
           </div>
 
@@ -114,7 +165,7 @@ export default function SignIn() {
               />
             </div>
             <div className="mb-4 text-right">
-              <a href="#" className="text-sm text-blue-500 hover:underline">
+              <a href="#" onClick={handleForgotPasswordModal} className="text-sm text-blue-500 hover:underline">
                 Forgot your password?
               </a>
             </div>
@@ -124,7 +175,9 @@ export default function SignIn() {
               className="w-full rounded-lg bg-blue-600 px-4 py-3 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
               <div className="flex justify-center">
-              {beingSubmitted ? "Signing In..." : "Sign In"} &nbsp;{beingSubmitted && <Image src="/loader-blur-white.svg" alt="preloader" width={20} height={20}/> }
+              {beingSubmitted ? 
+              <Image src="/loader-blur-white.svg" alt="preloader" width={20} height={20} /> : 
+              "Sign In"}  
               </div>
             </button>
           </form>
@@ -140,6 +193,37 @@ export default function SignIn() {
           </p>
         </div>
       </div>
-    </>
+
+      {/* Forgot password modal */}
+      {forgortPasswordModal && (
+        <div className="forgot-password-modal absolute bg-gray-300 top-0 left-0 h-screen w-full flex justify-center items-center overflow-hidden">
+          <div className="flex flex-col gap-4 h-96 w-96 p-4 flex flex-col justify-center bg-white relative rounded-lg">
+            <div className="absolute top-2 right-2">
+              <button
+                onClick={() => setForgotPasswordModal(false)}
+                className="bg-red-500 text-white p-2 rounded-lg"
+              >
+                Close
+              </button>
+            </div>
+            <h2 className="text-center text-2xl font-bold text-gray-900">Forgot Password</h2>
+            <p className="text-center text-gray-600">Enter your email to reset your password</p>
+            <input
+              type="email"
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
+              className="w-full border border-gray-300 px-4 py-2 rounded-lg"
+              placeholder="Enter your email"
+            />
+            <button
+              onClick={handleForgotPassword}
+              className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {sendingEmail ? 'Sending...' : 'Send Reset Email'}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

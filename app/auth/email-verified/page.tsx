@@ -1,15 +1,18 @@
-import React from 'react';
+"use client"
+import { getServerSession } from 'next-auth';
 
-const EmailVerified = ({ userEmail, loginUrl, unsubscribeUrl } : any ) => {
-  return (
-    <div className="container">
+export default async function EmailVerified(){
+  const loginUrl = '/auth/sign-in';
+  const unsubscribeUrl = '/unsubscribe';
+
+  return (<div className="container">
       <div className="header">
         <h1>Clubyte</h1>
       </div>
       <div className="content">
         <h2>Email Verified Successfully!</h2>
         <p>Dear User,</p>
-        <p>Thank you for verifying your email address. Your email <strong>{userEmail}</strong> has been successfully verified.</p>
+        <p>Thank you for verifying your email address</p>
         <a href={loginUrl} className="button">Go to Dashboard</a>
       </div>
       <div className="footer">
@@ -84,8 +87,5 @@ const EmailVerified = ({ userEmail, loginUrl, unsubscribeUrl } : any ) => {
           text-decoration: none;
         }
       `}</style>
-    </div>
-  );
+    </div>);
 };
-
-export default EmailVerified;
