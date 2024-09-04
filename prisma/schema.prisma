@@ -74,6 +74,8 @@ model Profile {
   imageUrl              String  @db.Text
   email                 String  @db.Text
   password              String?  @default("")
+  token                 String?  @default("")
+  emailVerified         Boolean @default(false)
   language              String? @db.Text
   isOnline              String  @default("Online")
   role                  String  @default("USER")

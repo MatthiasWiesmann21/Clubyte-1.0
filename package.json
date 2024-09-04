@@ -68,6 +68,7 @@
     "eslint-config-prettier": "^9.0.0",
     "formidable-serverless": "^1.1.1",
     "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
     "livekit-client": "^1.15.12",
     "livekit-server-sdk": "^1.2.7",
     "lms-tutorial": "file:",
@@ -126,6 +127,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/nodemailer": "^6.4.15",
     "@types/react-color": "^3.0.12",
     "@types/react-modal": "^3.16.3",

@@ -48,6 +48,8 @@ CREATE TABLE `Profile` (
     `imageUrl` TEXT NOT NULL,
     `email` TEXT NOT NULL,
     `password` TEXT NOT NULL,
+    `token` TEXT NOT NULL,
+    `emailVerified` BOOLEAN NOT NULL DEFAULT false,
     `language` TEXT NULL,
     `isOnline` VARCHAR(191) NOT NULL DEFAULT 'Online',
     `role` VARCHAR(191) NOT NULL DEFAULT 'USER',
