@@ -477,19 +477,6 @@ export default function SignIn() {
                 </span>
               </div>
               <div className="mt-3 flex items-center justify-between text-right">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="remember"
-                    className="custom-checkbox"
-                  />
-                  <label
-                    htmlFor="remember"
-                    className="ml-2 text-lg text-pink-500"
-                  >
-                    Remember me
-                  </label>
-                </div>
                 <Link
                   href="/auth/forgot-password"
                   className="text-lg text-pink-500 hover:underline"
