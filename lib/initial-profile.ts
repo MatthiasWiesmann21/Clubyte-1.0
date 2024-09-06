@@ -1,50 +1,56 @@
-import { currentUser, redirectToSignIn } from "@clerk/nextjs/server";
+import {  signIn } from "next-auth/react";
 import { db } from "./db";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 export const initialProfile = async () => {
-  const user = await currentUser();
+  const session = await getServerSession(authOptions);
 
-  if (!user) {
-    return redirectToSignIn();
+  if (!session?.user?.id) {
+    // Redirect to sign-in if no user is authenticated
+    if (typeof window !== "undefined") {
+      signIn();
+      return;
+    }
   }
 
   // Attempt to find the existing profile first
-  const existingProfile = await db.profile.findUnique({
+
+  const existingProfile = await db.profile.findFirst({
     where: {
-      userId: user.id,
+      userId: session?.user?.id || '',
     },
   });
-
-  
-
   // If the profile exists, update it
-  if (existingProfile) {
+  console.log(">>>>>", existingProfile, session );
+  if (session?.user?.id && existingProfile) {
     const updatedProfile = await db.profile.update({
       where: {
-        userId: user.id,
+        id: existingProfile.id,
       },
       data: {
-        imageUrl: user.imageUrl,
-        email: user.emailAddresses[0].emailAddress,
+        imageUrl: session.user.image || existingProfile.imageUrl,
+        email: session.user.email || existingProfile.email,
         isOnline: "Online",
         // You may update other fields as needed
       },
     });
     return updatedProfile;
-  } else {
-    // If the profile does not exist, create a new one
-
-    const newProfile = await db?.profile?.create({
-      data: {
-        userId: user.id,
-        name: !!user?.username ? `${user?.username}` : "User",
-        imageUrl: user?.imageUrl,
-        email: user.emailAddresses[0].emailAddress,
-        containerId: process.env.CONTAINER_ID!,
-        isOnline: "Online",
-        isBanned: "NOT BANNED",
-      },
-    });
-    return newProfile;
-  }
+  } 
+  // else {
+  //   // If the profile does not exist, create a new one
+  //   const newProfile = await db.profile.create({
+  //     data: {
+  //       userId: session.user.id || "12",
+  //       name: session.user.name || "User",
+  //       password: "",
+  //       imageUrl: session.user.image || "",
+  //       email: session.user.email || "",
+  //       containerId: process.env.CONTAINER_ID!,
+  //       isOnline: "Online",
+  //       isBanned: "NOT BANNED",
+  //     },
+  //   });
+  //   return newProfile;
+  // }
+  return null;
 };

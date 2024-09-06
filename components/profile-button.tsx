@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
 import { HelpCircle, LogOutIcon, UserCog2Icon } from "lucide-react";
 import { UserAvatar } from "./user-avatar";
-import { useClerk, useUser } from "@clerk/nextjs";
+import { useSession, signOut } from "next-auth/react";
 import {
   Tooltip,
   TooltipContent,
@@ -48,10 +48,8 @@ const ProfileButton = ({
   profileOnlineStatus,
 }: ProfileButtonProps) => {
   const currentLanguage = useLanguage();
-  const { signOut } = useClerk();
+  const { data: session } = useSession();
   const router = useRouter();
-  const user = useClerk();
-  const isSignedIn = useUser();
 
   const updateProfileStatus = async (isOnline: string) => {
     try {
@@ -65,16 +63,16 @@ const ProfileButton = ({
   const handleSignOut = async () => {
     dispatch({ type: "SetUser", payload: {} });
     await updateProfileStatus("Offline");
-    signOut(() => router.push("sign-in"));
+    await signOut({ callbackUrl: "/auth/sign-in" });
   };
 
   useEffect(() => {
-    if (isSignedIn && profileOnlineStatus === "Offline") {
+    if (session && profileOnlineStatus === "Offline") {
       updateProfileStatus("Online");
-    } else if (!isSignedIn) {
+    } else if (!session) {
       updateProfileStatus("Offline");
     }
-  }, [isSignedIn, profileOnlineStatus]);
+  }, [session, profileOnlineStatus]);
 
   const dispatch = useDispatch();
   return (

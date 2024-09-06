@@ -11,7 +11,7 @@ Key Features:
 - Easily reorder chapter position with drag n’ drop
 - Upload thumbnails, attachments and videos using UploadThing
 - Rich text editor for chapter description
-- Authentication using Clerk
+- Authentication using Next Auth
 - ORM using Prisma
 - MySQL database using Planetscale
 
@@ -35,12 +35,7 @@ npm i
 
 
 ```js
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-CLERK_SECRET_KEY=
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=
-NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=
+
 
 DATABASE_URL=
 

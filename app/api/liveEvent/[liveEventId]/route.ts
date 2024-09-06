@@ -1,15 +1,20 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
-
 import { db } from "@/lib/db";
+import authOptions from "@/lib/auth"; // Ensure this is the path to your NextAuth configuration
 
 export async function GET(req: Request) {
-  const { userId } = auth();
-  const { searchParams } = new URL(req.url);
-  const liveEventId = searchParams?.get("liveEventId") || "";
   try {
-    if (userId === null) throw new Error("Un Authorized");
-    const profile = await db?.profile?.findFirst({
+    const session = await getServerSession({ req, ...authOptions });
+    const userId = session?.user?.id;
+    const { searchParams } = new URL(req.url);
+    const liveEventId = searchParams.get("liveEventId") || "";
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const profile = await db.profile.findFirst({
       select: {
         id: true,
       },
@@ -29,7 +34,7 @@ export async function GET(req: Request) {
     });
 
     const currentLike = liveEvent?.likes?.some(
-      (like) => like?.profileId === profile?.id
+      (like) => like.profileId === profile?.id
     );
 
     const category = await db.category.findUnique({
@@ -45,7 +50,7 @@ export async function GET(req: Request) {
       category,
     });
   } catch (error) {
-    console.log("[COURSE_ID]", error);
+    console.log("[LIVE_EVENT_GET_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -55,7 +60,8 @@ export async function DELETE(
   { params }: { params: { liveEventId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession({ req, ...authOptions });
+    const userId = session?.user?.id;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -81,7 +87,7 @@ export async function DELETE(
 
     return NextResponse.json(deletedEvent);
   } catch (error) {
-    console.log("[EVENT_ID_DELETE]", error);
+    console.log("[LIVE_EVENT_DELETE_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -91,7 +97,8 @@ export async function PATCH(
   { params }: { params: { liveEventId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession({ req, ...authOptions });
+    const userId = session?.user?.id;
     const { liveEventId } = params;
     const values = await req.json();
 
@@ -111,7 +118,7 @@ export async function PATCH(
 
     return NextResponse.json(liveEvent);
   } catch (error) {
-    console.log("[COURSE_ID]", error);
+    console.log("[LIVE_EVENT_UPDATE_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

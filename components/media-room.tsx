@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { LiveKitRoom, VideoConference } from "@livekit/components-react";
 import "@livekit/components-styles";
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react"; // Import useSession from NextAuth
 import ClubyteLoader from "./ui/clubyte-loader";
 import { useTheme } from "next-themes";
 
@@ -14,15 +14,14 @@ interface MediaRoomProps {
 }
 
 export const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
-  const { user } = useUser();
+  const { data: session, status } = useSession(); // Use session from NextAuth
   const [token, setToken] = useState("");
   const { theme } = useTheme();
 
-
   useEffect(() => {
-    if (!user?.firstName || !user?.lastName) return;
+    if (status === "loading" || !session?.user?.name) return;
 
-    const name = `${user.firstName} ${user.lastName}`;
+    const name = session.user.name;
 
     (async () => {
       try {
@@ -35,7 +34,7 @@ export const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
         console.log(e);
       }
     })();
-  }, [user?.firstName, user?.lastName, chatId]);
+  }, [session, chatId, status]);
 
   if (token === "") {
     return (

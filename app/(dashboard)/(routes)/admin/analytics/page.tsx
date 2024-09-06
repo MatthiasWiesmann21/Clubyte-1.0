@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 
 import { getAnalytics } from "@/actions/get-analytics";
@@ -8,25 +8,28 @@ import { Chart } from "./_components/chart";
 import { isOwner } from "@/lib/owner";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 import { languageServer } from "@/lib/check-language-server";
+import authOptions  from "@/lib/auth"; // Ensure this is properly configured
 
 const AnalyticsPage = async () => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
   const currentLanguage = await languageServer();
+
+  if (!userId) {
+    return redirect("/search");
+  }
+
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
   const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
 
-  if (!userId || !canAccess) {
-   return redirect("/search");
+  if (!canAccess) {
+    return redirect("/search");
   }
 
-  const {
-    data,
-    totalRevenue,
-    totalSales,
-  } = await getAnalytics(userId);
+  const { data, totalRevenue, totalSales } = await getAnalytics(userId);
 
-  return ( 
+  return (
     <div className="p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <DataCard
@@ -39,11 +42,9 @@ const AnalyticsPage = async () => {
           value={totalSales}
         />
       </div>
-      <Chart
-        data={data}
-      />
+      <Chart data={data} />
     </div>
-   );
-}
- 
+  );
+};
+
 export default AnalyticsPage;

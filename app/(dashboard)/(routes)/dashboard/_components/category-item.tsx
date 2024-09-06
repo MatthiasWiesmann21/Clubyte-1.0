@@ -53,17 +53,16 @@ export const CategoryItem = ({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <button
+          <span
             onClick={onClick}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className={`flex max-w-xs items-center gap-x-1 rounded-full border p-2 text-xs font-medium transition hover:border-0`}
-            style={buttonStyle}
-            type="button"
+            style={buttonStyle}            
           >
             <div className="truncate">{label?.toUpperCase()}</div>
             <div>({categoryAmmount})</div>
-          </button>
+          </span>
         </TooltipTrigger>
         <TooltipContent>
           <span className="text-xs text-start whitespace-normal">{label?.toUpperCase()}</span>

@@ -1,6 +1,4 @@
-import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-
 import { db } from "@/lib/db";
 import { currentProfile } from "@/lib/current-profile";
 
@@ -8,19 +6,12 @@ interface InviteCodePageProps {
   params: {
     inviteCode: string;
   };
-};
+}
 
-const InviteCodePage = async ({
-  params
-}: InviteCodePageProps) => {
+const InviteCodePage = async ({ params }: InviteCodePageProps) => {
   const profile = await currentProfile();
-
-  if (!profile) {
-    return redirectToSignIn();
-  }
-
   if (!params.inviteCode) {
-    return redirect("/search");
+    return redirect("/search"); // Redirect to search if invite code is not provided
   }
 
   const existingServer = await db.server.findFirst({
@@ -29,14 +20,14 @@ const InviteCodePage = async ({
       containerId: process.env.CONTAINER_ID,
       members: {
         some: {
-          profileId: profile.id
+          profileId: profile?.id||''
         }
       }
     }
   });
 
   if (existingServer) {
-    return redirect(`/chat/servers/${existingServer.id}`);
+    return redirect(`/chat/servers/${existingServer.id}`); // Redirect to the server if it exists
   }
 
   const server = await db.server.update({
@@ -47,7 +38,7 @@ const InviteCodePage = async ({
       members: {
         create: [
           {
-            profileId: profile.id,
+            profileId: profile?.id||'',
             containerId: process.env.CONTAINER_ID || '',
           }
         ]
@@ -56,10 +47,10 @@ const InviteCodePage = async ({
   });
 
   if (server) {
-    return redirect(`/chat/servers/${server.id}`);
+    return redirect(`/chat/servers/${server.id}`); // Redirect to the newly created server
   }
-  
-  return null;
+
+  return null; // If no server created, return null
 }
- 
+
 export default InviteCodePage;

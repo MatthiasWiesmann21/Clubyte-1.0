@@ -1,11 +1,10 @@
+"use client"
 import { initialProfile } from "@/lib/initial-profile";
-import { currentUser } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
-export default async function Home() {
-  const profile = await initialProfile();
-  const user = await currentUser();
+import authOptions from "@/lib/auth"; // Adjust the import path as needed
+import { useEffect } from "react";
 
-  if (profile && user) {
-      return redirect("/dashboard");
-    }
+export default function Home() {
+ 
 }

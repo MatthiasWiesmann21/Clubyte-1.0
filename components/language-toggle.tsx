@@ -19,7 +19,6 @@ export function LanguageToggle() {
   const dispatch = useDispatch();
   const language = useSelector((state: any) => state?.language);
   const user = useSelector((state: any) => state?.user);
-
   const currentLanguage = useLanguage();
 
   // const [language, setLanguage] = React.useState("English");
@@ -52,11 +51,11 @@ export function LanguageToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="ml-2 border-0 bg-transparent" variant="outline">
+        <div className="ml-2 border-0 bg-transparent" >
           <AppSVGIcon customclass="mr-1" icon={icon[language]} />
           {/* <Globe className="tran h-[1.2rem] w-[1.2rem] rotate-0 scale-100" /> */}
           <span className="sr-only">Toggle theme</span>
-        </Button>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setLanguage("English")}>

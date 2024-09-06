@@ -1,20 +1,25 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
-
 import { db } from "@/lib/db";
+import authOptions from "@/lib/auth"; // Ensure this is the path to your NextAuth configuration
 import { isOwner } from "@/lib/owner";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession({ req, ...authOptions });
+    const userId = session?.user?.id;
     const { title } = await req.json();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
 
     const isRoleAdmins = await isAdmin();
     const isRoleOperator = await isOperator();
     const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
 
-    if (!userId || !canAccess) {
+    if (!canAccess) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -28,22 +33,17 @@ export async function POST(req: Request) {
 
     return NextResponse.json(liveEvent);
   } catch (error) {
-    console.log("[COURSES]", error);
+    console.log("[LIVE_EVENT_POST_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
 
 export async function GET(req: Request) {
   try {
-    // const { title, categoryId } = await req?.json();
-    const liveEvent = await db?.liveEvent?.findMany({
+    const liveEvent = await db.liveEvent.findMany({
       where: {
         isPublished: true,
-        // title: {
-        //   contains: title,
-        // },
-        // categoryId,
-        containerId: process?.env?.CONTAINER_ID,
+        containerId: process.env.CONTAINER_ID,
       },
       include: {
         category: true,
@@ -54,7 +54,7 @@ export async function GET(req: Request) {
     });
     return NextResponse.json(liveEvent);
   } catch (error) {
-    console?.log("[EVENT GET]", error);
+    console.log("[LIVE_EVENT_GET_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

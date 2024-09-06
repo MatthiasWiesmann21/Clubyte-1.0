@@ -4,9 +4,10 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react"; // Import useSession from NextAuth
 
 import {
   Form,
@@ -19,8 +20,6 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { isOwner } from "@/lib/owner";
-import { auth } from "@clerk/nextjs";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -29,15 +28,22 @@ const formSchema = z.object({
 });
 
 const CreatePage = () => {
+  const { data: session, status } = useSession(); // Get session data and status from NextAuth
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: ""
+      name: "",
     },
   });
 
   const { isSubmitting, isValid } = form.formState;
+
+  // Redirect user if not authenticated
+  if (status === "loading") {
+    return <div>Loading...</div>; // Show a loading state while checking authentication
+  }
+
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -52,9 +58,7 @@ const CreatePage = () => {
   return ( 
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
-        <h1 className="text-2xl">
-          Name your Container
-        </h1>
+        <h1 className="text-2xl">Name your Container</h1>
         <p className="text-sm text-slate-600 dark:text-[#ffffff]">
           What is the name of the Container or Client you will be using?
         </p>
@@ -68,9 +72,7 @@ const CreatePage = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Container Name
-                  </FormLabel>
+                  <FormLabel>Container Name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
@@ -105,7 +107,7 @@ const CreatePage = () => {
         </Form>
       </div>
     </div>
-   );
+  );
 }
- 
+
 export default CreatePage;

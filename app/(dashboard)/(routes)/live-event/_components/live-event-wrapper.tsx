@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Categories } from "./categories";
-import { EventsList } from "@/components/events-list ";
-import { useAuth } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import EventFilterSidebar from "./filter-sidebar";
 import { PastandFuture } from "./past&future";
+import { EventsList } from "@/components/events-list ";
 
 const LiveEventWrapper = ({
   liveEvents,
@@ -12,12 +12,22 @@ const LiveEventWrapper = ({
   searchParams,
   container,
 }: any) => {
-  const { userId } = useAuth();
+  const { data: session, status } = useSession();
   const [liveEvent, setLiveEvent] = useState([]);
 
   useEffect(() => {
     setLiveEvent(liveEvents);
   }, [liveEvents]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>; // Optionally show a loading state while fetching session
+  }
+
+  if (!session) {
+    return <div>Please sign in to access this content.</div>; // Prompt user to sign in if not authenticated
+  }
+
+  const userId = session.user?.id;
 
   return (
     <div className="space-y-4 p-4">
@@ -33,7 +43,14 @@ const LiveEventWrapper = ({
           ThemeOutlineColor={container?.ThemeOutlineColor!}
           DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
         />
-        <EventFilterSidebar liveEvents={liveEvent} setLiveEvent={setLiveEvent} PrimaryButtonColor={container?.PrimaryButtonColor!} DarkPrimaryButtonColor={container?.DarkPrimaryButtonColor!} categories={undefined} searchParams={undefined} />
+        <EventFilterSidebar
+          liveEvents={liveEvent}
+          setLiveEvent={setLiveEvent}
+          PrimaryButtonColor={container?.PrimaryButtonColor!}
+          DarkPrimaryButtonColor={container?.DarkPrimaryButtonColor!}
+          categories={undefined}
+          searchParams={undefined}
+        />
       </div>
       <Categories
         items={categories}

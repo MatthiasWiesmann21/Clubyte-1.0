@@ -1,14 +1,19 @@
-import { auth } from "@clerk/nextjs";
+
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    console.log("POSTs post request recieved" , req.body );
+    // Get the session from NextAuth
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
     const { title } = await req.json();
 
+    // Check user roles and ownership
     const isRoleAdmins = await isAdmin();
     const isRoleOperator = await isOperator();
     const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
@@ -26,23 +31,25 @@ export async function POST(req: Request) {
 
     return NextResponse.json(post);
   } catch (error) {
-    console.log("[COURSES]", error);
+    console.log("[POST_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
 
 export async function GET(req: any): Promise<void | Response> {
   try {
-    const { userId } = auth();
+    // Get the session from NextAuth
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
     const page = req?.nextUrl?.searchParams?.get("page") || "1";
     const categoryId = req?.nextUrl?.searchParams?.get("categoryId") || "";
     const pageSize = 5;
     const skip = (parseInt(page) - 1) * pageSize;
     const currentDate = new Date(); // Get the current date and time
 
-    if (userId === null) throw new Error("Unauthorized");
-
-    const profile = await db?.profile?.findFirst({
+    console.log('llllllllll ',userId)
+    if (!userId) throw new Error("Unauthorized");
+    const profile = await db.profile.findFirst({
       select: {
         id: true,
       },
@@ -51,11 +58,11 @@ export async function GET(req: any): Promise<void | Response> {
       },
     });
 
-    if (profile === null)
+    if (!profile)
       return new NextResponse("Profile not found", { status: 404 });
 
     const posts =
-      (await db?.post?.findMany({
+      (await db.post.findMany({
         where: {
           isPublished: true,
           containerId: process.env.CONTAINER_ID,
@@ -90,32 +97,30 @@ export async function GET(req: any): Promise<void | Response> {
         },
       })) || [];
 
-    const postsWithData = posts?.map((post) => {
-      const commentsCount = post?.comments?.length;
-      const likesCount = post?.likes?.length;
+    const postsWithData = posts.map((post) => {
+      const commentsCount = post.comments.length;
+      const likesCount = post.likes.length;
 
-      const commentsWithLikes = post?.comments
-        ?.map((comment) => ({
-          ...comment,
-          commentLikesCount: comment?.likes?.length,
-          currentCommentLike: comment?.likes?.some(
+      const commentsWithLikes = post.comments.map((comment) => ({
+        ...comment,
+        commentLikesCount: comment.likes.length,
+        currentCommentLike: comment.likes.some(
+          (like) => like.profileId === profile.id
+        ),
+        subCommentsWithLikes: comment.subComment.map((subcomment) => ({
+          ...subcomment,
+          commentLikesCount: subcomment.likes.length,
+          currentCommentLike: subcomment.likes.some(
             (like) => like.profileId === profile.id
           ),
-          subCommentsWithLikes: comment?.subComment?.map((subcomment) => ({
-            ...subcomment,
-            commentLikesCount: subcomment?.likes?.length,
-            currentCommentLike: subcomment?.likes?.some(
-              (like) => like?.profileId === profile?.id
-            ),
-          })),
-        }))
-        ?.sort(
-          (a, b) =>
-            new Date(b?.createdAt).getTime() - new Date(a?.createdAt).getTime()
-        );
+        })),
+      })).sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
 
-      const currentLike = post?.likes?.some(
-        (like) => like?.profileId === profile?.id
+      const currentLike = post.likes.some(
+        (like) => like.profileId === profile.id
       );
 
       return {
@@ -129,8 +134,7 @@ export async function GET(req: any): Promise<void | Response> {
 
     return NextResponse.json({ data: postsWithData });
   } catch (error) {
-    console.log("[POSTS]", error);
+    console.log("[GET_POSTS_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
-

@@ -1,19 +1,20 @@
-import { languageServer } from "@/lib/check-language-server";
+import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { languageServer } from "@/lib/check-language-server";
 import { isOwner } from "@/lib/owner";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
 import { MenuRoutes } from "./menu-routes";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 const CustomizeMenuPage = async () => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
+  const userId = session?.user.id || ''; 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
+  const canAccess = isRoleAdmins || isRoleOperator || (userId && await isOwner(userId));
 
-  if (!userId || !canAccess) {
+  if (!canAccess) {
     return redirect("/search");
   }
 
@@ -37,7 +38,7 @@ const CustomizeMenuPage = async () => {
             </h1>
           </div>
         </div>
-            <MenuRoutes container={container}/>
+        <MenuRoutes container={container}/>
       </div>
     </>
   );

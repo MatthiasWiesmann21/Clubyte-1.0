@@ -1,20 +1,48 @@
-import { auth } from "@clerk/nextjs";
-
 import { db } from "@/lib/db";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { json } from "stream/consumers";
 export const currentProfile = async () => {
-  const { userId } = auth();
+  try {
+    
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) 
+    {   
+      return null;
+    }
+    const profile = await db?.profile?.findFirst({
+      where: { 
+        userId: session.user.id ,
+        containerId: process.env.CONTAINER_ID
+      },
+      include: {
+        container: true,
+      }
+    });
 
-  if (!userId) {
+    if (!profile) {
+      return null;
+    }
+    return profile;
+  } catch (error) {
+    console.log("An error occurred in current profile" , error );
     return null;
   }
+};
 
-  const profile = await db.profile.findUnique({
-    where: {
-      userId,
-      containerId: process.env.CONTAINER_ID
-    }
-  });
+// export const currentProfile = async () => {
+//   const { userId } = auth();
 
-  return profile;
-}
+//   if (!userId) {
+//     return null;
+//   }
+
+//   const profile = await db.profile.findUnique({
+//     where: {
+//       userId,
+//       containerId: process.env.CONTAINER_ID
+//     }
+//   });
+
+//   return profile;
+// }

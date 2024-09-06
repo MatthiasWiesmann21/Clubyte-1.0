@@ -1,12 +1,20 @@
-import { db } from "@/lib/db";
+'use client';
 
-const Link = async () => {
-  const container: any = await db?.container.findUnique({
-    where: {
-      id: process?.env?.CONTAINER_ID,
-    },
-  });
-  const favicon = container?.icon;
+import { useEffect, useState } from 'react';
+
+const Link = () => {
+  const [favicon, setFavicon] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('/api/containers/all');
+      const data = await response.json();
+      setFavicon(data.icon);
+    };
+
+    fetchData();
+  }, []);
+
   return <link rel="icon" href={favicon} sizes="any" />;
 };
 

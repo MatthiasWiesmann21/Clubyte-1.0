@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import { ArrowLeft, PaletteIcon } from "lucide-react";
 
@@ -11,25 +11,30 @@ import { isOwner } from "@/lib/owner";
 import { languageServer } from "@/lib/check-language-server";
 import { DarkPrimaryButtonColorForm } from "./_components/darkPrimary-color-form";
 import Link from "next/link";
+import authOptions from "@/lib/auth"; // Ensure this is configured correctly
 
 const DesignSettingsPage = async () => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
   const currentLanguage = await languageServer();
-  const isRoleAdmins = await isAdmin();
-  const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
 
-  if (!userId || !canAccess) {
+  if (!userId) {
     return redirect("/search");
   }
 
-  const container: any = await db.container.findUnique({
+  const isRoleAdmins = await isAdmin();
+  const isRoleOperator = await isOperator();
+  const canAccess = isRoleAdmins || isRoleOperator || await isOwner(userId);
+
+  if (!canAccess) {
+    return redirect("/search");
+  }
+
+  const container = await db.container.findUnique({
     where: {
       id: process.env.CONTAINER_ID,
     },
   });
-
-  console.log("123456789", container);
 
   if (!container) {
     return redirect("/");

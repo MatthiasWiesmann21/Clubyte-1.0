@@ -56,3 +56,25 @@ export const getDashboardCourses = async (userId: string): Promise<DashboardCour
     }
   }
 }
+
+export const checkEmailVerified = async (userId: any): Promise<string> => {
+  try {
+    const profile = await db.profile.findFirst({
+      where: {
+        userId,
+      },
+      select: {
+        emailVerified: true,
+      },
+    });
+
+    if (profile?.emailVerified) {
+      return 'Email is verified';
+    } else {
+      return 'Email is not verified';
+    }
+  } catch (error) {
+    console.log("Error [CHECK_EMAIL_VERIFIED]", error);
+    return 'Error checking email verification status';
+  }
+};

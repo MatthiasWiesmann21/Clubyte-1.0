@@ -1,11 +1,17 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+
 import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 
 export async function GET(req: any) {
-  // POST /api/upload
   try {
-    const { userId } = auth();
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
+
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
 
     const key = req.nextUrl.searchParams.get("key");
     let id = null;
@@ -15,6 +21,7 @@ export async function GET(req: any) {
       },
       where: { key: key },
     });
+
     if (idData) id = idData.id;
 
     return NextResponse.json({ data: id });

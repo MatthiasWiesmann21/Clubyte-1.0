@@ -1,30 +1,28 @@
-import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { ArrowLeft, PaletteIcon } from "lucide-react";
-
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
-
 import { ThemeOutlineColorForm } from "./_components/primary-color-form";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import { languageServer } from "@/lib/check-language-server";
 import { DarkThemeOutlineColorForm } from "./_components/darkPrimary-color-form";
 import Link from "next/link";
-import { PrimaryButtonColorForm } from "../buttondesign/_components/primary-color-form";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 const ThemeDesignPage = async () => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
+  const userId = session?.user.id || ''; // Extract userId from session
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
+  const canAccess = isRoleAdmins || isRoleOperator || (userId && await isOwner(userId));
 
-  if (!userId || !canAccess) {
+  if (!canAccess) {
     return redirect("/search");
   }
 
-  const container: any = await db.container.findUnique({
+  const container = await db.container.findUnique({
     where: {
       id: process.env.CONTAINER_ID,
     },

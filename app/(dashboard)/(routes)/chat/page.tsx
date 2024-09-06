@@ -17,13 +17,13 @@ const SetupPage = async () => {
       },
     },
   });
-
+  console.log("Setup page server found" , server );
   const serverwithProfile = await db.server.findFirst({
     where: {
       containerId: process.env.CONTAINER_ID!,
       members: {
         some: {
-          profileId: profile.id,
+          profileId: (profile || {}).id,
         },
       },
     },
@@ -38,7 +38,7 @@ const SetupPage = async () => {
       const createMember = await db.member.create({
         data: {
           serverId: server.id,
-          profileId: profile.id,
+          profileId: (profile || {}).id || '',
           containerId: process.env.CONTAINER_ID!,
         },
       });

@@ -1,14 +1,14 @@
-import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
-
 import { db } from "@/lib/db";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 export async function POST(
   req: Request,
   { params }: { params: { courseId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
     const { url, postId } = await req.json();
 
     if (!userId) {
@@ -30,14 +30,14 @@ export async function POST(
     const attachment = await db.attachment.create({
       data: {
         url,
-        name: url.split("/").pop(),
+        name: url.split("/").pop() || "attachment",
         courseId: params.courseId,
       }
     });
 
     return NextResponse.json(attachment);
   } catch (error) {
-    console.log("COURSE_ID_ATTACHMENTS", error);
+    console.log("[COURSE_ID_ATTACHMENTS]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

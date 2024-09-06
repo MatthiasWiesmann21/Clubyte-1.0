@@ -89,6 +89,7 @@ export const DescriptionForm = ({
       {isEditing && (
         <Form {...form}>
           <form
+          name="descriptionForm"
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 mt-4"
           >
@@ -112,6 +113,7 @@ export const DescriptionForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.courses_descriptionForm_save}
               </Button>

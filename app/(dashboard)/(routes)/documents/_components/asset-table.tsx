@@ -3,11 +3,11 @@
 import React, { useCallback, useState } from "react";
 import axios from "axios";
 import { isOwner } from "@/lib/owner";
-import { useAuth } from "@clerk/nextjs";
+import { useSession } from "next-auth/react"; // Import NextAuth's useSession
 import FlyoutMenuCreate from "./flyout-menu-create";
 import FlyoutMenuSetting from "./flyout-menu-setting";
 import Modal from "react-modal";
-import { Download, File, FileText, FolderOpen } from "lucide-react";
+import { Download, File, FolderOpen } from "lucide-react";
 import { useIsAdmin, useIsOperator } from "@/lib/roleCheck";
 import { useLanguage } from "@/lib/check-language";
 import { ScrollArea } from "@/components/scroll-area";
@@ -39,9 +39,8 @@ interface AssetsTableProps {
 const currentDocPath = "/documents/";
 const AssetsTable: React.FC<AssetsTableProps> = (props) => {
   const { folderStructure } = props;
-  const { userId } = useAuth();
+  const { data: session } = useSession(); // Use NextAuth's useSession
   const [downloading, setDownloading] = useState(false);
-  const i = 0;
   const [newFileName, setNewFileName] = useState("");
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -56,11 +55,12 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
   const isAdmin = useIsAdmin();
   const isOperator = useIsOperator();
 
-  const canAccess = isAdmin || isOperator || isOwner(userId);
+  const canAccess = isAdmin || isOperator || (session?.user && isOwner(session.user.id));
 
   function openModal() {
     setIsOpen(true);
   }
+
   const handleRenameClick = (item: FolderTreeProps, isFolder: boolean) => {
     setRenamingItem(item);
     setIsRenameFolder(isFolder);
@@ -72,12 +72,12 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
   }
 
   const renameFolder = async () => {
-    if (newFileName == null || renamingItem?.id == null) {
+    if (newFileName === "" || renamingItem?.id == null) {
       return;
     }
 
     try {
-      const response = await axios?.post(
+      const response = await axios.post(
         !isRenameFolder
           ? `/api/documents/edit/file`
           : `/api/documents/edit/folder`,
@@ -98,14 +98,14 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
       console.log(e);
     }
   };
+
   const deleteDirectory = async () => {
-    console.log("here", renamingItem?.id == null, renamingItem);
-    const isFile: Boolean = isFolder !== "folder";
     if (renamingItem?.id == null) {
       return;
     }
     setLoading(true);
     try {
+      const isFile: Boolean = isFolder !== "folder";
       const response = await axios.post(
         isFile ? `/api/documents/delete/file` : `/api/documents/delete/folder`,
         {
@@ -128,7 +128,6 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
   };
 
   const handleDownload = useCallback(async (key: string, name: string) => {
-    //TODO: Download logic here
     setDownloading(true);
     const response = await axios.get(`/api/documents/download/file?key=${key}`);
     const { fileExtension } = response.data.data;
@@ -136,7 +135,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
     const downloadURL = response.data.data.downloadUrl;
     const downloadLink = document.createElement("a");
     downloadLink.href = downloadURL;
-    downloadLink.download = `name.${fileExtension}`;
+    downloadLink.download = `${name}.${fileExtension}`;
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -167,11 +166,9 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
       id,
       action: "edit",
     };
-    const str = JSON?.stringify(obj);
+    const str = JSON.stringify(obj);
     const encoded = btoa(str);
-    location.href = `/documents/${encoded}/${
-      isFolder ? "createfolder" : "createfile"
-    }`;
+    location.href = `/documents/${encoded}/${isFolder ? "createfolder" : "createfile"}`;
   };
 
   return (
@@ -199,7 +196,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
               defaultValue={renamingItem?.name}
               onChange={(e) => {
                 setNewFileName(e.target.value);
-              }} // Set the default value to the current item's name
+              }}
             />
           </div>
         </div>
@@ -214,10 +211,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
           <button
             type="button"
             className="mx-2 rounded-md bg-sky-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sky-500"
-            onClick={() => {
-              // TODO: Save logic here
-              renameFolder();
-            }}
+            onClick={() => renameFolder()}
           >
             {currentLanguage.save}
           </button>
@@ -227,7 +221,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
         isOpen={isFolder !== ""}
         onRequestClose={() => setIsFolder("")}
         style={customStyles}
-        contentLabel="Rename Modal"
+        contentLabel="Delete Confirmation Modal"
       >
         <div>
           <p className="text-center dark:text-gray-900">
@@ -246,9 +240,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
             type="button"
             className="mx-2 rounded-md bg-red-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-800"
             disabled={loading}
-            onClick={() => {
-              deleteDirectory();
-            }}
+            onClick={() => deleteDirectory()}
           >
             {loading ? (
               <svg
@@ -293,151 +285,149 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
         </div>
       </div>
       <ScrollArea>
-      <div className="mt-8 flow-root">
-        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full overflow-y-scroll py-2 align-middle sm:px-6 lg:px-8">
-            <div className="h-full">
-              <table className="w-full table-fixed divide-y divide-gray-300">
-                <thead>
-                  <tr>
-                    <th scope="col" className="relative px-4 sm:w-18 sm:px-8">
-                      <span className="w-full py-3 text-sm font-semibold text-gray-900 dark:text-gray-300">
-                        {currentLanguage.type}
-                      </span>
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3.5 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-300"
-                    >
-                      {currentLanguage.name}
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300"
-                    >
-                      {currentLanguage.created_at}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="h-full divide-y divide-gray-200 bg-transparent">
-                  {folderStructure?.subFolders?.map(
-                    (item: any, i: number) =>
-                      // isPublic
-                      (canAccess ? true : item?.isPublic) && (
-                        <tr key={i}>
-                          <td className="relative px-5 sm:w-12 lg:w-12">
-                            <div
+        <div className="mt-8 flow-root">
+          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full overflow-y-scroll py-2 align-middle sm:px-6 lg:px-8">
+              <div className="h-full">
+                <table className="w-full table-fixed divide-y divide-gray-300">
+                  <thead>
+                    <tr>
+                      <th scope="col" className="relative px-4 sm:w-18 sm:px-8">
+                        <span className="w-full py-3 text-sm font-semibold text-gray-900 dark:text-gray-300">
+                          {currentLanguage.type}
+                        </span>
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-3.5 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-300"
+                      >
+                        {currentLanguage.name}
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300"
+                      >
+                        {currentLanguage.created_at}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="h-full divide-y divide-gray-200 bg-transparent">
+                    {folderStructure?.subFolders?.map(
+                      (item: any, i: number) =>
+                        (canAccess ? true : item?.isPublic) && (
+                          <tr key={i}>
+                            <td className="relative px-5 sm:w-12 lg:w-12">
+                              <div
+                                onClick={() =>
+                                  (location.href = `${currentDocPath}${item.id}`)
+                                }
+                                className="m-1 mr-3 cursor-pointer rounded bg-slate-300 p-3 dark:bg-slate-600 flex items-center justify-center"
+                                style={{ width: '50px', height: '50px' }}
+                              >
+                                <FolderOpen />
+                              </div>
+                            </td>
+                            <td
                               onClick={() =>
                                 (location.href = `${currentDocPath}${item.id}`)
                               }
-                              className="m-1 mr-3 cursor-pointer rounded bg-slate-300 p-3 dark:bg-slate-600 flex items-center justify-center"
-                              style={{ width: '50px', height: '50px' }}
+                              className="cursor-pointer whitespace-nowrap py-4 pr-3 text-sm font-medium overflow-auto no-scrollbar text-gray-900 dark:text-gray-200"
                             >
-                              <FolderOpen />
-                            </div>
-                          </td>
-                          <td
-                            onClick={() =>
-                              (location.href = `${currentDocPath}${item.id}`)
-                            }
-                            className="cursor-pointer whitespace-nowrap py-4 pr-3 text-sm font-medium overflow-auto no-scrollbar text-gray-900 dark:text-gray-200"
-                          >
-                            {item.name}
-                          </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-200">
-                            {formatDate(item.createdAt)}
-                          </td>
-                          <td
-                            className={`relative whitespace-nowrap px-3 text-sm text-gray-500`}
-                          ></td>
-                          <td
-                            className={`${
-                              !canAccess && "hidden"
-                            } relative whitespace-nowrap px-3 text-sm text-gray-500 dark:text-gray-200`}
-                          >
-                            <div className=" ">
-                              <FlyoutMenuSetting
-                                type="folder"
-                                index={i}
-                                key={i?.toString()}
-                                isMenuOpen={isMenuOpen}
-                                setMenuOpen={setMenuOpen}
-                                onRenameClick={() => {
-                                  handleRenameClick(item, true);
-                                }}
-                                onDeleteClick={() => {
-                                  setIsFolder("folder");
-                                  setRenamingItem(item);
-                                }}
-                                onEditClick={() => onEditClick(item?.id, true)}
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                  )}
-                  {folderStructure?.files?.map(
-                    (item: any, i: number) =>
-                      // isPublic
-                      (canAccess ? true : item?.isPublic) && (
-                        <tr key={i}>
-                          <td className="relative px-5 sm:w-12 lg:w-12">
-                            <div className="m-1 mr-3 cursor-not-allowed rounded bg-slate-300 p-3 dark:bg-slate-600 flex items-center justify-center"
-                            style={{ width: '50px', height: '50px' }}
+                              {item.name}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-200">
+                              {formatDate(item.createdAt)}
+                            </td>
+                            <td
+                              className={`relative whitespace-nowrap px-3 text-sm text-gray-500`}
+                            ></td>
+                            <td
+                              className={`${
+                                !canAccess && "hidden"
+                              } relative whitespace-nowrap px-3 text-sm text-gray-500 dark:text-gray-200`}
                             >
-                              <File className="w-6 h-6" />
-                            </div>
-                          </td>
-                          <td className="cursor-not-allowed whitespace-nowrap overflow-auto no-scrollbar py-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-200">
-                            {item.name}
-                          </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-200">
-                            {formatDate(item.createdAt)}
-                          </td>
-                          <td
-                            className={`relative cursor-pointer whitespace-nowrap px-3 text-sm text-gray-500`}
-                          >
-                            <div
-                              className=" "
-                              onClick={() =>
-                                handleDownload(item.key, item.name)
-                              }
+                              <div className=" ">
+                                <FlyoutMenuSetting
+                                  type="folder"
+                                  index={i}
+                                  key={i?.toString()}
+                                  isMenuOpen={isMenuOpen}
+                                  setMenuOpen={setMenuOpen}
+                                  onRenameClick={() => {
+                                    handleRenameClick(item, true);
+                                  }}
+                                  onDeleteClick={() => {
+                                    setIsFolder("folder");
+                                    setRenamingItem(item);
+                                  }}
+                                  onEditClick={() => onEditClick(item?.id, true)}
+                                />
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                    )}
+                    {folderStructure?.files?.map(
+                      (item: any, i: number) =>
+                        (canAccess ? true : item?.isPublic) && (
+                          <tr key={i}>
+                            <td className="relative px-5 sm:w-12 lg:w-12">
+                              <div className="m-1 mr-3 cursor-not-allowed rounded bg-slate-300 p-3 dark:bg-slate-600 flex items-center justify-center"
+                                style={{ width: '50px', height: '50px' }}
+                              >
+                                <File className="w-6 h-6" />
+                              </div>
+                            </td>
+                            <td className="cursor-not-allowed whitespace-nowrap overflow-auto no-scrollbar py-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-200">
+                              {item.name}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-200">
+                              {formatDate(item.createdAt)}
+                            </td>
+                            <td
+                              className={`relative cursor-pointer whitespace-nowrap px-3 text-sm text-gray-500`}
                             >
-                              <Download className="h-5 w-5 text-gray-200" />
-                            </div>
-                          </td>
-                          <td
-                            className={`${
-                              !canAccess && "hidden"
-                            } relative whitespace-nowrap px-3 text-sm text-gray-500 dark:text-gray-200`}
-                          >
-                            <div className=" ">
-                              <FlyoutMenuSetting
-                                index={i}
-                                type="file"
-                                key={i?.toString()}
-                                isMenuOpen={isMenuOpen}
-                                setMenuOpen={setMenuOpen}
-                                onRenameClick={() => {
-                                  handleRenameClick(item, false);
-                                }}
-                                onDeleteClick={() => {
-                                  setIsFolder("file");
-                                  setRenamingItem(item);
-                                }}
-                                onEditClick={() => onEditClick(item?.id, false)}
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                  )}
-                </tbody>
-              </table>
+                              <div
+                                className=" "
+                                onClick={() =>
+                                  handleDownload(item.key, item.name)
+                                }
+                              >
+                                <Download className="h-5 w-5 text-gray-200" />
+                              </div>
+                            </td>
+                            <td
+                              className={`${
+                                !canAccess && "hidden"
+                              } relative whitespace-nowrap px-3 text-sm text-gray-500 dark:text-gray-200`}
+                            >
+                              <div className=" ">
+                                <FlyoutMenuSetting
+                                  index={i}
+                                  type="file"
+                                  key={i?.toString()}
+                                  isMenuOpen={isMenuOpen}
+                                  setMenuOpen={setMenuOpen}
+                                  onRenameClick={() => {
+                                    handleRenameClick(item, false);
+                                  }}
+                                  onDeleteClick={() => {
+                                    setIsFolder("file");
+                                    setRenamingItem(item);
+                                  }}
+                                  onEditClick={() => onEditClick(item?.id, false)}
+                                />
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </ScrollArea>
     </div>
   );

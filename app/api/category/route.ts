@@ -1,28 +1,34 @@
-import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 
-export async function POST(
-  req: Request,
-) {
+export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    // Get the session from NextAuth
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
     const { name, color } = await req.json();
 
+    // Check roles and access permissions
     const isRoleAdmins = await isAdmin();
     const isRoleOperator = await isOperator();
     const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
 
-    if (!userId || !canAccess) {
+    if (!canAccess) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    // Create the category
     const category = await db.category.create({
       data: {
-        name: name,
+        name,
         colorCode: color,
         containerId: process.env.CONTAINER_ID || '',
       }
@@ -30,7 +36,7 @@ export async function POST(
 
     return NextResponse.json(category);
   } catch (error) {
-    console.log("[COURSES]", error);
+    console.log("[CATEGORY_CREATE]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

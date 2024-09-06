@@ -1,6 +1,7 @@
-import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
 
+import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
 
 export async function PUT(
@@ -8,17 +9,19 @@ export async function PUT(
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const { userId } = auth();
-    const { isCompleted } = await req.json();
+    const session = await getServerSession(authOptions);
+    const user = session?.user;
 
-    if (!userId) {
+    if (!user || !user.id) {
       return new NextResponse("Unauthorized", { status: 401 });
-    } 
+    }
+
+    const { isCompleted } = await req.json();
 
     const userProgress = await db.userProgress.upsert({
       where: {
         userId_chapterId: {
-          userId,
+          userId: user.id,
           chapterId: params.chapterId,
         }
       },
@@ -26,11 +29,11 @@ export async function PUT(
         isCompleted
       },
       create: {
-        userId,
+        userId: user.id,
         chapterId: params.chapterId,
         isCompleted,
       }
-    })
+    });
 
     return NextResponse.json(userProgress);
   } catch (error) {
