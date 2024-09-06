@@ -21,17 +21,18 @@ export async function createResetToken(userId: string) {
 }
 
 const sendEmail = async (name : string , toEmail: string , token : string ) => {
-    const username = process.env.NEXT_PUBLIC_EMAIL_USERNAME;
-    const password = process.env.NEXT_PUBLIC_EMAIL_PASSWORD;
-    const fromEmail = process.env.NEXT_PUBLIC_FROM_EMAIL;
+  const username = process.env.NEXT_PUBLIC_EMAIL_USERNAME;
+  const password = process.env.NEXT_PUBLIC_EMAIL_PASSWORD;
+  const fromEmail = process.env.NEXT_PUBLIC_FROM_EMAIL;
+
     const transporter = nodemailer.createTransport({
       host: process.env.NEXT_PUBLIC_EMAIL_HOST,
       port: ~~(process.env.NEXT_PUBLIC_EMAIL_PORT!),
       secure: false,
 
       tls: {
-        ciphers: "SSLv3",
-        rejectUnauthorized: false,
+        //ciphers: "SSLv3",
+        //rejectUnauthorized: false,
       },
   
       auth: {
@@ -55,7 +56,6 @@ const sendEmail = async (name : string , toEmail: string , token : string ) => {
     }
   };
 
-  
 export async function sendResetEmail(name: any, email: string, token: string) {
 //   const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${token}`;
   await sendEmail(name , email , token );
