@@ -301,14 +301,8 @@ export default function SignUp() {
               <p className="text-center text-lg">Or sign up with</p>
             </div>
             <div className="button-boxes w-full flex justify-center gap-2">
-              <div className="box">
-                {renderFbIcon()}
-              </div>
-              <div className="box cursor-pointer" onClick={handleGoogleSignIn}>
+              <div className="box cursor-pointer w-full" onClick={handleGoogleSignIn}>
                 {renderGoogleIcon()}
-              </div>
-              <div className="box">
-                {renderAppleIcon()}
               </div>
             </div>
           </form>
