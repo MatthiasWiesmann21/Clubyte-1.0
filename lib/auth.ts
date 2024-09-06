@@ -82,6 +82,25 @@ const authOptions = {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        const existingProfile = await db.profile.findFirst({
+          where: { email: user.email },
+        });
+
+        if (!existingProfile) {
+          await db.profile.create({
+            data: {
+              userId: user.id, // The user ID from Google
+              email: user.email,
+              name: user.name || "",
+              imageUrl: user.image || "", // Add a default image if needed
+              isOnline: "Online",
+              role: "USER",
+              emailVerified: true,
+              isBanned: "NOT BANNED",
+              containerId: process.env.CONTAINER_ID || '',  // Assign appropriate containerId
+            },
+          });
+        }
       }
       return token;
     },
@@ -89,6 +108,14 @@ const authOptions = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
+
+        const userProfile = await db.profile.findFirst({
+          where: { userId: token.id },
+        });
+
+        if (userProfile) {
+          session.user.profile = userProfile;
+        }
       }
       return session;
     },
