@@ -127,7 +127,7 @@ export const CreateServerModal = () => {
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button variant="primary" disabled={isLoading}>
+              <Button variant="primary" disabled={isLoading} type="submit" onClick={()=>onSubmit(form.getValues())}>
                 {currentLanguage.chat_modal_create_server_create}
               </Button>
             </DialogFooter>

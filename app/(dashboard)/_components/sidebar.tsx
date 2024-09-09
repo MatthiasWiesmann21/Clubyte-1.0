@@ -150,7 +150,7 @@ export const Sidebar = async () => {
           </a>
           <div className="mt-2 flex items-center justify-center space-x-2">
             <Link
-              className="flex items-center text-sm font-semibold text-gray-500 hover:underline"
+              className="flex items-center text-sm font-semibold text-gray-600 hover:underline"
               href="https://docs.clubyte.live"
               target="_blank"
             >
@@ -158,9 +158,9 @@ export const Sidebar = async () => {
               {currentLanguage.sidebar_help}
             </Link>
             {/* Separator */}
-            <div className="text-gray-500">|</div>
+            <div className="text-gray-600">|</div>
             <Link
-              className="flex items-center text-sm font-semibold text-gray-500 hover:underline"
+              className="flex items-center text-sm font-semibold text-gray-600 hover:underline"
               href="https://clubyte.live/privacy-policy/"
               target="_blank"
             >
