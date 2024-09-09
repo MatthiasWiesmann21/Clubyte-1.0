@@ -85,7 +85,9 @@ const ProfileButton = ({
                 className="h-6 w-6 rounded-xl border-0 bg-transparent"
                 variant="ghost"
               >
-                <UserAvatar src={profileImageUrl} />
+                <div className="flex items-center justify-center rounded-full p-1 transition duration-200 ease-in-out dark:hover:bg-[#1e293b] hover:bg-[#f1f5f9]">
+                  <UserAvatar src={profileImageUrl} />
+                </div>
                 <div
                   className={cn(
                     "absolute bottom-4 right-4 z-10 h-4 w-4 rounded-full border-4 border-white dark:border-[#0a0118] md:h-4 md:w-4",
@@ -156,9 +158,7 @@ const ProfileButton = ({
                   </DropdownMenuSubContent>
                 </DropdownMenuPortal>
               </DropdownMenuSub>
-              <DropdownMenuItem
-                onClick={() => router.push("/profile")}
-              >
+              <DropdownMenuItem onClick={() => router.push("/profile")}>
                 <UserCog2Icon className="mr-2 h-6 w-6" />
                 {currentLanguage.profile_manageAccount}
               </DropdownMenuItem>
