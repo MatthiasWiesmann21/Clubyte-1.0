@@ -23,7 +23,7 @@ export default function PrivacyPolicyModal({
     });
 
     if (response.status === 200) {
-      window.location.pathname = "/profile/manageUsername";
+      window.location.pathname = "/profile";
     }
   };
 

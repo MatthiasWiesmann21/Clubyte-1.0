@@ -15,16 +15,22 @@ export const Logo = ({ imageUrl, imageUrlDark, link }: LogoProps) => {
 
   const imageUrlNew = theme === "dark" ? imageUrlDark : imageUrl;
 
-  return (
-    link ? <Link target={link ?? ""} href={link ?? ""} className="w-full">
-      { imageUrlNew && <Image
+  return link ? (
+    <Link
+      target={link ?? ""}
+      href={link ?? ""}
+      className="flex h-full w-full items-center justify-center"
+    >
+      <Image
         priority
         height={100}
-        width={200}
+        width={150}
         alt="logo"
         src={imageUrlNew ?? ""}
-        className="object-contain"
-      /> }
-    </Link> : <></>
+        className="max-h-full max-w-full cursor-pointer object-contain"
+      />
+    </Link>
+  ) : (
+    <></>
   );
 };

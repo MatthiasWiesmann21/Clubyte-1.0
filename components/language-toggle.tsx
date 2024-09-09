@@ -51,11 +51,11 @@ export function LanguageToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="ml-2 border-0 bg-transparent" >
+        <Button className="ml-2 border-0 bg-transparent" variant="outline">
           <AppSVGIcon customclass="mr-1" icon={icon[language]} />
           {/* <Globe className="tran h-[1.2rem] w-[1.2rem] rotate-0 scale-100" /> */}
           <span className="sr-only">Toggle theme</span>
-        </div>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setLanguage("English")}>

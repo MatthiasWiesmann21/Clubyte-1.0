@@ -27,12 +27,12 @@ interface TitleFormProps {
 };
 
 const formSchema = z.object({
-  name: z.string().min(1, {
-    message: "Name is required",
+  email: z.string().min(1, {
+    message: "Email is required",
   }),
 });
 
-export const TitleForm = ({
+export const EmailForm = ({
   initialData,
   profileId
 }: TitleFormProps) => {
@@ -44,7 +44,7 @@ export const TitleForm = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {name: initialData.name || ""}
+    defaultValues: {email: initialData.name || ""}
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -52,7 +52,7 @@ export const TitleForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/profile/${profileId}`, values);
-      toast.success("Username updated");
+      toast.success("Email updated");
       toggleEdit();
       router.refresh();
     } catch {
@@ -63,21 +63,21 @@ export const TitleForm = ({
   return (
     <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        {currentLanguage.profile_TitleForm_title}
+        {currentLanguage.profile_EmailForm_title}
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
-            <>{currentLanguage.profile_TitleForm_cancel}</>
+            <>{currentLanguage.profile_EmailForm_cancel}</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              {currentLanguage.profile_TitleForm_edit}
+              {currentLanguage.profile_EmailForm_edit}
             </>
           )}
         </Button>
       </div>
       {!isEditing && (
         <p className="text-sm mt-2">
-          {initialData.name}
+          {initialData.email}
         </p>
       )}
       {isEditing && (
@@ -88,13 +88,13 @@ export const TitleForm = ({
           >
             <FormField
               control={form.control}
-              name="name"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder={currentLanguage.profile_TitleForm_placeholder}
+                      placeholder={currentLanguage.profile_EmailForm_placeholder}
                       {...field}
                     />
                   </FormControl>
@@ -106,8 +106,8 @@ export const TitleForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
-              >
-                {currentLanguage.profile_TitleForm_save}
+                onClick={()=>onSubmit(form.getValues())}>
+                {currentLanguage.profile_EmailForm_save}
               </Button>
             </div>
           </form>

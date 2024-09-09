@@ -41,6 +41,10 @@ export const ourFileRouter = {
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
 
+  ProfileImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+   .middleware(() => handleAuth())
+   .onUploadComplete(() => {}),
+
   ContainerImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),

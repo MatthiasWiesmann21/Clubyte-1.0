@@ -95,9 +95,7 @@ const ProfileButton = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="p-1">
-              <DropdownMenuItem
-                onClick={() => router.push("/profile/manageUsername")}
-              >
+              <DropdownMenuItem>
                 <div className="cursor-pointer transition hover:drop-shadow-md">
                   <UserAvatar src={profileImageUrl} />
                 </div>
@@ -159,15 +157,7 @@ const ProfileButton = ({
                 </DropdownMenuPortal>
               </DropdownMenuSub>
               <DropdownMenuItem
-                onClick={() =>
-                  window.open("https://docs.clubyte.live", "_blank")
-                }
-              >
-                <HelpCircle className="mr-2 h-6 w-6" />
-                {currentLanguage.profile_help}
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => router.push("/profile/manageProfile")}
+                onClick={() => router.push("/profile")}
               >
                 <UserCog2Icon className="mr-2 h-6 w-6" />
                 {currentLanguage.profile_manageAccount}
