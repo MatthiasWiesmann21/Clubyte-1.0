@@ -114,6 +114,7 @@ export const AuthorForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.courses_authorForm_save}
               </Button>

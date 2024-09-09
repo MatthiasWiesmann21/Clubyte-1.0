@@ -99,6 +99,7 @@ const CreatePage = () => {
               <Button
                 type="submit"
                 disabled={!isValid || isSubmitting}
+                onClick={()=>onSubmit(form.getValues())}
               >
                 Continue
               </Button>

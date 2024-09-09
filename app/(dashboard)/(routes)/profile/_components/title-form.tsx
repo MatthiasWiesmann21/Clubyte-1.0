@@ -106,7 +106,8 @@ export const TitleForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
-                onClick={()=>onSubmit(form.getValues())}>
+                onClick={()=>onSubmit(form.getValues())}
+              >
                 {currentLanguage.profile_TitleForm_save}
               </Button>
             </div>

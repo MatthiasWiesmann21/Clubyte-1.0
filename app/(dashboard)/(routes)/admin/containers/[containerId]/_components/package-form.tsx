@@ -113,6 +113,7 @@ export const PackageForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 Save
               </Button>

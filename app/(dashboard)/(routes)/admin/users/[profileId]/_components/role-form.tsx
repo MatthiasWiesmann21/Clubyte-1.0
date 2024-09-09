@@ -121,6 +121,7 @@ export const RoleForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.user_RoleForm_save}
               </Button>

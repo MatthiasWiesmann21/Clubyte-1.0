@@ -116,6 +116,7 @@ export const PriceForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.courses_priceForm_save}
               </Button>

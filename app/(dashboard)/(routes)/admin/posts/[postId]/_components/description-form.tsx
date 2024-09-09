@@ -114,6 +114,7 @@ export const DescriptionForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.post_DescriptionForm_save}
               </Button>

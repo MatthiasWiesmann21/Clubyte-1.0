@@ -130,7 +130,7 @@ export const IsBannedForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
-                onClick={onSubmit}
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.user_isBannedForm_save}
               </Button>

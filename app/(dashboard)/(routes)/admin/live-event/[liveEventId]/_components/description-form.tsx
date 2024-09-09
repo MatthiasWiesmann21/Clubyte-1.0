@@ -115,6 +115,7 @@ export const EventDescriptionForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.liveEvent_DescriptionForm_save}
               </Button>

@@ -113,6 +113,7 @@ const { isSubmitting, isValid } = form.formState;
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 Save
               </Button>
