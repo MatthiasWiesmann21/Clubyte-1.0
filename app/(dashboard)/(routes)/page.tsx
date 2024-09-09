@@ -6,5 +6,5 @@ import authOptions from "@/lib/auth"; // Adjust the import path as needed
 import { useEffect } from "react";
 
 export default function Home() {
- 
+ return redirect("/dashboard");
 }
