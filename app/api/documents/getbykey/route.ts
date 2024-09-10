@@ -30,3 +30,4 @@ export async function GET(req: any) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+export const dynamic = 'force-dynamic';

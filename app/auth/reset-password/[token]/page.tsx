@@ -15,7 +15,7 @@ interface ResetFormState {
 const Page = () => {
     const router = useParams();
     const route = useRouter();
-    const token = Array.isArray(router?.token) ? router.token[0] : router?.token || '';
+    const token = Array.isArray(router?.token) ? router?.token[0] : router?.token || '';
     const [resetForm, setResetForm] = useState<ResetFormState>({
         password: '',
         confirmPassword: '',
