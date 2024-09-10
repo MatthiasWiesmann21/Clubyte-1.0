@@ -15,12 +15,13 @@ interface EventsListProps {
 export const EventsList = ({ items, ThemeOutlineColor, DarkThemeOutlineColor }: EventsListProps) => {
   return (
     <div>
-      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4">
+      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4">
         {items.map((item: any) => (
           <EventCard
             key={item.id}
             id={item.id}
             title={item.title}
+            description={item.description}
             imageUrl={item.imageUrl!}
             category={item?.category?.name!}
             categoryColorCode={item?.category?.colorCode!}
