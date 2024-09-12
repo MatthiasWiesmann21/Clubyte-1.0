@@ -52,12 +52,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
       },
     },
   });
-  console.log(">>>", {
-    id: serverId,
-    containerId: process.env.CONTAINER_ID,
-    profileId: profile.id,
-    servers
-  })
+
   const server  = await db.server.findFirst({
     where: {
       id: serverId,
@@ -86,7 +81,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
     });
     return ({...member , profile })
   }))
-  console.log("Whats in server"  , server  , newMembers);
+
   const textChannels = server?.channels.filter(
     (channel) => channel.type === ChannelType.TEXT
   );
