@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
 export const currentProfilePages = async (req: NextApiRequest) => {
+  try{
   // Get the session from NextAuth
   const session = await getServerSession(authOptions);
   
@@ -18,4 +19,9 @@ export const currentProfilePages = async (req: NextApiRequest) => {
   });
 
   return profile;
+  }catch(err){
+    console.log("An error occured while accessing current profile:" , err)
+  }
+  return null;
+
 };

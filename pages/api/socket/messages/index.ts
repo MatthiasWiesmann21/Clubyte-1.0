@@ -13,6 +13,7 @@ export default async function handler(
   }
 
   try {
+    // Initialize Socket.io if it hasn't been initialized yet
     const profile = await currentProfilePages(req);
     const { content, fileUrl } = req.body;
     const { serverId, channelId } = req.query;
@@ -83,7 +84,7 @@ export default async function handler(
         }
       }
     });
-
+    console.log("Message was created" , message);
     const channelKey = `chat:${channelId}:messages`;
 
     res?.socket?.server?.io?.emit(channelKey, message);
