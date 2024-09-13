@@ -13,10 +13,13 @@ export default async function handler(
   }
 
   try {
+    // Initialize Socket.io if it hasn't been initialized yet
+    console.log("Direct message received")
     const profile = await currentProfilePages(req);
+    console.log("After Direct message received")
+
     const { content, fileUrl } = req.body;
     const { conversationId } = req.query;
-
     if (!profile) {
       return res.status(401).json({ error: "Unauthorized" });
     }
@@ -86,14 +89,14 @@ export default async function handler(
         }
       }
     });
-
+    console.log("Direct message sent" , message);
     const channelKey = `chat:${conversationId}:messages`;
 
     res?.socket?.server?.io?.emit(channelKey, message);
 
     return res.status(200).json(message);
   } catch (error) {
-    console.log("[DIRECT_MESSAGES_POST]", error);
+    console.log("[REAL_ERROR_DIRECT_MESSAGES_POST]", error);
     return res.status(500).json({ message: "Internal Error" });
   }
 }

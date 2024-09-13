@@ -20,8 +20,7 @@ export const initialProfile = async () => {
       userId: session?.user?.id || '',
     },
   });
-  // If the profile exists, update it
-  console.log(">>>>>", existingProfile, session );
+
   if (session?.user?.id && existingProfile) {
     const updatedProfile = await db.profile.update({
       where: {

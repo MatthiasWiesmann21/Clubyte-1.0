@@ -25,7 +25,7 @@ export const currentProfile = async () => {
     }
     return profile;
   } catch (error) {
-    console.log("An error occurred in current profile" , error );
+    // console.log("An error occurred in current profile" , error );
     return null;
   }
 };
