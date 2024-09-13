@@ -6,6 +6,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { ModeToggle } from "@/components/mode-toggle";
+import { Button } from "@/components/ui/button";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function SignIn() {
   const [userEmail, setUserEmail] = useState("");
@@ -37,6 +40,7 @@ export default function SignIn() {
     setBeingSubmitted(true);
     const email = form.email;
     const password = form.password;
+
     const response = await signIn("credentials", {
       email,
       password,
@@ -362,7 +366,7 @@ export default function SignIn() {
 
   const renderGoogleIcon = () => {
     return (
-      <>
+      <div className="flex items-center justify-center rounded-md border border-gray-300 px-12 py-3 transition duration-200 ease-in-out hover:bg-gray-100 dark:hover:text-black">
         <svg
           width="26"
           height="27"
@@ -387,55 +391,22 @@ export default function SignIn() {
             fill="#1976D2"
           />
         </svg>
-        &nbsp; Sign{beingSubmittedGoogle ? 'ing in...' : ' in with Google'} 
-      </>
-    );
-  };
-
-  const renderEyeIcon = () => {
-    return (
-      <svg
-        width="19"
-        height="19"
-        viewBox="0 0 19 19"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g clipPath="url(#clip0_1_155)">
-          <path
-            d="M15.5035 15.9511C15.4293 15.9512 15.3559 15.9366 15.2874 15.9082C15.2189 15.8798 15.1567 15.8381 15.1044 15.7856L2.68433 3.3655C2.58293 3.25877 2.52723 3.11664 2.52911 2.96943C2.531 2.82222 2.59032 2.68157 2.69442 2.57746C2.79852 2.47336 2.93918 2.41404 3.08639 2.41216C3.2336 2.41027 3.37573 2.46597 3.48246 2.56737L15.9025 14.9875C15.9814 15.0664 16.0352 15.167 16.0569 15.2765C16.0787 15.3859 16.0675 15.4994 16.0248 15.6025C15.9821 15.7057 15.9098 15.7938 15.817 15.8558C15.7242 15.9179 15.6151 15.951 15.5035 15.9511ZM9.01116 11.2882L7.18379 9.46087C7.17332 9.45049 7.15986 9.44365 7.1453 9.4413C7.13074 9.43896 7.11581 9.44124 7.10261 9.44782C7.08942 9.4544 7.07861 9.46495 7.07172 9.47799C7.06482 9.49102 7.06218 9.50589 7.06417 9.5205C7.13795 9.99459 7.36055 10.4329 7.69982 10.7722C8.03909 11.1115 8.47744 11.3341 8.95153 11.4079C8.96614 11.4099 8.98101 11.4072 8.99405 11.4003C9.00708 11.3934 9.01763 11.3826 9.02421 11.3694C9.03079 11.3562 9.03307 11.3413 9.03073 11.3267C9.02839 11.3122 9.02155 11.2987 9.01116 11.2882ZM9.57571 7.06471L11.4059 8.89421C11.4164 8.90473 11.4299 8.91171 11.4445 8.91413C11.4591 8.91655 11.4741 8.9143 11.4874 8.9077C11.5007 8.9011 11.5116 8.89048 11.5185 8.87735C11.5254 8.86423 11.528 8.84926 11.5259 8.83457C11.4523 8.35984 11.2295 7.92085 10.8898 7.58115C10.5501 7.24145 10.1111 7.01868 9.6364 6.9451C9.6217 6.94283 9.60666 6.94527 9.59342 6.95206C9.58019 6.95885 9.56944 6.96965 9.56271 6.98291C9.55598 6.99618 9.55361 7.01123 9.55595 7.02592C9.55828 7.04061 9.5652 7.05419 9.57571 7.06471Z"
-            fill="white"
-          />
-          <path
-            d="M17.5852 9.78903C17.7021 9.60569 17.7638 9.39267 17.7632 9.17528C17.7626 8.95788 17.6996 8.74522 17.5817 8.56255C16.6481 7.11872 15.4368 5.89223 14.079 5.01542C12.5749 4.04439 10.9165 3.53101 9.28214 3.53101C8.42053 3.53219 7.56478 3.67267 6.74802 3.94701C6.72516 3.95461 6.70463 3.96794 6.68837 3.98572C6.67212 4.00351 6.6607 4.02516 6.65518 4.04861C6.64966 4.07206 6.65024 4.09653 6.65685 4.11969C6.66347 4.14286 6.6759 4.16394 6.69298 4.18094L8.35981 5.84777C8.37712 5.86512 8.39866 5.87766 8.42229 5.88416C8.44593 5.89065 8.47084 5.89088 8.49459 5.88482C9.05958 5.74714 9.65051 5.75723 10.2105 5.91412C10.7704 6.07101 11.2806 6.36943 11.6918 6.78063C12.103 7.19183 12.4014 7.70197 12.5583 8.26193C12.7152 8.82189 12.7253 9.41281 12.5876 9.9778C12.5816 10.0015 12.5818 10.0264 12.5883 10.0499C12.5948 10.0735 12.6073 10.095 12.6246 10.1122L15.0222 12.5116C15.0471 12.5366 15.0805 12.5513 15.1158 12.5529C15.1511 12.5544 15.1857 12.5427 15.2127 12.52C16.1356 11.7334 16.9354 10.8128 17.5852 9.78903ZM9.29343 12.5638C8.78066 12.5638 8.27457 12.4474 7.81333 12.2234C7.35209 11.9994 6.94773 11.6736 6.63074 11.2705C6.31375 10.8674 6.0924 10.3977 5.98338 9.89664C5.87437 9.39559 5.88053 8.87633 6.0014 8.37801C6.0074 8.35432 6.00713 8.32947 6.00064 8.3059C5.99415 8.28234 5.98164 8.26086 5.96435 8.24358L3.60595 5.88412C3.58094 5.85908 3.54744 5.84435 3.51209 5.84285C3.47673 5.84135 3.44211 5.85318 3.41506 5.876C2.55448 6.61027 1.7567 7.50367 1.02737 8.54773C0.899709 8.73096 0.829399 8.94801 0.825378 9.1713C0.821357 9.39459 0.883806 9.61403 1.00479 9.80174C1.93665 11.26 3.13561 12.4883 4.47253 13.3531C5.97882 14.328 7.59696 14.822 9.28214 14.822C10.1524 14.8197 11.0171 14.6822 11.8452 14.4145C11.8683 14.4071 11.889 14.3939 11.9055 14.3762C11.922 14.3585 11.9337 14.3368 11.9394 14.3133C11.9451 14.2897 11.9447 14.2651 11.9381 14.2418C11.9316 14.2185 11.9191 14.1973 11.902 14.1802L10.2271 12.5056C10.2098 12.4883 10.1883 12.4758 10.1647 12.4693C10.1412 12.4628 10.1163 12.4625 10.0926 12.4685C9.83096 12.5319 9.56267 12.5639 9.29343 12.5638Z"
-            fill="white"
-          />
-        </g>
-        <defs>
-          <clipPath id="clip0_1_155">
-            <rect
-              width="18.0656"
-              height="18.0656"
-              fill="white"
-              transform="translate(0.260651 0.143799)"
-            />
-          </clipPath>
-        </defs>
-      </svg>
+        &nbsp; Sign{beingSubmittedGoogle ? "ing in..." : " in with Google"}
+      </div>
     );
   };
 
   return (
     <>
       <div className="flex h-screen w-full flex-col items-center justify-center md:flex-row">
-        <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
+        <div className="w-full md:w-2/3 lg:w-2/3 xl:w-2/3">
           <form className="mx-auto flex w-[80%] flex-col gap-2 p-4 sm:w-[70%] md:w-[65%] md:p-0">
             <div className="form-header">
-              <h2 className="text-4xl font-semibold">Login</h2>
+              <h2 className="text-4xl font-semibold dark:text-white">Login</h2>
             </div>
             <div className=" mt-6">
               <label
-                className="mb-2 block text-xl text-white md:text-[22px]"
+                className="mb-2 block text-xl text-black dark:text-white md:text-[22px]"
                 htmlFor="email"
               >
                 Email
@@ -445,7 +416,7 @@ export default function SignIn() {
                 type="email"
                 name="email"
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-lg text-gray-700 text-white focus:border-gray-300 focus:outline-none"
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-lg text-gray-700 dark:text-gray-200 focus:border-gray-300 focus:outline-none"
                 placeholder="Enter your email"
                 autoComplete="off"
                 autoFocus
@@ -453,7 +424,7 @@ export default function SignIn() {
             </div>
             <div className="mb-6">
               <label
-                className="mb-2 block text-xl text-white  md:text-[22px]"
+                className="mb-2 block text-xl text-black dark:text-white md:text-[22px]"
                 htmlFor="password"
               >
                 Password
@@ -466,14 +437,14 @@ export default function SignIn() {
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
                   }
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-lg text-gray-700 text-white focus:border-gray-300 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-lg text-gray-700 dark:text-gray-200 focus:border-gray-300 focus:outline-none"
                   placeholder="Enter your password"
                 />
                 <span
                   className="absolute right-3 top-4 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {renderEyeIcon()}
+                  {showPassword ? <EyeOff /> : <Eye />}
                 </span>
               </div>
               <div className="mt-3 flex items-center justify-between text-right">
@@ -485,10 +456,10 @@ export default function SignIn() {
                 </Link>
               </div>
             </div>
-            <button
+            <Button
               onClick={handleSubmit}
               type="button"
-              className="w-full rounded-3xl bg-[#EC2089] px-4 py-3 text-white hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              className="h-14 w-full rounded-full bg-[#EC2089] px-4 text-white hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
               <div className="flex justify-center text-xl">
                 {beingSubmitted ? (
@@ -502,7 +473,7 @@ export default function SignIn() {
                   "Login"
                 )}
               </div>
-            </button>
+            </Button>
             <div className="mt-2 flex justify-center text-lg">
               <p>
                 Don’t have an account?{" "}
@@ -518,13 +489,16 @@ export default function SignIn() {
             </div>
             <div className="button-boxes flex w-full justify-center gap-2">
               <div
-                className="box mx-auto w-full cursor-pointer "
+                className="flex items-center cursor-pointer"
                 onClick={handleGoogleSignIn}
               >
                 {renderGoogleIcon()}
               </div>
             </div>
           </form>
+          <div className="mt-4 flex justify-center">
+            <ModeToggle system={false} />
+          </div>
         </div>
         <div className="right-section hidden items-center justify-center md:flex md:w-1/2 lg:w-1/2 xl:w-1/2">
           {renderRight()}
