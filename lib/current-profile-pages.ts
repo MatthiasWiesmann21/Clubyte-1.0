@@ -1,11 +1,13 @@
-import { NextApiRequest } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/lib/db";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
-export const currentProfilePages = async (req: NextApiRequest) => {
+import { IncomingMessage } from "http";
+import { NextApiRequestCookies } from "next/dist/server/api-utils";
+export const currentProfilePages = async (req: NextApiRequest ,res : NextApiResponse) => {
   try{
   // Get the session from NextAuth
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(req , res , authOptions);
   
   // Check if session exists and has a user ID
   if (!session?.user?.id) {
