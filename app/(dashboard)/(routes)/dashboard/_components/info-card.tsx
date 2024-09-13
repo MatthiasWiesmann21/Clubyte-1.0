@@ -1,7 +1,6 @@
 import { LucideIcon } from "lucide-react";
 
 import { IconBadge } from "@/components/icon-badge";
-import { languageServer } from "@/lib/check-language-server";
 
 interface InfoCardProps {
   numberOfItems: number;
