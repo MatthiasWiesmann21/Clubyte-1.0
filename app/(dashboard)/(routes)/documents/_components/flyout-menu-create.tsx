@@ -47,11 +47,11 @@ const FlyoutMenuCreate = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={onCLickCreateFile}>
-          <FolderPlus className="mr-2 h-5 w-5" />
+          <FilePlus className="mr-2 h-5 w-5" />
           {currentLanguage.create_file}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={onCLickCreateFolder}>
-          <FilePlus className="mr-2 h-5 w-5" />
+          <FolderPlus className="mr-2 h-5 w-5" />
           {currentLanguage.create_folder}
         </DropdownMenuItem>
       </DropdownMenuContent>

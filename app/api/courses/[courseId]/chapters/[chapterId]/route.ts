@@ -1,15 +1,18 @@
-import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
 
+import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { Attachment, Chapter } from "@prisma/client";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 export async function GET(
   req: Request,
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
+
   if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+
   try {
     const { courseId, chapterId } = params;
     const purchase = await db.purchase.findUnique({
@@ -125,7 +128,7 @@ export async function GET(
       //@ts-ignore
       ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt));
 
-    return NextResponse?.json({
+    return NextResponse.json({
       chapter: { ...chapter, currentLike, commentsWithLikes },
       course,
       attachments,
@@ -144,7 +147,8 @@ export async function DELETE(
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -209,7 +213,8 @@ export async function PATCH(
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
     const { isPublished, ...values } = await req.json();
 
     if (!userId) {

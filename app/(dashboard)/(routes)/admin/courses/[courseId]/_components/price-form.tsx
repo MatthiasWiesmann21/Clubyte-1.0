@@ -53,15 +53,18 @@ export const PriceForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      const formattedValues = {
+        ...values,
+        price: Number(values.price),  // Ensure price is a number
+      };  
+      await axios.patch(`/api/courses/${courseId}`, formattedValues); // Send the formatted values
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
     } catch {
       toast.error("Something went wrong");
     }
-  }
-
+  };
   return (
     <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
@@ -116,6 +119,7 @@ export const PriceForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.courses_priceForm_save}
               </Button>

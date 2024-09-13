@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
 import { HelpCircle, LogOutIcon, UserCog2Icon } from "lucide-react";
 import { UserAvatar } from "./user-avatar";
-import { useClerk, useUser } from "@clerk/nextjs";
+import { useSession, signOut } from "next-auth/react";
 import {
   Tooltip,
   TooltipContent,
@@ -48,10 +48,8 @@ const ProfileButton = ({
   profileOnlineStatus,
 }: ProfileButtonProps) => {
   const currentLanguage = useLanguage();
-  const { signOut } = useClerk();
+  const { data: session } = useSession();
   const router = useRouter();
-  const user = useClerk();
-  const isSignedIn = useUser();
 
   const updateProfileStatus = async (isOnline: string) => {
     try {
@@ -65,16 +63,16 @@ const ProfileButton = ({
   const handleSignOut = async () => {
     dispatch({ type: "SetUser", payload: {} });
     await updateProfileStatus("Offline");
-    signOut(() => router.push("sign-in"));
+    await signOut({ callbackUrl: "/auth/sign-in" });
   };
 
   useEffect(() => {
-    if (isSignedIn && profileOnlineStatus === "Offline") {
+    if (session && profileOnlineStatus === "Offline") {
       updateProfileStatus("Online");
-    } else if (!isSignedIn) {
+    } else if (!session) {
       updateProfileStatus("Offline");
     }
-  }, [isSignedIn, profileOnlineStatus]);
+  }, [session, profileOnlineStatus]);
 
   const dispatch = useDispatch();
   return (
@@ -87,7 +85,9 @@ const ProfileButton = ({
                 className="h-6 w-6 rounded-xl border-0 bg-transparent"
                 variant="ghost"
               >
-                <UserAvatar src={profileImageUrl} />
+                <div className="flex items-center justify-center rounded-full p-1 transition duration-200 ease-in-out dark:hover:bg-[#1e293b] hover:bg-[#f1f5f9]">
+                  <UserAvatar src={profileImageUrl} />
+                </div>
                 <div
                   className={cn(
                     "absolute bottom-4 right-4 z-10 h-4 w-4 rounded-full border-4 border-white dark:border-[#0a0118] md:h-4 md:w-4",
@@ -97,9 +97,7 @@ const ProfileButton = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="p-1">
-              <DropdownMenuItem
-                onClick={() => router.push("/profile/manageUsername")}
-              >
+              <DropdownMenuItem>
                 <div className="cursor-pointer transition hover:drop-shadow-md">
                   <UserAvatar src={profileImageUrl} />
                 </div>
@@ -160,17 +158,7 @@ const ProfileButton = ({
                   </DropdownMenuSubContent>
                 </DropdownMenuPortal>
               </DropdownMenuSub>
-              <DropdownMenuItem
-                onClick={() =>
-                  window.open("https://docs.clubyte.live", "_blank")
-                }
-              >
-                <HelpCircle className="mr-2 h-6 w-6" />
-                {currentLanguage.profile_help}
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => router.push("/profile/manageProfile")}
-              >
+              <DropdownMenuItem onClick={() => router.push("/profile")}>
                 <UserCog2Icon className="mr-2 h-6 w-6" />
                 {currentLanguage.profile_manageAccount}
               </DropdownMenuItem>

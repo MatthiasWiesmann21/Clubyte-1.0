@@ -107,6 +107,7 @@ export const ChapterTitleForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.chapter_TitleForm_save}
               </Button>

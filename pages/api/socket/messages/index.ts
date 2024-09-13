@@ -3,6 +3,8 @@ import { NextApiRequest } from "next";
 import { NextApiResponseServerIo } from "@/types";
 import { currentProfilePages } from "@/lib/current-profile-pages";
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth";
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,7 +15,21 @@ export default async function handler(
   }
 
   try {
-    const profile = await currentProfilePages(req);
+    // Initialize Socket.io if it hasn't been initialized yet
+    const session = await getServerSession(req, res, authOptions);
+
+    if (!session?.user?.id) {
+      throw "Unauthorized";
+    }
+    const profile = await db.profile.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+    });
+    if (!profile) {
+      throw "Unauthorized";
+    } 
+
     const { content, fileUrl } = req.body;
     const { serverId, channelId } = req.query;
     
@@ -83,7 +99,7 @@ export default async function handler(
         }
       }
     });
-
+    console.log("Message was created" , message);
     const channelKey = `chat:${channelId}:messages`;
 
     res?.socket?.server?.io?.emit(channelKey, message);

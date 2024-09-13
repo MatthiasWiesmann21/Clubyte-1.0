@@ -1,9 +1,8 @@
-import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { CheckCircle, Clock, ListChecks, Users } from "lucide-react";
+import { getServerSession } from "next-auth/next";
 
 import { getDashboardCourses } from "@/actions/get-dashboard-courses";
-
 import { InfoCard } from "./_components/info-card";
 import { getSearchCourses } from "@/actions/get-searchcourses";
 import { db } from "@/lib/db";
@@ -11,6 +10,7 @@ import { languageServer } from "@/lib/check-language-server";
 import PolygonChar from "./_components/polygonChar";
 import CourseTable from "./_components/courseTable";
 import { getCourses } from "@/actions/get-courses";
+import authOptions from "@/lib/auth";
 
 interface SearchPageProps {
   searchParams: {
@@ -21,11 +21,16 @@ interface SearchPageProps {
 
 const Dashboard = async ({ searchParams }: SearchPageProps) => {
   const currentLanguage = await languageServer();
-  const { userId } = auth();
 
-  if (!userId) {
+  // Check user session
+  const session = await getServerSession(authOptions);
+  console.log('user session',session)
+  if (!session?.user) {
     return redirect("/");
   }
+
+  const userId = session.user.id;
+  const userEmail = session.user.email;
 
   const { completedCourses, coursesInProgress } = await getDashboardCourses(
     userId
@@ -50,7 +55,6 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
       isCompleted: true,
     },
   });
-  // console.log("UserProgressCompletedChapters", UserProgressCompletedChapters);
 
   const CurrentOnlineUser = await db.profile.count({
     where: {
@@ -66,12 +70,30 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
     containerId: process.env.CONTAINER_ID,
   });
 
-  // coursess?.map((each) =>
-  //   each?.chapters?.map((sub) => console.log("=-=--------", sub))
-  // );
+  const isEmailVerified = await db.profile.findFirst({
+    where: {
+      userId: userId,
+      emailVerified: true,
+    },
+  });
 
   return (
     <div className="space-y-4 p-4 dark:bg-[#110524]">
+      {!isEmailVerified && 
+        <div className="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
+        <svg className="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        </svg>
+        <span className="sr-only"></span>
+        <div>
+          <span className="font-medium font-bold">Please verify Your Email</span>
+          <div className="font-medium">
+            An email is sent to &nbsp;
+            <span className="font-bold underline capitalize">{userEmail}</span>
+          </div>
+        </div>
+      </div>
+      }
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <InfoCard
           icon={Clock}

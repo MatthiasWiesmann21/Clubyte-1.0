@@ -1,11 +1,11 @@
-import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-
 import { db } from "@/lib/db";
 import { Metadata } from "next";
 import { getEvents } from "@/actions/get-events";
 import LiveEventWrapper from "./_components/live-event-wrapper";
 import getBase64 from "@/lib/getLocalbase64";
+import authOptions from "@/lib/auth"; // Make sure you have authOptions configured
+import { getServerSession } from "next-auth";
 
 export const metadata: Metadata = {
   title: "Live Events",
@@ -19,11 +19,14 @@ interface SearchPageProps {
 }
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
-  const { userId } = auth();
+  // Get the session from NextAuth
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
+  if (!session?.user) {
     return redirect("/");
   }
+
+  const userId = session.user.id;
 
   const categories = await db.category.findMany({
     where: {

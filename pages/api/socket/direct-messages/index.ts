@@ -1,8 +1,9 @@
 import { NextApiRequest } from "next";
 
 import { NextApiResponseServerIo } from "@/types";
-import { currentProfilePages } from "@/lib/current-profile-pages";
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth";
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,10 +14,24 @@ export default async function handler(
   }
 
   try {
-    const profile = await currentProfilePages(req);
+    // Initialize Socket.io if it hasn't been initialized yet
+    console.log("Direct message received")
+    const session = await getServerSession(req, res, authOptions);
+    console.log("session" , session );
+    if (!session?.user?.id) {
+      throw "Unauthorized";
+    }
+    const profile = await db.profile.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+    });
+    if (!profile) {
+      throw "Unauthorized";
+    }
+
     const { content, fileUrl } = req.body;
     const { conversationId } = req.query;
-
     if (!profile) {
       return res.status(401).json({ error: "Unauthorized" });
     }
@@ -86,14 +101,14 @@ export default async function handler(
         }
       }
     });
-
+    console.log("Direct message sent" , message);
     const channelKey = `chat:${conversationId}:messages`;
 
     res?.socket?.server?.io?.emit(channelKey, message);
 
     return res.status(200).json(message);
   } catch (error) {
-    console.log("[DIRECT_MESSAGES_POST]", error);
+    console.log("[REAL_ERROR_DIRECT_MESSAGES_POST]", error);
     return res.status(500).json({ message: "Internal Error" });
   }
 }

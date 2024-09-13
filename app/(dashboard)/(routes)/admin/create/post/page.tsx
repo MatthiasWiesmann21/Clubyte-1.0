@@ -96,6 +96,7 @@ const CreatePost = () => {
               <Button
                 type="submit"
                 disabled={!isValid || isSubmitting}
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.createPost_submit}
               </Button>

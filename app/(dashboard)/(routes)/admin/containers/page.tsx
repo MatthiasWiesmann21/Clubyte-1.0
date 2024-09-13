@@ -1,19 +1,17 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
-
 import { db } from "@/lib/db";
-
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
 import { isOwner } from "@/lib/owner";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import authOptions from "@/lib/auth"; // Ensure this is correctly configured
 
 const ContainerPage = async () => {
-  const { userId } = auth();
-  const canAccess = isOwner(userId);
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
 
-  if (!userId || !canAccess) {
-   return redirect("/admin/courses");
+  if (userId ==! "user_1725647173943") {
+    return redirect("/admin/courses");
   }
 
   const containers = await db.container.findMany({
@@ -23,17 +21,10 @@ const ContainerPage = async () => {
   });
 
   return (
-    canAccess ? (
-      <div className="p-6">
+    <div className="p-6">
       <DataTable columns={columns} data={containers} />
     </div>
-    ) : (
-      <div className="flex flex-col justify-center items-center text-center min-h-full">
-        <h1 className="text-slate-500 text-2xl">Unauthorized</h1>
-        <p className="text-slate-500 text-md align">You are not authorized to view this page. Only the Owner have the authorization.</p>  
-      </div>
-    )
-   );
-}
- 
+  );
+};
+
 export default ContainerPage;

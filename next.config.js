@@ -9,7 +9,13 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ["utfs.io", "localhost:3000", "uploadthings.io", "img.clerk.com"],
+    domains: [
+      "utfs.io", 
+      "localhost:3000", 
+      "uploadthings.io", 
+      "googleusercontent.com", 
+      "lh3.googleusercontent.com" // Added this domain
+    ],
   },
   eslint: {
     ignoreDuringBuilds: true, // Add this line to ignore ESLint warnings during the build

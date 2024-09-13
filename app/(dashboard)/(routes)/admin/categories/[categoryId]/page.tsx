@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import { ArrowLeft, LayoutGridIcon } from "lucide-react";
 
@@ -12,14 +12,17 @@ import { ColorForm } from "./_components/color-form";
 import { CategoryTypeForm } from "./_components/categorytype-form";
 import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
+import authOptions  from "@/lib/auth"; // Ensure this is properly configured
 
 const CategoryIdPage = async ({
   params,
 }: {
   params: { categoryId: string };
 }) => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
   const currentLanguage = await languageServer();
+  
   if (!userId) {
     return redirect("/");
   }
@@ -36,12 +39,9 @@ const CategoryIdPage = async ({
   }
 
   const requiredFields = [category.name];
-
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
-
   const completionText = `(${completedFields}/${totalFields})`;
-
   const isComplete = requiredFields.every(Boolean);
 
   return (

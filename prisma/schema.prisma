@@ -68,11 +68,14 @@ model Server {
 }
 
 model Profile {
-  id                    String  @id @default(uuid())
-  userId                String  @unique
+  id                    String @id @default(cuid())
+  userId                String @db.Text
   name                  String? @db.Text
   imageUrl              String  @db.Text
   email                 String  @db.Text
+  password              String?  @default("")
+  token                 String?  @default("")
+  emailVerified         Boolean @default(false)
   language              String? @db.Text
   isOnline              String  @default("Online")
   role                  String  @default("USER")
@@ -246,7 +249,7 @@ model UserProgress {
 
 model Purchase {
   id     String @id @default(uuid())
-  userId String
+  userId String @default("")
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
@@ -271,9 +274,9 @@ model StripeCustomer {
 
 model NewsletterSubscription {
   id        String   @id @default(uuid())
-  userId    String   @unique
+  userId    String   @db.Text
   name      String
-  email     String   @unique
+  email     String   @db.Text
   message   String?  @db.Text
   createdAt DateTime @default(now())
 }

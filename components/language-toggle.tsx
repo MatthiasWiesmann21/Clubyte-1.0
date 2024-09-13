@@ -19,7 +19,6 @@ export function LanguageToggle() {
   const dispatch = useDispatch();
   const language = useSelector((state: any) => state?.language);
   const user = useSelector((state: any) => state?.user);
-
   const currentLanguage = useLanguage();
 
   // const [language, setLanguage] = React.useState("English");

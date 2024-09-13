@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
@@ -8,16 +8,22 @@ import { columns } from "./_components/columns";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import { CourseCounter } from "@/components/courseCounter";
+import authOptions from "@/lib/auth"; // Ensure this is correctly configured
 
 const CoursesPage = async () => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
+
+  if (!userId) {
+    return redirect("/search");
+  }
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
   const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
 
-  if (!userId || !canAccess) {
-   return redirect("/search");
+  if (!canAccess) {
+    return redirect("/search");
   }
 
   const courses = await db.course.findMany({
@@ -41,12 +47,12 @@ const CoursesPage = async () => {
     }
   });
 
-  return ( 
+  return (
     <div className="p-6">
-      <CourseCounter courses={existingCourses} maxCourses={container?.maxCourses ?? 0}/>
+      <CourseCounter courses={existingCourses} maxCourses={container?.maxCourses ?? 0} />
       <DataTable columns={columns} data={courses} />
     </div>
-   );
-}
- 
+  );
+};
+
 export default CoursesPage;

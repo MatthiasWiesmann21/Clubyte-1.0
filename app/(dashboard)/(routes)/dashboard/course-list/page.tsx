@@ -1,4 +1,3 @@
-import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { CoursesList } from "@/components/courses-list";
 import { getSearchCourses } from "@/actions/get-searchcourses";
@@ -8,7 +7,8 @@ import { ArrowLeft } from "lucide-react";
 import { Categories } from "../_components/categories";
 import { db } from "@/lib/db";
 import getBase64 from "@/lib/getLocalbase64";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 interface SearchPageProps {
   searchParams: {
     title: string;
@@ -17,16 +17,17 @@ interface SearchPageProps {
 }
 
 const CourseListPage = async ({ searchParams }: SearchPageProps) => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
-    return redirect("/");
+
+  if (!session?.user?.id) {
+    return redirect("/"); // Redirect if no user is found in session
   }
 
   const currentLanguage = await languageServer();
 
   const courses = await getSearchCourses({
-    userId,
+    userId: session.user.id, // Use session user ID
     ...searchParams,
   });
 

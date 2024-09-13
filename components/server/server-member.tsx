@@ -48,7 +48,7 @@ export const ServerMember = ({ member, server, profileOnlineStatus }: ServerMemb
       )}
     >
       <UserAvatar
-        src={member.profile.imageUrl}
+        src={member?.profile?.imageUrl}
         className="h-8 w-8 md:h-8 md:w-8"
       />
       <p
@@ -58,7 +58,7 @@ export const ServerMember = ({ member, server, profileOnlineStatus }: ServerMemb
             "text-primary dark:text-zinc-200 dark:group-hover:text-white"
         )}
       >
-        {member.profile.name}
+        {member?.profile?.name}
       </p>
       {icon}
     </button>

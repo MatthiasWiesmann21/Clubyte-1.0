@@ -122,6 +122,7 @@ export const ChapterAccessForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.chapter_accessForm_save}
               </Button>

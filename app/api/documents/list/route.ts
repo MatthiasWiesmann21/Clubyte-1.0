@@ -1,9 +1,10 @@
 import createFolder from "@/app/vendor/aws/s3/createFolder";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+
 import { NextResponse } from "next/server";
 import { isOwner } from "@/lib/owner";
-
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 const getOrCreateParentFolder = async (userId: string, parentKey?: string) => {
   if (parentKey != null) {
     const parentFolder = await db.folder.findFirst({
@@ -19,7 +20,6 @@ const getOrCreateParentFolder = async (userId: string, parentKey?: string) => {
     return parentFolder;
   }
 
-  // folderId is null now check if root fodler exists
   let rootFolder = await db.folder.findFirst({
     where: {
       parentFolder: null,
@@ -28,11 +28,6 @@ const getOrCreateParentFolder = async (userId: string, parentKey?: string) => {
     },
   });
   if (rootFolder == null) {
-    const { userId } = auth();
-    if (userId == null) {
-      throw new Error("Login first to access");
-    }
-    // Create a root folder in S3 and add its path to db
     const key = `${userId}-root/`; // Adding slash at the end of key it will make a folder
     await createFolder(key);
 
@@ -84,22 +79,19 @@ async function getFolderAndFiles(
           },
         },
       });
-    }
-    if (key != null) {
+    } else {
       folder = await db.folder.findFirst({
         where: { key: key, containerId: process.env.CONTAINER_ID },
         include: {
           subFolders: {
             where: {
               containerId: process.env.CONTAINER_ID,
-
               OR: [{ isPublic: true }, { userId: userId }],
             },
           },
           files: {
             where: {
               containerId: process.env.CONTAINER_ID,
-
               OR: [{ isPublic: true }, { userId: userId }],
             },
           },
@@ -128,8 +120,7 @@ async function getFolderAndFiles(
           },
         },
       });
-    }
-    if (key != null && !isPublicDirectory) {
+    } else if (!isPublicDirectory) {
       folder = await db.folder.findFirst({
         where: { key: key, containerId: process.env.CONTAINER_ID },
         include: {
@@ -143,9 +134,7 @@ async function getFolderAndFiles(
           },
         },
       });
-    }
-
-    if (key != null && isPublicDirectory) {
+    } else {
       folder = await db.folder.findFirst({
         where: { key: key, containerId: process.env.CONTAINER_ID },
         include: {
@@ -163,13 +152,13 @@ async function getFolderAndFiles(
   return folder;
 }
 
-export async function GET(req: any) {
-  // POST /api/upload
+export async function GET(req: Request) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
 
-    const id = req.nextUrl.searchParams.get("key");
-    const isPublicDirectory = req.nextUrl.searchParams.get("isPublicDirectory");
+    const id = (req as any).nextUrl.searchParams.get("key");
+    const isPublicDirectory = (req as any).nextUrl.searchParams.get("isPublicDirectory");
 
     let key = null;
     if (id) {
@@ -183,7 +172,7 @@ export async function GET(req: any) {
     }
 
     if (userId == null) {
-      throw new Error("Un Authorized");
+      throw new Error("Unauthorized");
     }
 
     if (isOwner(userId)) {

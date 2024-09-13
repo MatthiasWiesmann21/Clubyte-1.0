@@ -1,24 +1,24 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import { CircleDollarSign, File, Image, LayoutDashboard, LayoutGridIcon, ListChecks } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
 import { Banner } from "@/components/banner";
-
-
 import { Actions } from "./_components/actions";
 import { TitleForm } from "./_components/title-form";
 import { ShowContainerId } from "./_components/containerid-widget";
 import { PackageForm } from "./_components/package-form";
 import { MaxCoursesForm } from "./_components/max-courses-form";
+import authOptions from "@/lib/auth"; // Ensure this is properly configured
 
 const ContainerIdPage = async ({
   params
 }: {
   params: { containerId: string }
 }) => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
 
   if (!userId) {
     return redirect("/");
@@ -77,7 +77,7 @@ const ContainerIdPage = async ({
               containerId={container.id}
             />
             <ShowContainerId
-            initialData={container}
+              initialData={container}
             />
           </div>
           <div>
@@ -110,7 +110,7 @@ const ContainerIdPage = async ({
         </div>
       </div>
     </>
-   );
-}
- 
+  );
+};
+
 export default ContainerIdPage;

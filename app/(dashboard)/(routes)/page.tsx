@@ -1,11 +1,7 @@
-import { initialProfile } from "@/lib/initial-profile";
-import { currentUser } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
-export default async function Home() {
-  const profile = await initialProfile();
-  const user = await currentUser();
+"use client"
 
-  if (profile && user) {
-      return redirect("/dashboard");
-    }
+import { redirect } from "next/navigation";
+
+export default function Home() {
+ return redirect("/dashboard");
 }

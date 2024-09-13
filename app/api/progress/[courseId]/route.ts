@@ -1,18 +1,23 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth"; 
 
 export async function GET(
   req: Request,
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const { userId } = auth();
+    // Get the session
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
 
+    // Check if userId is present
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    // Fetch the course with chapters
     const course = await db.course.findUnique({
       where: {
         id: params.courseId,
@@ -32,22 +37,9 @@ export async function GET(
 
     console?.log("course", course);
 
-    //   const userProgress = await db.userProgress.findUnique({
-    //     where: {
-    //       userId_chapterId: {
-    //         userId,
-    //         chapterId: params.chapterId,
-    //       },
-    //     },
-    //   });
-
-    //   if (!userProgress) {
-    //     return new NextResponse("Not Found", { status: 404 });
-    //   }
-
     return NextResponse.json(course);
   } catch (error) {
-    console.log("[CHAPTER_ID_PROGRESS_GET]", error);
+    console.log("[COURSE_GET]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import { ArrowLeft, Image, LayoutGridIcon } from "lucide-react";
 
@@ -14,14 +14,17 @@ import { Actions } from "./_components/actions";
 import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
 import { ScheduleDateForm } from "./_components/schedule-date-form";
+import authOptions from "@/lib/auth"; // Ensure this is configured correctly
 
 const PostIdPage = async ({
   params
 }: {
   params: { postId: string }
 }) => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
   const currentLanguage = await languageServer();
+
   if (!userId) {
     return redirect("/");
   }
@@ -43,13 +46,12 @@ const PostIdPage = async ({
     },
   });
 
-  const profile = await db.profile.findUnique({
+  const profile = await db.profile.findFirst({
     where: {
       userId: userId,
       containerId: process.env.CONTAINER_ID,
     },
   });
-
 
   if (!post) {
     return redirect("/");
@@ -75,13 +77,13 @@ const PostIdPage = async ({
         />
       )}
       <div className="p-6">
-      <Link
-        href={`/admin/posts`}
-        className="mb-6 flex items-center text-sm transition hover:opacity-75"
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        {currentLanguage.post_setup_backToPostAdminList_button_text}
-      </Link>
+        <Link
+          href={`/admin/posts`}
+          className="mb-6 flex items-center text-sm transition hover:opacity-75"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {currentLanguage.post_setup_backToPostAdminList_button_text}
+        </Link>
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl font-medium">
@@ -141,17 +143,17 @@ const PostIdPage = async ({
             <ImageForm
               initialData={post}
               postId={post.id}
-              />
+            />
             <ScheduleDateForm
-            // @ts-ignore
-               initialData={post}
-               postId={post.id}
-              />
+              //@ts-ignore
+              initialData={post}
+              postId={post.id}
+            />
           </div>
         </div>
       </div>
     </>
-   );
-}
- 
+  );
+};
+
 export default PostIdPage;

@@ -1,6 +1,7 @@
-import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
 
+import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
 
 export async function PATCH(
@@ -8,9 +9,10 @@ export async function PATCH(
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const session = await getServerSession(authOptions);
+    const user = session?.user;
 
-    if (!userId) {
+    if (!user || !user.id) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -18,7 +20,7 @@ export async function PATCH(
       where: {
         id: params.courseId,
         containerId: process.env.CONTAINER_ID,
-      }
+      },
     });
 
     if (!ownCourse) {
@@ -29,9 +31,8 @@ export async function PATCH(
       where: {
         id: params.chapterId,
         courseId: params.courseId,
-      }
+      },
     });
-
 
     if (!chapter || !chapter.title || !chapter.description || !chapter.videoUrl) {
       return new NextResponse("Missing required fields", { status: 400 });
@@ -44,12 +45,12 @@ export async function PATCH(
       },
       data: {
         isPublished: true,
-      }
+      },
     });
 
     return NextResponse.json(publishedChapter);
   } catch (error) {
     console.log("[CHAPTER_PUBLISH]", error);
-    return new NextResponse("Internal Error", { status: 500 }); 
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

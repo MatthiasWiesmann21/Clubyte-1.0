@@ -102,7 +102,7 @@ export const CategoryForm = ({
             <FormField
               control={form.control}
               name="categoryId"
-              render={({ field }) => (
+              render={({ field } : any) => (
                 <FormItem>
                   <FormControl>
                     <Combobox options={...options} {...field} />
@@ -112,7 +112,7 @@ export const CategoryForm = ({
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button disabled={!isValid || isSubmitting} type="submit">
+              <Button disabled={!isValid || isSubmitting} type="submit" onClick={()=>onSubmit(form.getValues())}>
                 {currentLanguage.liveEvent_CategoryForm_save}
               </Button>
             </div>

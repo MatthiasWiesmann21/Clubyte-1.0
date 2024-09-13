@@ -113,6 +113,7 @@ export const CategoryForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.post_CategoryForm_save}
               </Button>

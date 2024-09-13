@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@clerk/nextjs";
+import { useSession, signIn, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { LogOut, Settings } from "lucide-react";
 import Link from "next/link";
@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/tooltip";
 import { useRouter } from "next/navigation";
 
-
 interface NavbarRoutesProps {
   profileId: string;
   profileName: string;
@@ -38,13 +37,14 @@ export const NavbarRoutes = ({
   profileOnlineStatus,
 }: NavbarRoutesProps) => {
   const router = useRouter();
-  const { userId } = useAuth();
+  const { data: session } = useSession();
   const pathname = usePathname();
   const currentLanguage = useLanguage();
 
   const isAdmin = useIsAdmin();
   const isOperator = useIsOperator();
 
+  const userId = session?.user?.id;
   const canAccess = isAdmin || isOperator || isOwner(userId);
 
   const isAdministrationPage = pathname?.startsWith("/admin");
@@ -53,9 +53,7 @@ export const NavbarRoutes = ({
   const isSearchPage = pathname === "/search";
   const isLiveEventPage = pathname === "/live-event";
 
-    if (!profileName) {
-      router.push("/sign-in");
-    }
+
 
   return (
     <>
@@ -75,8 +73,8 @@ export const NavbarRoutes = ({
         </div>
       )}
       <div className="ml-auto flex gap-x-1">
-        <TooltipProvider>
-          <Tooltip>
+        <TooltipProvider><>
+           <Tooltip>
             <TooltipTrigger>
               <LanguageToggle />
             </TooltipTrigger>
@@ -120,7 +118,7 @@ export const NavbarRoutes = ({
               profileImageUrl={profileImageUrl}
               profileOnlineStatus={profileOnlineStatus}
             />
-          </div>
+          </div> </>
         </TooltipProvider>
       </div>
     </>

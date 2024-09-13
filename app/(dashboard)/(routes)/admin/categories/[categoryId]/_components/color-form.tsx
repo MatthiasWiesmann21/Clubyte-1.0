@@ -97,6 +97,7 @@ export const ColorForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.categories_ColorForm_save}
               </Button>

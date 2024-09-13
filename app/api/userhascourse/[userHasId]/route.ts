@@ -1,14 +1,21 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth"; // Adjust import based on where your authOptions are defined
 
 export async function GET(
   req: Request,
   { params }: { params: { userHasId: string } }
 ) {
-  const { userId }: any = auth();
+  const session = await getServerSession(authOptions);
+  const { userId } = session?.user || {};
   const { userHasId } = params;
+  
   try {
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
     const userHasCourse = await db.userHasCourse.findFirst({
       where: { courseId: userHasId, userId },
       include: {
@@ -26,18 +33,21 @@ export async function GET(
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
 export async function PATCH(
   req: Request,
   { params }: { params: { userHasId: string } }
 ) {
   try {
-    const { userHasId } = params;
-    const { userId, courseId, status } = await req.json();
-
-    const authData = auth();
-    if (!authData?.userId) {
+    const session = await getServerSession(authOptions);
+    const { userId } = session?.user || {};
+    
+    if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+
+    const { userHasId } = params;
+    const { courseId, status } = await req.json();
 
     const userHasCourse = await db.userHasCourse.update({
       where: { id: userHasId },

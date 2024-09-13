@@ -11,7 +11,6 @@ import {
   UserPlus,
   Users,
   EllipsisVertical,
-  // @ts-ignore
 } from "lucide-react";
 
 import {
@@ -40,69 +39,70 @@ export const ServerHeader = ({ servers, server, role }: ServerHeaderProps) => {
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
   return (
-    <div className="relative flex items-center">
-      <DropdownMenu>
-        <DropdownMenuTrigger className="focus:outline-none" asChild>
-          <button className="text-md flex h-12 w-full items-center px-3 font-semibold transition hover:bg-zinc-700/10 dark:border-neutral-800 dark:hover:bg-zinc-700/50">
-            <Image
-              priority
-              src={server?.imageUrl}
-              alt="server?.imagUrl"
-              width={24}
-              height={24}
-            />
-            <span className="mx-2 text-sm font-semibold dark:text-[#baa5c1]">
-              {server?.name}
-            </span>
-            <ChevronDown className="h-5 w-5" />
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56 space-y-[2px] bg-[#f6f8fa] text-xs font-medium text-black dark:bg-[#101828] dark:text-neutral-400">
-          {servers?.map((each: ServerWithMembersWithProfiles) => (
-            <DropdownMenuItem
-              onClick={() => push(`/chat/servers/${each?.id}`)}
-              className="flex h-10 cursor-pointer items-center p-1 text-indigo-600 dark:text-indigo-400"
-            >
+    <div className="flex items-center justify-between w-full px-2 py-2">
+      {/* Server Dropdown */}
+      <div className="flex-grow mr-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="focus:outline-none" asChild>
+            <button className="text-md flex h-12 w-full items-center px-3 font-semibold transition rounded-xl hover:bg-zinc-700/10 dark:border-neutral-800 dark:hover:bg-zinc-700/50">
               <Image
                 priority
-                src={each?.imageUrl}
-                alt="each?.imageUrl"
-                objectFit="contain"
+                src={server?.imageUrl}
+                alt="server?.imagUrl"
                 width={24}
                 height={24}
-                className="mr-2"
               />
-              <span className=" text-sm font-semibold dark:text-[#baa5c1]">
-                {each?.name}
+              <span className="mx-2 text-sm font-semibold dark:text-[#baa5c1]">
+                {server?.name}
               </span>
-            </DropdownMenuItem>
-          ))}
-          <DropdownMenuItem
-            onClick={() => onOpen("createServer")}
-            className="flex h-10 cursor-pointer items-center p-1"
-          >
-            {isAdmin && (
-              <div className="flex h-8 cursor-pointer items-center text-indigo-600 dark:text-indigo-400">
-                <PlusCircle className="h-6 w-6" />
-                <p className="ml-2 text-sm font-semibold">
-                  {currentLanguage.chat_server_addServer}
-                </p>
+              <div className="ml-auto">
+                <ChevronDown className="max-h-8 max-w-8 h-5 w-5" />
               </div>
-            )}
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <div className="absolute right-0">
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            className="focus:outline-none"
-            asChild
-            // style={{ border: "2px solid green" }}
-          >
-            <button
-              // style={{ border: "2px solid blue" }}
-              className="text-md mr-2 flex items-center justify-center rounded-full border-2 p-1 font-semibold transition duration-300 ease-in-out hover:border-[#ea2088] hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50"
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56 space-y-[2px] bg-[#f6f8fa] text-xs font-medium text-black dark:bg-[#101828] dark:text-neutral-400">
+            {servers?.map((each: ServerWithMembersWithProfiles, index) => (
+              <DropdownMenuItem
+                onClick={() => push(`/chat/servers/${each?.id}`)}
+                className="flex h-10 cursor-pointer items-center p-1 text-indigo-600 dark:text-indigo-400"
+                key={index}
+              >
+                <Image
+                  priority
+                  src={each?.imageUrl}
+                  alt="each?.imageUrl"
+                  objectFit="contain"
+                  width={24}
+                  height={24}
+                  className="mr-2"
+                />
+                <span className="text-sm font-semibold dark:text-[#baa5c1]">
+                  {each?.name}
+                </span>
+              </DropdownMenuItem>
+            ))}
+            <DropdownMenuItem
+              onClick={() => onOpen("createServer")}
+              className="flex h-10 cursor-pointer items-center p-1"
             >
+              {isAdmin && (
+                <div className="flex h-8 cursor-pointer items-center text-indigo-600 dark:text-indigo-400">
+                  <PlusCircle className="h-6 w-6" />
+                  <p className="ml-2 text-sm font-semibold">
+                    {currentLanguage.chat_server_addServer}
+                  </p>
+                </div>
+              )}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* EllipsisVertical Dropdown */}
+      <div className="flex-shrink-0">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="focus:outline-none" asChild>
+            <button className="text-md flex items-center justify-center rounded-full p-2 font-semibold transition duration-300 ease-in-out hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50">
               <EllipsisVertical className="text-[gray] dark:text-[white]" />
             </button>
           </DropdownMenuTrigger>

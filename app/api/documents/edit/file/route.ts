@@ -1,17 +1,18 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
 
+import { NextResponse } from "next/server";
+import authOptions from "@/lib/auth";
+import { getServerSession } from "next-auth";
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+      const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
 
-    if (userId == null) {
-      throw new Error("Un Authorized");
+    if (!userId) {
+      throw new Error("Unauthorized");
     }
 
     const requestBody = await req.json();
-
     const { id, fileName, isPublic } = requestBody;
 
     const existingFile = await db.file.findFirst({

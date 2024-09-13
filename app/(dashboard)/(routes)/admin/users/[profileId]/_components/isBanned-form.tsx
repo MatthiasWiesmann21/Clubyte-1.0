@@ -23,7 +23,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Combobox } from "@/components/ui/combobox";
 import { useIsAdmin } from "@/lib/roleCheck";
 import { isOwner } from "@/lib/owner";
-import { auth } from "@clerk/nextjs";
 import { useLanguage } from "@/lib/check-language";
 
 interface isBannedFormProps {
@@ -45,6 +44,7 @@ export const IsBannedForm = ({
   const isAdmin = useIsAdmin();
   const currentLanguage = useLanguage();
   const canAccess = isAdmin || process.env.NEXT_PUBLIC_OWNER_ID;
+  const { setValue } = useForm();
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
@@ -59,9 +59,10 @@ export const IsBannedForm = ({
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: any ) => {
     try {
-      await axios.patch(`/api/profile/${profileId}`, values);
+      console.log("Form in on submit function" , form , form.getValues() );
+      await axios.patch(`/api/profile/${profileId}`, form.getValues());
       toast.success("Profile updated");
       toggleEdit();
       router.refresh();
@@ -71,6 +72,12 @@ export const IsBannedForm = ({
   }
 
   const selectedOption = options.find((option) => option.value === initialData.isBanned);
+
+  const  comboBoxChanged = (e: any)=> {
+    // initialData.isBanned = (e === "BANNED");
+    form.setValue("isBanned" , e);
+    console.log("Combo box changed" , e );
+  }
 
   return (
     <div className="mt-6 border bg-slate-200 dark:bg-slate-700 border-red-600 dark:border-red-600 rounded-md p-4">
@@ -106,12 +113,13 @@ export const IsBannedForm = ({
             <FormField
               control={form.control}
               name="isBanned"
-              render={({ field }) => (
+              render={({ field } : any ) => (
                 <FormItem>
                   <FormControl>
                     <Combobox
-                      options={...options}
+                      options={options}
                       {...field}
+                      onChange={comboBoxChanged}
                     />
                   </FormControl>
                   <FormMessage />
@@ -122,6 +130,7 @@ export const IsBannedForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.user_isBannedForm_save}
               </Button>

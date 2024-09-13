@@ -1,5 +1,6 @@
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { ArrowLeft, LayoutDashboard, ListChecks } from "lucide-react";
 
 import { db } from "@/lib/db";
@@ -15,15 +16,17 @@ import { VideoForm } from "./_components/event-video-form";
 import { StartDateTimeForm } from "./_components/startDateTime-form";
 import { EndDateTimeForm } from "./_components/endDateTime-form";
 import { languageServer } from "@/lib/check-language-server";
-import Link from "next/link";
+import authOptions from "@/lib/auth"; // Ensure this is configured correctly
 
 const LiveEventIdPage = async ({
   params,
 }: {
   params: { liveEventId: string };
 }) => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
   const currentLanguage = await languageServer();
+
   if (!userId) {
     return redirect("/");
   }
@@ -64,21 +67,19 @@ const LiveEventIdPage = async ({
 
   const isComplete = requiredFields.every(Boolean);
 
-  console.log("liveEvent", liveEvent);
-
   return (
     <>
       {!liveEvent.isPublished && (
         <Banner label={currentLanguage.liveEvent_unpublish_banner} />
       )}
       <div className="p-6">
-      <Link
-        href={`/admin/live-event`}
-        className="mb-6 flex items-center text-sm transition hover:opacity-75"
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        {currentLanguage.liveEvent_setup_backToEventAdminList_button_text}
-      </Link>
+        <Link
+          href={`/admin/live-event`}
+          className="mb-6 flex items-center text-sm transition hover:opacity-75"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {currentLanguage.liveEvent_setup_backToEventAdminList_button_text}
+        </Link>
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl font-medium">{currentLanguage.liveEvent_setup_title}</h1>
@@ -105,9 +106,7 @@ const LiveEventIdPage = async ({
               liveEventId={liveEvent.id}
             />
             <CategoryForm
-              initialData={{
-                ...liveEvent,
-              }}
+              initialData={liveEvent}
               liveEventId={liveEvent.id}
               options={categories.map((category) => ({
                 label: category.name,
@@ -115,14 +114,12 @@ const LiveEventIdPage = async ({
               }))}
             />
             <StartDateTimeForm
-              //@ts-ignore
               initialData={liveEvent}
-              liveEventId={liveEvent?.id}
+              liveEventId={liveEvent.id}
             />
             <EndDateTimeForm
-              //@ts-ignore
               initialData={liveEvent}
-              liveEventId={liveEvent?.id}
+              liveEventId={liveEvent.id}
             />
           </div>
           <div className="space-y-6">

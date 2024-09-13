@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@clerk/nextjs";
+import { useSession } from "next-auth/react"; // Use NextAuth's useSession hook
 import { redirect } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { VideoPlayer } from "./_components/video-player";
@@ -13,7 +13,7 @@ import Love from "./_components/love";
 import { EventPreview } from "@/components/event-preview";
 
 const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
-  const { userId } = useAuth();
+  const { data: session } = useSession(); // Get session data from NextAuth
   const [liveEvent, setLiveEvent] = useState<any>();
   const [category, setCategory] = useState<any>();
 
@@ -29,7 +29,7 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
     getLiveEvent();
   }, []);
 
-  if (!userId) {
+  if (!session?.user?.id) {
     return redirect("/");
   }
 

@@ -1,6 +1,4 @@
-import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-
 import { db } from "@/lib/db";
 import { getOrCreateConversation } from "@/lib/conversation";
 import { currentProfile } from "@/lib/current-profile";
@@ -20,16 +18,11 @@ interface MemberIdPageProps {
 }
 
 const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
-  const profile = await currentProfile();
-
-  if (!profile) {
-    return redirectToSignIn();
-  }
-
+  const profile: any = await currentProfile();
   const currentMember = await db.member.findFirst({
     where: {
       serverId: params.serverId,
-      profileId: profile.id,
+      profileId: profile?.id || '',
       containerId: process.env.CONTAINER_ID,
     },
     include: {

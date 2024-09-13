@@ -3,10 +3,14 @@ import { Logo } from "./logo";
 import { SidebarRoutes } from "./sidebar-routes";
 import { languageServer } from "@/lib/check-language-server";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth";
+import { HelpCircle, Lock } from "lucide-react";
+import Link from "next/link";
 
 export const Sidebar = async () => {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
   const currentLanguage = await languageServer();
 
   const container = await db.container.findUnique({
@@ -15,34 +19,39 @@ export const Sidebar = async () => {
     },
   });
 
-  const profile = await db.profile.findUnique({
+  const profile = await db.profile.findFirst({
     where: {
       userId: userId!,
     },
   });
 
-  
   return (
-    <div className="flex h-full flex-col overflow-y-auto border-r bg-white shadow-sm dark:bg-[#0A0118]">
+    <div className="-y-auto flex h-full flex-col border-r bg-white shadow-sm dark:bg-[#0A0118]">
       <PrivacyPolicyModal profile={profile} />
-      <div className="flex items-center justify-center h-[80px]">
+      <div className="flex h-[80px] items-center justify-center border-b">
         <Logo
           imageUrl={container?.imageUrl || ""}
           imageUrlDark={container?.imageUrlDark || ""}
           link={container?.link || ""}
         />
       </div>
-      <div className="flex w-full flex-col border-t ">
+      <div className="flex-grow">
         <SidebarRoutes
           navPrimaryColor={container?.navPrimaryColor || "#ff00ff"}
           navDarkPrimaryColor={container?.navDarkPrimaryColor || "#ff00ff"}
           navBackgroundColor={container?.navBackgroundColor || "#ff00ff"}
-          navDarkBackgroundColor={container?.navDarkBackgroundColor || "#ff00ff"}
+          navDarkBackgroundColor={
+            container?.navDarkBackgroundColor || "#ff00ff"
+          }
         />
       </div>
       {container?.clientPackage != "EXPERT" && (
-        <div className="flex flex-grow items-end justify-center pb-5">
-          <a href="https://clubyte.live" className="hover:cursor-pointer" target="_blank">
+        <div className="flex flex-col items-center pb-5">
+          <a
+            href="https://clubyte.live"
+            className="cursor-pointer"
+            target="_blank"
+          >
             <div className="flex items-center">
               <span className="text-xs font-medium text-gray-600">Made by</span>
               <svg
@@ -139,6 +148,26 @@ export const Sidebar = async () => {
               </svg>
             </div>
           </a>
+          <div className="mt-2 flex items-center justify-center space-x-2">
+            <Link
+              className="flex items-center text-sm font-semibold text-gray-600 hover:underline"
+              href="https://docs.clubyte.live"
+              target="_blank"
+            >
+              <HelpCircle className="mr-1" size={16} />
+              {currentLanguage.sidebar_help}
+            </Link>
+            {/* Separator */}
+            <div className="text-gray-600">|</div>
+            <Link
+              className="flex items-center text-sm font-semibold text-gray-600 hover:underline"
+              href="https://clubyte.live/privacy-policy/"
+              target="_blank"
+            >
+              <Lock className="mr-1" size={16}/>
+              {currentLanguage.sidebar_privacy_policy}
+            </Link>
+          </div>
         </div>
       )}
     </div>
