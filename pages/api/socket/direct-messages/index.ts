@@ -1,8 +1,9 @@
 import { NextApiRequest } from "next";
 
 import { NextApiResponseServerIo } from "@/types";
-import { currentProfilePages } from "@/lib/current-profile-pages";
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth";
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,8 +16,19 @@ export default async function handler(
   try {
     // Initialize Socket.io if it hasn't been initialized yet
     console.log("Direct message received")
-    const profile = await currentProfilePages(req);
-    console.log("After Direct message received")
+    const session = await getServerSession(req, res, authOptions);
+    console.log("session" , session );
+    if (!session?.user?.id) {
+      throw "Unauthorized";
+    }
+    const profile = await db.profile.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+    });
+    if (!profile) {
+      throw "Unauthorized";
+    }
 
     const { content, fileUrl } = req.body;
     const { conversationId } = req.query;

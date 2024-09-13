@@ -13,7 +13,7 @@ export default async function handler(
   }
 
   try {
-    const profile = await currentProfilePages(req);
+    const profile = await currentProfilePages(req , res );
     const { content, fileUrl } = req.body;
     const { conversationId } = req.query;
     

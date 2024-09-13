@@ -2,8 +2,9 @@ import { NextApiRequest } from "next";
 import { MemberRole } from "@prisma/client";
 
 import { NextApiResponseServerIo } from "@/types";
-import { currentProfilePages } from "@/lib/current-profile-pages";
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,15 +13,23 @@ export default async function handler(
   if (req.method !== "DELETE" && req.method !== "PATCH") {
     return res.status(405).json({ error: "Method not allowed" });
   }
-
+ 
   try {
-    const profile = await currentProfilePages(req);
+    const session = await getServerSession(req, res, authOptions);
+    console.log("session" , session );
+    if (!session?.user?.id) {
+      throw "Unauthorized";
+    }
+    const profile = await db.profile.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+    });
+    if (!profile) {
+      throw "Unauthorized";
+    }
     const { directMessageId, conversationId } = req.query;
     const { content } = req.body;
-
-    if (!profile) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
 
     if (!conversationId) {
       return res.status(400).json({ error: "Conversation ID missing" });
