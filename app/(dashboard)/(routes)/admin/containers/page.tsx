@@ -10,7 +10,7 @@ const ContainerPage = async () => {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
 
-  if (!userId || !isOwner(userId)) {
+  if (userId ==! "user_1725647173943") {
     return redirect("/admin/courses");
   }
 
