@@ -80,20 +80,20 @@ export const ServerHeader = ({ servers, server, role }: ServerHeaderProps) => {
                   {each?.name}
                 </span>
               </DropdownMenuItem>
-            ))}
-            <DropdownMenuItem
-              onClick={() => onOpen("createServer")}
-              className="flex h-10 cursor-pointer items-center p-1"
-            >
+            ))}         
               {isAdmin && (
+                <DropdownMenuItem
+                onClick={() => onOpen("createServer")}
+                className="flex h-10 cursor-pointer items-center p-1"
+              >
                 <div className="flex h-8 cursor-pointer items-center text-indigo-600 dark:text-indigo-400">
                   <PlusCircle className="h-6 w-6" />
                   <p className="ml-2 text-sm font-semibold">
                     {currentLanguage.chat_server_addServer}
                   </p>
                 </div>
+                </DropdownMenuItem>
               )}
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

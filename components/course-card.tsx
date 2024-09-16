@@ -68,7 +68,7 @@ export const CourseCard = ({
           <div className="relative aspect-video w-full overflow-hidden rounded-md border-2 border-slate-300/50 dark:border-slate-700/60">
             {/* Show a placeholder or spinner while the image is loading */}
             {isLoading && (
-              <div className="flex items-center justify-center h-full w-full bg-gray-200 dark:bg-gray-700 animate-pulse">
+              <div className="flex items-center justify-center h-full w-full">
                 <span className="text-sm text-gray-500 dark:text-gray-400">
                   {theme === "dark" ? (
                     <ClubyteLoader className="w-64 h-64" theme="dark" color="0c0319" />

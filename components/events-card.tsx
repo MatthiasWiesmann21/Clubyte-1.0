@@ -82,7 +82,7 @@ export const EventCard = ({
               )}
               {/* Show a placeholder or spinner while the image is loading */}
               {isLoading && (
-                <div className="flex h-full w-full animate-pulse items-center justify-center bg-gray-200 dark:bg-gray-700">
+                <div className="flex h-full w-full items-center justify-center">
                   <span className="text-sm text-gray-500 dark:text-gray-400">
                     {theme === "dark" ? (
                       <ClubyteLoader
