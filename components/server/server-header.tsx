@@ -44,7 +44,7 @@ export const ServerHeader = ({ servers, server, role }: ServerHeaderProps) => {
       <div className="flex-grow mr-2">
         <DropdownMenu>
           <DropdownMenuTrigger className="focus:outline-none" asChild>
-            <button className="text-md flex h-12 w-full items-center px-3 font-semibold transition rounded-xl hover:bg-zinc-700/10 dark:border-neutral-800 dark:hover:bg-zinc-700/50">
+            <button className="text-md flex h-12 w-full items-center px-3 font-semibold transition rounded-xl hover:bg-zinc-700/10 dark:border-neutral-800 dark:hover:bg-zinc-700/50 ease-in-out duration-300">
               <Image
                 priority
                 src={server?.imageUrl}
@@ -80,20 +80,20 @@ export const ServerHeader = ({ servers, server, role }: ServerHeaderProps) => {
                   {each?.name}
                 </span>
               </DropdownMenuItem>
-            ))}
-            <DropdownMenuItem
-              onClick={() => onOpen("createServer")}
-              className="flex h-10 cursor-pointer items-center p-1"
-            >
+            ))}         
               {isAdmin && (
+                <DropdownMenuItem
+                onClick={() => onOpen("createServer")}
+                className="flex h-10 cursor-pointer items-center p-1"
+              >
                 <div className="flex h-8 cursor-pointer items-center text-indigo-600 dark:text-indigo-400">
                   <PlusCircle className="h-6 w-6" />
                   <p className="ml-2 text-sm font-semibold">
                     {currentLanguage.chat_server_addServer}
                   </p>
                 </div>
+                </DropdownMenuItem>
               )}
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
