@@ -107,7 +107,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
 
   return (
     <div
-      className="flex sm:hidden h-full w-full flex-col bg-[#ffffff] text-primary dark:bg-[#0A0118]"
+      className="flex h-full w-full flex-col bg-[#ffffff] text-primary dark:bg-[#0A0118]"
       // style={{ border: "10px solid red" }}
     >
       <ServerHeader servers={servers} server={{...server , members : newMembers}} role={role} />
