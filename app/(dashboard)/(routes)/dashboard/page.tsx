@@ -28,6 +28,9 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
   if (!session?.user) {
     return redirect("/");
   }
+  if(!session?.user?.role){
+    session.user.role = session?.user?.profile?.role || 'USER';
+  }
 
   const userId = session.user.id;
   const userEmail = session.user.email;
