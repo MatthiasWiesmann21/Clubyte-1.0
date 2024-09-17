@@ -115,6 +115,9 @@ const authOptions = {
 
         if (userProfile) {
           session.user.profile = userProfile;
+          if(!session.user.role){
+            session.user.role = userProfile.role;
+          }
         }
       }
       return session;
