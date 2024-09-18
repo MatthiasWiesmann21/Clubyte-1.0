@@ -18,7 +18,7 @@ export async function DELETE(
       where: {
         id: params.serverId,
         profileId: profile.id,
-        containerId: process.env.CONTAINER_ID,
+        containerId: profile?.containerId,
       }
     });
 
@@ -45,7 +45,7 @@ export async function PATCH(
       where: {
         id: params.serverId,
         profileId: profile.id,
-        containerId: process.env.CONTAINER_ID,
+        containerId: profile?.containerId,
       },
       data: {
         name,

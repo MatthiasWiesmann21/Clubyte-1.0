@@ -18,7 +18,7 @@ export async function DELETE(
     const post = await db.post.findUnique({
       where: {
         id: params.postId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       }
     });
 
@@ -29,7 +29,7 @@ export async function DELETE(
     const deletedPost = await db.post.delete({
       where: {
         id: params.postId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
 
@@ -55,7 +55,7 @@ export async function PATCH(
     const post = await db.post.findUnique({
       where: {
         id: params.postId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       }
     });
 
@@ -66,7 +66,7 @@ export async function PATCH(
     const publishedPost = await db.post.update({
       where: {
         id: params.postId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
       data: {
         isPublished: false,

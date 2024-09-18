@@ -13,7 +13,7 @@ export const currentProfile = async () => {
     const profile = await db?.profile?.findFirst({
       where: { 
         userId: session.user.id ,
-        containerId: process.env.CONTAINER_ID
+        containerId: session?.user?.profile?.containerId
       },
       include: {
         container: true,

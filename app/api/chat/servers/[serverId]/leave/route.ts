@@ -21,7 +21,7 @@ export async function PATCH(
     const server = await db.server.update({
       where: {
         id: params.serverId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: profile?.containerId,
         profileId: {
           not: profile.id
         },

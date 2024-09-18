@@ -22,7 +22,7 @@ export async function PUT(
       where: {
         id: params.courseId,
         userId: user.id,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
 

@@ -82,7 +82,7 @@ const EventFilterSidebar = ({
           getEvent={{
             userId: session?.user?.id, // Access userId from session
             ...searchParams,
-            containerId: process.env.CONTAINER_ID,
+            containerId: session?.user?.profile?.containerId,
           }}
           liveEvent={liveEvents}
         />

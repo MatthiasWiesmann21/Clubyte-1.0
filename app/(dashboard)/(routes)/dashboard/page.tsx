@@ -48,7 +48,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
 
   const container: any = await db.container.findUnique({
     where: {
-      id: process.env.CONTAINER_ID,
+      id: session?.user?.profile?.containerId,
     },
   });
 
@@ -70,7 +70,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
   const coursess = await getCourses({
     userId,
     ...searchParams,
-    containerId: process.env.CONTAINER_ID,
+    containerId: session?.user?.profile?.containerId,
   });
 
   const isEmailVerified = await db.profile.findFirst({

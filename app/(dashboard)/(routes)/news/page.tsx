@@ -2,6 +2,9 @@ import dynamic from "next/dynamic";
 import { Category, Post } from "@prisma/client";
 import NewsWrapper from "./_components/newsWrapper";
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 type PostWithProgressWithCategory = Post & {
   category: Category | null;
@@ -18,11 +21,18 @@ interface SearchPageProps {
 }
 
 const NewsPage = async ({ searchParams }: SearchPageProps) => {
+
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    return redirect("/");
+  }
+
   const categories = await db?.category?.findMany({
     where: {
       isPublished: true,
       isNewsCategory: true,
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
     orderBy: {
       name: "asc",
@@ -36,7 +46,7 @@ const NewsPage = async ({ searchParams }: SearchPageProps) => {
 
   const container: any = await db.container.findUnique({
     where: {
-      id: process.env.CONTAINER_ID,
+      id: session?.user?.profile?.containerId,
     },
   });
 

@@ -29,7 +29,6 @@ export const getSearchCourses = async ({
           contains: title,
         },
         categoryId,
-        containerId: process.env.CONTAINER_ID,
       },
       include: {
         category: true,

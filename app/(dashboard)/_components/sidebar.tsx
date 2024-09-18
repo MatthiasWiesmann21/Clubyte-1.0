@@ -15,7 +15,7 @@ export const Sidebar = async () => {
 
   const container = await db.container.findUnique({
     where: {
-      id: process.env.CONTAINER_ID,
+      id: session?.user?.profile?.containerId,
     },
   });
 

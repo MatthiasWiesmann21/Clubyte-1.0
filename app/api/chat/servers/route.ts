@@ -20,15 +20,15 @@ export async function POST(req: Request) {
         name,
         imageUrl,
         inviteCode: uuidv4(),
-        containerId: process.env.CONTAINER_ID!,
+        containerId: profile?.containerId,
         channels: {
           create: [
-            { name: "general", profileId: profile.id, containerId: process.env.CONTAINER_ID || ""}
+            { name: "general", profileId: profile.id, containerId: profile?.containerId }
           ]
         },
         members: {
           create: [
-            { profileId: profile.id, role: MemberRole.ADMIN, containerId: process.env.CONTAINER_ID || "" }
+            { profileId: profile.id, role: MemberRole.ADMIN, containerId: profile?.containerId }
           ]
         }
       }

@@ -26,7 +26,6 @@ export const getChapter = async ({
       where: {
         isPublished: true,
         id: courseId,
-        containerId: process.env.CONTAINER_ID,
       },
       select: {
         price: true,

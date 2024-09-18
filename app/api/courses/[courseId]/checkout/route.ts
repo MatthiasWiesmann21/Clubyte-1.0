@@ -22,7 +22,7 @@ export async function POST(
       where: {
         id: params.courseId,
         isPublished: true,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
 

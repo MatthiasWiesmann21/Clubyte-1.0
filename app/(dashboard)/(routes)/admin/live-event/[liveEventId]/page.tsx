@@ -34,13 +34,13 @@ const LiveEventIdPage = async ({
   const liveEvent = await db.liveEvent.findUnique({
     where: {
       id: params.liveEventId,
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
   });
 
   const categories = await db.category.findMany({
     where: {
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
       isLiveEventCategory: true,
     },
     orderBy: {

@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { currentProfile } from "@/lib/current-profile";
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth";
 
 interface InviteCodePageProps {
   params: {
@@ -10,6 +12,12 @@ interface InviteCodePageProps {
 
 const InviteCodePage = async ({ params }: InviteCodePageProps) => {
   const profile = await currentProfile();
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    return redirect("/");
+  }
+
   if (!params.inviteCode) {
     return redirect("/search"); // Redirect to search if invite code is not provided
   }
@@ -17,7 +25,7 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
   const existingServer = await db.server.findFirst({
     where: {
       inviteCode: params.inviteCode,
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId!,
       members: {
         some: {
           profileId: profile?.id||''
@@ -39,7 +47,7 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
         create: [
           {
             profileId: profile?.id||'',
-            containerId: process.env.CONTAINER_ID || '',
+            containerId: session?.user?.profile?.containerId!,
           }
         ]
       }

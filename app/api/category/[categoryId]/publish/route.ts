@@ -19,7 +19,7 @@ export async function PATCH(
     const category = await db.category.findUnique({
       where: {
         id: params.categoryId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId!,
       }
     });
 
@@ -31,7 +31,7 @@ export async function PATCH(
     const publishedCategory = await db.category.update({
       where: {
         id: params.categoryId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId!,
       },
       data: {
         isPublished: true,

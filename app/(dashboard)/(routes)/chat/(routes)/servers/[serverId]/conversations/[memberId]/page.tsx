@@ -6,6 +6,8 @@ import { ChatHeader } from "@/components/chat/chat-header";
 import { ChatMessages } from "@/components/chat/chat-messages";
 import { ChatInput } from "@/components/chat/chat-input";
 import { MediaRoom } from "@/components/media-room";
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth";
 
 interface MemberIdPageProps {
   params: {
@@ -19,11 +21,18 @@ interface MemberIdPageProps {
 
 const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
   const profile: any = await currentProfile();
+
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    return redirect("/");
+  }
+
   const currentMember = await db.member.findFirst({
     where: {
       serverId: params.serverId,
       profileId: profile?.id || '',
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
     include: {
       profile: true,

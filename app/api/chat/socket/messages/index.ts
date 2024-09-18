@@ -36,7 +36,7 @@ export default async function handler(
     const server = await db.server.findFirst({
       where: {
         id: serverId as string,
-        containerId: process.env.CONTAINER_ID,
+        containerId: profile?.containerId,
         members: {
           some: {
             profileId: profile.id

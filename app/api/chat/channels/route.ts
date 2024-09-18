@@ -29,7 +29,7 @@ export async function POST(
     const server = await db.server.update({
       where: {
         id: serverId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: profile?.containerId,
         members: {
           some: {
             profileId: profile.id,
@@ -42,7 +42,7 @@ export async function POST(
       data: {
         channels: {
           create: {
-            containerId: process.env.CONTAINER_ID || "",
+            containerId: profile?.containerId!,
             profileId: profile.id,
             name,
             type,

@@ -32,7 +32,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     where: {
       isPublished: true,
       isLiveEventCategory: true,
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
     orderBy: {
       name: "asc",
@@ -47,12 +47,12 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const liveEvents = await getEvents({
     userId,
     ...searchParams,
-    containerId: process.env.CONTAINER_ID,
+    containerId: session?.user?.profile?.containerId,
   });
 
   const container = await db?.container?.findUnique({
     where: {
-      id: process.env.CONTAINER_ID,
+      id: session?.user?.profile?.containerId,
     },
   });
 

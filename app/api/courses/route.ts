@@ -14,7 +14,7 @@ export async function GET(req: Request) {
     const course = await db.course.findUnique({
       where: {
         id: courseId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
       include: {
         chapters: {
@@ -58,13 +58,13 @@ export async function POST(req: Request) {
 
     const container = await db.container.findUnique({
       where: {
-        id: process.env.CONTAINER_ID,
+        id: session?.user?.profile?.containerId
       },
     });
 
     const courses = await db.course.count({
       where: {
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
 
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
       data: {
         userId,
         title,
-        containerId: process.env.CONTAINER_ID || "",
+        containerId: session?.user?.profile?.containerId,
       },
     });
 

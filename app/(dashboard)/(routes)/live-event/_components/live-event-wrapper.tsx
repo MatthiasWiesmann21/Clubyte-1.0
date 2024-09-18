@@ -37,7 +37,7 @@ const LiveEventWrapper = ({
           getEvent={{
             userId,
             ...searchParams,
-            containerId: process.env.CONTAINER_ID,
+            containerId: session?.user?.profile?.containerId,
           }}
           liveEvent={liveEvent}
           ThemeOutlineColor={container?.ThemeOutlineColor!}

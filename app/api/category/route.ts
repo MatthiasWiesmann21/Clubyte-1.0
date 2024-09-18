@@ -30,7 +30,7 @@ export async function POST(req: Request) {
       data: {
         name,
         colorCode: color,
-        containerId: process.env.CONTAINER_ID || '',
+        containerId: session?.user?.profile?.containerId!,
       }
     });
 
