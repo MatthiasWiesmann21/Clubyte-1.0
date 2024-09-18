@@ -21,11 +21,13 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/lib/check-language";
+import { CoursePreview } from "@/components/course-preview";
+import { Editor } from "@/components/editor";
 
 interface DescriptionFormProps {
   initialData: Course;
   courseId: string;
-};
+}
 
 const formSchema = z.object({
   description: z.string().min(1, {
@@ -35,7 +37,7 @@ const formSchema = z.object({
 
 export const DescriptionForm = ({
   initialData,
-  courseId
+  courseId,
 }: DescriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
@@ -46,7 +48,7 @@ export const DescriptionForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData?.description || ""
+      description: initialData?.description || "",
     },
   });
 
@@ -61,37 +63,43 @@ export const DescriptionForm = ({
     } catch {
       toast.error("Something went wrong");
     }
-  }
+  };
 
   return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
+      <div className="flex items-center justify-between font-medium">
         {currentLanguage.courses_descriptionForm_title}
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>{currentLanguage.courses_descriptionForm_cancel}</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
+              <Pencil className="mr-2 h-4 w-4" />
               {currentLanguage.courses_descriptionForm_edit}
             </>
           )}
         </Button>
       </div>
       {!isEditing && (
-        <p className={cn(
-          "text-sm mt-2",
-          !initialData.description && "text-slate-500 italic"
-        )}>
-          {initialData.description || `${currentLanguage.courses_descriptionForm_empty}`}
+        <p
+          className={cn(
+            "mt-2 text-sm",
+            !initialData.description && "italic text-slate-500"
+          )}
+        >
+          {!initialData.description &&
+            `${currentLanguage.courses_descriptionForm_empty}`}
+          {initialData.description && (
+            <CoursePreview value={initialData.description} />
+          )}
         </p>
       )}
       {isEditing && (
         <Form {...form}>
           <form
-          name="descriptionForm"
+            name="descriptionForm"
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -99,11 +107,7 @@ export const DescriptionForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea
-                      disabled={isSubmitting}
-                      placeholder={currentLanguage.courses_descriptionForm_placeholder}
-                      {...field}
-                    />
+                    <Editor {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -113,7 +117,7 @@ export const DescriptionForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
-                onClick={()=>onSubmit(form.getValues())}
+                onClick={() => onSubmit(form.getValues())}
               >
                 {currentLanguage.courses_descriptionForm_save}
               </Button>
@@ -122,5 +126,5 @@ export const DescriptionForm = ({
         </Form>
       )}
     </div>
-  )
-}
+  );
+};
