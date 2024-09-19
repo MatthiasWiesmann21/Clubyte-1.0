@@ -5,13 +5,21 @@ import { NextResponse } from "next/server";
 import { isOwner } from "@/lib/owner";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 const getOrCreateParentFolder = async (userId: string, parentKey?: string) => {
+
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    return redirect("/");
+  }
+
   if (parentKey != null) {
     const parentFolder = await db.folder.findFirst({
       where: {
         key: parentKey,
         userId: userId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
     if (parentFolder == null) {
@@ -24,7 +32,7 @@ const getOrCreateParentFolder = async (userId: string, parentKey?: string) => {
     where: {
       parentFolder: null,
       userId: userId,
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
   });
   if (rootFolder == null) {
@@ -37,7 +45,7 @@ const getOrCreateParentFolder = async (userId: string, parentKey?: string) => {
         key: key,
         isPublic: true,
         userId: userId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
   }
@@ -52,6 +60,12 @@ async function getFolderAndFiles(
 ) {
   let folder;
 
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    return redirect("/");
+  }
+
   if (userId == null) {
     throw new Error("Login first to access");
   }
@@ -62,18 +76,18 @@ async function getFolderAndFiles(
         where: {
           parentFolderId: null,
           userId: userId,
-          containerId: process.env.CONTAINER_ID,
+          containerId: session?.user?.profile?.containerId,
         },
         include: {
           subFolders: {
             where: {
               OR: [{ isPublic: true }, { userId: userId }],
-              containerId: process.env.CONTAINER_ID,
+              containerId: session?.user?.profile?.containerId,
             },
           },
           files: {
             where: {
-              containerId: process.env.CONTAINER_ID,
+              containerId: session?.user?.profile?.containerId,
               OR: [{ isPublic: true }, { userId: userId }],
             },
           },
@@ -81,17 +95,17 @@ async function getFolderAndFiles(
       });
     } else {
       folder = await db.folder.findFirst({
-        where: { key: key, containerId: process.env.CONTAINER_ID },
+        where: { key: key, containerId: session?.user?.profile?.containerId },
         include: {
           subFolders: {
             where: {
-              containerId: process.env.CONTAINER_ID,
+              containerId: session?.user?.profile?.containerId,
               OR: [{ isPublic: true }, { userId: userId }],
             },
           },
           files: {
             where: {
-              containerId: process.env.CONTAINER_ID,
+              containerId: session?.user?.profile?.containerId,
               OR: [{ isPublic: true }, { userId: userId }],
             },
           },
@@ -103,18 +117,18 @@ async function getFolderAndFiles(
       folder = await db.folder.findFirst({
         where: {
           parentFolderId: null,
-          containerId: process.env.CONTAINER_ID,
+          containerId: session?.user?.profile?.containerId,
         },
         include: {
           subFolders: {
             where: {
-              containerId: process.env.CONTAINER_ID,
+              containerId: session?.user?.profile?.containerId,
               OR: [{ isPublic: true }, { userId: userId }],
             },
           },
           files: {
             where: {
-              containerId: process.env.CONTAINER_ID,
+              containerId: session?.user?.profile?.containerId,
               OR: [{ isPublic: true }, { userId: userId }],
             },
           },
@@ -122,27 +136,27 @@ async function getFolderAndFiles(
       });
     } else if (!isPublicDirectory) {
       folder = await db.folder.findFirst({
-        where: { key: key, containerId: process.env.CONTAINER_ID },
+        where: { key: key, containerId: session?.user?.profile?.containerId },
         include: {
           subFolders: {
             where: {
-              containerId: process.env.CONTAINER_ID,
+              containerId: session?.user?.profile?.containerId,
             },
           },
           files: {
-            where: { isPublic: true, containerId: process.env.CONTAINER_ID },
+            where: { isPublic: true, containerId: session?.user?.profile?.containerId },
           },
         },
       });
     } else {
       folder = await db.folder.findFirst({
-        where: { key: key, containerId: process.env.CONTAINER_ID },
+        where: { key: key, containerId: session?.user?.profile?.containerId },
         include: {
           subFolders: {
-            where: { isPublic: true, containerId: process.env.CONTAINER_ID },
+            where: { isPublic: true, containerId: session?.user?.profile?.containerId },
           },
           files: {
-            where: { isPublic: true, containerId: process.env.CONTAINER_ID },
+            where: { isPublic: true, containerId: session?.user?.profile?.containerId},
           },
         },
       });
@@ -166,7 +180,7 @@ export async function GET(req: Request) {
         select: {
           key: true,
         },
-        where: { id: id, containerId: process.env.CONTAINER_ID },
+        where: { id: id, containerId: session?.user?.profile?.containerId },
       });
       key = keyData?.key;
     }

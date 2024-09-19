@@ -28,7 +28,7 @@ const CoursesPage = async () => {
 
   const courses = await db.course.findMany({
     where: {
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
     orderBy: {
       createdAt: "desc",
@@ -37,13 +37,13 @@ const CoursesPage = async () => {
 
   const container = await db.container.findUnique({
     where: {
-      id: process.env.CONTAINER_ID,
+      id: session?.user?.profile?.containerId,
     },
   });
 
   const existingCourses = await db.course.count({
     where: {
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     }
   });
 

@@ -42,12 +42,13 @@ export async function PATCH(
   { params }: { params: { profileId: string } }
 ) {
   try {
+    const session = await getServerSession(authOptions);
     const { profileId } = params;
     const values = await req.json();
     const profile = await db.profile.update({
       where: {
         id: profileId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
       data: {
         ...values

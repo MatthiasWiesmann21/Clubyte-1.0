@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     const post = await db.post.create({
       data: {
         title,
-        containerId: process.env.CONTAINER_ID || '',
+        containerId: session?.user?.profile?.containerId,
       }
     });
 

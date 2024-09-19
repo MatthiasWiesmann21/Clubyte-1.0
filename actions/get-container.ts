@@ -6,8 +6,6 @@ type GetContainer = {
   imageUrl?: string;
 };
 
-const ContainerId = process.env.CONTAINER_ID;
-
 export const getContainer = async ({
 id,
 imageUrl

@@ -4,15 +4,22 @@ import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
 import { InitialModal } from "@/components/modals/initial-modal";
 import { currentProfile } from "@/lib/current-profile";
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth";
 
 const SetupPage = async () => {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    return redirect("/");
+  }
   const profile = await currentProfile();
   const server = await db.server.findFirst({
     orderBy: {
       createdAt: "asc",
     },
     where: {
-      containerId: process.env.CONTAINER_ID!,
+      containerId: session?.user?.profile?.containerId!,
       members: {
         some: {},
       },
@@ -21,7 +28,7 @@ const SetupPage = async () => {
   console.log("Setup page server found" , server );
   const serverwithProfile = await db.server.findFirst({
     where: {
-      containerId: process.env.CONTAINER_ID!,
+      containerId: session?.user?.profile?.containerId!,
       members: {
         some: {
           profileId: (profile || {}).id,
@@ -40,7 +47,7 @@ const SetupPage = async () => {
         data: {
           serverId: server.id,
           profileId: (profile || {}).id || '',
-          containerId: process.env.CONTAINER_ID!,
+          containerId: session?.user?.profile?.containerId!,
         },
       });
     }

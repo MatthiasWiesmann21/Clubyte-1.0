@@ -29,7 +29,7 @@ export async function DELETE(
       where: {
         id: serverId,
         profileId: profile.id,
-        containerId: process.env.CONTAINER_ID,
+        containerId: profile?.containerId,
       },
       data: {
         members: {
@@ -118,7 +118,7 @@ export async function PATCH(
     const member = await db.member.update({
       where: {
         id: params.memberId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: profile?.containerId,
         serverId: serverId,
         profileId: {
           not: profile.id

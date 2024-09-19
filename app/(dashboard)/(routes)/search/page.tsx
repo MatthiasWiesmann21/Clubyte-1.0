@@ -44,7 +44,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 
   const container: any = await db.container.findUnique({
     where: {
-      id: process.env.CONTAINER_ID,
+      id: session?.user?.profile?.containerId,
       courses: {
         some: {},
       },
@@ -53,7 +53,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 
   const existingCourses = await db.course.count({
     where: {
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
   });
 
@@ -61,7 +61,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     where: {
       isPublished: true,
       isCourseCategory: true,
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
     orderBy: {
       name: "asc",
@@ -76,12 +76,12 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const courses = await getCourses({
     userId,
     ...searchParams,
-    containerId: process.env.CONTAINER_ID,
+    containerId: session?.user?.profile?.containerId,
   });
 
   const containerColors: any = await db?.container?.findUnique({
     where: {
-      id: process.env.CONTAINER_ID,
+      id: session?.user?.profile?.containerId,
     },
   });
 

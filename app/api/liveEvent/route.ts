@@ -27,7 +27,7 @@ export async function POST(req: Request) {
       data: {
         userId,
         title,
-        containerId: process.env.CONTAINER_ID || "",
+        containerId: session?.user?.profile?.containerId!,
       },
     });
 
@@ -40,10 +40,12 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
+    const session = await getServerSession({ req, ...authOptions });
+
     const liveEvent = await db.liveEvent.findMany({
       where: {
         isPublished: true,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
       include: {
         category: true,

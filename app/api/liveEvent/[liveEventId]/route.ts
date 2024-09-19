@@ -70,7 +70,7 @@ export async function DELETE(
     const liveEvent = await db.liveEvent.findUnique({
       where: {
         id: params.liveEventId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
 
@@ -81,7 +81,7 @@ export async function DELETE(
     const deletedEvent = await db.liveEvent.delete({
       where: {
         id: params.liveEventId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
 
@@ -109,7 +109,7 @@ export async function PATCH(
     const liveEvent = await db.liveEvent.update({
       where: {
         id: liveEventId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
       data: {
         ...values,

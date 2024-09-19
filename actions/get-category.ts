@@ -18,7 +18,6 @@ export const getCategories = async ({
           contains: name,
         },
         id: categoryId,
-        containerId: process.env.CONTAINER_ID,
       }
     });
 

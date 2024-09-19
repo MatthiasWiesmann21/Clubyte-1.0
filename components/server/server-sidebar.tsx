@@ -56,7 +56,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   const server  = await db.server.findFirst({
     where: {
       id: serverId,
-      containerId: process.env.CONTAINER_ID,
+      containerId: profile.containerId,
     },
     include: {
       channels: {

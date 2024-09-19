@@ -32,13 +32,13 @@ const PostIdPage = async ({
   const post = await db.post.findUnique({
     where: {
       id: params.postId,
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     }
   });
 
   const categories = await db.category.findMany({
     where: {
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
       isNewsCategory: true,
     },
     orderBy: {
@@ -49,7 +49,7 @@ const PostIdPage = async ({
   const profile = await db.profile.findFirst({
     where: {
       userId: userId,
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
   });
 

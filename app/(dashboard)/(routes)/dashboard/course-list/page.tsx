@@ -35,7 +35,7 @@ const CourseListPage = async ({ searchParams }: SearchPageProps) => {
     where: {
       isPublished: true,
       isCourseCategory: true,
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
     orderBy: {
       name: "asc",
@@ -49,7 +49,7 @@ const CourseListPage = async ({ searchParams }: SearchPageProps) => {
 
   const container = await db?.container?.findUnique({
     where: {
-      id: process.env.CONTAINER_ID,
+      id: session?.user?.profile?.containerId,
     },
   });
 

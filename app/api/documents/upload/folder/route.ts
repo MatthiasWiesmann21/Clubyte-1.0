@@ -3,17 +3,25 @@ import { db } from "@/lib/db";
 import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 import authOptions from "@/lib/auth"; // Ensure this is the path to your NextAuth configuration
+import { redirect } from "next/navigation";
 
 const getOrCreateParentFolder = async (
   userId: string,
   parentKey?: string | null
 ) => {
-  if (parentKey != null) {
+
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    return redirect("/");
+  }
+  if (parentKey != null) { 
+
     const parentFolder = await db.folder.findFirst({
       where: {
         key: parentKey,
         userId: userId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
     if (parentFolder == null) {
@@ -27,7 +35,7 @@ const getOrCreateParentFolder = async (
     where: {
       parentFolder: null,
       userId: userId,
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
   });
   if (rootFolder == null) {
@@ -44,7 +52,7 @@ const getOrCreateParentFolder = async (
         key: key,
         isPublic: false,
         userId: userId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
   }
@@ -100,7 +108,7 @@ export async function POST(req: Request) {
         userId: userId,
         isPublic: isPublic,
         parentFolderId: parentFolder.id,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
 

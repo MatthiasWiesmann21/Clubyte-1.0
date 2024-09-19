@@ -20,7 +20,7 @@ const UserPage = async () => {
 
   const profiles = await db.profile.findMany({
     where: {
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
     orderBy: {
       createdAt: "desc",

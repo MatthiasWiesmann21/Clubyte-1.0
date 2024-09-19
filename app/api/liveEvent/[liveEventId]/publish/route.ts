@@ -20,7 +20,7 @@ export async function PATCH(
     const liveEvent = await db.liveEvent.findUnique({
       where: {
         id: params.liveEventId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
 
@@ -32,7 +32,7 @@ export async function PATCH(
     const publishedEvent = await db.liveEvent.update({
       where: {
         id: params.liveEventId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
       data: {
         isPublished: true,

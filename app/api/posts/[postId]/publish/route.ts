@@ -19,14 +19,14 @@ export async function PATCH(
     const profile = await db.profile.findFirst({
       where: {
         userId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
 
     const post = await db.post.findUnique({
       where: {
         id: params.postId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
     });
 
@@ -37,7 +37,7 @@ export async function PATCH(
     const publishedPost = await db.post.update({
       where: {
         id: params.postId,
-        containerId: process.env.CONTAINER_ID,
+        containerId: session?.user?.profile?.containerId,
       },
       data: {
         isPublished: true,
@@ -51,7 +51,7 @@ export async function PATCH(
       await db.post.update({
         where: {
           id: params.postId,
-          containerId: process.env.CONTAINER_ID,
+          containerId: session?.user?.profile?.containerId,
         },
         data: {
           publishTime: post.scheduleDateTime,

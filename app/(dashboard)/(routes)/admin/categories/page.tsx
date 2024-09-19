@@ -21,7 +21,7 @@ const CategoriesPage = async () => {
 
   const categories = await db.category.findMany({
     where: {
-      containerId: process.env.CONTAINER_ID,
+      containerId: session?.user?.profile?.containerId,
     },
   });
 

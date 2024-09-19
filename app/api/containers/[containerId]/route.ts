@@ -5,6 +5,7 @@ import { isOwner } from "@/lib/owner";
 import { isAdmin } from "@/lib/roleCheckServer"; // Assuming isOperator is not needed, remove if unnecessary
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 export async function DELETE(
   req: Request,
   { params }: { params: { containerId: string } }
@@ -77,9 +78,16 @@ export async function GET(
   req: Request,
   { params }: { params: { containerId: string } }
 ) {
+
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    return redirect("/");
+  }
+  
   const container = await db.container.findFirst({
     where: {
-      id: process.env.CONTAINER_ID,
+      id: session?.user?.profile?.containerId,
     },
   });
 

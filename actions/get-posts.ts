@@ -47,7 +47,6 @@ export const getPosts = async ({
           contains: title,
         },
         categoryId,
-        containerId: process.env.CONTAINER_ID,
       },
       include: {
         category: true,
