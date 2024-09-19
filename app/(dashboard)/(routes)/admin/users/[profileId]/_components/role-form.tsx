@@ -28,8 +28,8 @@ import { useLanguage } from "@/lib/check-language";
 interface RoleFormProps {
   initialData: Profile;
   profileId: string;
-  options: { label: string; value: string; }[];
-};
+  options: { label: string; value: string }[];
+}
 
 const formSchema = z.object({
   role: z.string().min(1),
@@ -52,7 +52,7 @@ export const RoleForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      role: initialData?.role || ""
+      role: initialData?.role || "",
     },
   });
 
@@ -60,39 +60,48 @@ export const RoleForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/profile/${profileId}`, values);
-      toast.success("Profile updated");
-      toggleEdit();
-      router.refresh();
+      if (values.role === "CLIENT ADMIN") {
+        toast.error("CLIENT ADMIN role cannot be assigned to a user");
+        return;
+      } else {
+        await axios.patch(`/api/profile/${profileId}`, values);
+        toast.success("Profile updated");
+        toggleEdit();
+        router.refresh();
+      }
     } catch {
       toast.error("Something went wrong");
     }
-  }
+  };
 
-  const selectedOption = options.find((option) => option.value === initialData.role);
+  const selectedOption = options.find(
+    (option) => option.value === initialData.role
+  );
 
   return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
+      <div className="flex items-center justify-between font-medium">
         {currentLanguage.user_RoleForm_title}
         {canAccess && (
           <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>{currentLanguage.user_RoleForm_cancel}</>
-          ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              {currentLanguage.user_RoleForm_edit}
-            </>
-          )}
-        </Button>
+            {isEditing ? (
+              <>{currentLanguage.user_RoleForm_cancel}</>
+            ) : (
+              <>
+                <Pencil className="mr-2 h-4 w-4" />
+                {currentLanguage.user_RoleForm_edit}
+              </>
+            )}
+          </Button>
         )}
       </div>
       {!isEditing && (
-        <p className={cn(
-          "text-sm mt-2",
-          !initialData.role && "text-slate-500 italic"
-        )}>
+        <p
+          className={cn(
+            "mt-2 text-sm",
+            !initialData.role && "italic text-slate-500"
+          )}
+        >
           {selectedOption?.label || "No category"}
         </p>
       )}
@@ -100,18 +109,15 @@ export const RoleForm = ({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
               name="role"
-              render={({ field } : any) => (
+              render={({ field }: any) => (
                 <FormItem>
                   <FormControl>
-                    <Combobox
-                      options={...options}
-                      {...field}
-                    />
+                    <Combobox options={...options} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -121,7 +127,7 @@ export const RoleForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
-                onClick={()=>onSubmit(form.getValues())}
+                onClick={() => onSubmit(form.getValues())}
               >
                 {currentLanguage.user_RoleForm_save}
               </Button>
@@ -130,5 +136,5 @@ export const RoleForm = ({
         </Form>
       )}
     </div>
-  )
-}
+  );
+};
