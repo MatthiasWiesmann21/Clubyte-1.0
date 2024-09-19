@@ -70,6 +70,7 @@ const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
               initialData={profile}
               profileId={profile.id}
               options={[
+                { label: "CLIENT ADMIN", value: "CLIENT ADMIN" },
                 { label: "ADMIN", value: "ADMIN" },
                 { label: "OPERATOR", value: "OPERATOR" },
                 { label: "MODERATOR", value: "MODERATOR" },

@@ -19,6 +19,10 @@ export const Sidebar = async () => {
     },
   });
 
+  if (!container) {
+    return null;
+  }
+
   const profile = await db.profile.findFirst({
     where: {
       userId: userId!,
@@ -46,7 +50,7 @@ export const Sidebar = async () => {
         />
       </div>
       {container?.clientPackage != "EXPERT" && (
-        <div className="flex flex-col items-center pb-5">
+        <div className="flex flex-col items-center">
           <a
             href="https://clubyte.live"
             className="cursor-pointer"
@@ -148,7 +152,9 @@ export const Sidebar = async () => {
               </svg>
             </div>
           </a>
-          <div className="mt-2 flex items-center justify-center space-x-2">
+        </div>
+      )}
+      <div className="flex items-center justify-center space-x-2 pb-5">
             <Link
               className="flex items-center text-sm font-semibold text-gray-600 hover:underline"
               href="https://docs.clubyte.live"
@@ -168,8 +174,6 @@ export const Sidebar = async () => {
               {currentLanguage.sidebar_privacy_policy}
             </Link>
           </div>
-        </div>
-      )}
     </div>
   );
 };
