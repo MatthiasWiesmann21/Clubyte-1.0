@@ -5,6 +5,8 @@ import { useSession } from "next-auth/react";
 import EventFilterSidebar from "./filter-sidebar";
 import { PastandFuture } from "./past&future";
 import { EventsList } from "@/components/events-list ";
+import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/navigation";
 
 const LiveEventWrapper = ({
   liveEvents,
@@ -14,6 +16,7 @@ const LiveEventWrapper = ({
 }: any) => {
   const { data: session, status } = useSession();
   const [liveEvent, setLiveEvent] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     setLiveEvent(liveEvents);
@@ -24,7 +27,7 @@ const LiveEventWrapper = ({
   }
 
   if (!session) {
-    return <div>Please sign in to access this content.</div>; // Prompt user to sign in if not authenticated
+    return router.push("/auth/signin");
   }
 
   const userId = session.user?.id;
