@@ -90,6 +90,7 @@ model Profile {
   channels Channel[]
   comments Comment[]
   likes    Like[]
+  favorites Favorite[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -226,6 +227,7 @@ model Chapter {
 
   comments Comment[]
   likes    Like[]
+  favorites Favorite[]
 
   @@index([courseId])
 }
@@ -357,6 +359,7 @@ model Post {
 
   comments Comment[]
   likes    Like[]
+  favorites Favorite[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -385,6 +388,7 @@ model LiveEvent {
   category   Category? @relation(fields: [categoryId], references: [id])
 
   comments Comment[]
+  favorites Favorite[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -452,6 +456,27 @@ model Like {
   @@index([profileId])
   @@index([postId])
   @@index([commentId])
+  @@index([liveEventId])
+  @@index([chapterId])
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id])
+
+  postId String?
+  post   Post?   @relation(fields: [postId], references: [id])
+  liveEventId String?
+  liveEvent   LiveEvent? @relation(fields: [liveEventId], references: [id])
+  chapterId   String?
+  chapter     Chapter?   @relation(fields: [chapterId], references: [id])
+
+  @@unique([profileId, postId, liveEventId])
+  @@index([profileId])
+  @@index([postId])
   @@index([liveEventId])
   @@index([chapterId])
 }
