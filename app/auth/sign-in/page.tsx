@@ -174,7 +174,7 @@ export default function SignIn() {
             </div>
           </form>
           <div className="mt-4 flex justify-center">
-            <ModeToggle system={false} />
+            <ModeToggle />
           </div>
         </div>
         <div className="right-section hidden items-center justify-center md:flex md:w-1/2 lg:w-1/2 xl:w-1/2">

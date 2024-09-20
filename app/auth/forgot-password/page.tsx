@@ -127,7 +127,7 @@ export default function SignUp() {
             </div>
           </form>
           <div className="mt-4 flex justify-center">
-            <ModeToggle system={false} />
+            <ModeToggle />
           </div>
         </div>
         <div className="flex items-center justify-center sm:hidden sm:w-full md:block md:w-1/2 lg:w-1/2 xl:w-1/2">

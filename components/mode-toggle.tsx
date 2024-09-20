@@ -4,52 +4,14 @@ import * as React from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useLanguage } from "@/lib/check-language"
-
-interface ModeToggleProps {
-  system?: boolean
-  dark?: boolean
-  light?: boolean
-}
-
-export function ModeToggle({ system = true, dark = true, light = true }: ModeToggleProps) {
+export function ModeToggle() {
   const { setTheme } = useTheme();
-  const currentLanguage = useLanguage();
-
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
         <div className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border-input hover:bg-accent hover:text-accent-foreground h-10 w-10 bg-transparent border-0">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Sun onClick={() => setTheme("dark")} className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon onClick={() => setTheme("light")} className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        {light && (
-          <DropdownMenuItem onClick={() => setTheme("light")}>
-            {currentLanguage.navigation_theme_toggle_light}
-          </DropdownMenuItem>
-        )}
-        {dark && (
-          <DropdownMenuItem onClick={() => setTheme("dark")}>
-            {currentLanguage.navigation_theme_toggle_dark}
-        </DropdownMenuItem>
-        )}
-        {system && (
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          {currentLanguage.navigation_theme_toggle_dark}
-        </DropdownMenuItem>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
   )
 }
