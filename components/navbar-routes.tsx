@@ -84,7 +84,7 @@ export const NavbarRoutes = ({
           </Tooltip>
           <Tooltip>
             <TooltipTrigger>
-              <ModeToggle system={false} />
+              <ModeToggle />
             </TooltipTrigger>
             <TooltipContent side="bottom">
               {currentLanguage.navigation_mode_tooltip}
