@@ -138,15 +138,16 @@ const PostIdPage = async ({
               <h2 className="text-xl">
                 {currentLanguage.post_setup_image_title}
               </h2>
-              <span className="pl-1 text-xs text-rose-600">{currentLanguage.requiredFields}</span>
             </div>
             <ImageForm
               initialData={post}
               postId={post.id}
             />
             <ScheduleDateForm
-              //@ts-ignore
-              initialData={post}
+              initialData={{
+                ...post,
+                scheduleDateTime: post.scheduleDateTime ?? new Date()
+              }}
               postId={post.id}
             />
           </div>

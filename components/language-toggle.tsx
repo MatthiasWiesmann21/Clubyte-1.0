@@ -47,6 +47,10 @@ export function LanguageToggle() {
     Mandarin: "tw",
   };
 
+  console.log("Current language:", language);
+  console.log("Icon for current language:", icon[language]);
+
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

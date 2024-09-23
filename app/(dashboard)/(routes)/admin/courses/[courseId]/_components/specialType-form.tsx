@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Category } from "@prisma/client";
+import { Course } from "@prisma/client";
 
 import {
   Form,
@@ -15,28 +15,26 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/lib/check-language";
 
-interface CategoryTypeFormProps {
-  initialData: Category;
-  categoryId: string;
+interface SpecialTypeFormProps {
+  initialData: Course;
+  courseId: string;
 }
 
 const formSchema = z.object({
-  isCourseCategory: z.boolean().default(false),
-  isNewsCategory: z.boolean().default(false),
-  isLiveEventCategory: z.boolean().default(false),
+  isNew: z.boolean().default(false),
+  isFeatured: z.boolean().default(false),
+  isBestseller: z.boolean().default(false),
 });
 
-export const CategoryTypeForm = ({
+export const SpecialTypeForm = ({
   initialData,
-  categoryId,
-}: CategoryTypeFormProps) => {
+  courseId,
+}: SpecialTypeFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -46,9 +44,9 @@ export const CategoryTypeForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isCourseCategory: !!initialData.isCourseCategory,
-      isNewsCategory: !!initialData.isNewsCategory,
-      isLiveEventCategory: !!initialData.isLiveEventCategory,
+      isNew: initialData.isNew,
+      isFeatured: initialData.isFeatured,
+      isBestseller: initialData.isBestseller,
     },
   });
 
@@ -56,8 +54,8 @@ export const CategoryTypeForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/category/${categoryId}`, values);
-      toast.success("Category updated");
+      await axios.patch(`/api/courses/${courseId}`, values);
+      toast.success("Course updated");
       toggleEdit();
       router.refresh();
     } catch {
@@ -68,7 +66,7 @@ export const CategoryTypeForm = ({
   return (
     <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
       <div className="flex items-center justify-between font-medium">
-        {currentLanguage.post_CategoryTypeForm_title}
+        {currentLanguage.course_SpecialTypeForm_title} 
       </div>
       <Form {...form}>
         <form
@@ -77,7 +75,7 @@ export const CategoryTypeForm = ({
         >
           <FormField
             control={form.control}
-            name="isCourseCategory"
+            name="isNew"
             render={({ field }) => (
               <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4">
                 <FormControl>
@@ -88,7 +86,7 @@ export const CategoryTypeForm = ({
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormDescription>
-                    {currentLanguage.post_CategoryTypeForm_isCourseCategory}
+                    {currentLanguage.course_SpecialTypeForm_isNew}
                   </FormDescription>
                 </div>
               </FormItem>
@@ -96,7 +94,7 @@ export const CategoryTypeForm = ({
           />
           <FormField
             control={form.control}
-            name="isNewsCategory"
+            name="isFeatured"
             render={({ field }) => (
               <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4">
                 <FormControl>
@@ -107,7 +105,7 @@ export const CategoryTypeForm = ({
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormDescription>
-                    {currentLanguage.post_CategoryTypeForm_isNewsCategory}
+                    {currentLanguage.course_SpecialTypeForm_isFeatured}
                   </FormDescription>
                 </div>
               </FormItem>
@@ -115,7 +113,7 @@ export const CategoryTypeForm = ({
           />
           <FormField
             control={form.control}
-            name="isLiveEventCategory"
+            name="isBestseller"
             render={({ field }) => (
               <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4">
                 <FormControl>
@@ -126,7 +124,7 @@ export const CategoryTypeForm = ({
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormDescription>
-                    {currentLanguage.post_CategoryTypeForm_isLiveEventCategory}
+                    {currentLanguage.course_SpecialTypeForm_isBestseller}
                   </FormDescription>
                 </div>
               </FormItem>
@@ -140,7 +138,7 @@ export const CategoryTypeForm = ({
           type="submit"
           onClick={() => onSubmit(form.getValues())}
         >
-          {currentLanguage.post_CategoryTypeForm_save}
+          {currentLanguage.course_SpecialTypeForm_save}
         </Button>
       </div>
     </div>
