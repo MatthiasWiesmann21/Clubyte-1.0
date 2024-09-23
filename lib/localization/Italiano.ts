@@ -535,5 +535,12 @@ course_SpecialTypeForm_isNew: "Nuovo",
 course_SpecialTypeForm_isFeatured: "In Evidenza",
 course_SpecialTypeForm_isBestseller: "Bestseller",
 course_SpecialTypeForm_save: "Salva",
-
+course_card_chapter: "Capitolo",
+course_card_chapters: "Capitoli",
+course_card_hour: "Ora",
+course_card_hours: "Ore",
+course_card_no_level: "Nessun livello",
+course_card_bestseller: "Bestseller",
+course_card_new: "Nuovo",
+course_card_featured: "In primo piano",
 };

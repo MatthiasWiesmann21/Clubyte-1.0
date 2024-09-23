@@ -83,21 +83,18 @@ export const CourseCard = ({
                 <p className="flex rounded-md bg-yellow-500 p-1 text-sm text-white">
                   <Medal className="pr-1" width={18} height={18} />
                   {currentLanguage.course_card_bestseller}
-                  Best seller
                 </p>
               )}
               {isNew && (
                 <p className="flex rounded-md bg-rose-600 p-1 text-sm text-white dark:bg-rose-600 dark:text-white">
                   <Lightbulb className="pr-1" width={18} height={18} />
                   {currentLanguage.course_card_new}
-                  New
                 </p>
               )}
               {isFeatured && (
                 <p className="flex rounded-md bg-blue-500 p-1 text-sm text-white">
                   <Star className="pr-1" width={18} height={18} />
                   {currentLanguage.course_card_featured}
-                  Featured
                 </p>
               )}
             </div>
@@ -174,7 +171,7 @@ export const CourseCard = ({
                 </div>
               </div>
               <span className="ml-1 text-xs">
-                {chaptersLength} {chaptersLength < 2 ? "Chapter" : "Chapters"}
+                {chaptersLength} {chaptersLength < 2 ? currentLanguage.course_card_chapter : currentLanguage.course_card_chapters}
               </span>
             </div>
             <div className="flex items-center">
@@ -188,7 +185,7 @@ export const CourseCard = ({
                 </div>
               </div>
               <span className="ml-1 text-xs">
-                {duration} {duration === 1 ? "Hour" : "Hours"}
+                {duration} {duration === 1 ? currentLanguage.course_card_hour : currentLanguage.course_card_hours}
               </span>
             </div>
             <div className="flex items-center">
@@ -201,7 +198,7 @@ export const CourseCard = ({
                   />
                 </div>
               </div>
-              <span className="ml-1 text-xs">{level || "No Level"}</span>
+              <span className="ml-1 text-xs">{level || currentLanguage.course_card_no_level}</span>
             </div>
           </div>
           {progress !== null ? (

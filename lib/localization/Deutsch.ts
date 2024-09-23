@@ -538,5 +538,13 @@ course_SpecialTypeForm_isNew: "Neu",
 course_SpecialTypeForm_isFeatured: "Hervorgehoben",
 course_SpecialTypeForm_isBestseller: "Bestseller",
 course_SpecialTypeForm_save: "Speichern",
+course_card_chapter: "Kapitel",
+course_card_chapters: "Kapitel",
+course_card_hour: "Stunde",
+course_card_hours: "Stunden",
+course_card_no_level: "Kein Level",
+course_card_bestseller: "Bestseller",
+course_card_new: "Neu",
+course_card_featured: "Hervorgehoben",
 
 };
