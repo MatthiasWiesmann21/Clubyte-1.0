@@ -30,6 +30,11 @@ export const CoursesList = async ({ items, ThemOutlineColor, DarkThemeOutlineCol
             progress={item.progress}
             chaptersLength={item.chapters.length}
             price={item.price!}
+            duration={item?.duration!}
+            level={item?.level!}
+            isFeatured={item?.isFeatured!}
+            isBestseller={item?.isBestseller!}
+            isNew={item?.isNew!}
             ThemOutlineColor={ThemOutlineColor}
             DarkThemeOutlineColor={DarkThemeOutlineColor!}
           />
