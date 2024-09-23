@@ -4,16 +4,15 @@ import { Categories } from "./categories";
 import { useSession } from "next-auth/react";
 import EventFilterSidebar from "./filter-sidebar";
 import { PastandFuture } from "./past&future";
-import { EventsList } from "@/components/events-list ";
-import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
+import { EventsList } from "@/components/events-list ";
 
 const LiveEventWrapper = ({
   liveEvents,
   categories,
   searchParams,
   container,
-}: any) => {
+}: any): JSX.Element => {
   const { data: session, status } = useSession();
   const [liveEvent, setLiveEvent] = useState([]);
   const router = useRouter();
@@ -27,7 +26,8 @@ const LiveEventWrapper = ({
   }
 
   if (!session) {
-    return router.push("/auth/signin");
+    router.push("/auth/signin");
+    return <></>; // Ensure a valid JSX element is always returned
   }
 
   const userId = session.user?.id;
