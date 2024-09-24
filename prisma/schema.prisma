@@ -150,7 +150,13 @@ model Course {
   imageUrl    String? @db.Text
   price       Float?  @default(0)
   isPublished Boolean @default(false)
-
+  duration      String?
+  level         String?
+  isFeatured    Boolean @default(false)
+  isBestseller  Boolean @default(false)
+  isNew         Boolean @default(false)
+  
+  specialType   String?
   containerId String
   container   Container @relation(fields: [containerId], references: [id])
 
@@ -351,6 +357,7 @@ model Post {
   isPublished      Boolean   @default(false)
   publishTime      DateTime?
   scheduleDateTime DateTime?
+  isReminder       Boolean   @default(false)
 
   containerId String
   container   Container @relation(fields: [containerId], references: [id])

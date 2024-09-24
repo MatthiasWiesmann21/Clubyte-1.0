@@ -19,6 +19,9 @@ import { languageServer } from "@/lib/check-language-server";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import authOptions from "@/lib/auth"; // Ensure this is correctly configured
+import { DurationForm } from "./_components/duration-form";
+import { LevelForm } from "./_components/level-form";
+import { SpecialTypeForm } from "./_components/specialType-form";
 
 const CourseIdPage = async ({
   params
@@ -144,6 +147,25 @@ const CourseIdPage = async ({
                 label: category.name,
                 value: category.id,
               }))}
+            />
+            <DurationForm
+              initialData={course}
+              courseId={course.id}
+            />
+            <LevelForm
+              initialData={course}
+              courseId={course.id}
+              options={[
+                { label: "Beginner", value: "Beginner" },
+                { label: "Intermediate", value: "Intermediate" },
+                { label: "Advanced", value: "Advanced" },
+                { label: "Expert", value: "Expert" },
+                { label: "Master", value: "Master" },
+              ]}
+            />
+            <SpecialTypeForm
+              initialData={course}
+              courseId={course.id}
             />
           </div>
           <div className="space-y-6">
