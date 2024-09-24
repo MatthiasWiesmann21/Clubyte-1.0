@@ -6,7 +6,7 @@ import { CourseSidebar } from "../../_components/course-sidebar";
 import { db } from "@/lib/db";
 import { languageServer } from "@/lib/check-language-server";
 import CourseWrapper from "./_components/courseWrapper";
-import authOptions  from "@/lib/auth"; // Ensure you have this configured
+import authOptions from "@/lib/auth"; // Ensure you have this configured
 
 const ChapterIdPage = async ({
   params,
@@ -21,6 +21,15 @@ const ChapterIdPage = async ({
 
   const userId = session.user.id;
   const currentLanguage: any = await languageServer();
+
+  const profile = await db?.profile?.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      imageUrl: true,
+    },
+  });
 
   const { chapter, course } = await getChapter({
     userId,
@@ -64,7 +73,7 @@ const ChapterIdPage = async ({
 
   return (
     <div className="flex justify-between">
-      <CourseWrapper params={params} currentLanguage={currentLanguage} />
+      <CourseWrapper params={params} currentLanguage={currentLanguage} profileImage={profile?.imageUrl!} />
       <div className="max-h-[500px] min-h-[400px] md:min-w-[270px] md:max-w-[350px] lg:min-w-[350px] lg:max-w-[400px]">
         <CourseSidebar course={_course} progressCount={progressCount} />
       </div>

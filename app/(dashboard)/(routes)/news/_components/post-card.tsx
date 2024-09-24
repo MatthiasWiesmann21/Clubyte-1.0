@@ -11,6 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/tooltip";
+import { Profile } from "@prisma/client";
 
 interface PostCardProps {
   id: string;
@@ -27,6 +28,7 @@ interface PostCardProps {
   commentsWithLikes: any;
   commentsCount: number;
   updateLikeComment: any;
+  profileImage: string;
 }
 
 export const PostCard = ({
@@ -44,6 +46,7 @@ export const PostCard = ({
   commentsWithLikes,
   commentsCount,
   updateLikeComment,
+  profileImage,
 }: PostCardProps) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const { theme } = useTheme();
@@ -82,12 +85,14 @@ export const PostCard = ({
                   </div>
                 </div>
               </div>
-              <div
-                className={`flex items-center gap-x-1 rounded-full border px-3 py-2 text-xs font-[600] transition`}
+              {category && (
+                <div
+                  className={`flex items-center gap-x-1 rounded-full border px-3 py-2 text-xs font-[600] transition`}
                 style={{ borderColor: colorCode }}
               >
                 <div className="truncate">{category}</div>
-              </div>
+                  </div>
+                )}
             </div>
             <div className="font-400 text-sm text-black dark:text-white">
               <PostPreview value={description} />
@@ -125,6 +130,7 @@ export const PostCard = ({
         </div>
         <LikeComment
           id={id}
+          profileImage={profileImage}
           likesCount={likesCount}
           currentLike={currentLike}
           commentsWithLikes={commentsWithLikes}
