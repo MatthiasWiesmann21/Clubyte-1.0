@@ -8,6 +8,7 @@ import { Heart, MessageSquare, ThumbsUp } from "lucide-react";
 import { ChatInputPost } from "./chatInput";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
+import { Profile } from "@prisma/client";
 
 const SubReply = ({ val, updateLikeComment }: any) => (
   <div>
@@ -32,12 +33,15 @@ const SubReply = ({ val, updateLikeComment }: any) => (
               const response = await axios?.post(`/api/like/create`, {
                 commentId: val?.id,
               });
-              if (response?.status === 200)
-                updateLikeComment(response?.data?.post);
+              if (response?.status === 200) updateLikeComment(true);
             }}
             className="font-500 flex cursor-pointer items-center justify-between text-[14px]"
           >
-            <Heart size={18} />
+            <Heart
+              size={18}
+              className={!!val?.currentCommentLike ? "text-[#f43f5e]" : ""}
+              fill={!!val?.currentCommentLike ? "#f43f5e" : "transparent"}
+            />
             <span className="ml-2 mr-1">{val?.likes?.length}</span>
             Likes
           </div>
@@ -84,12 +88,15 @@ const Reply = ({
                 const response = await axios?.post(`/api/like/create`, {
                   commentId: val?.id,
                 });
-                if (response?.status === 200)
-                  updateLikeComment(response?.data?.post);
+                if (response?.status === 200) updateLikeComment(true);
               }}
               className="font-500 flex cursor-pointer items-center justify-between text-sm"
             >
-              <Heart size={18} />
+              <Heart
+                size={18}
+                className={!!val?.currentCommentLike ? "text-[#f43f5e]" : ""}
+                fill={!!val?.currentCommentLike ? "#f43f5e" : "transparent"}
+              />
               <span className="ml-2 mr-1">{val?.likes?.length}</span>
               Likes
             </div>
@@ -141,6 +148,7 @@ const LikeComment = ({
   commentsWithLikes,
   commentsCount,
   updateLikeComment,
+  profileImage,
 }: {
   id: string;
   likesCount: number;
@@ -148,11 +156,12 @@ const LikeComment = ({
   commentsWithLikes: any;
   commentsCount: number;
   updateLikeComment: any;
+  profileImage: string;
 }) => {
-  const user = useSelector((state: any) => state?.user);
   const [commentCount, setCommentCount] = useState(3);
-  const [isShowComments, setShowComments] = useState(true);
+  const [isShowComments, setShowComments] = useState(false);
   const currentLanguage = useLanguage();
+
   return (
     <div className="mx-3">
       <div className="flex items-center justify-between py-3">
@@ -161,8 +170,7 @@ const LikeComment = ({
             const response = await axios?.post(`/api/like/create`, {
               postId: id,
             });
-            if (response?.status === 200)
-              updateLikeComment(response?.data?.post);
+            if (response?.status === 200) updateLikeComment(true);
           }}
           className="m-2 flex cursor-pointer items-center justify-around "
         >
@@ -185,26 +193,27 @@ const LikeComment = ({
           {`${commentsCount} ${currentLanguage.news_comments_button_label}`}
         </div>
       </div>
-      <div className="flex items-center justify-between">
-        <UserAvatar
-          src={user?.imageUrl}
-          className="min-h-64 min-w-64 max-w-64 mr-3 max-h-64"
-        />
-        <div className="w-full">
-          <ChatInputPost
-            placeHolder={currentLanguage?.news_comments_input_placeholder}
-            apiUrl="/api/comment/create"
-            query={{
-              postId: id,
-              parentCommentId: null,
-            }}
-            className=""
-            updateLikeComment={updateLikeComment}
-          />
-        </div>
-      </div>
+
       {isShowComments && (
         <>
+          <div className="flex items-center justify-between">
+            <UserAvatar
+              src={profileImage}
+              className="min-h-64 min-w-64 max-w-64 mr-3 max-h-64"
+            />
+            <div className="w-full">
+              <ChatInputPost
+                placeHolder={currentLanguage?.news_comments_input_placeholder}
+                apiUrl="/api/comment/create"
+                query={{
+                  postId: id,
+                  parentCommentId: null,
+                }}
+                className=""
+                updateLikeComment={updateLikeComment}
+              />
+            </div>
+          </div>
           <div className="w-full">
             {commentsWithLikes?.map(
               (val: any, index: number) =>

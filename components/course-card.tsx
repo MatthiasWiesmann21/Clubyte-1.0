@@ -80,19 +80,19 @@ export const CourseCard = ({
           <div className="relative aspect-video w-full overflow-hidden rounded-md border-2 border-slate-300/50 dark:border-slate-700/60">
             <div className="absolute left-2 top-2 z-10 flex space-x-2">
               {isBestseller && (
-                <p className="flex rounded-md bg-yellow-500 p-1 text-sm text-white">
+                <p className="flex rounded-md bg-yellow-500 p-1 text-sm font-medium text-white">
                   <Medal className="pr-1" width={18} height={18} />
                   {currentLanguage.course_card_bestseller}
                 </p>
               )}
               {isNew && (
-                <p className="flex rounded-md bg-rose-600 p-1 text-sm text-white dark:bg-rose-600 dark:text-white">
+                <p className="flex rounded-md bg-rose-600 p-1 text-sm font-medium text-white dark:bg-rose-600 dark:text-white">
                   <Lightbulb className="pr-1" width={18} height={18} />
                   {currentLanguage.course_card_new}
                 </p>
               )}
               {isFeatured && (
-                <p className="flex rounded-md bg-blue-500 p-1 text-sm text-white">
+                <p className="flex rounded-md bg-blue-500 p-1 text-sm font-medium text-white">
                   <Star className="pr-1" width={18} height={18} />
                   {currentLanguage.course_card_featured}
                 </p>
