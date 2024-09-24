@@ -124,7 +124,7 @@ const NewsWrapper = ({
               currentLike={item?.currentLike}
               commentsWithLikes={item?.commentsWithLikes}
               commentsCount={item?.commentsCount}
-              updateLikeComment={updateLikeComment}
+              updateLikeComment={getPosts}
             />
           ))}
         </div>
@@ -132,9 +132,17 @@ const NewsWrapper = ({
         {isLoading ? (
           <div className="flex min-h-screen items-center justify-center">
             {theme === "dark" ? (
-              <ClubyteLoader className="w-64 h-64" theme="dark" color="110524" />
+              <ClubyteLoader
+                className="h-64 w-64"
+                theme="dark"
+                color="110524"
+              />
             ) : (
-              <ClubyteLoader className="w-64 h-64" theme="light" color="ffffff" />
+              <ClubyteLoader
+                className="h-64 w-64"
+                theme="light"
+                color="ffffff"
+              />
             )}
           </div>
         ) : (

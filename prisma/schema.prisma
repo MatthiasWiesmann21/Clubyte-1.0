@@ -2,6 +2,7 @@ datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
+  pool     = { max = 10 }
 }
 
 generator client {

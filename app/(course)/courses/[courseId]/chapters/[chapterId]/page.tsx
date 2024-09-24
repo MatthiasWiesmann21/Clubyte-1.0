@@ -6,7 +6,7 @@ import { CourseSidebar } from "../../_components/course-sidebar";
 import { db } from "@/lib/db";
 import { languageServer } from "@/lib/check-language-server";
 import CourseWrapper from "./_components/courseWrapper";
-import authOptions  from "@/lib/auth"; // Ensure you have this configured
+import authOptions from "@/lib/auth"; // Ensure you have this configured
 
 const ChapterIdPage = async ({
   params,

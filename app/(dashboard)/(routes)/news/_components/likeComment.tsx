@@ -32,12 +32,15 @@ const SubReply = ({ val, updateLikeComment }: any) => (
               const response = await axios?.post(`/api/like/create`, {
                 commentId: val?.id,
               });
-              if (response?.status === 200)
-                updateLikeComment(response?.data?.post);
+              if (response?.status === 200) updateLikeComment(true);
             }}
             className="font-500 flex cursor-pointer items-center justify-between text-[14px]"
           >
-            <Heart size={18} />
+            <Heart
+              size={18}
+              className={!!val?.currentCommentLike ? "text-[#f43f5e]" : ""}
+              fill={!!val?.currentCommentLike ? "#f43f5e" : "transparent"}
+            />
             <span className="ml-2 mr-1">{val?.likes?.length}</span>
             Likes
           </div>
@@ -84,12 +87,15 @@ const Reply = ({
                 const response = await axios?.post(`/api/like/create`, {
                   commentId: val?.id,
                 });
-                if (response?.status === 200)
-                  updateLikeComment(response?.data?.post);
+                if (response?.status === 200) updateLikeComment(true);
               }}
               className="font-500 flex cursor-pointer items-center justify-between text-sm"
             >
-              <Heart size={18} />
+              <Heart
+                size={18}
+                className={!!val?.currentCommentLike ? "text-[#f43f5e]" : ""}
+                fill={!!val?.currentCommentLike ? "#f43f5e" : "transparent"}
+              />
               <span className="ml-2 mr-1">{val?.likes?.length}</span>
               Likes
             </div>
@@ -161,8 +167,7 @@ const LikeComment = ({
             const response = await axios?.post(`/api/like/create`, {
               postId: id,
             });
-            if (response?.status === 200)
-              updateLikeComment(response?.data?.post);
+            if (response?.status === 200) updateLikeComment(true);
           }}
           className="m-2 flex cursor-pointer items-center justify-around "
         >
