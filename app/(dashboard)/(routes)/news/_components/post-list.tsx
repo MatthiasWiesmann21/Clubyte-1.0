@@ -15,12 +15,14 @@ interface PostListProps {
   items: PostWithProgressWithCategory[];
   updateLikeComment: any;
   isLoading: boolean;
+  profileImage: string;
 }
 
 export const PostList = ({
   items,
   updateLikeComment,
   isLoading,
+  profileImage
 }: PostListProps) => {
   const sortedItems = items.sort((a, b) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -47,6 +49,7 @@ export const PostList = ({
             commentsWithLikes={item.commentsWithLikes}
             commentsCount={item.commentsCount}
             updateLikeComment={updateLikeComment}
+            profileImage={profileImage}
           />
         ))}
       </div>
