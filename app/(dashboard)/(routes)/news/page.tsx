@@ -28,6 +28,15 @@ const NewsPage = async ({ searchParams }: SearchPageProps) => {
     return redirect("/");
   }
 
+  const profileImage = await db?.profile?.findUnique({
+    where: {
+      id: session?.user?.profile?.id,
+    },
+    select: {
+      imageUrl: true,
+    },
+  });
+
   const categories = await db?.category?.findMany({
     where: {
       isPublished: true,
@@ -56,6 +65,7 @@ const NewsPage = async ({ searchParams }: SearchPageProps) => {
       categories={categories}
       ThemeOutlineColor={container?.ThemeOutlineColor!}
       DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
+      profileImage={profileImage?.imageUrl!}
     />
   );
 };
