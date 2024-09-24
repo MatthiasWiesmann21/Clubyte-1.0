@@ -147,6 +147,7 @@ const LikeComment = ({
   commentsWithLikes,
   commentsCount,
   updateLikeComment,
+  profileImage,
 }: {
   id: string;
   likesCount: number;
@@ -154,6 +155,7 @@ const LikeComment = ({
   commentsWithLikes: any;
   commentsCount: number;
   updateLikeComment: any;
+  profileImage: string;
 }) => {
   const user = useSelector((state: any) => state?.user);
   const [isShowComments, setShowComments] = useState(true);
@@ -170,26 +172,27 @@ const LikeComment = ({
           {`${commentsCount} ${currentLanguage.news_comments_button_label}`}
         </div>
       </div>
-      <div className="flex items-center justify-between">
-        <UserAvatar
-          src={user?.imageUrl}
-          className="min-h-64 min-w-64 max-w-64 mr-3 max-h-64"
-        />
-        <div className="w-full">
-          <ChatInputPost
-            placeHolder={currentLanguage?.news_comments_input_placeholder}
-            apiUrl="/api/comment/create"
-            query={{
-              chapterId: id,
-              parentCommentId: null,
-            }}
-            className=""
-            updateLikeComment={updateLikeComment}
-          />
-        </div>
-      </div>
+
       {isShowComments && (
         <>
+          <div className="flex items-center justify-between">
+            <UserAvatar
+              src={profileImage}
+              className="min-h-64 min-w-64 max-w-64 mr-3 max-h-64"
+            />
+            <div className="w-full">
+              <ChatInputPost
+                placeHolder={currentLanguage?.news_comments_input_placeholder}
+                apiUrl="/api/comment/create"
+                query={{
+                  chapterId: id,
+                  parentCommentId: null,
+                }}
+                className=""
+                updateLikeComment={updateLikeComment}
+              />
+            </div>
+          </div>
           <div className="w-full">
             {commentsWithLikes?.map((val: any, index: number) => (
               <Reply

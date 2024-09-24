@@ -3,11 +3,12 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { PostCard } from "./post-card";
-import { Category, Post } from "@prisma/client";
+import { Category, Post, Profile } from "@prisma/client";
 import { useLanguage } from "@/lib/check-language";
 import { Categories } from "./categories";
 import ClubyteLoader from "@/components/ui/clubyte-loader";
 import { useTheme } from "next-themes";
+import { currentProfile } from "@/lib/current-profile";
 
 type PostWithProgressWithCategory = Post & {
   category: Category | null;
@@ -24,6 +25,7 @@ interface NewsWrapperProps {
   categories: any;
   ThemeOutlineColor: string;
   DarkThemeOutlineColor: string;
+  profileImage: string;
 }
 
 const NewsWrapper = ({
@@ -31,6 +33,7 @@ const NewsWrapper = ({
   categories,
   ThemeOutlineColor,
   DarkThemeOutlineColor,
+  profileImage,
 }: NewsWrapperProps) => {
   const { categoryId } = searchParams;
   const [posts, setPosts] = useState<PostWithProgressWithCategory[]>([]);
@@ -42,6 +45,7 @@ const NewsWrapper = ({
 
   const currentLanguage = useLanguage();
 
+  
   const updateLikeComment = (post: any) => {
     const tempPost = posts?.map((each) =>
       each?.id === post?.id ? post : each
@@ -125,6 +129,7 @@ const NewsWrapper = ({
               commentsWithLikes={item?.commentsWithLikes}
               commentsCount={item?.commentsCount}
               updateLikeComment={getPosts}
+              profileImage={profileImage}
             />
           ))}
         </div>
