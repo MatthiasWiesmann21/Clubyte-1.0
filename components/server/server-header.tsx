@@ -1,7 +1,7 @@
 "use client";
 
 import { ServerWithMembersWithProfiles } from "@/types";
-import { MemberRole } from "@prisma/client";
+import { MemberRole, Profile } from "@prisma/client";
 import {
   ChevronDown,
   LogOut,
@@ -29,13 +29,14 @@ interface ServerHeaderProps {
   servers: any[];
   server: ServerWithMembersWithProfiles;
   role?: MemberRole;
+  profile: Profile;
 }
 
-export const ServerHeader = ({ servers, server, role }: ServerHeaderProps) => {
+export const ServerHeader = ({ servers, server, role, profile }: ServerHeaderProps) => {
   const { push } = useRouter();
   const { onOpen } = useModal();
   const currentLanguage = useLanguage();
-  const isAdmin = role === MemberRole.ADMIN;
+  const isAdmin = role === MemberRole.ADMIN || profile.role === "ADMIN";
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
   return (
