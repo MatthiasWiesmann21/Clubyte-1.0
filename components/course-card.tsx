@@ -16,6 +16,7 @@ import {
 import ClubyteLoader from "./ui/clubyte-loader";
 import { BookOpen, Clock, GraduationCap, Lightbulb, Medal, Star } from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
+import { formatDuration } from "@/lib/formatDuration";
 
 interface CourseCardProps {
   id: string;
@@ -185,7 +186,7 @@ export const CourseCard = ({
                 </div>
               </div>
               <span className="ml-1 text-xs">
-                {duration} {duration === 1 ? currentLanguage.course_card_hour : currentLanguage.course_card_hours}
+                {formatDuration(duration.toString())}
               </span>
             </div>
             <div className="flex items-center">
