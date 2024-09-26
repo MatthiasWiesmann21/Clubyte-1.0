@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/lib/check-language";
+import { formatDuration } from "@/lib/formatDuration";
 
 interface DurationFormProps {
   initialData: Course;
@@ -43,7 +44,7 @@ export const DurationForm = ({ initialData, courseId }: DurationFormProps) => {
     defaultValues: {
       duration: initialData?.duration || undefined,
     },
-  });
+  });  
 
   const { isSubmitting, isValid } = form.formState;
 
@@ -79,7 +80,7 @@ export const DurationForm = ({ initialData, courseId }: DurationFormProps) => {
             !initialData.duration && "italic text-slate-500"
           )}
         >
-          {initialData.duration} {currentLanguage.course_durationForm_hours}
+          {formatDuration(initialData.duration)}
         </p>
       )}
       {isEditing && (
@@ -96,7 +97,7 @@ export const DurationForm = ({ initialData, courseId }: DurationFormProps) => {
                   <FormControl>
                     <Input
                       type="number"
-                      step="0.1"
+                      step="0.01"
                       disabled={isSubmitting}
                       placeholder={
                         currentLanguage.courses_durationForm_placeholder
