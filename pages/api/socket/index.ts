@@ -34,9 +34,7 @@ export default async function handler(
           where: { id: profileId },
         });
         if (!profile) return;
-        console.log(
-          `User with profile IDzz ${profileId} has joined. ${profile.isOnline}`
-        );
+        console.log(`User with profile IDzz ${profileId} has joined.`);
 
         if (["Offline"].includes(profile.isOnline)) {
           await db.profile.update({
