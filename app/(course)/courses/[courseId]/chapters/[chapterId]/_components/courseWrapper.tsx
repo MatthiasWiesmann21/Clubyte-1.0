@@ -60,6 +60,7 @@ interface UserProgress {
 interface CourseWrapperProps {
   params: Params;
   currentLanguage: CurrentLanguage;
+  profileImage: string;
 }
 
 interface Chapter {
@@ -96,10 +97,12 @@ interface DataObject {
 const CourseWrapper: React.FC<CourseWrapperProps> = ({
   params,
   currentLanguage,
+  profileImage,
 }) => {
   const [courseProgress, setCourseProgress] = useState<UserProgress | null>(
     null
   );
+
   const [data, setData] = useState<DataObject>({
     chapter: null,
     course: null,
@@ -232,6 +235,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
               commentsWithLikes={data?.chapter?.commentsWithLikes}
               commentsCount={data?.chapter?.comments?.length!}
               updateLikeComment={getData}
+              profileImage={profileImage}
             />
           </div>
         </div>
