@@ -14,14 +14,40 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import ClubyteLoader from "./ui/clubyte-loader";
-import { BookOpen, Clock, GraduationCap, Lightbulb, Medal, Star } from "lucide-react";
+import {
+  BookOpen,
+  Clock,
+  GraduationCap,
+  Info,
+  Lightbulb,
+  Medal,
+  MoreHorizontal,
+  MoreVertical,
+  Pencil,
+  Star,
+  Trash,
+} from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
 import { formatDuration } from "@/lib/formatDuration";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Button } from "./ui/button";
+import { useIsAdmin } from "@/lib/roleCheck";
+import { ConfirmModal } from "./modals/confirm-modal";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { DescriptionModal } from "./modals/description-modal";
 
 interface CourseCardProps {
   id: string;
   title: string;
   imageUrl: string;
+  description: string;
   chaptersLength: number;
   duration: number;
   level: string;
@@ -44,6 +70,7 @@ export const CourseCard = ({
   id,
   title,
   imageUrl,
+  description,
   chaptersLength,
   duration,
   level,
@@ -61,6 +88,23 @@ export const CourseCard = ({
   const { theme } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const currentLanguage = useLanguage();
+  const isAdmin = useIsAdmin();
+  const router = useRouter();
+
+  const onDelete = async () => {
+    try {
+      setIsLoading(true);
+
+      await axios.delete(`/api/course/${id}`);
+
+      toast.success("Course deleted");
+      router.refresh();
+    } catch {
+      toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const getBorderColor = () => {
     return theme === "dark" ? DarkThemeOutlineColor : ThemOutlineColor;
@@ -68,8 +112,7 @@ export const CourseCard = ({
 
   return (
     <TooltipProvider>
-      <Link
-        href={`/courses/${id}`}
+      <div
         className="rounded-lg border-2 transition duration-500 ease-in-out"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -78,6 +121,7 @@ export const CourseCard = ({
         }}
       >
         <div className="group h-full w-full overflow-hidden rounded-lg bg-slate-100/60 p-2 transition dark:bg-[#0c0319]">
+          <Link href={`/courses/${id}`}>
           <div className="relative aspect-video w-full overflow-hidden rounded-md border-2 border-slate-300/50 dark:border-slate-700/60">
             <div className="absolute left-2 top-2 z-10 flex space-x-2">
               {isBestseller && (
@@ -129,6 +173,7 @@ export const CourseCard = ({
               onLoadingComplete={() => setIsLoading(false)}
             />
           </div>
+          </Link>
           <div className="mt-3 flex items-center justify-between">
             <Tooltip>
               <TooltipTrigger>
@@ -145,7 +190,52 @@ export const CourseCard = ({
                 </p>
               </TooltipContent>
             </Tooltip>
+            <div className="flex justify-between">
+              <DescriptionModal description={description}>
+                <Button
+                  variant="ghost"
+                  className="h-8 w-8 p-0"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Info width={16} height={16} />
+                </Button>
+              </DescriptionModal>
+              {isAdmin && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="h-8 w-8 p-0"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span className="sr-only">Open menu</span>
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <Link href={`/admin/courses/${id}`}>
+                      <DropdownMenuItem>
+                        <Pencil className="mr-2 h-4 w-4" />
+                        Edit
+                      </DropdownMenuItem>
+                    </Link>
+                    <ConfirmModal onConfirm={onDelete}>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        disabled={isLoading}
+                        className="flex w-full justify-start p-2"
+                      >
+                        <Trash className="mr-2 h-4 w-4" />
+                        Delete
+                      </Button>
+                    </ConfirmModal>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
+            </div>
           </div>
+          <Link href={`/courses/${id}`}>
           <div className="mt-2 flex flex-col">
             <Tooltip>
               <TooltipTrigger>
@@ -172,7 +262,10 @@ export const CourseCard = ({
                 </div>
               </div>
               <span className="ml-1 text-xs">
-                {chaptersLength} {chaptersLength < 2 ? currentLanguage.course_card_chapter : currentLanguage.course_card_chapters}
+                {chaptersLength}{" "}
+                {chaptersLength < 2
+                  ? currentLanguage.course_card_chapter
+                  : currentLanguage.course_card_chapters}
               </span>
             </div>
             <div className="flex items-center">
@@ -199,7 +292,9 @@ export const CourseCard = ({
                   />
                 </div>
               </div>
-              <span className="ml-1 text-xs">{level || currentLanguage.course_card_no_level}</span>
+              <span className="ml-1 text-xs">
+                {level || currentLanguage.course_card_no_level}
+              </span>
             </div>
           </div>
           {progress !== null ? (
@@ -213,8 +308,9 @@ export const CourseCard = ({
               {price === 0 ? "Free" : formatPrice(price)}
             </p>
           )}
+          </Link>
         </div>
-      </Link>
+      </div>
     </TooltipProvider>
   );
 };
