@@ -1,11 +1,11 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuPortal,
-  DropdownMenuSeparator,
+  // DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -48,7 +48,7 @@ const ProfileButton = ({
   profileOnlineStatus,
 }: ProfileButtonProps) => {
   const currentLanguage = useLanguage();
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const router = useRouter();
 
   const updateProfileStatus = async (isOnline: string) => {
@@ -66,13 +66,13 @@ const ProfileButton = ({
     await signOut({ callbackUrl: "/auth/sign-in" });
   };
 
-  useEffect(() => {
-    if (session && profileOnlineStatus === "Offline") {
-      updateProfileStatus("Online");
-    } else if (!session) {
-      updateProfileStatus("Offline");
-    }
-  }, [session, profileOnlineStatus]);
+  // useEffect(() => {
+  //   if (session && profileOnlineStatus === "Offline") {
+  //     updateProfileStatus("Online");
+  //   } else if (!session) {
+  //     updateProfileStatus("Offline");
+  //   }
+  // }, [session, profileOnlineStatus]);
 
   const dispatch = useDispatch();
   return (
@@ -85,7 +85,7 @@ const ProfileButton = ({
                 className="h-6 w-6 rounded-xl border-0 bg-transparent"
                 variant="ghost"
               >
-                <div className="flex items-center justify-center rounded-full p-1 transition duration-200 ease-in-out dark:hover:bg-[#1e293b] hover:bg-[#f1f5f9]">
+                <div className="flex items-center justify-center rounded-full p-1 transition duration-200 ease-in-out hover:bg-[#f1f5f9] dark:hover:bg-[#1e293b]">
                   <UserAvatar src={profileImageUrl} />
                 </div>
                 <div
