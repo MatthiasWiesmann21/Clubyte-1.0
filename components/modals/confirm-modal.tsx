@@ -37,7 +37,7 @@ export const ConfirmModal = ({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>{currentLanguage.confirmModal_DialogCancel}</AlertDialogCancel>
-          <AlertDialogAction className="mt-2" onClick={onConfirm}>
+          <AlertDialogAction onClick={onConfirm}>
             {currentLanguage.confirmModal_DialogConfirm}
           </AlertDialogAction>
         </AlertDialogFooter>

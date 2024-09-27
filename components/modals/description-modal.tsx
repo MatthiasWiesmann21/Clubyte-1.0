@@ -12,6 +12,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useLanguage } from "@/lib/check-language";
+import { EventPreview } from "../event-preview";
+import { DescriptionPreview } from "../description-preview";
 
 interface ConfirmModalProps {
   children: React.ReactNode;
@@ -30,13 +32,15 @@ export const DescriptionModal = ({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{currentLanguage.confirmModal_DialogHeader}</AlertDialogTitle>
+          <AlertDialogTitle>{currentLanguage.descriptionModal_DialogHeader}</AlertDialogTitle>
           <AlertDialogDescription>
-            {description}
+          <DescriptionPreview
+              value={description}
+            />
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-        <AlertDialogCancel>{currentLanguage.confirmModal_DialogCancel}</AlertDialogCancel>
+        <AlertDialogCancel>{currentLanguage.descriptionModal_DialogCancel}</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

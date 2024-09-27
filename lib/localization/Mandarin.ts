@@ -543,4 +543,8 @@ course_card_no_level: "无级别",
 course_card_bestseller: "畅销书",
 course_card_new: "新",
 course_card_featured: "精选",
+course_card_edit: "编辑",
+course_card_delete: "删除",
+descriptionModal_DialogHeader: "描述",
+descriptionModal_DialogCancel: "关闭",
 };

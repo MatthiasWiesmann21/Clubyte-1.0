@@ -216,7 +216,7 @@ export const CourseCard = ({
                     <Link href={`/admin/courses/${id}`}>
                       <DropdownMenuItem>
                         <Pencil className="mr-2 h-4 w-4" />
-                        Edit
+                        {currentLanguage.course_card_edit}
                       </DropdownMenuItem>
                     </Link>
                     <ConfirmModal onConfirm={onDelete}>
@@ -227,7 +227,7 @@ export const CourseCard = ({
                         className="flex w-full justify-start p-2"
                       >
                         <Trash className="mr-2 h-4 w-4" />
-                        Delete
+                        {currentLanguage.course_card_delete}
                       </Button>
                     </ConfirmModal>
                   </DropdownMenuContent>
