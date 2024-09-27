@@ -15,12 +15,12 @@ import { useLanguage } from "@/lib/check-language";
 
 interface ConfirmModalProps {
   children: React.ReactNode;
-  onConfirm: () => void;
+  description: string;
 };
 
-export const ConfirmModal = ({
+export const DescriptionModal = ({
+  description,
   children,
-  onConfirm
 }: ConfirmModalProps) => {
   const currentLanguage = useLanguage();
   return (
@@ -32,14 +32,11 @@ export const ConfirmModal = ({
         <AlertDialogHeader>
           <AlertDialogTitle>{currentLanguage.confirmModal_DialogHeader}</AlertDialogTitle>
           <AlertDialogDescription>
-            {currentLanguage.confirmModal_DialogDescription}
+            {description}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{currentLanguage.confirmModal_DialogCancel}</AlertDialogCancel>
-          <AlertDialogAction className="mt-2" onClick={onConfirm}>
-            {currentLanguage.confirmModal_DialogConfirm}
-          </AlertDialogAction>
+        <AlertDialogCancel>{currentLanguage.confirmModal_DialogCancel}</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
