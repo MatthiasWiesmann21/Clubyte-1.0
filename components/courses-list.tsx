@@ -25,6 +25,7 @@ export const CoursesList = async ({ items, ThemOutlineColor, DarkThemeOutlineCol
             id={item.id}
             title={item.title}
             imageUrl={item.imageUrl!}
+            description={item.description!}
             category={item?.category?.name!}
             categoryColorCode={item?.category?.colorCode!}
             progress={item.progress}

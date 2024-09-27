@@ -92,7 +92,7 @@ export const NavbarRoutes = ({
           </Tooltip>
           {isAdministrationPage || isCoursePage ? (
             <Link href="/dashboard">
-              <Button size="default" className="mt-4" variant="ghost">
+              <Button size="default" variant="ghost">
                 <LogOut className="h-5 w-5" />
                 {currentLanguage.navigation_administration_button_text_exit}
               </Button>
@@ -111,7 +111,7 @@ export const NavbarRoutes = ({
               </TooltipContent>
             </Tooltip>
           ) : null}
-          <div className="m-2 mt-6 flex items-center justify-center">
+          <div className="m-2 flex items-center justify-center">
             <ProfileButton
               profileId={profileId}
               profileName={profileName}
