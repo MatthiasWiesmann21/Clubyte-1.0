@@ -543,4 +543,8 @@ course_card_no_level: "Нет уровня",
 course_card_bestseller: "Бестселлер",
 course_card_new: "Новый",
 course_card_featured: "Рекомендуется",
+course_card_edit: "Редактировать",
+course_card_delete: "Удалить",
+descriptionModal_DialogHeader: "Описание",
+descriptionModal_DialogCancel: "Закрыть",
 };

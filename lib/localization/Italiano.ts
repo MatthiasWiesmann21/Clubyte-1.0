@@ -543,4 +543,8 @@ course_card_no_level: "Nessun livello",
 course_card_bestseller: "Bestseller",
 course_card_new: "Nuovo",
 course_card_featured: "In primo piano",
+course_card_edit: "Modifica",
+course_card_delete: "Elimina",
+descriptionModal_DialogHeader: "Descrizione",
+descriptionModal_DialogCancel: "Chiudi",
 };

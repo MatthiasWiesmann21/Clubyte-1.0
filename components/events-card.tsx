@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { PlayCircle } from "lucide-react";
+import { Info, MoreVertical, Pencil, PlayCircle, Trash } from "lucide-react";
 import moment from "moment";
 import { useState } from "react";
 import { useTheme } from "next-themes";
@@ -16,6 +16,19 @@ import ClubyteLoader from "./ui/clubyte-loader";
 import { CategoryItemCard } from "@/app/(dashboard)/(routes)/live-event/_components/category-item-card";
 import { Button } from "./ui/button";
 import { useModal } from "@/hooks/use-modal-store";
+import { DescriptionModal } from "./modals/description-modal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { ConfirmModal } from "./modals/confirm-modal";
+import { useLanguage } from "@/lib/check-language";
+import { useIsAdmin } from "@/lib/roleCheck";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface EventsCardProps {
   id: string;
@@ -48,6 +61,24 @@ export const EventCard = ({
   const { theme } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const { onOpen } = useModal();
+  const currentLanguage = useLanguage();
+  const isAdmin = useIsAdmin();
+  const router = useRouter();
+
+  const onDelete = async () => {
+    try {
+      setIsLoading(true);
+
+      await axios.delete(`/api/liveEvent/${id}`);
+
+      toast.success("Event deleted");
+      router.refresh();
+    } catch {
+      toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const isLive =
     new Date(startDateTime) <= new Date() &&
@@ -61,8 +92,7 @@ export const EventCard = ({
 
   return (
     <TooltipProvider>
-      <Link
-        href={`/live-event/${id}`}
+      <div
         className="rounded-lg border-2 transition duration-500 ease-in-out"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -72,7 +102,7 @@ export const EventCard = ({
       >
         <div className="group h-full overflow-hidden rounded-lg bg-slate-100/60 p-2 transition hover:shadow-sm dark:border-[#1f182b] dark:bg-[#0c0319]">
           {/* Image and Date/Time Section */}
-          <div className="relative flex">
+          <Link href={`/live-event/${id}`} className="relateive flex">
             <div className="relative aspect-video w-2/3 overflow-hidden rounded-l-md">
               {isLive && (
                 <p className="absolute left-2 top-2 z-10 flex rounded-md bg-rose-600 p-1 text-white dark:bg-rose-600 dark:text-white">
@@ -128,17 +158,56 @@ export const EventCard = ({
                 </p>
               </span>
             </div>
-          </div>
-
-          <div className="mt-3 p-2">
-            <div>
-              <CategoryItemCard
-                label={category}
-                colorCode={categoryColorCode}
-              />
+          </Link>
+          <div className="mt-3 flex items-center justify-between">
+            <CategoryItemCard label={category} colorCode={categoryColorCode} />
+            <div className="flex justify-between">
+              <DescriptionModal description={description}>
+                <Button
+                  variant="ghost"
+                  className="h-8 w-8 p-0"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Info width={16} height={16} />
+                </Button>
+              </DescriptionModal>
+              {isAdmin && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="h-8 w-8 p-0"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span className="sr-only">Open menu</span>
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <Link href={`/admin/live-event/${id}`}>
+                      <DropdownMenuItem>
+                        <Pencil className="mr-2 h-4 w-4" />
+                        {currentLanguage.course_card_edit}
+                      </DropdownMenuItem>
+                    </Link>
+                    <ConfirmModal onConfirm={onDelete}>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        disabled={isLoading}
+                        className="flex w-full justify-start p-2"
+                      >
+                        <Trash className="mr-2 h-4 w-4" />
+                        {currentLanguage.course_card_delete}
+                      </Button>
+                    </ConfirmModal>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
-
-            {/* Event Title */}
+          </div>
+          {/* Event Title */}
+          <Link href={`/live-event/${id}`}>
             <Tooltip>
               <TooltipTrigger>
                 <div className="line-clamp-2 py-2 text-start text-sm font-medium md:text-base">
@@ -151,9 +220,9 @@ export const EventCard = ({
                 </div>
               </TooltipContent>
             </Tooltip>
-          </div>
+          </Link>
         </div>
-      </Link>
+      </div>
     </TooltipProvider>
   );
 };

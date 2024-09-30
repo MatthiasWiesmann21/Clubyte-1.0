@@ -91,114 +91,83 @@ const ProfileButton = ({
     await signOut({ callbackUrl: "/auth/sign-in" });
   };
 
-  // useEffect(() => {
-  //   if (session && profileOnlineStatus === "Offline") {
-  //     updateProfileStatus("Online");
-  //   } else if (!session) {
-  //     updateProfileStatus("Offline");
-  //   }
-  // }, [session, profileOnlineStatus]);
-
   const dispatch = useDispatch();
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                className="h-6 w-6 rounded-xl border-0 bg-transparent"
-                variant="ghost"
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          className="h-6 w-6 rounded-xl border-0 bg-transparent"
+          variant="ghost"
+        >
+          <div className="flex items-center justify-center rounded-full p-1 transition duration-200 ease-in-out hover:bg-[#f1f5f9] dark:hover:bg-[#1e293b]">
+            <UserAvatar src={profileImageUrl} />
+          </div>
+          <div
+            className={cn(
+              "absolute bottom-4 right-4 z-10 h-4 w-4 rounded-full border-4 border-white dark:border-[#0a0118] md:h-4 md:w-4",
+              statusColors[status]
+            )}
+          ></div>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="p-1">
+        <DropdownMenuItem>
+          <div className="cursor-pointer transition hover:drop-shadow-md">
+            <UserAvatar src={profileImageUrl} />
+          </div>
+
+          <div className="line-clamp-1 max-w-xs cursor-pointer pl-2 text-sm font-semibold">
+            {profileName}
+          </div>
+        </DropdownMenuItem>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            <div className="flex items-center">
+              <div
+                className={`ml-1 mr-3 h-4 w-4 rounded-lg ${
+                  statusColors[status] || "bg-gray-400"
+                }`}
+              />
+              <span>{currentLanguage.profile_status_text}</span>
+            </div>
+          </DropdownMenuSubTrigger>
+          <DropdownMenuPortal>
+            <DropdownMenuSubContent>
+              <DropdownMenuItem onClick={() => updateProfileStatus("Online")}>
+                <div className="mr-2 h-4 w-4 rounded-lg border border-green-500 bg-green-500" />
+                <span>{currentLanguage.profile_OnlineStatus_Online}</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => updateProfileStatus("Not Available")}
               >
-                <div className="flex items-center justify-center rounded-full p-1 transition duration-200 ease-in-out hover:bg-[#f1f5f9] dark:hover:bg-[#1e293b]">
-                  <UserAvatar src={profileImageUrl} />
-                </div>
-                <div
-                  className={cn(
-                    "absolute bottom-4 right-4 z-10 h-4 w-4 rounded-full border-4 border-white dark:border-[#0a0118] md:h-4 md:w-4",
-                    statusColors[status]
-                  )}
-                ></div>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="p-1">
-              <DropdownMenuItem>
-                <div className="cursor-pointer transition hover:drop-shadow-md">
-                  <UserAvatar src={profileImageUrl} />
-                </div>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <div className="line-clamp-1 max-w-xs cursor-pointer pl-2 text-sm font-semibold">
-                      {profileName}
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="max-w-xs whitespace-normal text-sm font-semibold">
-                      {profileName}
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
+                <div className="mr-2 h-4 w-4 rounded-lg border border-yellow-400 bg-yellow-400" />
+                <span>{currentLanguage.profile_OnlineStatus_Away}</span>
               </DropdownMenuItem>
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger>
-                  <div className="flex items-center">
-                    <div
-                      className={`ml-1 mr-3 h-4 w-4 rounded-lg ${
-                        statusColors[status] || "bg-gray-400"
-                      }`}
-                    />
-                    <span>{currentLanguage.profile_status_text}</span>
-                  </div>
-                </DropdownMenuSubTrigger>
-                <DropdownMenuPortal>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuItem
-                      onClick={() => updateProfileStatus("Online")}
-                    >
-                      <div className="mr-2 h-4 w-4 rounded-lg border border-green-500 bg-green-500" />
-                      <span>{currentLanguage.profile_OnlineStatus_Online}</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => updateProfileStatus("Not Available")}
-                    >
-                      <div className="mr-2 h-4 w-4 rounded-lg border border-yellow-400 bg-yellow-400" />
-                      <span>{currentLanguage.profile_OnlineStatus_Away}</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => updateProfileStatus("Do Not Disturb")}
-                    >
-                      <div className="mr-2 h-4 w-4 rounded-lg border border-red-600 bg-red-600" />
-                      <span>
-                        {currentLanguage.profile_OnlineStatus_DoNotDisturb}
-                      </span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => updateProfileStatus("Invisible")}
-                    >
-                      <div className="mr-2 h-4 w-4 rounded-lg bg-slate-400" />
-                      <span>
-                        {currentLanguage.profile_OnlineStatus_Invisible}
-                      </span>
-                    </DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuPortal>
-              </DropdownMenuSub>
-              <DropdownMenuItem onClick={() => router.push("/profile")}>
-                <UserCog2Icon className="mr-2 h-6 w-6" />
-                {currentLanguage.profile_manageAccount}
+              <DropdownMenuItem
+                onClick={() => updateProfileStatus("Do Not Disturb")}
+              >
+                <div className="mr-2 h-4 w-4 rounded-lg border border-red-600 bg-red-600" />
+                <span>{currentLanguage.profile_OnlineStatus_DoNotDisturb}</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleSignOut}>
-                <LogOutIcon className="mr-2 h-6 w-6" />
-                {currentLanguage.profile_signOut}
+              <DropdownMenuItem
+                onClick={() => updateProfileStatus("Invisible")}
+              >
+                <div className="mr-2 h-4 w-4 rounded-lg bg-slate-400" />
+                <span>{currentLanguage.profile_OnlineStatus_Invisible}</span>
               </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">
-          {currentLanguage.navigation_profile_tooltip}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+            </DropdownMenuSubContent>
+          </DropdownMenuPortal>
+        </DropdownMenuSub>
+        <DropdownMenuItem onClick={() => router.push("/profile")}>
+          <UserCog2Icon className="mr-2 h-6 w-6" />
+          {currentLanguage.profile_manageAccount}
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleSignOut}>
+          <LogOutIcon className="mr-2 h-6 w-6" />
+          {currentLanguage.profile_signOut}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
