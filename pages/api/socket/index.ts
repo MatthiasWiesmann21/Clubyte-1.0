@@ -36,7 +36,7 @@ export default async function handler(
         if (!profile) return;
         console.log(`User with profile IDzz ${profileId} has joined.`);
 
-        if (["Offline"].includes(profile.isOnline)) {
+        if (profile.isOnline === "Offline") {
           await db.profile.update({
             where: { id: profileId },
             data: { isOnline: "Online" },
@@ -49,6 +49,20 @@ export default async function handler(
         io.emit("userCount", onlineUsersCount);
         // Store the profileId in the socket instance for reference on disconnect
         socket.data.profileId = profileId;
+      });
+
+      // Listen for `statusUpdate` event and update the status
+      socket.on("statusUpdate", async ({ profileId, newStatus }) => {
+        await db.profile.update({
+          where: { id: profileId },
+          data: { isOnline: newStatus },
+        });
+
+        // Broadcast the updated online user count to all clients
+        const onlineUsersCount = await db.profile.count({
+          where: { isOnline: { in: ACTIVE_STATUSES } },
+        });
+        io.emit("userCount", onlineUsersCount);
       });
 
       // Listen for disconnections
@@ -64,7 +78,7 @@ export default async function handler(
         });
         if (!profile) return;
 
-        if (["Online"].includes(profile.isOnline)) {
+        if (profile.isOnline === "Online") {
           await db.profile.update({
             where: { id: profileId },
             data: { isOnline: "Offline" },

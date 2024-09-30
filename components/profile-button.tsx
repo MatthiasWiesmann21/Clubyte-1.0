@@ -1,11 +1,9 @@
-// import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuPortal,
-  // DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -13,9 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
-import { HelpCircle, LogOutIcon, UserCog2Icon } from "lucide-react";
 import { UserAvatar } from "./user-avatar";
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import {
   Tooltip,
   TooltipContent,
@@ -25,6 +22,9 @@ import {
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
+import { LogOutIcon, UserCog2Icon } from "lucide-react";
 
 interface ProfileButtonProps {
   profileId: string;
@@ -41,6 +41,8 @@ const statusColors: { [key: string]: string } = {
   Offline: "bg-slate-400",
 };
 
+let socket: any;
+
 const ProfileButton = ({
   profileId,
   profileName,
@@ -48,13 +50,36 @@ const ProfileButton = ({
   profileOnlineStatus,
 }: ProfileButtonProps) => {
   const currentLanguage = useLanguage();
-  // const { data: session } = useSession();
   const router = useRouter();
+  const [status, setStatus] = useState(profileOnlineStatus);
+
+  const socketInitializer = async () => {
+    await fetch("/api/socket");
+    socket = io({ path: "/api/socket", transports: ["websocket"] });
+
+    socket.on("connect", () => {
+      socket.emit("join", { profileId });
+    });
+  };
+
+  const fetchUserDetails = async () => {
+    const reponse: any = await fetch("/api/profile");
+    const data = await reponse.json();
+    setStatus(data?.isOnline);
+  };
+
+  useEffect(() => {
+    if (!socket) socketInitializer();
+    fetchUserDetails();
+  }, []);
 
   const updateProfileStatus = async (isOnline: string) => {
     try {
       await axios.patch(`/api/profile/${profileId}`, { isOnline });
-      router.refresh();
+      fetchUserDetails();
+      if (socket) {
+        socket.emit("statusUpdate", { profileId, newStatus: isOnline });
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -91,7 +116,7 @@ const ProfileButton = ({
                 <div
                   className={cn(
                     "absolute bottom-4 right-4 z-10 h-4 w-4 rounded-full border-4 border-white dark:border-[#0a0118] md:h-4 md:w-4",
-                    statusColors[profileOnlineStatus]
+                    statusColors[status]
                   )}
                 ></div>
               </Button>
@@ -119,7 +144,7 @@ const ProfileButton = ({
                   <div className="flex items-center">
                     <div
                       className={`ml-1 mr-3 h-4 w-4 rounded-lg ${
-                        statusColors[profileOnlineStatus] || "bg-gray-400"
+                        statusColors[status] || "bg-gray-400"
                       }`}
                     />
                     <span>{currentLanguage.profile_status_text}</span>

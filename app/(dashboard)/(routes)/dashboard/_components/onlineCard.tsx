@@ -13,7 +13,16 @@ export const OnlineCard = ({ profileId }: { profileId: string }) => {
   console.log("profileId", profileId);
 
   useEffect(() => {
-    if (!socket) socketInitializer();
+    if (!socket) {
+      socketInitializer();
+    }
+
+    // // Cleanup on unmount to prevent memory leaks
+    // return () => {
+    //   if (socket) {
+    //     socket.disconnect();
+    //   }
+    // };
   }, []);
 
   const socketInitializer = async () => {
@@ -28,19 +37,12 @@ export const OnlineCard = ({ profileId }: { profileId: string }) => {
     });
 
     socket.on("connect", () => {
-      console.log("Connected to socket");
-
       // Emit the profileId to the server after connection
       socket.emit("join", { profileId });
     });
 
     socket.on("userCount", (count: number) => {
-      console.log("Active users count received:", count);
       setUserCount(count);
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Socket disconnected");
     });
   };
   return (
