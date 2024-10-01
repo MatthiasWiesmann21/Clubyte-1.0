@@ -31,6 +31,7 @@ export function LanguageToggle() {
     }
   };
 
+
   const setLanguage = (language: string) => {
     dispatch({ type: "SetLanguage", payload: language });
     onSubmit(language);
@@ -54,10 +55,9 @@ export function LanguageToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="ml-2 border-0 bg-transparent" variant="outline">
-          <AppSVGIcon customclass="mr-1" icon={icon[language]} />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
+        <div className="ml-2 h-10 w-14 rounded-md hover:bg-[#f1f5f9] dark:hover:bg-[#1e293b] bg-transparent flex items-center justify-center">
+          <AppSVGIcon customclass="" icon={icon[language]} />
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setLanguage("English")}>
