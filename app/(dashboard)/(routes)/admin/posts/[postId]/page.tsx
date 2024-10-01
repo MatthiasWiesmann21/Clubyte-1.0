@@ -121,7 +121,6 @@ const PostIdPage = async ({
               <h2 className="text-xl">
                 {currentLanguage.post_setup_category_title}
               </h2>
-              <span className="pl-1 text-xs text-rose-600">{currentLanguage.requiredFields}</span>
             </div>
             <CategoryForm
               initialData={post}

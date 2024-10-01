@@ -45,7 +45,13 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
   return (
     <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
       <div className="flex items-center justify-between font-medium">
+        <div>
         {currentLanguage.course_imageForm_title}
+        <span className="pl-2 text-xs text-rose-600">
+          {currentLanguage.requiredFields}
+        </span>
+        </div>
+        <div>
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing && <>{currentLanguage.courses_imageForm_cancel}</>}
           {!isEditing && !initialData.imageUrl && (
@@ -61,6 +67,7 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
             </>
           )}
         </Button>
+        </div>
       </div>
       {!isEditing &&
         (!initialData.imageUrl ? (

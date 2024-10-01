@@ -28,9 +28,9 @@ interface CategoryTypeFormProps {
 }
 
 const formSchema = z.object({
-  isCourseCategory: z.boolean().default(false),
-  isNewsCategory: z.boolean().default(false),
-  isLiveEventCategory: z.boolean().default(false),
+  isCourseCategory: z.boolean().default(true),
+  isNewsCategory: z.boolean().default(true),
+  isLiveEventCategory: z.boolean().default(true),
 });
 
 export const CategoryTypeForm = ({

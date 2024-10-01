@@ -58,6 +58,8 @@ const LiveEventIdPage = async ({
     liveEvent.imageUrl,
     liveEvent.categoryId,
     liveEvent.videoUrl,
+    liveEvent.startDateTime,
+    liveEvent.endDateTime,
   ];
 
   const totalFields = requiredFields.length;

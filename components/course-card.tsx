@@ -21,7 +21,6 @@ import {
   Info,
   Lightbulb,
   Medal,
-  MoreHorizontal,
   MoreVertical,
   Pencil,
   Star,
@@ -268,7 +267,8 @@ export const CourseCard = ({
                   : currentLanguage.course_card_chapters}
               </span>
             </div>
-            <div className="flex items-center">
+            {duration && (
+              <div className="flex items-center">
               <div className="flex h-[24px] w-[24px] items-center justify-center">
                 <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
                   <Clock
@@ -282,7 +282,9 @@ export const CourseCard = ({
                 {formatDuration(duration.toString())}
               </span>
             </div>
-            <div className="flex items-center">
+            )}
+            {level && (
+              <div className="flex items-center">
               <div className="flex h-[24px] w-[24px] items-center justify-center">
                 <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
                   <GraduationCap
@@ -296,6 +298,7 @@ export const CourseCard = ({
                 {level || currentLanguage.course_card_no_level}
               </span>
             </div>
+            )}
           </div>
           {progress !== null ? (
             <CourseProgress

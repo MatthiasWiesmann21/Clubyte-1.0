@@ -25,7 +25,7 @@ interface TitleFormProps {
     title: string;
   };
   courseId: string;
-};
+}
 
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -33,10 +33,7 @@ const formSchema = z.object({
   }),
 });
 
-export const TitleForm = ({
-  initialData,
-  courseId
-}: TitleFormProps) => {
+export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -59,33 +56,37 @@ export const TitleForm = ({
     } catch {
       toast.error("Something went wrong");
     }
-  }
+  };
 
   return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
+      <div className="flex items-center font-medium justify-between">
+        <div>
         {currentLanguage.courses_titleForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>{currentLanguage.courses_titleForm_cancel}</>
-          ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              {currentLanguage.courses_titleForm_edit}
-            </>
-          )}
-        </Button>
+        <span className="pl-2 text-xs text-rose-600">
+          {currentLanguage.requiredFields}
+        </span>
+        </div>
+        <div>
+          {" "}
+          <Button onClick={toggleEdit} variant="ghost">
+            {isEditing ? (
+              <>{currentLanguage.courses_titleForm_cancel}</>
+            ) : (
+              <>
+                <Pencil className="mr-2 h-4 w-4" />
+                {currentLanguage.courses_titleForm_edit}
+              </>
+            )}
+          </Button>
+        </div>
       </div>
-      {!isEditing && (
-        <p className="text-sm mt-2">
-          {initialData.title}
-        </p>
-      )}
+      {!isEditing && <p className="mt-2 text-sm">{initialData.title}</p>}
       {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -95,7 +96,9 @@ export const TitleForm = ({
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder={currentLanguage.courses_titleForm_placeholder}
+                      placeholder={
+                        currentLanguage.courses_titleForm_placeholder
+                      }
                       {...field}
                     />
                   </FormControl>
@@ -107,7 +110,7 @@ export const TitleForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
-                onClick={()=>onSubmit(form.getValues())}
+                onClick={() => onSubmit(form.getValues())}
               >
                 {currentLanguage.courses_titleForm_save}
               </Button>
@@ -116,5 +119,5 @@ export const TitleForm = ({
         </Form>
       )}
     </div>
-  )
-}
+  );
+};

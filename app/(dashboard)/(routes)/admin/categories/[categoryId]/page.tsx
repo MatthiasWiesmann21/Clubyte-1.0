@@ -38,7 +38,7 @@ const CategoryIdPage = async ({
     return redirect("/");
   }
 
-  const requiredFields = [category.name];
+  const requiredFields = [category.name, category.colorCode];
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
   const completionText = `(${completedFields}/${totalFields})`;
