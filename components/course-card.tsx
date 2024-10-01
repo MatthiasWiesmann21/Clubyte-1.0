@@ -94,7 +94,7 @@ export const CourseCard = ({
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/course/${id}`);
+      await axios.delete(`/api/courses/${id}`);
 
       toast.success("Course deleted");
       router.refresh();
