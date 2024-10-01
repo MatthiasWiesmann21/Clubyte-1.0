@@ -69,7 +69,13 @@ export const CategoryForm = ({
   return (
     <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
+        <div>
         {currentLanguage.courses_categoryForm_title}
+        <span className="pl-2 text-xs text-rose-600">
+          {currentLanguage.requiredFields}
+        </span>
+        </div>
+        <div>
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>{currentLanguage.courses_categoryForm_cancel}</>
@@ -80,6 +86,7 @@ export const CategoryForm = ({
             </>
           )}
         </Button>
+        </div>
       </div>
       {!isEditing && (
         <p className={cn(

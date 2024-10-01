@@ -181,9 +181,9 @@ model Category {
   colorCode   String  @default("#000000")
   isPublished Boolean @default(false)
 
-  isCourseCategory    Boolean @default(false)
-  isNewsCategory      Boolean @default(false)
-  isLiveEventCategory Boolean @default(false)
+  isCourseCategory    Boolean @default(true)
+  isNewsCategory      Boolean @default(true)
+  isLiveEventCategory Boolean @default(true)
 
   containerId String
   container   Container @relation(fields: [containerId], references: [id])

@@ -68,7 +68,13 @@ export const DescriptionForm = ({
   return (
     <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
       <div className="flex items-center justify-between font-medium">
+        <div>
         {currentLanguage.courses_descriptionForm_title}
+        <span className="pl-2 text-xs text-rose-600">
+          {currentLanguage.requiredFields}
+        </span>
+        </div>
+        <div>
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>{currentLanguage.courses_descriptionForm_cancel}</>
@@ -79,6 +85,7 @@ export const DescriptionForm = ({
             </>
           )}
         </Button>
+        </div>
       </div>
       {!isEditing && (
         <p

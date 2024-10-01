@@ -64,7 +64,13 @@ export const TitleForm = ({
   return (
     <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
+        <div>
         {currentLanguage.post_TitleForm_title}
+        <span className="pl-2 text-xs text-rose-600">
+          {currentLanguage.requiredFields}
+        </span>
+        </div>
+        <div>
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>{currentLanguage.post_TitleForm_cancel}</>
@@ -75,6 +81,7 @@ export const TitleForm = ({
             </>
           )}
         </Button>
+        </div>
       </div>
       {!isEditing && (
         <p className="text-sm mt-2">
