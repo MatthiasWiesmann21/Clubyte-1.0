@@ -191,7 +191,7 @@ export const VideoForm = ({ initialData, liveEventId }: VideoFormProps) => {
                 className="flex w-full items-center rounded-md p-1"
                 type="text"
                 placeholder="Share Link"
-                value={videoType?.value + videoUrl}
+                value={videoUrl}
                 onChange={(e: any) => setVideoUrl(e?.target?.value)}
               />
             </div>
