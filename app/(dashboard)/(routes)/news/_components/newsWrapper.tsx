@@ -9,6 +9,8 @@ import { Categories } from "./categories";
 import ClubyteLoader from "@/components/ui/clubyte-loader";
 import { useTheme } from "next-themes";
 import { currentProfile } from "@/lib/current-profile";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 
 type PostWithProgressWithCategory = Post & {
   category: Category | null;
@@ -99,8 +101,9 @@ const NewsWrapper = ({
 
   return (
     <div className="space-y-4 px-4 pt-4 dark:bg-[#110524]">
-      <div className="flex flex-col items-center justify-center">
-        <div className="w-full max-w-4xl">
+      <div className="flex flex-col items-start justify-center md:flex-row md:space-x-4">
+        {/* Main Newsfeed Section */}
+        <div className="w-full max-w-3xl">
           <Categories
             items={categories}
             ThemeOutlineColor={ThemeOutlineColor}
@@ -128,32 +131,61 @@ const NewsWrapper = ({
               profileImage={profileImage}
             />
           ))}
-        </div>
-        <div className="loading-indicator" />
-        {isLoading ? (
-          <div className="flex min-h-screen items-center justify-center">
-            {theme === "dark" ? (
-              <ClubyteLoader
-                className="h-64 w-64"
-                theme="dark"
-                color="110524"
-              />
-            ) : (
-              <ClubyteLoader
-                className="h-64 w-64"
-                theme="light"
-                color="ffffff"
-              />
-            )}
-          </div>
-        ) : (
-          !isLoading &&
-          posts?.length === 0 && (
-            <div className="mt-10 text-center text-sm text-muted-foreground">
-              {currentLanguage.news_no_posts_found}
+          <div className="loading-indicator" />
+          {isLoading ? (
+            <div className="flex min-h-screen items-center justify-center">
+              {theme === "dark" ? (
+                <ClubyteLoader
+                  className="h-64 w-64"
+                  theme="dark"
+                  color="110524"
+                />
+              ) : (
+                <ClubyteLoader
+                  className="h-64 w-64"
+                  theme="light"
+                  color="ffffff"
+                />
+              )}
             </div>
-          )
-        )}
+          ) : (
+            !isLoading &&
+            posts?.length === 0 && (
+              <div className="mt-10 text-center text-sm text-muted-foreground">
+                {currentLanguage.news_no_posts_found}
+              </div>
+            )
+          )}
+        </div>
+
+        {/* My Favorites Section (hidden on mobile) */}
+        <div className="hidden w-full max-w-lg outline outline-red-400 lg:block">
+          <div className="sticky top-4">
+            <h1 className="mb-8 text-2xl font-medium">{currentLanguage.news_myFavorites_title}</h1>
+            <Separator className="my-4" />
+            {/* Render favorite posts (example static content for now) */}
+            <Tabs defaultValue="Posts" className="w-full">
+              <TabsList>
+                <TabsTrigger value="Posts">{currentLanguage.news_Posts_title}</TabsTrigger>
+                <TabsTrigger value="Events">{currentLanguage.news_LiveEvents_title}</TabsTrigger>
+                <TabsTrigger value="Courses">{currentLanguage.news_Courses_title}</TabsTrigger>
+                <TabsTrigger value="Chapters">{currentLanguage.news_Chapters_title}</TabsTrigger>
+              </TabsList>
+              <TabsContent value="Posts">
+                Make changes to your account here.
+              </TabsContent>
+              <TabsContent value="Events">
+                Change your password here.
+              </TabsContent>
+              <TabsContent value="Courses">
+                Change your password here.
+              </TabsContent>
+              <TabsContent value="Chapters">
+                Change your password here.
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
       </div>
     </div>
   );

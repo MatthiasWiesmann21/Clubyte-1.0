@@ -547,5 +547,10 @@ course_card_edit: "Editar",
 course_card_delete: "Eliminar",
 descriptionModal_DialogHeader: "Descripción",
 descriptionModal_DialogCancel: "Cerrar",
-
+courses_sidebar_infoDescription: "Descripción del curso",
+news_myFavorites_title: "Mis Favoritos",
+news_Posts_title: "Publicaciones",
+news_LiveEvents_title: "Eventos en Vivo",
+news_Courses_title: "Cursos",
+news_Chapters_title: "Capítulos",
 };

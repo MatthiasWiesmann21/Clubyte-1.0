@@ -66,6 +66,7 @@ export const getPosts = async ({
           },
         },
         likes: true,
+        favorites: true,
       },
     });
 
