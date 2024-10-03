@@ -12,11 +12,10 @@ const Favorite = ({ chapter, getData }: any) => (
       }}
       className="flex cursor-pointer items-center justify-around rounded-[10px] border border-[#fff] bg-slate-100/60 p-2 hover:shadow-sm dark:border-[#1e172a] dark:bg-[#0c0319]"
     >
-      {chapter?.favorites?.length}
       <Star
         size={26}
         fill={!!chapter?.currentFavorite ? "#FFD700" : "#ffffff00"}
-        className="ml-2 transition duration-200 ease-in-out hover:scale-110"
+        className="transition duration-200 ease-in-out hover:scale-110"
         style={!!chapter?.currentFavorite ? { color: "#FFD700" } : {}}
       />
     </div>

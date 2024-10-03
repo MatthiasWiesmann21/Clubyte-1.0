@@ -207,8 +207,6 @@ const LikeComment = ({
               }
               fill={!!currentFavorite ? "#FFD700" : "transparent"}
             />
-            <span className="ml-2 mr-1">{favoritesCount}</span>
-            Favorites
           </div>
         </div>
         <div
