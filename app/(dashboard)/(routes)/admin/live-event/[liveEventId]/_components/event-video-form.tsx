@@ -28,8 +28,8 @@ const options = [
     value: "https://vimeo.com/",
     label: (
       <div className="flex items-center">
-        <AppSVGIcon icon={"vimeo"} customclass={"w-12 h-6"} />
-        <p className="m-2">Vimeo</p>
+        <AppSVGIcon customclass="mr-2 w-[50px]" icon={"vimeo"} />
+        <p className="m-0">vimeo</p>
       </div>
     ),
   },
@@ -37,8 +37,8 @@ const options = [
     value: "https://www.youtube.com/",
     label: (
       <div className="flex items-center">
-        <AppSVGIcon icon={"youtube"} customclass={"w-12 h-6"} />
-        <p className="m-2">YouTube</p>
+        <AppSVGIcon customclass="mr-2 w-[32px]" icon={"youtube"} />
+        <p className="m-0">youtube</p>
       </div>
     ),
   },
@@ -46,8 +46,8 @@ const options = [
     value: "https://utfs.io/",
     label: (
       <div className="flex items-center">
-        <Upload className="h-6 w-6" />
-        <p className="m-2">Upload Video</p>
+        <AppSVGIcon customclass="mr-2 w-[50px]" icon={"uploadthing-logo"} />
+        <p className="m-0">Uploadthing</p>
       </div>
     ),
   },
@@ -103,7 +103,7 @@ export const VideoForm = ({ initialData, liveEventId }: VideoFormProps) => {
 
   return (
     <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex items-center justify-between font-medium">
+      <div className="flex mb-2 items-center justify-between font-medium">
         {currentLanguage.liveEvent_videoForm_title}
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
@@ -124,7 +124,7 @@ export const VideoForm = ({ initialData, liveEventId }: VideoFormProps) => {
 
       {!isEditing &&
         (videoType && videoUrl ? (
-          <VimeoPreview videoId={`${videoType?.value}${videoUrl}`} />
+          <VimeoPreview videoId={`${videoUrl}`} />
         ) : (
           <div className="flex h-60 items-center justify-center rounded-md bg-slate-200">
             <Video className="h-10 w-10 text-slate-500" />
@@ -190,12 +190,11 @@ export const VideoForm = ({ initialData, liveEventId }: VideoFormProps) => {
               }}
             />
             <div className="my-1 flex items-center">
-              <p className="m-0">{videoType?.value}</p>
               <input
                 className="flex w-full items-center rounded-md p-1"
                 type="text"
                 placeholder="Share Link"
-                value={videoUrl}
+                value={videoType?.value + videoUrl}
                 onChange={(e: any) => setVideoUrl(e?.target?.value)}
               />
             </div>
@@ -210,7 +209,7 @@ export const VideoForm = ({ initialData, liveEventId }: VideoFormProps) => {
               </Button>
             </div>
             {videoType && videoUrl && (
-              <VimeoPreview videoId={`${videoType?.value}${videoUrl}`} />
+              <VimeoPreview videoId={`${videoUrl}`} />
             )}
           </div>
         </>

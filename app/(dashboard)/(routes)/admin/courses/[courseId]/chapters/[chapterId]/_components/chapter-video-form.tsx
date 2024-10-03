@@ -15,6 +15,7 @@ import utfs from "@/assets/icons/uploadthing-logo.svg";
 import UniversalPlayer from "@/pages/components/universalPlayer";
 import { useTheme } from "next-themes";
 import { UploadButton } from "@/utils/uploadthing";
+import AppSVGIcon from "@/components/appsvgicon";
 
 interface ChapterVideoFormProps {
   initialData: Chapter;
@@ -31,7 +32,7 @@ const options = [
     value: "https://vimeo.com/",
     label: (
       <div className="flex items-center">
-        <Image priority className="mr-2 w-[50px]" alt="vimeo" src={vimeo} />
+        <AppSVGIcon customclass="mr-2 w-[50px]" icon={"vimeo"} />
         <p className="m-0">vimeo</p>
       </div>
     ),
@@ -40,7 +41,7 @@ const options = [
     value: "https://www.youtube.com/",
     label: (
       <div className="flex items-center">
-        <Image priority className="mr-2 w-[50px]" alt="youtube" src={youtube} />
+        <AppSVGIcon customclass="mr-2 w-[32px]" icon={"youtube"} />
         <p className="m-0">youtube</p>
       </div>
     ),
@@ -49,7 +50,7 @@ const options = [
     value: "https://utfs.io/",
     label: (
       <div className="flex items-center">
-        <Image priority className="mr-2 w-[50px]" alt="utfs" src={utfs} />
+        <AppSVGIcon customclass="mr-2 w-[50px]" icon={"uploadthing-logo"} />
         <p className="m-0">Uploadthing</p>
       </div>
     ),
@@ -105,7 +106,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
 
   return (
     <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex items-center justify-between font-medium">
+      <div className="flex mb-2 items-center justify-between font-medium">
         Chapters Video
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
@@ -126,7 +127,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
 
       {!isEditing &&
         (videoType && videoUrl ? (
-          <VimeoPreview videoId={`${videoType?.value}${videoUrl}`} />
+          <VimeoPreview videoId={`${videoUrl}`} />
         ) : (
           <div className="flex h-60 items-center justify-center rounded-md bg-slate-200">
             <Video className="h-10 w-10 text-slate-500" />
@@ -214,7 +215,6 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
               }}
             />
             <div className="my-1 flex items-center">
-              <p className="m-0">{videoType?.value}</p>
               <input
                 className="flex w-full items-center rounded-md p-1"
                 type="text"
@@ -234,7 +234,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
               </Button>
             </div>
             {videoType && videoUrl && (
-              <VimeoPreview videoId={`${videoType?.value}${videoUrl}`} />
+              <VimeoPreview videoId={`${videoUrl}`} />
             )}
           </div>
         </>
