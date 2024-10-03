@@ -145,12 +145,9 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
               endpoint="chapterVideo"
               onClientUploadComplete={(res: any) => {
                 // Do something with the response
-                setVideoType(options[2]);
+                setVideoType(options[3]);
                 setVideoUrl(
                   res[0]?.url
-                    ?.split("/")
-                    ?.filter((each: any, index: any) => index > 2)
-                    ?.join("/")
                 );
                 // console.log(
                 //   "Files: ",

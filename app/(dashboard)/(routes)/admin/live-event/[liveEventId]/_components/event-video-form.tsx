@@ -136,12 +136,9 @@ export const VideoForm = ({ initialData, liveEventId }: VideoFormProps) => {
             <UploadButton
               endpoint="videoUploader"
               onClientUploadComplete={(res: any) => {
-                setVideoType(options[2]);
+                setVideoType(options[3]);
                 setVideoUrl(
                   res[0]?.url
-                    ?.split("/")
-                    ?.filter((each: any, index: any) => index > 2)
-                    ?.join("/")
                 );
               }}
               onUploadError={(error: Error) => {
@@ -194,7 +191,7 @@ export const VideoForm = ({ initialData, liveEventId }: VideoFormProps) => {
                 className="flex w-full items-center rounded-md p-1"
                 type="text"
                 placeholder="Share Link"
-                value={videoType?.value + videoUrl}
+                value={videoUrl}
                 onChange={(e: any) => setVideoUrl(e?.target?.value)}
               />
             </div>
