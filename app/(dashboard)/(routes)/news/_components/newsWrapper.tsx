@@ -13,7 +13,9 @@ import { currentProfile } from "@/lib/current-profile";
 type PostWithProgressWithCategory = Post & {
   category: Category | null;
   likesCount: number;
+  favoritesCount: number;
   currentLike: boolean;
+  currentFavorite: boolean;
   commentsWithLikes: any;
   commentsCount: number;
 };
@@ -44,14 +46,6 @@ const NewsWrapper = ({
   const observer = useRef<IntersectionObserver | null>(null);
 
   const currentLanguage = useLanguage();
-
-  
-  const updateLikeComment = (post: any) => {
-    const tempPost = posts?.map((each) =>
-      each?.id === post?.id ? post : each
-    );
-    setPosts(tempPost);
-  };
 
   const getPosts = async (reset = false) => {
     setLoading(true);
@@ -125,7 +119,9 @@ const NewsWrapper = ({
               publisherImageUrl={item?.publisherImageUrl!}
               colorCode={item?.category?.colorCode!}
               likesCount={item?.likesCount}
+              favoritesCount={item?.favoritesCount}
               currentLike={item?.currentLike}
+              currentFavorite={item?.currentFavorite}
               commentsWithLikes={item?.commentsWithLikes}
               commentsCount={item?.commentsCount}
               updateLikeComment={getPosts}

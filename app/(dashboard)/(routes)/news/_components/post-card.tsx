@@ -24,7 +24,9 @@ interface PostCardProps {
   publisherImageUrl: string;
   colorCode?: string;
   likesCount: number;
+  favoritesCount: number;
   currentLike: boolean;
+  currentFavorite: boolean;
   commentsWithLikes: any;
   commentsCount: number;
   updateLikeComment: any;
@@ -42,7 +44,9 @@ export const PostCard = ({
   publisherImageUrl,
   colorCode,
   likesCount,
+  favoritesCount,
   currentLike,
+  currentFavorite,
   commentsWithLikes,
   commentsCount,
   updateLikeComment,
@@ -69,12 +73,12 @@ export const PostCard = ({
                 <div className="ml-2 flex flex-col justify-center">
                   <Tooltip>
                     <TooltipTrigger>
-                      <div className="font-600 mr-2 text-start line-clamp-1 text-base text-black dark:text-white">
+                      <div className="font-600 mr-2 line-clamp-1 text-start text-base text-black dark:text-white">
                         {publisherName}
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <div className="text-sm whitespace-normal">
+                      <div className="whitespace-normal text-sm">
                         {publisherName}
                       </div>
                     </TooltipContent>
@@ -88,11 +92,11 @@ export const PostCard = ({
               {category && (
                 <div
                   className={`flex items-center gap-x-1 rounded-full border px-3 py-2 text-xs font-[600] transition`}
-                style={{ borderColor: colorCode }}
-              >
-                <div className="truncate">{category}</div>
-                  </div>
-                )}
+                  style={{ borderColor: colorCode }}
+                >
+                  <div className="truncate">{category}</div>
+                </div>
+              )}
             </div>
             <div className="font-400 text-sm text-black dark:text-white">
               <PostPreview value={description} />
@@ -132,7 +136,9 @@ export const PostCard = ({
           id={id}
           profileImage={profileImage}
           likesCount={likesCount}
+          favoritesCount={favoritesCount}
           currentLike={currentLike}
+          currentFavorite={currentFavorite}
           commentsWithLikes={commentsWithLikes}
           commentsCount={commentsCount}
           updateLikeComment={updateLikeComment}

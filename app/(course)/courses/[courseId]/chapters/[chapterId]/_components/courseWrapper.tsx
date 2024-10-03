@@ -9,15 +9,13 @@ import { Separator } from "@/components/ui/separator";
 import { Preview } from "@/components/preview";
 import { File, FileX } from "lucide-react";
 import LikeComment from "./likeComment";
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { isOwner } from "@/lib/owner";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import Favorite from "./favorite";
 
 interface Params {
   courseId: string;
@@ -99,10 +97,6 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
   currentLanguage,
   profileImage,
 }) => {
-  const [courseProgress, setCourseProgress] = useState<UserProgress | null>(
-    null
-  );
-
   const [data, setData] = useState<DataObject>({
     chapter: null,
     course: null,
@@ -122,7 +116,6 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
       `/api/courses/${params.courseId}/chapters/${params.chapterId}`
     );
     const data: DataObject = await response.json();
-    // console.log("qwertyuiop", data);
     setData(data);
   };
 
@@ -166,6 +159,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
                 </TooltipContent>
               </Tooltip>
               <div className="flex items-center space-x-2">
+                <Favorite chapter={chapter} getData={getData} />
                 <Love chapter={chapter} getData={getData} />
                 {purchase ? (
                   <CourseProgressButton

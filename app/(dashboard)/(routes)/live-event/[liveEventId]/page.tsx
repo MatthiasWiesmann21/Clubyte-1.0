@@ -11,6 +11,7 @@ import axios from "axios";
 import { CategoryItem } from "./_components/category-item";
 import Love from "./_components/love";
 import { EventPreview } from "@/components/event-preview";
+import Favorite from "./_components/favorite";
 
 const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   const { data: session } = useSession(); // Get session data from NextAuth
@@ -71,6 +72,7 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
             <h2 className="mb-2 text-xl font-medium">{liveEvent?.title}</h2>
             <div className="flex items-center space-x-2">
               <Love liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
+              <Favorite liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
             </div>
           </div>
           <Separator />
