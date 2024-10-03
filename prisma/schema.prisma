@@ -27,8 +27,8 @@ model Container {
   PrimaryButtonColor     String? @default("#e72192")
   DarkPrimaryButtonColor String? @default("#e72192")
 
-  ThemeOutlineColor           String? @default("#e72192")
-  DarkThemeOutlineColor       String? @default("#e72192")
+  ThemeOutlineColor     String? @default("#e72192")
+  DarkThemeOutlineColor String? @default("#e72192")
 
   courses    Course[]
   categories Category[]
@@ -68,13 +68,13 @@ model Server {
 }
 
 model Profile {
-  id                    String @id @default(cuid())
-  userId                String @db.Text
+  id                    String  @id @default(cuid())
+  userId                String  @db.Text
   name                  String? @db.Text
   imageUrl              String  @db.Text
   email                 String  @db.Text
-  password              String?  @default("")
-  token                 String?  @default("")
+  password              String? @default("")
+  token                 String? @default("")
   emailVerified         Boolean @default(false)
   language              String? @db.Text
   isOnline              String  @default("Online")
@@ -85,11 +85,11 @@ model Profile {
   containerId String
   container   Container @relation(fields: [containerId], references: [id])
 
-  servers  Server[]
-  members  Member[]
-  channels Channel[]
-  comments Comment[]
-  likes    Like[]
+  servers   Server[]
+  members   Member[]
+  channels  Channel[]
+  comments  Comment[]
+  likes     Like[]
   favorites Favorite[]
 
   createdAt DateTime @default(now())
@@ -142,20 +142,20 @@ model UserHasCourse {
 }
 
 model Course {
-  id          String  @id @default(uuid())
-  userId      String
-  title       String  @db.Text
-  description String? @db.Text
-  imageUrl    String? @db.Text
-  price       Float?  @default(0)
-  isPublished Boolean @default(false)
-  duration      String?
-  level         String?
-  isFeatured    Boolean @default(false)
-  isBestseller  Boolean @default(false)
-  isNew         Boolean @default(false)
-  
-  specialType   String?
+  id           String  @id @default(uuid())
+  userId       String
+  title        String  @db.Text
+  description  String? @db.Text
+  imageUrl     String? @db.Text
+  price        Float?  @default(0)
+  isPublished  Boolean @default(false)
+  duration     String?
+  level        String?
+  isFeatured   Boolean @default(false)
+  isBestseller Boolean @default(false)
+  isNew        Boolean @default(false)
+
+  specialType String?
   containerId String
   container   Container @relation(fields: [containerId], references: [id])
 
@@ -231,8 +231,8 @@ model Chapter {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  comments Comment[]
-  likes    Like[]
+  comments  Comment[]
+  likes     Like[]
   favorites Favorite[]
 
   @@index([courseId])
@@ -364,8 +364,8 @@ model Post {
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
 
-  comments Comment[]
-  likes    Like[]
+  comments  Comment[]
+  likes     Like[]
   favorites Favorite[]
 
   createdAt DateTime @default(now())
@@ -394,7 +394,7 @@ model LiveEvent {
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
 
-  comments Comment[]
+  comments  Comment[]
   favorites Favorite[]
 
   createdAt DateTime @default(now())
@@ -474,8 +474,8 @@ model Favorite {
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id])
 
-  postId String?
-  post   Post?   @relation(fields: [postId], references: [id])
+  postId      String?
+  post        Post?      @relation(fields: [postId], references: [id])
   liveEventId String?
   liveEvent   LiveEvent? @relation(fields: [liveEventId], references: [id])
   chapterId   String?

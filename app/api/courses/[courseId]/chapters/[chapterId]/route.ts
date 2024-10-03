@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { Attachment, Chapter } from "@prisma/client";
@@ -42,6 +41,7 @@ export async function GET(
       },
       include: {
         likes: true,
+        favorites: true,
         comments: {
           include: {
             likes: true,
@@ -109,6 +109,9 @@ export async function GET(
     const currentLike = chapter?.likes?.some(
       (like) => like?.profileId === profile?.id
     );
+    const currentFavorite = chapter?.favorites?.some(
+      (favorite) => favorite?.profileId === profile?.id
+    );
 
     const commentsWithLikes = chapter?.comments
       ?.map((comment) => ({
@@ -129,7 +132,7 @@ export async function GET(
       ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt));
 
     return NextResponse.json({
-      chapter: { ...chapter, currentLike, commentsWithLikes },
+      chapter: { ...chapter, currentLike, currentFavorite, commentsWithLikes },
       course,
       attachments,
       nextChapter,
