@@ -71,7 +71,7 @@ const ProfileButton = ({
   useEffect(() => {
     if (!socket) socketInitializer();
     fetchUserDetails();
-  }, []);
+  }, [profileOnlineStatus]);
 
   const updateProfileStatus = async (isOnline: string) => {
     try {

@@ -20,7 +20,7 @@ export const getPosts = async ({
   try {
     // Fetch the session using NextAuth
     const session = await getServerSession(authOptions);
-    
+
     if (!session || !session.user?.id) {
       throw new Error("Unauthorized");
     }
@@ -76,21 +76,31 @@ export const getPosts = async ({
       const commentsWithLikes = post.comments.map((comment) => ({
         ...comment,
         commentLikesCount: comment.likes.length,
-        currentCommentLike: comment.likes.some((like) => like.profileId === profile.id),
+        currentCommentLike: comment.likes.some(
+          (like) => like.profileId === profile.id
+        ),
         subCommentsWithLikes: comment.subComment.map((subcomment) => ({
           ...subcomment,
           commentLikesCount: subcomment.likes.length,
-          currentCommentLike: subcomment.likes.some((like) => like.profileId === profile.id),
-        }))
+          currentCommentLike: subcomment.likes.some(
+            (like) => like.profileId === profile.id
+          ),
+        })),
       }));
 
-      const currentLike = post.likes.some((like) => like.profileId === profile.id);
+      const currentLike = post.likes.some(
+        (like) => like.profileId === profile.id
+      );
+      const currentFavorite = post.favorites.some(
+        (favorite) => favorite.profileId === profile.id
+      );
 
       return {
         ...post,
         commentsCount,
         likesCount,
         currentLike,
+        currentFavorite,
         commentsWithLikes,
       };
     });

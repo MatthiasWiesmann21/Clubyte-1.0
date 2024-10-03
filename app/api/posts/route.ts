@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
@@ -7,7 +6,6 @@ import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
 export async function POST(req: Request) {
   try {
-    console.log("POSTs post request recieved" , req.body );
     // Get the session from NextAuth
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
@@ -47,7 +45,6 @@ export async function GET(req: any): Promise<void | Response> {
     const skip = (parseInt(page) - 1) * pageSize;
     const currentDate = new Date(); // Get the current date and time
 
-    console.log('llllllllll ',userId)
     if (!userId) throw new Error("Unauthorized");
     const profile = await db.profile.findFirst({
       select: {
@@ -58,8 +55,7 @@ export async function GET(req: any): Promise<void | Response> {
       },
     });
 
-    if (!profile)
-      return new NextResponse("Profile not found", { status: 404 });
+    if (!profile) return new NextResponse("Profile not found", { status: 404 });
 
     const posts =
       (await db.post.findMany({
@@ -89,6 +85,7 @@ export async function GET(req: any): Promise<void | Response> {
             },
           },
           likes: true,
+          favorites: true,
         },
         take: pageSize,
         skip: skip,
@@ -100,34 +97,43 @@ export async function GET(req: any): Promise<void | Response> {
     const postsWithData = posts.map((post) => {
       const commentsCount = post.comments.length;
       const likesCount = post.likes.length;
+      const favoritesCount = post.favorites.length;
 
-      const commentsWithLikes = post.comments.map((comment) => ({
-        ...comment,
-        commentLikesCount: comment.likes.length,
-        currentCommentLike: comment.likes.some(
-          (like) => like.profileId === profile.id
-        ),
-        subCommentsWithLikes: comment.subComment.map((subcomment) => ({
-          ...subcomment,
-          commentLikesCount: subcomment.likes.length,
-          currentCommentLike: subcomment.likes.some(
+      const commentsWithLikes = post.comments
+        .map((comment) => ({
+          ...comment,
+          commentLikesCount: comment.likes.length,
+          currentCommentLike: comment.likes.some(
             (like) => like.profileId === profile.id
           ),
-        })),
-      })).sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
+          subCommentsWithLikes: comment.subComment.map((subcomment) => ({
+            ...subcomment,
+            commentLikesCount: subcomment.likes.length,
+            currentCommentLike: subcomment.likes.some(
+              (like) => like.profileId === profile.id
+            ),
+          })),
+        }))
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
 
       const currentLike = post.likes.some(
         (like) => like.profileId === profile.id
+      );
+
+      const currentFavorite = post.favorites.some(
+        (favorite) => favorite.profileId === profile.id
       );
 
       return {
         ...post,
         commentsCount,
         likesCount,
+        favoritesCount,
         currentLike,
+        currentFavorite,
         commentsWithLikes,
       };
     });

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { UserAvatar } from "@/components/user-avatar";
 import axios from "axios";
 import moment from "moment";
-import { Heart, MessageSquare, ThumbsUp } from "lucide-react";
+import { Heart, MessageSquare, Star } from "lucide-react";
 import { ChatInputPost } from "./chatInput";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
@@ -145,14 +145,18 @@ const LikeComment = ({
   id,
   likesCount,
   currentLike,
+  favoritesCount,
   commentsWithLikes,
+  currentFavorite,
   commentsCount,
   updateLikeComment,
   profileImage,
 }: {
   id: string;
   likesCount: number;
+  favoritesCount: number;
   currentLike: boolean;
+  currentFavorite: boolean;
   commentsWithLikes: any;
   commentsCount: number;
   updateLikeComment: any;
@@ -165,25 +169,45 @@ const LikeComment = ({
   return (
     <div className="mx-3">
       <div className="flex items-center justify-between py-3">
-        <div
-          onClick={async () => {
-            const response = await axios?.post(`/api/like/create`, {
-              postId: id,
-            });
-            if (response?.status === 200) updateLikeComment(true);
-          }}
-          className="m-2 flex cursor-pointer items-center justify-around "
-        >
-          <Heart
-            className={
-              !!currentLike
-                ? "text-[#f43f5e] transition duration-200 ease-in-out hover:scale-110"
-                : "border-black transition duration-200 ease-in-out hover:scale-110"
-            }
-            fill={!!currentLike ? "#f43f5e" : "transparent"}
-          />
-          <span className="ml-2 mr-1">{likesCount}</span>
-          Likes
+        <div className="flex">
+          <div
+            onClick={async () => {
+              const response = await axios?.post(`/api/like/create`, {
+                postId: id,
+              });
+              if (response?.status === 200) updateLikeComment(true);
+            }}
+            className="m-2 flex cursor-pointer items-center justify-around "
+          >
+            <Heart
+              className={
+                !!currentLike
+                  ? "text-[#f43f5e] transition duration-200 ease-in-out hover:scale-110"
+                  : "border-black transition duration-200 ease-in-out hover:scale-110"
+              }
+              fill={!!currentLike ? "#f43f5e" : "transparent"}
+            />
+            <span className="ml-2 mr-1">{likesCount}</span>
+            Likes
+          </div>
+          <div
+            onClick={async () => {
+              const response = await axios?.post(`/api/favorite/create`, {
+                postId: id,
+              });
+              if (response?.status === 200) updateLikeComment(true);
+            }}
+            className="m-2 flex cursor-pointer items-center justify-around "
+          >
+            <Star
+              className={
+                !!currentFavorite
+                  ? "text-[#FFD700] transition duration-200 ease-in-out hover:scale-110"
+                  : "border-black transition duration-200 ease-in-out hover:scale-110"
+              }
+              fill={!!currentFavorite ? "#FFD700" : "transparent"}
+            />
+          </div>
         </div>
         <div
           className="font-500 flex cursor-pointer items-center rounded-full bg-slate-200 p-3 text-sm transition duration-500 ease-in-out hover:bg-slate-300 dark:bg-slate-800/50 dark:hover:bg-slate-700/80"

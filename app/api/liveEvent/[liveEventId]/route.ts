@@ -30,11 +30,16 @@ export async function GET(req: Request) {
       },
       include: {
         likes: true,
+        favorites: true,
       },
     });
 
     const currentLike = liveEvent?.likes?.some(
       (like) => like.profileId === profile?.id
+    );
+
+    const currentFavorite = liveEvent?.favorites?.some(
+      (favorite) => favorite.profileId === profile?.id
     );
 
     const category = await db.category.findUnique({
@@ -46,7 +51,7 @@ export async function GET(req: Request) {
     });
 
     return NextResponse.json({
-      liveEvent: { ...liveEvent, currentLike },
+      liveEvent: { ...liveEvent, currentLike, currentFavorite },
       category,
     });
   } catch (error) {
