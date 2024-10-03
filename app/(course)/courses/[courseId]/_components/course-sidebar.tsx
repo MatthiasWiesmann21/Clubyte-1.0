@@ -10,10 +10,14 @@ import {
 
 import { db } from "@/lib/db";
 import { CourseProgress } from "@/components/course-progress";
-import authOptions  from "@/lib/auth"; // Assuming you have the auth options set up
+import authOptions from "@/lib/auth"; // Assuming you have the auth options set up
 import { CourseSidebarItem } from "./course-sidebar-item";
 import Progress from "./progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { DescriptionModal } from "@/components/modals/description-modal";
+import { Button } from "@/components/ui/button";
+import { Info } from "lucide-react";
+import { languageServer } from "@/lib/check-language-server";
 
 interface CourseSidebarProps {
   course: Course & {
@@ -29,6 +33,7 @@ export const CourseSidebar = async ({
   progressCount,
 }: CourseSidebarProps) => {
   const session = await getServerSession(authOptions);
+  const currentLanguage = await languageServer();
 
   if (!session?.user?.id) {
     return redirect("/");
@@ -47,8 +52,10 @@ export const CourseSidebar = async ({
 
   const progress =
     course.chapters.reduce(
-      (acc: number, chapter: Chapter & { userProgress: UserProgress[] | null }) =>
-        acc + (chapter.userProgress?.[0]?.progress || 0),
+      (
+        acc: number,
+        chapter: Chapter & { userProgress: UserProgress[] | null }
+      ) => acc + (chapter.userProgress?.[0]?.progress || 0),
       0
     ) / course.chapters.length;
 
@@ -56,18 +63,34 @@ export const CourseSidebar = async ({
     <TooltipProvider>
       <div className="m-3 flex h-full flex-col overflow-y-auto rounded-xl border-r bg-slate-100/60 shadow-sm dark:bg-[#0c0319]">
         <div className="flex flex-col border-b p-6">
-          <Tooltip>
-            <TooltipTrigger>
-              <h1 className="mb-2 line-clamp-2 whitespace-normal break-words text-start font-semibold">
-                {course.title}
-              </h1>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              <h1 className="h-full max-w-[300px] whitespace-normal font-semibold">
-                {course.title}
-              </h1>
-            </TooltipContent>
-          </Tooltip>
+          <div className="flex justify-between">
+            <Tooltip>
+              <TooltipTrigger>
+                <h1 className="line-clamp-2 whitespace-normal break-words text-start font-semibold">
+                  {course.title}
+                </h1>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <h1 className="h-full max-w-[300px] whitespace-normal font-semibold">
+                  {course.title}
+                </h1>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger>
+                <DescriptionModal description={course.description!}>
+                  <Button variant="ghost" className="h-8 w-8 p-0">
+                    <Info width={16} height={16} />
+                  </Button>
+                </DescriptionModal>
+                <TooltipContent side="bottom">
+                  <p className="h-full max-w-[300px] whitespace-normal font-semibold">
+                    {currentLanguage.courses_sidebar_infoDescription}
+                  </p>
+                </TooltipContent>
+              </TooltipTrigger>
+            </Tooltip>
+          </div>
           {purchase && (
             <div className="mt-4">
               <Progress progress={progress} />
