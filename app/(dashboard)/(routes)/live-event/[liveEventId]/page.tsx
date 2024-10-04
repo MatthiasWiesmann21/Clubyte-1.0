@@ -35,8 +35,8 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   }
 
   return (
-    <div className="flex items-center">
-      <div className="flex w-[60%] flex-col pb-20">
+    <div className="flex">
+      <div className="flex w-[69%] flex-col pb-20">
         <div className="flex flex-col items-end justify-between p-4 pt-6 md:flex-row">
           <CategoryItem
             label={category?.name ?? ""}
