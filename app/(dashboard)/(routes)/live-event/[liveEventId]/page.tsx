@@ -12,8 +12,11 @@ import { CategoryItem } from "./_components/category-item";
 import Love from "./_components/love";
 import { EventPreview } from "@/components/event-preview";
 import Favorite from "./_components/favorite";
+import { useTheme } from "next-themes";
+import ClubyteLoader from "@/components/ui/clubyte-loader";
 
 const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
+  const { theme } = useTheme();
   const { data: session } = useSession(); // Get session data from NextAuth
   const [liveEvent, setLiveEvent] = useState<any>();
   const [category, setCategory] = useState<any>();
@@ -34,9 +37,9 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
     return redirect("/");
   }
 
-  return (
+  return liveEvent ? (
     <div className="flex">
-      <div className="flex w-[69%] flex-col pb-20">
+      <div className="flex w-[69%] flex-col  pb-20">
         <div className="flex flex-col items-end justify-between p-4 pt-6 md:flex-row">
           <CategoryItem
             label={category?.name ?? ""}
@@ -82,6 +85,14 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
         </div>
       </div>
       <Chat />
+    </div>
+  ) : (
+    <div className="flex h-full w-full items-center justify-center">
+      {theme === "dark" ? (
+        <ClubyteLoader className="h-64 w-64" theme="dark" color="110524" />
+      ) : (
+        <ClubyteLoader className="h-64 w-64" theme="light" color="ffffff" />
+      )}
     </div>
   );
 };
