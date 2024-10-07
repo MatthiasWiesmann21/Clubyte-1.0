@@ -13,6 +13,7 @@ import ClubyteLoader from "@/components/ui/clubyte-loader";
 import { useTheme } from "next-themes";
 import { Separator } from "@/components/ui/separator";
 import { PostFavoriteCard } from "./postFavorite-card";
+import { BookX, NewspaperIcon } from "lucide-react";
 
 type PostWithProgressWithCategory = Post & {
   category: Category | null;
@@ -170,6 +171,12 @@ const NewsWrapper = ({
             </h1>
             <Separator className="my-4" />
             {/* Render favorite posts (example static content for now) */}
+            {favoritePosts?.length === 0 && (
+              <div className="flex h-16 items-center justify-center text-sm text-muted-foreground">
+              <NewspaperIcon className="m-1" size={24} />
+              <span>{currentLanguage?.news_no_posts_found}</span>
+            </div>
+            )}
                 {favoritePosts?.map((item) => (
                   <PostFavoriteCard
                     key={item?.id}
