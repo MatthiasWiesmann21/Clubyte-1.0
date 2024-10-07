@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
   Tooltip,
 } from "@/components/tooltip";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -143,7 +144,7 @@ const PolygonChart = ({
   return (
     <TooltipProvider>
       <div className="graphParent flex justify-between">
-        <div className="mr-2 w-full min-w-xs rounded border dark:border-[#221b2e] dark:bg-[#0D071A]">
+        <div className="min-w-xs mr-2 w-full rounded border dark:border-[#221b2e] dark:bg-[#0D071A]">
           <div className="flex items-center justify-between p-2 text-lg">
             <div>{currentLanguage.dashboard_popularChapter_title}</div>
           </div>
@@ -175,15 +176,15 @@ const PolygonChart = ({
                 className="my-1 flex items-center justify-between p-2"
               >
                 <Tooltip>
-                  <TooltipTrigger className="items-cetner flex w-[35%] items-center">
-                    <Image
-                      alt="img"
-                      src={each?.imageUrl}
-                      objectFit="contain"
-                      width={70}
-                      height={70}
-                      className="rounded-sm"
-                    />
+                  <TooltipTrigger className="flex w-[35%] items-center">
+                      <Image
+                        alt="img"
+                        src={each?.imageUrl}
+                        objectFit="contain"
+                        width={96}
+                        height={54}
+                        className="rounded-sm"
+                      />
                     <div className="ml-2">
                       <p className="m-0 line-clamp-2 text-start">
                         {each?.title}
