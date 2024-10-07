@@ -167,7 +167,7 @@ export const CreateChannelModal = () => {
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button variant="primary" disabled={isLoading}>
+              <Button onClick={() => onSubmit(form.getValues())} variant="primary" disabled={isLoading}>
                 {currentLanguage.chat_modal_create_channel_create}
               </Button>
             </DialogFooter>

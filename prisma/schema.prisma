@@ -165,6 +165,7 @@ model Course {
   chapters    Chapter[]
   attachments Attachment[]
   purchases   Purchase[]
+  favorites Favorite[]
 
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
@@ -478,6 +479,8 @@ model Favorite {
   post        Post?      @relation(fields: [postId], references: [id])
   liveEventId String?
   liveEvent   LiveEvent? @relation(fields: [liveEventId], references: [id])
+  courseId    String?
+  course      Course?    @relation(fields: [courseId], references: [id])
   chapterId   String?
   chapter     Chapter?   @relation(fields: [chapterId], references: [id])
 

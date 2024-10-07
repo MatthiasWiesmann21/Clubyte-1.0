@@ -2,6 +2,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import profileNot from "@/assets/icons/profileNot.png";
+import { AspectRatio } from "./ui/aspect-ratio";
 
 interface UserAvatarProps {
   src?: string;
@@ -14,7 +15,9 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({ src, className }) => {
       {src ? (
         <AvatarImage src={src} />
       ) : (
-        <Image priority alt="profileNot" src={profileNot} />
+        <AspectRatio ratio={1 / 1}>
+          <Image priority alt="profileNot" src={profileNot} />
+        </AspectRatio>
       )}
     </Avatar>
   );

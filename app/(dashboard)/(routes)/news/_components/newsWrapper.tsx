@@ -3,12 +3,16 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { PostCard } from "./post-card";
-import { Category, Post, Profile } from "@prisma/client";
+import {
+  Category,
+  Post,
+} from "@prisma/client";
 import { useLanguage } from "@/lib/check-language";
 import { Categories } from "./categories";
 import ClubyteLoader from "@/components/ui/clubyte-loader";
 import { useTheme } from "next-themes";
-import { currentProfile } from "@/lib/current-profile";
+import { Separator } from "@/components/ui/separator";
+import { PostFavoriteCard } from "./postFavorite-card";
 
 type PostWithProgressWithCategory = Post & {
   category: Category | null;
@@ -97,10 +101,13 @@ const NewsWrapper = ({
     };
   }, [hasMore, isLoading, categoryId]);
 
+  const favoritePosts = posts?.filter((post) => post?.currentFavorite);
+
   return (
     <div className="space-y-4 px-4 pt-4 dark:bg-[#110524]">
-      <div className="flex flex-col items-center justify-center">
-        <div className="w-full max-w-4xl">
+      <div className="flex flex-col items-start justify-center md:flex-row md:space-x-4">
+        {/* Main Newsfeed Section */}
+        <div className="w-full max-w-3xl">
           <Categories
             items={categories}
             ThemeOutlineColor={ThemeOutlineColor}
@@ -128,32 +135,55 @@ const NewsWrapper = ({
               profileImage={profileImage}
             />
           ))}
-        </div>
-        <div className="loading-indicator" />
-        {isLoading ? (
-          <div className="flex min-h-screen items-center justify-center">
-            {theme === "dark" ? (
-              <ClubyteLoader
-                className="h-64 w-64"
-                theme="dark"
-                color="110524"
-              />
-            ) : (
-              <ClubyteLoader
-                className="h-64 w-64"
-                theme="light"
-                color="ffffff"
-              />
-            )}
-          </div>
-        ) : (
-          !isLoading &&
-          posts?.length === 0 && (
-            <div className="mt-10 text-center text-sm text-muted-foreground">
-              {currentLanguage.news_no_posts_found}
+          <div className="loading-indicator" />
+          {isLoading ? (
+            <div className="flex min-h-screen items-center justify-center">
+              {theme === "dark" ? (
+                <ClubyteLoader
+                  className="h-64 w-64"
+                  theme="dark"
+                  color="110524"
+                />
+              ) : (
+                <ClubyteLoader
+                  className="h-64 w-64"
+                  theme="light"
+                  color="ffffff"
+                />
+              )}
             </div>
-          )
-        )}
+          ) : (
+            !isLoading &&
+            posts?.length === 0 && (
+              <div className="mt-10 text-center text-sm text-muted-foreground">
+                {currentLanguage.news_no_posts_found}
+              </div>
+            )
+          )}
+        </div>
+
+        {/* My Favorites Section (hidden on mobile) */}
+        <div className="hidden w-full max-w-lg outline outline-red-400 lg:block">
+          <div className="sticky top-4">
+            <h1 className="mb-8 text-2xl font-medium">
+              {currentLanguage.news_myFavorites_title}
+            </h1>
+            <Separator className="my-4" />
+            {/* Render favorite posts (example static content for now) */}
+                {favoritePosts?.map((item) => (
+                  <PostFavoriteCard
+                    key={item?.id}
+                    id={item?.id}
+                    category={item?.category?.name ?? ""}
+                    description={item?.description ?? ""}
+                    createdAt={new Date(item?.publishTime!).toDateString()}
+                    publisherName={item?.publisherName!}
+                    publisherImageUrl={item?.publisherImageUrl!}
+                    colorCode={item?.category?.colorCode!}
+                  />
+                ))}
+          </div>
+        </div>
       </div>
     </div>
   );

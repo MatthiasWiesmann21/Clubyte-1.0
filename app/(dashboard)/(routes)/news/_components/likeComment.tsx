@@ -145,7 +145,6 @@ const LikeComment = ({
   id,
   likesCount,
   currentLike,
-  favoritesCount,
   commentsWithLikes,
   currentFavorite,
   commentsCount,
@@ -154,7 +153,6 @@ const LikeComment = ({
 }: {
   id: string;
   likesCount: number;
-  favoritesCount: number;
   currentLike: boolean;
   currentFavorite: boolean;
   commentsWithLikes: any;
