@@ -38,13 +38,15 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   }
 
   return liveEvent ? (
-    <div className="flex">
-      <div className="flex w-[69%] flex-col  pb-20">
-        <div className="flex flex-col items-end justify-between p-4 pt-6 md:flex-row">
-          <CategoryItem
-            label={category?.name ?? ""}
-            colorCode={category?.colorCode ?? ""}
-          />
+    <div className="flex flex-wrap">
+      <div className="flex w-full flex-col lg:w-[69%] lg:pb-20">
+        <div className="flex flex-col items-end justify-between p-4 pt-6 md:flex-row md:items-center">
+          <div className="flex max-w-[70%] items-center">
+            <CategoryItem
+              label={category?.name ?? ""}
+              colorCode={category?.colorCode ?? ""}
+            />
+          </div>
           <div className="flex flex-col items-end px-1">
             <p className="text-xs">{`Starts: ${moment(
               liveEvent?.startDateTime
