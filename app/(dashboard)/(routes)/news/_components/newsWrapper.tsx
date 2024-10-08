@@ -164,12 +164,11 @@ const NewsWrapper = ({
         </div>
 
         {/* My Favorites Section (hidden on mobile) */}
-        <div className="hidden w-full max-w-lg outline outline-red-400 lg:block">
-          <div className="sticky top-4">
-            <h1 className="mb-8 text-2xl font-medium">
+        <div className="sticky top-4 w-full">
+        <div className="hidden w-full mt-20 max-w-lg outline rounded-lg p-2 outline-slate-200 dark:outline-[#1e293b] lg:block">
+            <h1 className="mb-4 text-2xl font-medium">
               {currentLanguage.news_myFavorites_title}
             </h1>
-            <Separator className="my-4" />
             {/* Render favorite posts (example static content for now) */}
             {favoritePosts?.length === 0 && (
               <div className="flex h-16 items-center justify-center text-sm text-muted-foreground">
