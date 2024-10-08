@@ -60,6 +60,9 @@ export async function POST(req: Request) {
             },
           },
           where: { liveEventId },
+          orderBy: {
+            createdAt: "asc",
+          },
         });
 
     return NextResponse.json({ data: data });
