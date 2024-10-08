@@ -2,11 +2,12 @@
 import axios from "axios";
 import moment from "moment";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ChatInputPost } from "../../../news/_components/chatInput";
 import { UserAvatar } from "@/components/user-avatar";
 
 const Chat = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const path = usePathname();
   const id = path?.split("/")[path?.split("/")?.length - 1];
   const [chat, setChat] = useState([]);
@@ -21,11 +22,21 @@ const Chat = () => {
   useEffect(() => {
     getChat();
   }, []);
+
+  useEffect(() => {
+    if (scrollRef?.current) {
+      scrollRef?.current?.scrollTo({
+        top: scrollRef?.current?.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [chat]);
+
   return (
     <div className="border-1 mx-auto mt-10 flex h-[600px] w-[95%] flex-col justify-between rounded-[12px] border border-[#fff] bg-[#131313] p-3 pt-0 lg:w-[29%]">
       <p className="my-5 text-[16px] font-[600]">Stream Chat</p>
       <div className="h-[80%] w-full">
-        <div className="no-scrollbar h-full overflow-y-scroll">
+        <div ref={scrollRef} className="no-scrollbar h-full overflow-y-scroll">
           {chat?.map((val: any) => (
             <div key={val?.id}>
               <div className="my-4 flex justify-between rounded-lg border p-3 dark:bg-[#131618]">
