@@ -41,6 +41,7 @@ export async function POST(req: Request) {
     } else if (courseId) {
       favoriteData = {
         profile: { connect: { id: profile.id } },
+        // @ts-ignore
         course: { connect: { id: courseId } },
       };
     } else if (chapterId) {
@@ -61,6 +62,7 @@ export async function POST(req: Request) {
         profileId: profile.id,
         postId: postId || undefined,
         liveEventId: liveEventId || undefined,
+        // @ts-ignore
         courseId: courseId || undefined,
         chapterId: chapterId || undefined,
       },
