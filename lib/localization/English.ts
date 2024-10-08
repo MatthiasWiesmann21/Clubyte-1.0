@@ -557,4 +557,5 @@ news_Posts_title: "Posts",
 news_LiveEvents_title: "Live Events",
 news_Courses_title: "Courses",
 news_Chapters_title: "Chapters",
+chapter_purchaseBanner_text: "You need to purchase this course to watch this chapter.",
 };

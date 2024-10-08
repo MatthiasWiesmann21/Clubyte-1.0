@@ -129,7 +129,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
         {isLocked && (
           <Banner
             variant="warning"
-            label="You need to purchase this course to watch this chapter."
+            label={currentLanguage.chapter_purchaseBanner_text}
           />
         )}
         <div className="mx-auto flex flex-col pb-20">

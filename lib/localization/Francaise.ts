@@ -554,4 +554,5 @@ news_Posts_title: "Publications",
 news_LiveEvents_title: "Événements en Direct",
 news_Courses_title: "Cours",
 news_Chapters_title: "Chapitres",
+chapter_purchaseBanner_text: "Vous devez acheter ce cours pour regarder ce chapitre.",
 };
