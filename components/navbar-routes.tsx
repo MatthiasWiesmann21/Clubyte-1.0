@@ -76,7 +76,7 @@ export const NavbarRoutes = ({
         <TooltipProvider><>
            <Tooltip>
             <TooltipTrigger>
-              <LanguageToggle />
+              <LanguageToggle profileId={profileId} />
             </TooltipTrigger>
             <TooltipContent side="bottom">
               {currentLanguage.navigation_language_tooltip}

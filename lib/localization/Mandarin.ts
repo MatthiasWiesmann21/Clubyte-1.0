@@ -553,4 +553,5 @@ news_Posts_title: "帖子",
 news_LiveEvents_title: "直播活动",
 news_Courses_title: "课程",
 news_Chapters_title: "章节",
+chapter_purchaseBanner_text: "您需要购买此课程才能观看此章节",
 };
