@@ -42,7 +42,7 @@ export const Categories = ({
   };
 
   return (
-    <div className="no-scrollbar flex w-full items-center gap-x-2 overflow-x-auto pb-2">
+    <div className="no-scrollbar flex w-full items-center gap-x-2 overflow-x-auto pb-6">
       <button
         onClick={() => {
           router?.push(

@@ -9,6 +9,7 @@ import { Categories } from "./_components/categories";
 import { Metadata } from "next";
 import { CourseCounter } from "@/components/courseCounter";
 import getBase64 from "@/lib/getLocalbase64";
+import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 
 export const metadata: Metadata = {
   title: "Browse",

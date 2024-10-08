@@ -12,52 +12,28 @@ import {
   TooltipTrigger,
 } from "@/components/tooltip";
 import { Profile } from "@prisma/client";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-interface PostCardProps {
+interface PostFavoriteCardProps {
   id: string;
-  title: string;
-  imageUrl: string;
-  category: string;
   description: string;
   createdAt: string;
   publisherName: string;
   publisherImageUrl: string;
+  category: string;
   colorCode?: string;
-  likesCount: number;
-  favoritesCount: number;
-  currentLike: boolean;
-  currentFavorite: boolean;
-  commentsWithLikes: any;
-  commentsCount: number;
-  updateLikeComment: any;
-  profileImage: string;
 }
 
-export const PostCard = ({
+export const PostFavoriteCard = ({
   id,
-  title,
-  imageUrl,
-  category,
   description,
   createdAt,
   publisherName,
   publisherImageUrl,
+  category,
   colorCode,
-  likesCount,
-  currentLike,
-  currentFavorite,
-  commentsWithLikes,
-  commentsCount,
-  updateLikeComment,
-  profileImage,
-}: PostCardProps) => {
-  const [isImageLoading, setIsImageLoading] = useState(true);
-  const { theme } = useTheme();
-
-  const handleImageLoad = () => {
-    setIsImageLoading(false);
-  };
-
+}: PostFavoriteCardProps) => {
   return (
     <TooltipProvider>
       <div className="group my-5 h-full overflow-hidden rounded-lg border bg-[#f6f8fa] py-1 hover:shadow-sm dark:border-[#2e3135] dark:bg-[#1b1f23]">
@@ -82,7 +58,6 @@ export const PostCard = ({
                       </div>
                     </TooltipContent>
                   </Tooltip>
-
                   <div className="text-xs text-black text-muted-foreground dark:text-white">
                     {createdAt}
                   </div>
@@ -101,46 +76,7 @@ export const PostCard = ({
               <PostPreview value={description} />
             </div>
           </div>
-          {imageUrl && (
-            <div className="relative flex aspect-video w-full items-center justify-center rounded-md p-2">
-              {isImageLoading ? (
-                theme === "dark" ? (
-                  <ClubyteLoader
-                    className="h-64 w-64"
-                    theme="dark"
-                    color="1b1f23"
-                  />
-                ) : (
-                  <ClubyteLoader
-                    className="h-64 w-64"
-                    theme="light"
-                    color="f6f8fa"
-                  />
-                )
-              ) : null}
-              <Image
-                priority
-                fill
-                className={`cover transition-opacity duration-500 ${
-                  isImageLoading ? "opacity-0" : "opacity-100"
-                }`}
-                alt={title}
-                src={imageUrl}
-                onLoadingComplete={handleImageLoad}
-              />
-            </div>
-          )}
         </div>
-        <LikeComment
-          id={id}
-          profileImage={profileImage}
-          likesCount={likesCount}
-          currentLike={currentLike}
-          currentFavorite={currentFavorite}
-          commentsWithLikes={commentsWithLikes}
-          commentsCount={commentsCount}
-          updateLikeComment={updateLikeComment}
-        />
       </div>
     </TooltipProvider>
   );

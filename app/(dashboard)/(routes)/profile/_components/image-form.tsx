@@ -12,6 +12,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 import { useLanguage } from "@/lib/check-language";
+import { UserAvatar } from "@/components/user-avatar";
 
 interface ImageFormProps {
   initialData: Profile;
@@ -72,7 +73,8 @@ export const ImageForm = ({ initialData, profileId }: ImageFormProps) => {
             <Image
               priority
               alt="Upload"
-              fill
+              width={200}
+              height={200}
               className="object-contain"
               src={initialData.imageUrl}
             />
