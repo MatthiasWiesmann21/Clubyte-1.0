@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { languageServer } from "@/lib/check-language-server";
 import CourseWrapper from "./_components/courseWrapper";
 import authOptions from "@/lib/auth"; // Ensure you have this configured
+import { currentProfile } from "@/lib/current-profile";
 
 const ChapterIdPage = async ({
   params,
@@ -20,16 +21,8 @@ const ChapterIdPage = async ({
   }
 
   const userId = session.user.id;
+  const profile = await currentProfile();
   const currentLanguage: any = await languageServer();
-
-  const profile = await db?.profile?.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      imageUrl: true,
-    },
-  });
 
   const { chapter, course } = await getChapter({
     userId,

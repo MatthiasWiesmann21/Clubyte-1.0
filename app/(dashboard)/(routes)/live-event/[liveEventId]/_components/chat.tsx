@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { ChatInputPost } from "../../../news/_components/chatInput";
 import { UserAvatar } from "@/components/user-avatar";
+import { Separator } from "@/components/ui/separator";
 
 const Chat = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -33,15 +34,16 @@ const Chat = () => {
   }, [chat]);
 
   return (
-    <div className="border-1 mx-auto mt-10 flex h-[600px] w-[95%] flex-col justify-between rounded-[12px] border border-[#fff] bg-[#131313] p-3 pt-0 lg:w-[29%]">
-      <p className="my-5 text-[16px] font-[600]">Stream Chat</p>
+    <div className="border-1 mx-auto mt-24 flex h-[650px] w-[95%] flex-col justify-between rounded-xl border bg-[#131313] p-3 pt-0 lg:w-[29%]">
+      <p className="my-4 text-md font-semibold">Stream Chat</p>
+      <Separator className="mb-2" />
       <div className="h-[80%] w-full">
         <div ref={scrollRef} className="no-scrollbar h-full overflow-y-scroll">
           {chat?.map((val: any) => (
             <div key={val?.id}>
               <div className="my-4 flex justify-between rounded-lg border p-3 dark:bg-[#131618]">
                 <UserAvatar
-                  className="mr-3 mr-3 h-[40px] max-h-[40px] min-h-[40px] w-[40px] min-w-[40px] max-w-[40px]"
+                  className="mr-3 h-[40px] max-h-[40px] min-h-[40px] w-[40px] min-w-[40px] max-w-[40px]"
                   src={val?.profile?.imageUrl}
                 />
                 <div className="w-full">

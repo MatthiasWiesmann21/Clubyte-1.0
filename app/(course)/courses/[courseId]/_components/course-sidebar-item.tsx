@@ -17,7 +17,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,7 +24,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -60,6 +58,10 @@ export const CourseSidebarItem = ({
     router.push(`/courses/${courseId}/chapters/${id}`);
   };
 
+  const redirectToChapter = () => {
+    router.push(`/admin/courses/${courseId}/chapters/${id}`);
+  };
+
   const onDelete = async () => {
     try {
       await axios.delete(`/api/courses/${courseId}/chapters/${id}`);
@@ -78,13 +80,13 @@ export const CourseSidebarItem = ({
             onClick={onClick}
             type="button"
             className={cn(
-              "flex items-center gap-x-2 pl-2 text-sm font-[500] transition-all hover:bg-slate-300/20 w-full",
+              "flex w-full items-center gap-x-2 pl-2 text-sm font-[500] transition-all hover:bg-slate-300/20",
               isActive && " bg-slate-200/20 hover:bg-slate-200/20 ",
               isCompleted && "text-emerald-700 hover:text-emerald-700",
               isCompleted && isActive && "bg-emerald-200/20"
             )}
           >
-            <div className="flex items-center py-4 w-full">
+            <div className="flex w-full items-center py-4">
               <div className="flex items-center pr-1">
                 <Icon
                   size={18}
@@ -110,12 +112,15 @@ export const CourseSidebarItem = ({
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <Link href={`/admin/courses/${courseId}/chapters/${id}`}>
-                        <DropdownMenuItem>
-                          <Pencil className="mr-2 h-4 w-4" />
-                          {currentLanguage.course_card_edit}
-                        </DropdownMenuItem>
-                      </Link>
+                      <DropdownMenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          redirectToChapter();
+                        }}
+                      >
+                        <Pencil className="mr-2 h-4 w-4" />
+                        {currentLanguage.course_card_edit}
+                      </DropdownMenuItem>
                       <ConfirmModal onConfirm={onDelete}>
                         <Button
                           size="sm"
