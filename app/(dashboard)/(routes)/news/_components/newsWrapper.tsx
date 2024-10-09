@@ -13,7 +13,9 @@ import ClubyteLoader from "@/components/ui/clubyte-loader";
 import { useTheme } from "next-themes";
 import { Separator } from "@/components/ui/separator";
 import { PostFavoriteCard } from "./postFavorite-card";
-import { BookX, NewspaperIcon } from "lucide-react";
+import { BookX, NewspaperIcon, PlusCircle } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 type PostWithProgressWithCategory = Post & {
   category: Category | null;
@@ -165,7 +167,13 @@ const NewsWrapper = ({
 
         {/* My Favorites Section (hidden on mobile) */}
         <div className="sticky top-4 w-full">
-        <div className="hidden w-full mt-20 max-w-lg outline rounded-lg p-2 outline-slate-200 dark:outline-[#1e293b] lg:block">
+        <Link href="/admin/create/post">
+           <Button className="rounded-3xl" variant="outline">
+             <PlusCircle className="mr-2 h-4 w-4" />
+             {currentLanguage.post_createPost_button_text}
+           </Button>
+         </Link>
+        <div className="hidden w-full mt-11 max-w-lg outline rounded-lg p-2 outline-slate-200 dark:outline-[#1e293b] lg:block">
             <h1 className="mb-4 text-2xl font-medium">
               {currentLanguage.news_myFavorites_title}
             </h1>

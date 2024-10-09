@@ -6,16 +6,22 @@ import EventFilterSidebar from "./filter-sidebar";
 import { PastandFuture } from "./past&future";
 import { useRouter } from "next/navigation";
 import { EventsList } from "@/components/events-list ";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
+import { useLanguage } from "@/lib/check-language";
 
 const LiveEventWrapper = ({
   liveEvents,
   categories,
   searchParams,
   container,
+  profileRole,
 }: any): JSX.Element => {
   const { data: session, status } = useSession();
   const [liveEvent, setLiveEvent] = useState([]);
   const router = useRouter();
+  const currentLanguage = useLanguage();
 
   useEffect(() => {
     setLiveEvent(liveEvents);
@@ -35,25 +41,37 @@ const LiveEventWrapper = ({
   return (
     <div className="space-y-4 p-4">
       <div className="mr-1 flex justify-between">
-        <PastandFuture
-          setLiveEvent={setLiveEvent}
-          getEvent={{
-            userId,
-            ...searchParams,
-            containerId: session?.user?.profile?.containerId,
-          }}
-          liveEvent={liveEvent}
-          ThemeOutlineColor={container?.ThemeOutlineColor!}
-          DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
-        />
-        <EventFilterSidebar
-          liveEvents={liveEvent}
-          setLiveEvent={setLiveEvent}
-          PrimaryButtonColor={container?.PrimaryButtonColor!}
-          DarkPrimaryButtonColor={container?.DarkPrimaryButtonColor!}
-          categories={undefined}
-          searchParams={undefined}
-        />
+        <div className="flex">
+          <PastandFuture
+            setLiveEvent={setLiveEvent}
+            getEvent={{
+              userId,
+              ...searchParams,
+              containerId: session?.user?.profile?.containerId,
+            }}
+            liveEvent={liveEvent}
+            ThemeOutlineColor={container?.ThemeOutlineColor!}
+            DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
+          />
+          {profileRole === "ADMIN" && (
+            <Link href="/admin/create/liveEvent" className="mx-4">
+              <Button className="rounded-3xl" variant="outline">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                {currentLanguage.liveEvent_createEvent_button_text}
+              </Button>
+            </Link>
+          )}
+        </div>
+        <div>
+          <EventFilterSidebar
+            liveEvents={liveEvent}
+            setLiveEvent={setLiveEvent}
+            PrimaryButtonColor={container?.PrimaryButtonColor!}
+            DarkPrimaryButtonColor={container?.DarkPrimaryButtonColor!}
+            categories={undefined}
+            searchParams={undefined}
+          />
+        </div>
       </div>
       <Categories
         items={categories}
