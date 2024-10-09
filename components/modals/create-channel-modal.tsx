@@ -176,7 +176,6 @@ export const CreateChannelModal = () => {
                 {currentLanguage.descriptionModal_DialogCancel}
               </AlertDialogCancel>
               <AlertDialogAction
-                className="mt-2"
                 onClick={() => onSubmit(form.getValues())}
               >
                 {currentLanguage.chat_modal_create_channel_create}

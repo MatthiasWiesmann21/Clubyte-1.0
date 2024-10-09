@@ -6,79 +6,80 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useModal } from "@/hooks/use-modal-store";
-import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
+import toast from "react-hot-toast";
 
 export const DeleteChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
   const currentLanguage = useLanguage();
   const isModalOpen = isOpen && type === "deleteChannel";
-  const { server, channel } = data;
+  const { server, channel } = data || {};
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const onClick = async () => {
+  const handleDelete = async () => {
     try {
       setIsLoading(true);
       const url = qs.stringifyUrl({
         url: `/api/chat/channels/${channel?.id}`,
-        query: {
-          serverId: server?.id,
-        }
-      })
+        query: { serverId: server?.id },
+      });
 
       await axios.delete(url);
+
+      toast.success(currentLanguage.chat_modal_deleteChannel_success);
 
       onClose();
       router.refresh();
       router.push(`/chat/servers/${server?.id}`);
     } catch (error) {
-      console.log(error);
+      toast.error(currentLanguage.chat_modal_deleteChannel_error);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
+
+  const handleCancel = () => {
+    onClose();
+  };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden">
-        <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">
+    <AlertDialog open={isModalOpen} onOpenChange={onClose}>
+      <AlertDialogContent className="p-0 overflow-hidden">
+        <AlertDialogHeader className="px-6 pt-8">
+          <AlertDialogTitle className="text-2xl text-center font-bold">
             {currentLanguage.chat_modal_deleteChannel_title}
-          </DialogTitle>
-          <DialogDescription className="text-center text-zinc-500">
-            {currentLanguage.chat_modal_deleteChannel_description_1} <br />
-            <span className="text-indigo-500 font-semibold">#{channel?.name}</span> {currentLanguage.chat_modal_deleteChannel_description_2}
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="bg-gray-100 px-6 py-4">
-          <div className="flex items-center justify-between w-full">
-            <Button
-              disabled={isLoading}
-              onClick={onClose}
-              variant="ghost"
-            >
-              {currentLanguage.chat_modal_deleteChannel_cancel_button}
-            </Button>
-            <Button
-              disabled={isLoading}
-              variant="primary"
-              onClick={onClick}
-            >
-              {currentLanguage.chat_modal_deleteChannel_delete_button}
-            </Button>
-          </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
-}
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-center mt-4">
+            {currentLanguage.chat_modal_deleteChannel_description_1}
+            <br />
+            <span className="font-semibold">#{channel?.name}</span> {currentLanguage.chat_modal_deleteChannel_description_2}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="px-6 py-4">
+          <AlertDialogCancel disabled={isLoading}>
+            {currentLanguage.chat_modal_deleteChannel_cancel_button}
+          </AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-red-500 hover:bg-red-600"
+            disabled={isLoading}
+            onClick={handleDelete}
+          >
+            {currentLanguage.chat_modal_deleteChannel_delete_button}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};

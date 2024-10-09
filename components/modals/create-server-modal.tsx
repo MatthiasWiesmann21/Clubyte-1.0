@@ -132,7 +132,7 @@ export const CreateServerModal = () => {
               <AlertDialogCancel>
                 {currentLanguage.descriptionModal_DialogCancel}
               </AlertDialogCancel>
-              <AlertDialogAction className="mt-2" onClick={() => onSubmit(form.getValues())}>
+              <AlertDialogAction onClick={() => onSubmit(form.getValues())}>
                 {currentLanguage.confirmModal_DialogConfirm}
               </AlertDialogAction>
             </AlertDialogFooter>

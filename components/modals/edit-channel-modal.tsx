@@ -172,7 +172,6 @@ export const EditChannelModal = () => {
             <AlertDialogFooter className="px-6 py-4">
               <AlertDialogCancel>{currentLanguage.descriptionModal_DialogCancel}</AlertDialogCancel>
               <AlertDialogAction
-                className="mt-2"
                 onClick={() => onSubmit(form.getValues())}
                 disabled={isLoading}
               >

@@ -58,13 +58,13 @@ export const InviteModal = () => {
           </AlertDialogTitle>
         </AlertDialogHeader>
         <div className="p-6">
-          <Label className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+          <Label className="uppercase text-xs font-bold">
             {currentLanguage.chat_modal_invite_link_label}
           </Label>
           <div className="flex items-center mt-2 gap-x-2">
             <Input
               disabled={isLoading}
-              className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="ring-offset-0"
               value={inviteUrl}
               readOnly
             />
@@ -77,14 +77,14 @@ export const InviteModal = () => {
             disabled={isLoading}
             variant="link"
             size="sm"
-            className="text-xs text-zinc-500 mt-4"
+            className="text-xs mt-4"
           >
             {currentLanguage.chat_modal_invite_new}
             <RefreshCw className="w-4 h-4 ml-2" />
           </Button>
         </div>
         <AlertDialogFooter className="px-6 py-4">
-          <AlertDialogCancel className="mt-2">
+          <AlertDialogCancel>
             {currentLanguage.descriptionModal_DialogCancel}
           </AlertDialogCancel>
         </AlertDialogFooter>
