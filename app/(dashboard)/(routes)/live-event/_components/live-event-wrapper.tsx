@@ -16,7 +16,6 @@ const LiveEventWrapper = ({
   categories,
   searchParams,
   container,
-  profileRole,
 }: any): JSX.Element => {
   const { data: session, status } = useSession();
   const [liveEvent, setLiveEvent] = useState([]);
@@ -53,14 +52,12 @@ const LiveEventWrapper = ({
             ThemeOutlineColor={container?.ThemeOutlineColor!}
             DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
           />
-          {profileRole === "ADMIN" && (
-            <Link href="/admin/create/liveEvent" className="mx-4">
-              <Button className="rounded-3xl" variant="outline">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                {currentLanguage.liveEvent_createEvent_button_text}
-              </Button>
-            </Link>
-          )}
+          <Link href="/admin/create/liveEvent" className="mx-4">
+            <Button className="rounded-3xl" variant="outline">
+              <PlusCircle className="mr-2 h-4 w-4" />
+              {currentLanguage.liveEvent_createEvent_button_text}
+            </Button>
+          </Link>
         </div>
         <div>
           <EventFilterSidebar

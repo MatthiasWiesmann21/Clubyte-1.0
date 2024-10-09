@@ -66,7 +66,6 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
       categories={categories}
       searchParams={searchParams}
       container={container}
-      profileRole={profile?.role}
     />
   );
 };
