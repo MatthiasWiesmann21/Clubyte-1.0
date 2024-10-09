@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { currentProfile } from "@/lib/current-profile";
 
 type PostWithProgressWithCategory = Post & {
   category: Category | null;
@@ -23,19 +24,11 @@ interface SearchPageProps {
 const NewsPage = async ({ searchParams }: SearchPageProps) => {
 
   const session = await getServerSession(authOptions);
+  const profile = await currentProfile();
 
   if (!session?.user) {
     return redirect("/");
   }
-
-  const profileImage = await db?.profile?.findUnique({
-    where: {
-      id: session?.user?.profile?.id,
-    },
-    select: {
-      imageUrl: true,
-    },
-  });
 
   const categories = await db?.category?.findMany({
     where: {
@@ -65,7 +58,8 @@ const NewsPage = async ({ searchParams }: SearchPageProps) => {
       categories={categories}
       ThemeOutlineColor={container?.ThemeOutlineColor!}
       DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
-      profileImage={profileImage?.imageUrl!}
+      profileImage={profile?.imageUrl!}
+      profileRole={profile?.imageUrl!}
       // TODO: Add course, chapter, liveEvent to the props
     />
   );

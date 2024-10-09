@@ -10,13 +10,24 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
+import { Category, LiveEvent } from "@prisma/client";
+import { currentProfile } from "@/lib/current-profile";
 
-const LiveEventWrapper = ({
+interface LiveEventWrapperProps {
+  liveEvents: any;
+  categories: any;
+  searchParams: any;
+  container: any;
+  profileRole: string;
+}
+
+export const LiveEventWrapper = ({
   liveEvents,
   categories,
   searchParams,
   container,
-}: any): JSX.Element => {
+  profileRole,
+}: LiveEventWrapperProps) => {
   const { data: session, status } = useSession();
   const [liveEvent, setLiveEvent] = useState([]);
   const router = useRouter();
@@ -52,12 +63,14 @@ const LiveEventWrapper = ({
             ThemeOutlineColor={container?.ThemeOutlineColor!}
             DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
           />
-          <Link href="/admin/create/liveEvent" className="mx-4">
-            <Button className="rounded-3xl" variant="outline">
-              <PlusCircle className="mr-2 h-4 w-4" />
-              {currentLanguage.liveEvent_createEvent_button_text}
-            </Button>
-          </Link>
+          {profileRole === "ADMIN" && (
+            <Link href="/admin/create/liveEvent" className="mx-4">
+              <Button className="rounded-3xl" variant="outline">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                {currentLanguage.liveEvent_createEvent_button_text}
+              </Button>
+            </Link>
+          )}
         </div>
         <div>
           <EventFilterSidebar

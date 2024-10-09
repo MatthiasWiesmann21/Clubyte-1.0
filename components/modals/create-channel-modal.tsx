@@ -6,24 +6,26 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ChannelType } from "@prisma/client";
+import { useEffect } from "react";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useParams, useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import {
@@ -31,21 +33,20 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
-import { useEffect } from "react";
 import { useLanguage } from "@/lib/check-language";
 
 const formSchema = z.object({
-  name: z.string().min(1, {
-    message: "Channel name is required."
-  }).refine(
-    name => name !== "general",
-    {
-      message: "Channel name cannot be 'general'"
-    }
-  ),
-  type: z.nativeEnum(ChannelType)
+  name: z
+    .string()
+    .min(1, {
+      message: "Channel name is required.",
+    })
+    .refine((name) => name !== "general", {
+      message: "Channel name cannot be 'general'",
+    }),
+  type: z.nativeEnum(ChannelType),
 });
 
 export const CreateChannelModal = () => {
@@ -56,13 +57,13 @@ export const CreateChannelModal = () => {
 
   const isModalOpen = isOpen && type === "createChannel";
   const { channelType } = data;
- 
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       type: channelType || ChannelType.TEXT,
-    }
+    },
   });
 
   useEffect(() => {
@@ -80,8 +81,8 @@ export const CreateChannelModal = () => {
       const url = qs.stringifyUrl({
         url: "/api/chat/channels",
         query: {
-          serverId: params?.serverId
-        }
+          serverId: params?.serverId,
+        },
       });
       await axios.post(url, values);
 
@@ -91,21 +92,21 @@ export const CreateChannelModal = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleClose = () => {
     form.reset();
     onClose();
-  }
+  };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden">
-        <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">
+    <AlertDialog open={isModalOpen} onOpenChange={handleClose}>
+      <AlertDialogContent className="overflow-hidden p-0">
+        <AlertDialogHeader className="px-6 pt-8">
+          <AlertDialogTitle className="text-2xl text-center font-bold">
             {currentLanguage.chat_modal_create_channel_title}
-          </DialogTitle>
-        </DialogHeader>
+          </AlertDialogTitle>
+        </AlertDialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
@@ -114,16 +115,16 @@ export const CreateChannelModal = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel
-                      className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
-                    >
-                      {currentLanguage.chat_modal_create_channel_name}
+                    <FormLabel className="text-xs font-bold uppercase">
+                      {currentLanguage.chat_modal_create_channel_name}ss
                     </FormLabel>
                     <FormControl>
                       <Input
                         disabled={isLoading}
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder={currentLanguage.chat_modal_create_channel_name_placeholder}
+                        className="ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                        placeholder={
+                          currentLanguage.chat_modal_create_channel_name_placeholder
+                        }
                         {...field}
                       />
                     </FormControl>
@@ -136,17 +137,21 @@ export const CreateChannelModal = () => {
                 name="type"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{currentLanguage.chat_modal_create_channelType_name}</FormLabel>
+                    <FormLabel>
+                      {currentLanguage.chat_modal_create_channelType_name}
+                    </FormLabel>
                     <Select
                       disabled={isLoading}
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger
-                          className="bg-zinc-300/50 border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none"
-                        >
-                          <SelectValue placeholder={currentLanguage.chat_modal_create_channelType_placeholder} />
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={
+                              currentLanguage.chat_modal_create_channelType_placeholder
+                            }
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -166,14 +171,20 @@ export const CreateChannelModal = () => {
                 )}
               />
             </div>
-            <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button onClick={() => onSubmit(form.getValues())} variant="primary" disabled={isLoading}>
+            <AlertDialogFooter className="px-6 py-4">
+              <AlertDialogCancel>
+                {currentLanguage.descriptionModal_DialogCancel}
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="mt-2"
+                onClick={() => onSubmit(form.getValues())}
+              >
                 {currentLanguage.chat_modal_create_channel_create}
-              </Button>
-            </DialogFooter>
+              </AlertDialogAction>
+            </AlertDialogFooter>
           </form>
         </Form>
-      </DialogContent>
-    </Dialog>
-  )
-}
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};

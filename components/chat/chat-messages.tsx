@@ -14,6 +14,7 @@ import { ChatItem } from "./chat-item";
 import { useLanguage } from "@/lib/check-language";
 import ClubyteLoader from "../ui/clubyte-loader";
 import { useTheme } from "next-themes";
+import { ScrollArea } from "../ui/scroll-area";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -98,6 +99,7 @@ export const ChatMessages = ({
 
   return (
     <div ref={chatRef} className="flex flex-1 flex-col overflow-y-auto py-4">
+      <ScrollArea>
       {!hasNextPage && <div className="flex-1" />}
       {!hasNextPage && <ChatWelcome type={type} name={name} />}
       {hasNextPage && (
@@ -118,7 +120,7 @@ export const ChatMessages = ({
           )}
         </div>
       )}
-      <div className="mt-auto flex flex-col-reverse">
+      <div className="mt-auto flex flex-col-reverse no-scrollbar">
         {data?.pages?.map((group, i) => (
           <Fragment key={i}>
             {group?.items?.map((message: MessageWithMemberWithProfile) => (
@@ -140,6 +142,7 @@ export const ChatMessages = ({
         ))}
       </div>
       <div ref={bottomRef} />
+      </ScrollArea>
     </div>
   );
 };

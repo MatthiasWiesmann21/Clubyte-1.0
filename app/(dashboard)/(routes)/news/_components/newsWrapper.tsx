@@ -3,10 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { PostCard } from "./post-card";
-import {
-  Category,
-  Post,
-} from "@prisma/client";
+import { Category, Post } from "@prisma/client";
 import { useLanguage } from "@/lib/check-language";
 import { Categories } from "./categories";
 import ClubyteLoader from "@/components/ui/clubyte-loader";
@@ -35,6 +32,7 @@ interface NewsWrapperProps {
   ThemeOutlineColor: string;
   DarkThemeOutlineColor: string;
   profileImage: string;
+  profileRole: string;
 }
 
 const NewsWrapper = ({
@@ -43,6 +41,7 @@ const NewsWrapper = ({
   ThemeOutlineColor,
   DarkThemeOutlineColor,
   profileImage,
+  profileRole,
 }: NewsWrapperProps) => {
   const { categoryId } = searchParams;
   const [posts, setPosts] = useState<PostWithProgressWithCategory[]>([]);
@@ -167,35 +166,37 @@ const NewsWrapper = ({
 
         {/* My Favorites Section (hidden on mobile) */}
         <div className="sticky top-4 w-full">
-        <Link href="/admin/create/post">
-           <Button className="rounded-3xl" variant="outline">
-             <PlusCircle className="mr-2 h-4 w-4" />
-             {currentLanguage.post_createPost_button_text}
-           </Button>
-         </Link>
-        <div className="hidden w-full mt-11 max-w-lg outline rounded-lg p-2 outline-slate-200 dark:outline-[#1e293b] lg:block">
+          {profileRole === "ADMIN" && (
+            <Link href="/admin/create/post">
+              <Button className="rounded-3xl" variant="outline">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                {currentLanguage.post_createPost_button_text}
+              </Button>
+            </Link>
+          )}
+          <div className="mt-11 hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
             <h1 className="mb-4 text-2xl font-medium">
               {currentLanguage.news_myFavorites_title}
             </h1>
             {/* Render favorite posts (example static content for now) */}
             {favoritePosts?.length === 0 && (
               <div className="flex h-16 items-center justify-center text-sm text-muted-foreground">
-              <NewspaperIcon className="m-1" size={24} />
-              <span>{currentLanguage?.news_no_posts_found}</span>
-            </div>
+                <NewspaperIcon className="m-1" size={24} />
+                <span>{currentLanguage?.news_no_posts_found}</span>
+              </div>
             )}
-                {favoritePosts?.map((item) => (
-                  <PostFavoriteCard
-                    key={item?.id}
-                    id={item?.id}
-                    category={item?.category?.name ?? ""}
-                    description={item?.description ?? ""}
-                    createdAt={new Date(item?.publishTime!).toDateString()}
-                    publisherName={item?.publisherName!}
-                    publisherImageUrl={item?.publisherImageUrl!}
-                    colorCode={item?.category?.colorCode!}
-                  />
-                ))}
+            {favoritePosts?.map((item) => (
+              <PostFavoriteCard
+                key={item?.id}
+                id={item?.id}
+                category={item?.category?.name ?? ""}
+                description={item?.description ?? ""}
+                createdAt={new Date(item?.publishTime!).toDateString()}
+                publisherName={item?.publisherName!}
+                publisherImageUrl={item?.publisherImageUrl!}
+                colorCode={item?.category?.colorCode!}
+              />
+            ))}
           </div>
         </div>
       </div>
