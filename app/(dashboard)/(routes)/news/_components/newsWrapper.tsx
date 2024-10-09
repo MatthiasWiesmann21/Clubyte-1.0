@@ -166,13 +166,15 @@ const NewsWrapper = ({
 
         {/* My Favorites Section (hidden on mobile) */}
         <div className="sticky top-4 w-full">
-          {profileRole === "ADMIN" && (
+          {profileRole === "ADMIN" ? (
             <Link href="/admin/create/post">
               <Button className="rounded-3xl" variant="outline">
                 <PlusCircle className="mr-2 h-4 w-4" />
                 {currentLanguage.post_createPost_button_text}
               </Button>
             </Link>
+          ) : (
+            <div className="mb-20"></div>
           )}
           <div className="mt-11 hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
             <h1 className="mb-4 text-2xl font-medium">
