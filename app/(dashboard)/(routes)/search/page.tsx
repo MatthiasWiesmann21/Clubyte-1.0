@@ -92,6 +92,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
         <CourseCounter
           maxCourses={container?.maxCourses ?? 0}
           courses={existingCourses}
+          isFrontend
         />
         <Categories
           items={categoriesWithCourseCounts}

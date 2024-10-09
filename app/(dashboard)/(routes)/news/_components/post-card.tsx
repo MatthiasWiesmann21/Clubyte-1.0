@@ -12,6 +12,16 @@ import {
   TooltipTrigger,
 } from "@/components/tooltip";
 import { Profile } from "@prisma/client";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { MoreVertical, Pencil, Trash } from "lucide-react";
+import Link from "next/link";
+import { ConfirmModal } from "@/components/modals/confirm-modal";
+import { useLanguage } from "@/lib/check-language";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useIsAdmin } from "@/lib/roleCheck";
 
 interface PostCardProps {
   id: string;
@@ -53,7 +63,18 @@ export const PostCard = ({
 }: PostCardProps) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const { theme } = useTheme();
-
+  const currentLanguage = useLanguage();
+  const router = useRouter();
+  const isAdmin = useIsAdmin();
+  const onDelete = async () => {
+    try {
+      await axios.delete(`/api/posts/${id}`);
+      toast.success("Post deleted");
+      router.refresh();
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
   const handleImageLoad = () => {
     setIsImageLoading(false);
   };
@@ -95,6 +116,38 @@ export const PostCard = ({
                 >
                   <div className="truncate">{category}</div>
                 </div>
+              )}
+              {isAdmin && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="h-8 w-8 p-0 ml-2"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span className="sr-only">Open menu</span>
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <Link href={`/admin/posts/${id}`}>
+                      <DropdownMenuItem>
+                        <Pencil className="mr-2 h-4 w-4" />
+                        {currentLanguage.course_card_edit}
+                      </DropdownMenuItem>
+                    </Link>
+                    <ConfirmModal onConfirm={onDelete}>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="flex w-full justify-start p-2"
+                      >
+                        <Trash className="mr-2 h-4 w-4" />
+                        {currentLanguage.course_card_delete}
+                      </Button>
+                    </ConfirmModal>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               )}
             </div>
             <div className="font-400 text-sm text-black dark:text-white">
