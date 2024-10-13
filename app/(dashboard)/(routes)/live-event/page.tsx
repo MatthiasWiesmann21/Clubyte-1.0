@@ -6,6 +6,8 @@ import LiveEventWrapper from "./_components/live-event-wrapper";
 import getBase64 from "@/lib/getLocalbase64";
 import authOptions from "@/lib/auth"; // Make sure you have authOptions configured
 import { getServerSession } from "next-auth";
+import { isAdmin } from "@/lib/roleCheckServer";
+import { currentProfile } from "@/lib/current-profile";
 
 export const metadata: Metadata = {
   title: "Live Events",
@@ -27,6 +29,8 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   }
 
   const userId = session.user.id;
+
+  const profile = await currentProfile();
 
   const categories = await db.category.findMany({
     where: {
@@ -62,6 +66,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
       categories={categories}
       searchParams={searchParams}
       container={container}
+      profileRole={profile?.role!}
     />
   );
 };

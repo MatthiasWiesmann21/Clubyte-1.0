@@ -161,7 +161,7 @@ export const EventCard = ({
           </Link>
           <div className="mt-3 flex items-center justify-between">
             <CategoryItemCard label={category} colorCode={categoryColorCode} />
-            <div className="flex justify-between">
+            <div className="flex justify-between mr-[2px]">
               <DescriptionModal description={description}>
                 <Button
                   variant="ghost"

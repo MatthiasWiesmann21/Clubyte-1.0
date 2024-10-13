@@ -5,13 +5,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useModal } from "@/hooks/use-modal-store";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
@@ -25,34 +26,36 @@ export const LeaveServerModal = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const onClick = async () => {
+  const handleLeaveServer = async () => {
     try {
       setIsLoading(true);
-
       await axios.patch(`/api/chat/servers/${server?.id}/leave`);
-
       onClose();
       router.refresh();
       router.push("/");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden">
-        <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">
+    <AlertDialog open={isModalOpen} onOpenChange={onClose}>
+      <AlertDialogContent className="p-0 overflow-hidden">
+        <AlertDialogHeader className="pt-8 px-6">
+          <AlertDialogTitle className="text-2xl text-center font-bold">
             {currentLanguage.chat_modal_leaveServer_title}
-          </DialogTitle>
-          <DialogDescription className="text-center text-zinc-500">
-            {currentLanguage.chat_modal_leaveServer_description_1} <span className="font-semibold text-indigo-500">{server?.name}</span>?
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="bg-gray-100 px-6 py-4">
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-center">
+            {currentLanguage.chat_modal_leaveServer_description_1}
+            <span className="font-semibold">
+              {server?.name}
+            </span>
+            ?
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="px-6 py-4">
           <div className="flex items-center justify-between w-full">
             <Button
               disabled={isLoading}
@@ -61,16 +64,16 @@ export const LeaveServerModal = () => {
             >
               {currentLanguage.chat_modal_leaveServer_cancel}
             </Button>
-            <Button
+            <AlertDialogAction
               disabled={isLoading}
-              variant="primary"
-              onClick={onClick}
+              className="bg-red-500 hover:bg-red-600"
+              onClick={handleLeaveServer}
             >
               {currentLanguage.chat_modal_leaveServer_leave}
-            </Button>
+            </AlertDialogAction>
           </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
-}
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};

@@ -59,6 +59,7 @@ interface CourseWrapperProps {
   params: Params;
   currentLanguage: CurrentLanguage;
   profileImage: string;
+  purchaseLabel: string;
 }
 
 interface Chapter {
@@ -96,6 +97,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
   params,
   currentLanguage,
   profileImage,
+  purchaseLabel,
 }) => {
   const [data, setData] = useState<DataObject>({
     chapter: null,
@@ -129,7 +131,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
         {isLocked && (
           <Banner
             variant="warning"
-            label="You need to purchase this course to watch this chapter."
+            label={purchaseLabel}
           />
         )}
         <div className="mx-auto flex flex-col pb-20">

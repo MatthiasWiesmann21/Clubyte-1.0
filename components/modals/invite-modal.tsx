@@ -5,11 +5,14 @@ import { Check, Copy, RefreshCw } from "lucide-react";
 import { useState } from "react";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { useModal } from "@/hooks/use-modal-store";
 import { Input } from "@/components/ui/input";
@@ -18,7 +21,7 @@ import { useOrigin } from "@/hooks/use-origin";
 import { useLanguage } from "@/lib/check-language";
 
 export const InviteModal = () => {
-  const { onOpen, isOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const origin = useOrigin();
   const currentLanguage = useLanguage();
   const isModalOpen = isOpen && type === "invite";
@@ -32,50 +35,41 @@ export const InviteModal = () => {
   const onCopy = () => {
     navigator.clipboard.writeText(inviteUrl);
     setCopied(true);
-
-    setTimeout(() => {
-      setCopied(false);
-    }, 1000);
+    setTimeout(() => setCopied(false), 1000);
   };
 
   const onNew = async () => {
     try {
       setIsLoading(true);
       const response = await axios.patch(`/api/chat/servers/${server?.id}/invite-code`);
-
-      onOpen("invite", { server: response.data });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden">
-        <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">
+    <AlertDialog open={isModalOpen} onOpenChange={onClose}>
+      <AlertDialogContent className="p-0 overflow-hidden">
+        <AlertDialogHeader className="pt-8 px-6">
+          <AlertDialogTitle className="text-2xl text-center font-bold">
             {currentLanguage.chat_modal_invite_title}
-          </DialogTitle>
-        </DialogHeader>
+          </AlertDialogTitle>
+        </AlertDialogHeader>
         <div className="p-6">
-          <Label
-            className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
-          >
+          <Label className="uppercase text-xs font-bold">
             {currentLanguage.chat_modal_invite_link_label}
           </Label>
           <div className="flex items-center mt-2 gap-x-2">
             <Input
               disabled={isLoading}
-              className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+              className="ring-offset-0"
               value={inviteUrl}
+              readOnly
             />
             <Button disabled={isLoading} onClick={onCopy} size="icon">
-              {copied 
-                ? <Check className="w-4 h-4" /> 
-                : <Copy className="w-4 h-4" />
-              }
+              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             </Button>
           </div>
           <Button
@@ -83,13 +77,18 @@ export const InviteModal = () => {
             disabled={isLoading}
             variant="link"
             size="sm"
-            className="text-xs text-zinc-500 mt-4"
+            className="text-xs mt-4"
           >
             {currentLanguage.chat_modal_invite_new}
             <RefreshCw className="w-4 h-4 ml-2" />
           </Button>
         </div>
-      </DialogContent>
-    </Dialog>
-  )
-}
+        <AlertDialogFooter className="px-6 py-4">
+          <AlertDialogCancel>
+            {currentLanguage.descriptionModal_DialogCancel}
+          </AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};

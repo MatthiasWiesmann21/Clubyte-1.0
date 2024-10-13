@@ -189,7 +189,7 @@ export const CourseCard = ({
                 </p>
               </TooltipContent>
             </Tooltip>
-            <div className="flex justify-between">
+            <div className="flex justify-between mr-[2px]">
               <DescriptionModal description={description}>
                 <Button
                   variant="ghost"
@@ -249,7 +249,7 @@ export const CourseCard = ({
               </TooltipContent>
             </Tooltip>
           </div>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-2 mb-2">
             <div className="flex items-center">
               <div className="flex h-[24px] w-[24px] items-center justify-center">
                 <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">

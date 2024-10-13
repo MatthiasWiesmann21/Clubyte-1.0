@@ -9,6 +9,7 @@ import { Categories } from "./_components/categories";
 import { Metadata } from "next";
 import { CourseCounter } from "@/components/courseCounter";
 import getBase64 from "@/lib/getLocalbase64";
+import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 
 export const metadata: Metadata = {
   title: "Browse",
@@ -91,6 +92,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
         <CourseCounter
           maxCourses={container?.maxCourses ?? 0}
           courses={existingCourses}
+          isFrontend
         />
         <Categories
           items={categoriesWithCourseCounts}

@@ -2,28 +2,54 @@
 
 import { useLanguage } from "@/lib/check-language";
 import { useIsAdmin } from "@/lib/roleCheck";
-import { Infinity, Info } from "lucide-react";
+import { Infinity, Info, PlusCircle } from "lucide-react";
+import Link from "next/link";
+import { Button } from "./ui/button";
 
 type ContainerwithamountofCoursesProps = {
   courses: number;
   maxCourses: number;
+  isFrontend?: boolean;
 };
 
 export const CourseCounter = ({
-    maxCourses,
-    courses,
+  maxCourses,
+  courses,
+  isFrontend,
 }: ContainerwithamountofCoursesProps) => {
-const currentLanguage = useLanguage();
-const isRoleAdmins = useIsAdmin();
-const canAccess = isRoleAdmins;
-const maxCourseDisplay = maxCourses > 50 ? <><Infinity className="h-5 w-5 ml-1 inline" /></> : maxCourses;
+  const currentLanguage = useLanguage();
+  const isRoleAdmins = useIsAdmin();
+  const canAccess = isRoleAdmins;
+  const maxCourseDisplay =
+    maxCourses > 50 ? (
+      <>
+        <Infinity className="ml-1 inline h-5 w-5" />
+      </>
+    ) : (
+      maxCourses
+    );
 
-return (
+  return (
     canAccess && (
-        <div className="border rounded-full text-center p-4 text-sm flex items-center w-full border-black dark:border-white text-prima text-slate-400">
-            <Info className="h-5 w-5 mr-2" />
-            <span>{currentLanguage.search_courseCounter_currentCourses} {courses} / </span>{maxCourseDisplay}
+      <div className="text-prima flex w-full items-center rounded-full border border-black p-3 text-center text-sm text-slate-400 dark:border-white">
+        <div className="space-between flex items-center">
+        <Info className="mr-2 h-5 w-5" />
+        <span>
+          {currentLanguage.search_courseCounter_currentCourses} {courses} /{" "}
+        </span>
+        {maxCourseDisplay}
         </div>
+        <div className="ml-auto">
+        {isFrontend && (
+           <Link href="/admin/create/course">
+           <Button className="rounded-3xl" variant="outline">
+             <PlusCircle className="mr-2 h-4 w-4" />
+             {currentLanguage.courses_createCourse_button_text}
+           </Button>
+         </Link>
+        )}
+        </div>
+      </div>
     )
   );
 };

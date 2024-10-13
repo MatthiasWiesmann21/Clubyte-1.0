@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     }
 
     const requestBody = await req.json();
-    const { postId, commentId, liveEventId, chapterId } = requestBody;
+    const { postId, liveEventId, chapterId, courseId } = requestBody;
 
     // Find the profile associated with the user ID
     const profile = await db.profile.findFirst({
@@ -38,6 +38,12 @@ export async function POST(req: Request) {
         profile: { connect: { id: profile.id } },
         liveEvent: { connect: { id: liveEventId } },
       };
+    } else if (courseId) {
+      favoriteData = {
+        profile: { connect: { id: profile.id } },
+        // @ts-ignore
+        course: { connect: { id: courseId } },
+      };
     } else if (chapterId) {
       favoriteData = {
         profile: { connect: { id: profile.id } },
@@ -56,6 +62,8 @@ export async function POST(req: Request) {
         profileId: profile.id,
         postId: postId || undefined,
         liveEventId: liveEventId || undefined,
+        // @ts-ignore
+        courseId: courseId || undefined,
         chapterId: chapterId || undefined,
       },
     });

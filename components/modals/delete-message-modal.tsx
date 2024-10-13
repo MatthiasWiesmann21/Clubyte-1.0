@@ -5,15 +5,16 @@ import axios from "axios";
 import { useState } from "react";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useModal } from "@/hooks/use-modal-store";
-import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
 
 export const DeleteMessageModal = () => {
@@ -33,46 +34,39 @@ export const DeleteMessageModal = () => {
       });
 
       await axios.delete(url);
-
       onClose();
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden">
-        <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">
-            Delete Message
-          </DialogTitle>
-          <DialogDescription className="text-center text-zinc-500">
-            Are you sure you want to do this? <br />
-            The message will be permanently deleted.
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="bg-gray-100 px-6 py-4">
-          <div className="flex items-center justify-between w-full">
-            <Button
-              disabled={isLoading}
-              onClick={onClose}
-              variant="ghost"
-            >
-              Cancel
-            </Button>
-            <Button
-              disabled={isLoading}
-              variant="primary"
-              onClick={onClick}
-            >
-              Confirm
-            </Button>
-          </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
-}
+    <AlertDialog open={isModalOpen} onOpenChange={onClose}>
+      <AlertDialogContent className="p-0 overflow-hidden">
+        <AlertDialogHeader className="pt-8 px-6">
+          <AlertDialogTitle className="text-2xl text-center font-bold">
+            {currentLanguage.chat_modal_deleteMessage_title}
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-center text-zinc-500">
+            {currentLanguage.chat_modal_deleteMessage_description1} <br />
+            {currentLanguage.chat_modal_deleteMessage_description2}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="px-6 py-4">
+          <AlertDialogCancel disabled={isLoading}>
+            {currentLanguage.chat_modal_deleteMessage_cancel}
+          </AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-red-500 hover:bg-red-600"
+            disabled={isLoading}
+            onClick={onClick}
+          >
+            {currentLanguage.chat_modal_deleteMessage_confirm}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};

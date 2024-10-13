@@ -16,8 +16,11 @@ import Progress from "./progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DescriptionModal } from "@/components/modals/description-modal";
 import { Button } from "@/components/ui/button";
-import { Info } from "lucide-react";
+import { Edit, Info } from "lucide-react";
 import { languageServer } from "@/lib/check-language-server";
+import Link from "next/link";
+import { useIsAdmin } from "@/lib/roleCheck";
+import { isAdmin } from "@/lib/roleCheckServer";
 
 interface CourseSidebarProps {
   course: Course & {
@@ -34,6 +37,7 @@ export const CourseSidebar = async ({
 }: CourseSidebarProps) => {
   const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
+  const canAccess = await isAdmin();
 
   if (!session?.user?.id) {
     return redirect("/");
@@ -76,6 +80,7 @@ export const CourseSidebar = async ({
                 </h1>
               </TooltipContent>
             </Tooltip>
+            <div>
             <Tooltip>
               <TooltipTrigger>
                 <DescriptionModal description={course.description!}>
@@ -90,7 +95,16 @@ export const CourseSidebar = async ({
                 </TooltipContent>
               </TooltipTrigger>
             </Tooltip>
-          </div>
+            {canAccess  && (
+              <Link href={`/admin/courses/${course.id}`}>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <Edit width={16} height={16} />
+              </Button>
+            </Link>
+            )}
+            
+            </div>
+        </div>
           {purchase && (
             <div className="mt-4">
               <Progress progress={progress} />

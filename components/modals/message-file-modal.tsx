@@ -27,9 +27,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { useLanguage } from "@/lib/check-language";
 
 const formSchema = z.object({
-  fileUrl: z.string().min(1, {
-    message: "Attachment is required."
-  })
+  fileUrl: z.string().min(1, { message: "Attachment is required." })
 });
 
 export const MessageFileModal = () => {
@@ -41,15 +39,13 @@ export const MessageFileModal = () => {
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      fileUrl: "",
-    }
+    defaultValues: { fileUrl: "" }
   });
 
   const handleClose = () => {
     form.reset();
     onClose();
-  }
+  };
 
   const isLoading = form.formState.isSubmitting;
 
@@ -61,7 +57,6 @@ export const MessageFileModal = () => {
       });
 
       await axios.post(url, {
-        ...values,
         content: values.fileUrl,
       });
 
@@ -69,25 +64,25 @@ export const MessageFileModal = () => {
       router.refresh();
       handleClose();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
-  }
+  };
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden">
+      <DialogContent className="p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
             {currentLanguage.chat_modal_messageFile_title}
           </DialogTitle>
-          <DialogDescription className="text-center text-zinc-500">
+          <DialogDescription className="text-center">
             {currentLanguage.chat_modal_messageFile_description}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
-              <div className="flex items-center justify-center text-center">
+              <div className="flex items-center justify-center">
                 <FormField
                   control={form.control}
                   name="fileUrl"
@@ -105,14 +100,14 @@ export const MessageFileModal = () => {
                 />
               </div>
             </div>
-            <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button variant="primary" disabled={isLoading}>
-                {currentLanguage.chat_modal_messageFile_submit}
+            <DialogFooter className="px-6 py-4">
+              <Button variant="primary" disabled={isLoading} type="submit">
+                {isLoading ? currentLanguage.chat_modal_messageFile_loading : currentLanguage.chat_modal_messageFile_submit}
               </Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
