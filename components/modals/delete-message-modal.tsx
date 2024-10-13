@@ -47,23 +47,23 @@ export const DeleteMessageModal = () => {
       <AlertDialogContent className="p-0 overflow-hidden">
         <AlertDialogHeader className="pt-8 px-6">
           <AlertDialogTitle className="text-2xl text-center font-bold">
-            Delete Message
+            {currentLanguage.chat_modal_deleteMessage_title}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center text-zinc-500">
-            Are you sure you want to do this? <br />
-            The message will be permanently deleted.
+            {currentLanguage.chat_modal_deleteMessage_description1} <br />
+            {currentLanguage.chat_modal_deleteMessage_description2}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="px-6 py-4">
           <AlertDialogCancel disabled={isLoading}>
-            Cancel
+            {currentLanguage.chat_modal_deleteMessage_cancel}
           </AlertDialogCancel>
           <AlertDialogAction
             className="bg-red-500 hover:bg-red-600"
             disabled={isLoading}
             onClick={onClick}
           >
-            Confirm
+            {currentLanguage.chat_modal_deleteMessage_confirm}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -189,7 +189,7 @@ export const CourseCard = ({
                 </p>
               </TooltipContent>
             </Tooltip>
-            <div className="flex justify-between">
+            <div className="flex justify-between mr-[2px]">
               <DescriptionModal description={description}>
                 <Button
                   variant="ghost"

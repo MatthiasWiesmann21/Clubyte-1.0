@@ -167,7 +167,7 @@ const NewsWrapper = ({
         {/* My Favorites Section (hidden on mobile) */}
         <div className="sticky top-4 w-full">
           {profileRole === "ADMIN" ? (
-            <Link href="/admin/create/post">
+            <Link href="/admin/create/post" className="hidden lg:block">
               <Button className="rounded-3xl" variant="outline">
                 <PlusCircle className="mr-2 h-4 w-4" />
                 {currentLanguage.post_createPost_button_text}

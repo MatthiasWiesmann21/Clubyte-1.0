@@ -9,6 +9,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import { useLanguage } from "@/lib/check-language";
 
 const customStyles = {
   content: {
@@ -36,6 +37,7 @@ const EventModal = ({
   const router = useRouter();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [remainingTime, setRemainingTime] = useState<any>(null);
+  const currentLanguage = useLanguage();
 
   useEffect(() => {
     if (isEnded) return;
@@ -106,7 +108,7 @@ const EventModal = ({
                     router?.refresh();
                   }
                 } catch {
-                  toast.error("Something went wrong");
+                  toast.error(currentLanguage.toast_error);
                 }
               }}
               disabled={!(() => {})}
@@ -131,7 +133,7 @@ const EventModal = ({
                     // setIsOpen(false);
                   }
                 } catch {
-                  toast.error("Something went wrong");
+                  toast.error(currentLanguage.toast_error);
                 }
               }}
               disabled={!(() => {})}
