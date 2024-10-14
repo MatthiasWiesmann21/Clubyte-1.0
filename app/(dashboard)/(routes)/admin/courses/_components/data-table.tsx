@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useIsAdmin } from "@/lib/roleCheck";
 import { useLanguage } from "@/lib/check-language";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,6 +42,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const { onOpen } = useModal();
   const currentLanguage = useLanguage();
 
   const isAdmin = useIsAdmin();
@@ -72,12 +74,10 @@ export function DataTable<TData, TValue>({
           className="mr-5 max-w-sm border-[#000000] dark:border-[#ffffff]"
         />
         {isAdmin && (
-          <Link href="/admin/create/course">
-            <Button>
+            <Button onClick={() => onOpen("createCourse")}>
               <PlusCircle className="mr-2 h-4 w-4" />
               {currentLanguage.courses_createCourse_button_text}
             </Button>
-          </Link>
         )}
       </div>
       <div className="rounded-md border border-[#000000] dark:border-[#ffffff]">

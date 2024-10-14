@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Categories } from "./categories";
 import { useSession } from "next-auth/react";
 import EventFilterSidebar from "./filter-sidebar";
@@ -12,6 +12,7 @@ import { PlusCircle } from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
 import { Category, LiveEvent } from "@prisma/client";
 import { currentProfile } from "@/lib/current-profile";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface LiveEventWrapperProps {
   liveEvents: any;
@@ -32,6 +33,7 @@ export const LiveEventWrapper = ({
   const [liveEvent, setLiveEvent] = useState([]);
   const router = useRouter();
   const currentLanguage = useLanguage();
+  const { onOpen } = useModal();
 
   useEffect(() => {
     setLiveEvent(liveEvents);
@@ -64,12 +66,10 @@ export const LiveEventWrapper = ({
             DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
           />
           {profileRole === "ADMIN" && (
-            <Link href="/admin/create/liveEvent" className="mx-4">
-              <Button className="rounded-3xl" variant="outline">
+              <Button className="rounded-3xl" variant="outline" onClick={() => onOpen("createLiveEvent")}>
                 <PlusCircle className="mr-2 h-4 w-4" />
                 {currentLanguage.liveEvent_createEvent_button_text}
               </Button>
-            </Link>
           )}
         </div>
         <div>

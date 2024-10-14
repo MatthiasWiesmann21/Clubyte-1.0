@@ -13,6 +13,7 @@ import { PostFavoriteCard } from "./postFavorite-card";
 import { BookX, NewspaperIcon, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useModal } from "@/hooks/use-modal-store";
 
 type PostWithProgressWithCategory = Post & {
   category: Category | null;
@@ -50,6 +51,7 @@ const NewsWrapper = ({
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef<IntersectionObserver | null>(null);
+  const { onOpen } = useModal();
 
   const currentLanguage = useLanguage();
 
@@ -167,12 +169,10 @@ const NewsWrapper = ({
         {/* My Favorites Section (hidden on mobile) */}
         <div className="sticky top-4 w-full">
           {profileRole === "ADMIN" ? (
-            <Link href="/admin/create/post" className="hidden lg:block">
-              <Button className="rounded-3xl" variant="outline">
+              <Button className="rounded-3xl" variant="outline" onClick={() => onOpen("createPost")}>
                 <PlusCircle className="mr-2 h-4 w-4" />
                 {currentLanguage.post_createPost_button_text}
               </Button>
-            </Link>
           ) : (
             <div className="mb-20"></div>
           )}

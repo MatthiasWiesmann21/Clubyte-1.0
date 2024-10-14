@@ -28,6 +28,7 @@ import { Input } from "@/components/ui/input"
 import { useIsAdmin } from "@/lib/roleCheck"
 import { useLanguage } from "@/lib/check-language"
 import { useEffect } from "react"
+import { useModal } from "@/hooks/use-modal-store"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -40,6 +41,7 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const currentLanguage = useLanguage();
+  const { onOpen } = useModal(); 
 
   const isAdmin = useIsAdmin();
 
@@ -70,12 +72,10 @@ export function DataTable<TData, TValue>({
           className="max-w-sm mr-5 border-[#000000] dark:border-[#ffffff]"
         />
         {isAdmin && (
-          <Link href="/admin/create/category">
-            <Button>
+            <Button onClick={() => onOpen("createCategory")}>
               <PlusCircle className="h-4 w-4 mr-2" />
               {currentLanguage.categories_createCategory_button_text}
             </Button>
-          </Link>
         )}
       </div>
       <div className="rounded-md border border-[#000000] dark:border-[#ffffff]">

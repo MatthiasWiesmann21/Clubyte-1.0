@@ -567,5 +567,12 @@ course_enrollButton_free: "免费注册",
 course_enrollButton: "注册费用",
 course_progressButton_NotComplete: "未完成",
 course_progressButton_MarkComplete: "标记为完成",
+createContainer_title: "命名你的容器",
+createCotainer_description: "你将使用的容器或客户的名称是什么？",
+createContainer_form_label: "容器名称",
+createContainer_form_placeholder: "例如 '客户 XYZ'",
+createContainer_form_description: "你将在这个容器中教授什么内容？",
+createContainer_cancel: "取消",
+createContainer_submit: "创建",
 };
 

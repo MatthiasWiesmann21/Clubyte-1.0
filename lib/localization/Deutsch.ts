@@ -570,4 +570,12 @@ course_enrollButton_free: "Kostenlos anmelden",
 course_enrollButton: "Anmelden für",
 course_progressButton_NotComplete: "Nicht abgeschlossen",
 course_progressButton_MarkComplete: "Als abgeschlossen markieren",
+createContainer_title: "Benenne deinen Container",
+createCotainer_description: "Wie heißt der Container oder Kunde, den du verwenden wirst?",
+createContainer_form_label: "Container-Name",
+createContainer_form_placeholder: "z.B. 'Kunde XYZ'",
+createContainer_form_description: "Was wirst du in diesem Container lehren?",
+createContainer_cancel: "Abbrechen",
+createContainer_submit: "Erstellen",
+
 };
