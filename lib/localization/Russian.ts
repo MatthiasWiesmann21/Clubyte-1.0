@@ -563,4 +563,8 @@ liveEvent_chat_title: "Чат трансляции",
 liveEvent_chat_inputField: "Введите ваш комментарий",
 liveEvent_start: "Начинается",
 liveEvent_end: "Заканчивается",
+course_enrollButton_free: "Записаться бесплатно",
+course_enrollButton: "Записаться за",
+course_progressButton_NotComplete: "Не завершено",
+course_progressButton_MarkComplete: "Отметить как завершённое",
 };

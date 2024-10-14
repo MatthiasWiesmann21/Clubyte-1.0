@@ -563,4 +563,9 @@ liveEvent_chat_title: "直播聊天",
 liveEvent_chat_inputField: "输入你的评论",
 liveEvent_start: "开始",
 liveEvent_end: "结束",
+course_enrollButton_free: "免费注册",
+course_enrollButton: "注册费用",
+course_progressButton_NotComplete: "未完成",
+course_progressButton_MarkComplete: "标记为完成",
 };
+

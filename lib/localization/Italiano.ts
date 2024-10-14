@@ -563,4 +563,8 @@ liveEvent_chat_title: "Chat del live",
 liveEvent_chat_inputField: "Scrivi il tuo commento",
 liveEvent_start: "Inizia",
 liveEvent_end: "Finisce",
+course_enrollButton_free: "Iscriviti gratis",
+course_enrollButton: "Iscriviti per",
+course_progressButton_NotComplete: "Non completato",
+course_progressButton_MarkComplete: "Segna come completato",
 };

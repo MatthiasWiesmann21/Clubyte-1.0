@@ -563,4 +563,8 @@ liveEvent_chat_title: "Chat do Stream",
 liveEvent_chat_inputField: "Digite seu comentário",
 liveEvent_start: "Começa",
 liveEvent_end: "Termina",
+course_enrollButton_free: "Inscreva-se gratuitamente",
+course_enrollButton: "Inscreva-se por",
+course_progressButton_NotComplete: "Não concluído",
+course_progressButton_MarkComplete: "Marcar como concluído",
 };

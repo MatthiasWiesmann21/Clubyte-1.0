@@ -69,13 +69,13 @@ export const ImageForm = ({ initialData, profileId }: ImageFormProps) => {
             <ImageIcon className="h-10 w-10 text-slate-500" />
           </div>
         ) : (
-          <div className="relative mt-2 aspect-video">
+          <div className="relative mt-2 flex justify-center items-center">
             <Image
               priority
               alt="Upload"
               width={200}
               height={200}
-              className="object-contain"
+              className="object-contain rounded-lg"
               src={initialData.imageUrl}
             />
           </div>
