@@ -567,4 +567,8 @@ liveEvent_chat_title: "Stream Chat",
 liveEvent_chat_inputField: "Type your comment",
 liveEvent_start: "Starts",
 liveEvent_end: "Ends",
+course_enrollButton_free: "Enroll for Free",
+course_enrollButton: "Enroll for",
+course_progressButton_NotComplete: "Not completed",
+course_progressButton_MarkComplete: "Mark as complete",
 };

@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/format";
+import { useLanguage } from "@/lib/check-language";
 
 interface CourseEnrollButtonProps {
   price: number;
@@ -17,6 +18,7 @@ export const CourseEnrollButton = ({
   courseId,
 }: CourseEnrollButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const currentLanguage = useLanguage();
 
   const onClick = async () => {
     try {
@@ -40,7 +42,7 @@ export const CourseEnrollButton = ({
       size="sm"
       className="w-32 md:w-32 bg-emerald-500 hover:bg-emerald-600"
     >
-      Enroll for Free
+      {currentLanguage.course_enrollButton_free}
     </Button>
     )
   }
@@ -52,7 +54,7 @@ export const CourseEnrollButton = ({
       size="sm"
       className="w-32 md:w-32"
     >
-      Enroll for {formatPrice(price)}
+      {currentLanguage.course_enrollButton} {formatPrice(price)}
     </Button>
     )
   }
