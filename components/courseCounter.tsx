@@ -5,6 +5,7 @@ import { useIsAdmin } from "@/lib/roleCheck";
 import { Infinity, Info, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { useModal } from "@/hooks/use-modal-store";
 
 type ContainerwithamountofCoursesProps = {
   courses: number;
@@ -20,6 +21,8 @@ export const CourseCounter = ({
   const currentLanguage = useLanguage();
   const isRoleAdmins = useIsAdmin();
   const canAccess = isRoleAdmins;
+  const { onOpen } = useModal();
+
   const maxCourseDisplay =
     maxCourses > 50 ? (
       <>
@@ -33,21 +36,23 @@ export const CourseCounter = ({
     canAccess && (
       <div className="text-prima flex w-full items-center rounded-full border border-black p-3 text-center text-sm text-slate-400 dark:border-white">
         <div className="space-between flex items-center">
-        <Info className="mr-2 h-5 w-5" />
-        <span>
-          {currentLanguage.search_courseCounter_currentCourses} {courses} /{" "}
-        </span>
-        {maxCourseDisplay}
+          <Info className="mr-2 h-5 w-5" />
+          <span>
+            {currentLanguage.search_courseCounter_currentCourses} {courses} /{" "}
+          </span>
+          {maxCourseDisplay}
         </div>
         <div className="ml-auto">
-        {isFrontend && (
-           <Link href="/admin/create/course">
-           <Button className="rounded-3xl" variant="outline">
-             <PlusCircle className="mr-2 h-4 w-4" />
-             {currentLanguage.courses_createCourse_button_text}
-           </Button>
-         </Link>
-        )}
+          {isFrontend && (
+            <Button
+              className="rounded-3xl"
+              variant="outline"
+              onClick={() => onOpen("createCourse")}
+            >
+              <PlusCircle className="mr-2 h-4 w-4" />
+              {currentLanguage.courses_createCourse_button_text}
+            </Button>
+          )}
         </div>
       </div>
     )

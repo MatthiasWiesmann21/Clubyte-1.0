@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useModal } from "@/hooks/use-modal-store"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -37,6 +38,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  const { onOpen } = useModal();
 
   const table = useReactTable({
     data,
@@ -64,12 +66,10 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm mr-5 border-[#000000] dark:border-[#ffffff]"
         />
-        <Link href="/admin/create/container">
-          <Button>
+          <Button onClick={() => onOpen("createContainer")}>
             <PlusCircle className="h-4 w-4 mr-2" />
             Create Container
           </Button>
-        </Link>
       </div>
       <div className="rounded-md border border-[#000000] dark:border-[#ffffff]">
         <Table>

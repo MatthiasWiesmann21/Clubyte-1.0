@@ -16,7 +16,7 @@ export const NavigationAction = () => {
   const canAccess = isAdmin || isOperator;
 
   return (
-    canAccess && (
+    canAccess && ( 
       <>
         <div>
           <ActionTooltip side="right" align="center" label={currentLanguage.chat_server_addServer}>
