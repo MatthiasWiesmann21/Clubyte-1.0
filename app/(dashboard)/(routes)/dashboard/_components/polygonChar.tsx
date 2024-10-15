@@ -13,7 +13,7 @@ import {
   TooltipTrigger,
   Tooltip,
 } from "@/components/tooltip";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Eye } from "lucide-react";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -149,17 +149,14 @@ const PolygonChart = ({
             <div>{currentLanguage.dashboard_popularChapter_title}</div>
           </div>
           <div className="flex items-center justify-between bg-slate-100 p-2 dark:bg-[#150D22]">
-            <p className="w-[35%] text-xs">
+            <p className="w-[40%] text-xs">
               {currentLanguage.dashboard_popularChapter_chapterName_text}
             </p>
-            <p className="w-[25%] text-xs">
+            <p className="w-[35%] text-xs">
               {currentLanguage.dashboard_popularChapter_courseName_text}
             </p>
             <p className="w-[10%] text-xs">
               {currentLanguage.dashboard_popularChapter_likes_text}
-            </p>
-            <p className="w-[15%] text-xs">
-              {currentLanguage.dashboard_popularChapter_comments_text}
             </p>
             <p className="w-[10%] text-xs">
               {currentLanguage.dashboard_popularChapter_action_text}
@@ -176,17 +173,17 @@ const PolygonChart = ({
                 className="my-1 flex items-center justify-between p-2"
               >
                 <Tooltip>
-                  <TooltipTrigger className="flex w-[35%] items-center">
-                      <Image
-                        alt="img"
-                        src={each?.imageUrl}
-                        objectFit="contain"
-                        width={80}
-                        height={45}
-                        className="rounded-sm"
-                      />
+                  <TooltipTrigger className="flex w-[40%] items-center">
+                    <Image
+                      alt="img"
+                      src={each?.imageUrl}
+                      objectFit="contain"
+                      width={64}
+                      height={36}
+                      className="rounded-sm"
+                    />
                     <div className="ml-2">
-                      <p className="m-0 line-clamp-2 text-start">
+                      <p className="m-0 line-clamp-1 text-start">
                         {each?.title}
                       </p>
                       <p className="m-0 line-clamp-1 text-start text-xs text-gray-500">
@@ -201,7 +198,7 @@ const PolygonChart = ({
                   </TooltipContent>
                 </Tooltip>
                 <Tooltip>
-                  <TooltipTrigger className="w-[25%] text-start">
+                  <TooltipTrigger className="w-[35%] text-start">
                     <p className="line-clamp-2">{each?.courseName}</p>
                     <p className="line-clamp-1 text-xs text-gray-500">
                       {each?.category?.name}
@@ -216,28 +213,34 @@ const PolygonChart = ({
                 <div className="w-[10%]">
                   <p>{each?.likes?.length}</p>
                 </div>
-                <div className="w-[15%]">
-                  <p>{each?.comments?.length}</p>
-                </div>
                 <div className="flex w-[10%]">
-                  <Link
-                    href={`/courses/${each?.courseId}/chapters/${each?.id}`}
-                  >
-                    <span
-                      onMouseEnter={() => setHoveredCourse(index)}
-                      onMouseLeave={() => setHoveredCourse(null)}
-                      className="border-1 rounded-full border px-2 py-2 text-xs transition duration-300 ease-in-out"
-                      style={{
-                        borderColor: getButtonColor(),
-                        backgroundColor:
-                          hoveredCourse === index ? getButtonColor() : "",
-                      }}
-                    >
-                      {
-                        currentLanguage.dashboard_courseTable_viewCourse_button_text
-                      }
-                    </span>
-                  </Link>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Link
+                        href={`/courses/${each?.courseId}/chapters/${each?.id}`}
+                      >
+                        <div
+                          onMouseEnter={() => setHoveredCourse(index)}
+                          onMouseLeave={() => setHoveredCourse(null)}
+                          className="border-1 rounded-full border p-1 text-xs transition duration-300 ease-in-out"
+                          style={{
+                            borderColor: getButtonColor(),
+                            backgroundColor:
+                              hoveredCourse === index ? getButtonColor() : "",
+                          }}
+                        >
+                          <Eye />
+                        </div>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="h-full max-w-[300px] whitespace-normal font-semibold">
+                        {
+                          currentLanguage.dashboard_courseTable_viewCourse_button_text
+                        }
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
               </div>
             ))}

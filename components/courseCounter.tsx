@@ -37,7 +37,7 @@ export const CourseCounter = ({
       <div className="text-prima flex w-full items-center rounded-full border border-black p-3 text-center text-sm text-slate-400 dark:border-white">
         <div className="space-between flex items-center">
           <Info className="mr-2 h-5 w-5" />
-          <span>
+          <span className="text-md sm:text-xs">
             {currentLanguage.search_courseCounter_currentCourses} {courses} /{" "}
           </span>
           {maxCourseDisplay}
@@ -45,7 +45,7 @@ export const CourseCounter = ({
         <div className="ml-auto">
           {isFrontend && (
             <Button
-              className="rounded-3xl"
+              className="rounded-3xl text-sm"
               variant="outline"
               onClick={() => onOpen("createCourse")}
             >
