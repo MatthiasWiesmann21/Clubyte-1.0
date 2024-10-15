@@ -38,9 +38,8 @@ export const CourseCounter = ({
         <div className="space-between flex items-center">
           <Info className="mr-2 h-5 w-5" />
           <span className="text-md sm:text-xs">
-            {currentLanguage.search_courseCounter_currentCourses} {courses} /{" "}
+            {currentLanguage.search_courseCounter_currentCourses} {courses} /{" "}{maxCourseDisplay}
           </span>
-          {maxCourseDisplay}
         </div>
         <div className="ml-auto">
           {isFrontend && (
