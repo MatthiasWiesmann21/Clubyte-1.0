@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/check-language";
-import { BookX } from "lucide-react";
+import { BookX, Eye } from "lucide-react";
 import { Container, Course } from "@prisma/client";
 import { useTheme } from "next-themes";
 
@@ -129,18 +129,18 @@ const CourseTable = ({ courses, colors }: CourseTableProps) => {
             </div>
             <div className="flex w-[20%] justify-end px-2">
               <Link href={`/courses/${each.id}`}>
-                <span
+                <div
                   onMouseEnter={() => setHoveredCourse(index)}
                   onMouseLeave={() => setHoveredCourse(null)}
-                  className="border-1 rounded-full border px-2 py-2 text-xs transition duration-300 ease-in-out"
+                  className="border-1 rounded-full border p-1 text-xs transition duration-300 ease-in-out"
                   style={{
                     borderColor: getButtonColor(),
                     backgroundColor:
                       hoveredCourse === index ? getButtonColor() : "",
                   }}
                 >
-                  {currentLanguage.dashboard_courseTable_viewCourse_button_text}
-                </span>
+                  <Eye />
+                </div>
               </Link>
             </div>
           </div>
