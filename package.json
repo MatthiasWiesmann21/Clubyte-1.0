@@ -111,7 +111,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",
     "resend": "^2.0.0",
-    "sharp": "^0.33.2",
+    "sharp": "^0.33.5",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "stripe": "^13.6.0",
