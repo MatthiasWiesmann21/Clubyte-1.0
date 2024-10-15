@@ -57,8 +57,8 @@ const DocumentPage = () => {
   } else if (folderStructure == null) {
     return (
       <div className="flex items-center justify-center align-middle gap-2 px-4 py-6">
-        <FileX width={64} height={64} className="text-slate-400 dark:text-slate-600" />
-        <p className="text-2xl">{currentLanguage.chapter_attachments_NoDocuments}</p>
+        <FileX width={50} height={50} className="text-slate-400 dark:text-slate-600" />
+        <p className="text-xl">{currentLanguage.chapter_attachments_NoDocuments}</p>
       </div>
     );
   } else
