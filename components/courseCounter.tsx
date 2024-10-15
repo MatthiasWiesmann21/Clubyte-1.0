@@ -37,9 +37,12 @@ export const CourseCounter = ({
       <div className="text-prima flex w-full items-center rounded-full border border-black p-3 text-center text-sm text-slate-400 dark:border-white">
         <div className="space-between flex items-center">
           <Info className="mr-2 h-5 w-5" />
-          <span className="text-md sm:text-xs">
-            {currentLanguage.search_courseCounter_currentCourses} {courses} /{" "}{maxCourseDisplay}
-          </span>
+          <p className="text-md sm:text-xs">
+            {currentLanguage.search_courseCounter_currentCourses} 
+          </p>
+          <p className="ml-1 sm:text-xs">
+            {courses} / {maxCourseDisplay}
+          </p>
         </div>
         <div className="ml-auto">
           {isFrontend && (
