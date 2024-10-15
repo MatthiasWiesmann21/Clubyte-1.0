@@ -47,7 +47,7 @@ export const CourseCounter = ({
         <div className="ml-auto">
           {isFrontend && (
             <Button
-              className="rounded-3xl text-xs text-start"
+              className="rounded-3xl xs:text-xs text-start"
               variant="outline"
               onClick={() => onOpen("createCourse")}
             >

@@ -18,11 +18,13 @@ import { DescriptionPreview } from "../description-preview";
 interface ConfirmModalProps {
   children: React.ReactNode;
   description: string;
+  title?: string;
 };
 
 export const DescriptionModal = ({
   description,
   children,
+  title,
 }: ConfirmModalProps) => {
   const currentLanguage = useLanguage();
   return (
@@ -32,7 +34,13 @@ export const DescriptionModal = ({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{currentLanguage.descriptionModal_DialogHeader}</AlertDialogTitle>
+          <AlertDialogTitle>
+            {title ? (
+              <p className="text-xl">{title}</p>
+            ) : (
+              <p className="text-xl">{currentLanguage.descriptionModal_DialogHeader}</p>
+            )}
+            </AlertDialogTitle>
           <AlertDialogDescription>
           <DescriptionPreview
               value={description}
