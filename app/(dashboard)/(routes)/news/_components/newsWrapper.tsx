@@ -169,10 +169,15 @@ const NewsWrapper = ({
         {/* My Favorites Section (hidden on mobile) */}
         <div className="sticky top-4 w-full">
           {profileRole === "ADMIN" ? (
-              <Button className="rounded-3xl" variant="outline" onClick={() => onOpen("createPost")}>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                {currentLanguage.post_createPost_button_text}
-              </Button>
+            <Button
+            className="inline-flex items-center rounded-3xl hidden lg:inline-flex w-42"
+            variant="outline"
+            onClick={() => onOpen("createPost")}
+          >
+            <PlusCircle className="mr-2 h-4 w-4" />
+            <span>{currentLanguage.post_createPost_button_text}</span>
+          </Button>
+          
           ) : (
             <div className="mb-20"></div>
           )}
