@@ -247,16 +247,16 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                             {formatDate(item.createdAt)}
                           </td>
-                          <td className="relative flex items-center justify-end px-3 py-4 text-right text-sm font-medium">
+                          <td className="flex items-center justify-end py-6 text-sm font-medium">
                             <FlyoutMenuSetting
                               type="folder"
                               index={i}
                               key={i?.toString()}
                               isMenuOpen={isMenuOpen}
                               setMenuOpen={setMenuOpen}
-                              onRenameClick={() => {
-                                handleRenameClick(item, true);
-                              }}
+                              onRenameClick={() =>
+                                handleRenameClick(item, true)
+                              }
                               onDeleteClick={() => {
                                 setIsFolder("folder");
                                 setRenamingItem(item);
@@ -269,7 +269,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                     )}
                     {folderStructure?.files?.map((file: any, index: number) => (
                       <tr key={index}>
-                        <td className="relative pl-6 py-4">
+                        <td className="relative py-4 pl-6">
                           <div
                             onClick={() => handleDownload(file.key, file.name)}
                             className="m-1 mr-3 flex h-10 w-10 cursor-pointer items-center justify-center rounded bg-slate-300 p-3 dark:bg-slate-600"
@@ -286,7 +286,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                           {formatDate(file.createdAt)}
                         </td>
-                        <td className="relative flex items-center justify-end space-x-3 px-3 py-4 text-right text-sm font-medium">
+                        <td className="relative flex items-center justify-between py-6 text-sm font-medium">
                           <Download
                             onClick={() => handleDownload(file.key, file.name)}
                             className="cursor-pointer text-slate-900 dark:text-slate-100"

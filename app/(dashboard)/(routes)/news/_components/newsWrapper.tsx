@@ -170,7 +170,7 @@ const NewsWrapper = ({
         <div className="sticky top-4 w-full">
           {profileRole === "ADMIN" ? (
             <Button
-            className="inline-flex items-center rounded-3xl hidden lg:inline-flex w-42"
+            className="inline-flex items-center rounded-3xl text-xs hidden lg:inline-flex w-42"
             variant="outline"
             onClick={() => onOpen("createPost")}
           >

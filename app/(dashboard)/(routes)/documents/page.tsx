@@ -7,6 +7,8 @@ import Image from "next/image";
 import noFolder from "../../../../assets/icons/no folder.png";
 import ClubyteLoader from "@/components/ui/clubyte-loader";
 import { useTheme } from "next-themes";
+import { FileX } from "lucide-react";
+import { useLanguage } from "@/lib/check-language";
 
 export type DocumentFolderTree = {
   name: string;
@@ -26,6 +28,7 @@ const DocumentPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [folderStructure, setFolderStructure] = useState<any>(null);
   const { theme } = useTheme();
+  const currentLanguage = useLanguage();
 
   const getFolder = async () => {
     try {
@@ -45,16 +48,17 @@ const DocumentPage = () => {
     return (
       <div className="flex min-h-screen items-center justify-center">
         {theme === "dark" ? (
-          <ClubyteLoader className="w-64 h-64" theme="dark" color="110524" />
+          <ClubyteLoader className="h-64 w-64" theme="dark" color="110524" />
         ) : (
-          <ClubyteLoader className="w-64 h-64" theme="light" color="ffffff" />
+          <ClubyteLoader className="h-64 w-64" theme="light" color="ffffff" />
         )}
       </div>
     );
   } else if (folderStructure == null) {
     return (
-      <div className="flex h-full w-full items-center justify-around">
-        <Image priority src={noFolder} alt="wqer" />
+      <div className="flex items-center justify-center gap-2 px-4 py-6">
+        <FileX className="text-slate-400 dark:text-slate-600" />
+        <p>{currentLanguage.chapter_attachments_NoDocuments}</p>
       </div>
     );
   } else

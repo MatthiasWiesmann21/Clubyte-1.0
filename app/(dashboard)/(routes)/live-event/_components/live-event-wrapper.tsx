@@ -66,8 +66,8 @@ export const LiveEventWrapper = ({
             DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
           />
           {profileRole === "ADMIN" && (
-              <Button className="rounded-3xl" variant="outline" onClick={() => onOpen("createLiveEvent")}>
-                <PlusCircle className="mr-2 h-4 w-4" />
+              <Button className="rounded-3xl mx-2 text-xs text-start" variant="outline" onClick={() => onOpen("createLiveEvent")}>
+                <PlusCircle className="mr-2 h-5 w-5" />
                 {currentLanguage.liveEvent_createEvent_button_text}
               </Button>
           )}
