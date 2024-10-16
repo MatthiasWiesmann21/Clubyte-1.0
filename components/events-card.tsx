@@ -171,7 +171,9 @@ export const EventCard = ({
             </div>
           </Link>
           <div className="mt-3 flex items-center justify-between">
+            <div className="mr-4">
             <CategoryItemCard label={category} colorCode={categoryColorCode} />
+            </div>
             <div className="flex items-center justify-between">
               <Star
                 size={16}

@@ -104,7 +104,6 @@ export const LiveEventWrapper = ({
         ThemeOutlineColor={container?.ThemeOutlineColor!}
         DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
         getLiveEvents={getLiveEvents}
-        profileRole={profileRole}
       />
     </div>
   );

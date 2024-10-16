@@ -17,7 +17,6 @@ interface EventsListProps {
   ThemeOutlineColor: string;
   DarkThemeOutlineColor: string;
   getLiveEvents: any;
-  profileRole: string;
 }
 
 export const EventsList = ({
@@ -25,7 +24,6 @@ export const EventsList = ({
   ThemeOutlineColor,
   DarkThemeOutlineColor,
   getLiveEvents,
-  profileRole,
 }: EventsListProps) => {
   const currentLanguage = useLanguage();
   const favoriteEvents = items?.filter((event) => event?.currentFavorite);
@@ -62,39 +60,39 @@ export const EventsList = ({
         )}
       </div>
       {/* My Favorites Section (hidden on mobile) */}
-      <div className="sticky top-4 w-[400px]">
-        {profileRole === "ADMIN" ? (
-          <Link href="/admin/create/post">
-            <Button className="rounded-3xl" variant="outline">
-              <PlusCircle className="mr-2 h-4 w-4" />
-              {currentLanguage.post_createPost_button_text}
-            </Button>
-          </Link>
-        ) : (
-          <div className="mb-20"></div>
-        )}
-        <div className="mt-11 hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
-          <h1 className="mb-4 text-2xl font-medium">
-            {currentLanguage.news_myFavorites_title}
-          </h1>
-          {/* Render favorite posts (example static content for now) */}
-          {favoriteEvents?.length === 0 && (
-            <div className="flex h-16 items-center justify-center text-sm text-muted-foreground">
-              <NewspaperIcon className="m-1" size={24} />
-              <span>{currentLanguage?.news_no_posts_found}</span>
-            </div>
-          )}
-          {favoriteEvents?.map((item) => (
-            <EventFavoriteCard
-              key={item?.id}
-              id={item?.id}
-              category={item?.category?.name ?? ""}
-              description={item?.description ?? ""}
-              colorCode={item?.category?.colorCode!}
-            />
-          ))}
+      {favoriteEvents.length > 0 && (
+        <div className="sticky top-4 w-[400px]">
+          <div className="hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
+            <h1 className="mb-4 text-2xl font-medium">
+              {currentLanguage.news_myFavorites_title}
+            </h1>
+            {/* Render favorite posts (example static content for now) */}
+            {favoriteEvents?.length === 0 && (
+              <div className="flex h-16 items-center justify-center text-sm text-muted-foreground">
+                <NewspaperIcon className="m-1" size={24} />
+                <span>{currentLanguage?.news_no_posts_found}</span>
+              </div>
+            )}
+            {favoriteEvents?.map((item) => (
+              <EventFavoriteCard
+                key={item.id}
+                id={item.id}
+                title={item.title!}
+                description={item.description!}
+                imageUrl={item.imageUrl!}
+                category={item?.category?.name!}
+                categoryColorCode={item?.category?.colorCode!}
+                startDateTime={item?.startDateTime}
+                endDateTime={item?.endDateTime}
+                ThemOutlineColor={ThemeOutlineColor!}
+                DarkThemeOutlineColor={DarkThemeOutlineColor!}
+                currentFavorite={item?.currentFavorite}
+                getLiveEvents={getLiveEvents}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
