@@ -57,8 +57,10 @@ interface CourseCardProps {
   progress: number | null;
   category: string;
   categoryColorCode: string;
+  currentFavorite: boolean;
   ThemOutlineColor: string;
   DarkThemeOutlineColor: string;
+  getAllCourses: any;
 }
 
 export const FreeText = () => {
@@ -80,8 +82,10 @@ export const CourseCard = ({
   progress,
   category,
   categoryColorCode,
+  currentFavorite,
   ThemOutlineColor,
   DarkThemeOutlineColor,
+  getAllCourses,
 }: CourseCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const { theme } = useTheme();
@@ -112,7 +116,7 @@ export const CourseCard = ({
   return (
     <TooltipProvider>
       <div
-        className="rounded-lg border-2 transition duration-500 ease-in-out"
+        className="w-[305px] rounded-lg border-2 transition duration-500 ease-in-out"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
@@ -121,57 +125,57 @@ export const CourseCard = ({
       >
         <div className="group h-full w-full overflow-hidden rounded-lg bg-slate-100/60 p-2 transition dark:bg-[#0c0319]">
           <Link href={`/courses/${id}`}>
-          <div className="relative aspect-video w-full overflow-hidden rounded-md border-2 border-slate-300/50 dark:border-slate-700/60">
-            <div className="absolute left-2 top-2 z-10 flex space-x-2">
-              {isBestseller && (
-                <p className="flex rounded-md bg-yellow-500 p-1 text-sm font-medium text-white">
-                  <Medal className="pr-1" width={18} height={18} />
-                  {currentLanguage.course_card_bestseller}
-                </p>
-              )}
-              {isNew && (
-                <p className="flex rounded-md bg-rose-600 p-1 text-sm font-medium text-white dark:bg-rose-600 dark:text-white">
-                  <Lightbulb className="pr-1" width={18} height={18} />
-                  {currentLanguage.course_card_new}
-                </p>
-              )}
-              {isFeatured && (
-                <p className="flex rounded-md bg-blue-500 p-1 text-sm font-medium text-white">
-                  <Star className="pr-1" width={18} height={18} />
-                  {currentLanguage.course_card_featured}
-                </p>
-              )}
-            </div>
-            {/* Show a placeholder or spinner while the image is loading */}
-            {isLoading && (
-              <div className="flex h-full w-full items-center justify-center">
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {theme === "dark" ? (
-                    <ClubyteLoader
-                      className="h-64 w-64"
-                      theme="dark"
-                      color="0c0319"
-                    />
-                  ) : (
-                    <ClubyteLoader
-                      className="h-64 w-64"
-                      theme="light"
-                      color="f7f9fb"
-                    />
-                  )}
-                </span>
+            <div className="relative aspect-video w-full overflow-hidden rounded-md border-2 border-slate-300/50 dark:border-slate-700/60">
+              <div className="absolute left-2 top-2 z-10 flex space-x-2">
+                {isBestseller && (
+                  <p className="flex rounded-md bg-yellow-500 p-1 text-sm font-medium text-white">
+                    <Medal className="pr-1" width={18} height={18} />
+                    {currentLanguage.course_card_bestseller}
+                  </p>
+                )}
+                {isNew && (
+                  <p className="flex rounded-md bg-rose-600 p-1 text-sm font-medium text-white dark:bg-rose-600 dark:text-white">
+                    <Lightbulb className="pr-1" width={18} height={18} />
+                    {currentLanguage.course_card_new}
+                  </p>
+                )}
+                {isFeatured && (
+                  <p className="flex rounded-md bg-blue-500 p-1 text-sm font-medium text-white">
+                    <Star className="pr-1" width={18} height={18} />
+                    {currentLanguage.course_card_featured}
+                  </p>
+                )}
               </div>
-            )}
-            <Image
-              fill
-              className={`object-cover transition-opacity duration-500 ${
-                isLoading ? "opacity-0" : "opacity-100"
-              }`}
-              alt={title}
-              src={imageUrl}
-              onLoadingComplete={() => setIsLoading(false)}
-            />
-          </div>
+              {/* Show a placeholder or spinner while the image is loading */}
+              {isLoading && (
+                <div className="flex h-full w-full items-center justify-center">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    {theme === "dark" ? (
+                      <ClubyteLoader
+                        className="h-64 w-64"
+                        theme="dark"
+                        color="0c0319"
+                      />
+                    ) : (
+                      <ClubyteLoader
+                        className="h-64 w-64"
+                        theme="light"
+                        color="f7f9fb"
+                      />
+                    )}
+                  </span>
+                </div>
+              )}
+              <Image
+                fill
+                className={`object-cover transition-opacity duration-500 ${
+                  isLoading ? "opacity-0" : "opacity-100"
+                }`}
+                alt={title}
+                src={imageUrl}
+                onLoadingComplete={() => setIsLoading(false)}
+              />
+            </div>
           </Link>
           <div className="mt-3 flex items-center justify-between">
             <Tooltip>
@@ -189,7 +193,19 @@ export const CourseCard = ({
                 </p>
               </TooltipContent>
             </Tooltip>
-            <div className="flex justify-between mr-[2px]">
+            <div className="flex items-center justify-between">
+              <Star
+                size={16}
+                fill={!!currentFavorite ? "#FFD700" : "#ffffff00"}
+                className="mr-[10px] cursor-pointer transition duration-200 ease-in-out hover:scale-110"
+                style={!!currentFavorite ? { color: "#FFD700" } : {}}
+                onClick={async () => {
+                  const response = await axios?.post(`/api/favorite/create`, {
+                    courseId: id,
+                  });
+                  if (response?.status === 200) getAllCourses();
+                }}
+              />
               <DescriptionModal description={description}>
                 <Button
                   variant="ghost"
@@ -235,82 +251,101 @@ export const CourseCard = ({
             </div>
           </div>
           <Link href={`/courses/${id}`}>
-          <div className="mt-2 flex flex-col">
-            <Tooltip>
-              <TooltipTrigger>
-                <p className="my-2 line-clamp-2 text-start text-[16px] font-semibold">
-                  {title}
-                </p>
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs p-2">
-                <p className="whitespace-normal text-sm font-semibold">
-                  {title}
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-          <div className="grid grid-cols-3 gap-2 mb-2">
-            <div className="flex items-center">
-              <div className="flex h-[24px] w-[24px] items-center justify-center">
-                <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
-                  <BookOpen
-                    width={14}
-                    height={14}
-                    style={{ color: ThemOutlineColor }}
-                  />
-                </div>
-              </div>
-              <span className="ml-1 text-xs">
-                {chaptersLength}{" "}
-                {chaptersLength < 2
-                  ? currentLanguage.course_card_chapter
-                  : currentLanguage.course_card_chapters}
-              </span>
+            <div className="mt-2 flex flex-col">
+              <Tooltip>
+                <TooltipTrigger>
+                  <p className="my-2 line-clamp-2 text-start text-[16px] font-semibold">
+                    {title}
+                  </p>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs p-2">
+                  <p className="whitespace-normal text-sm font-semibold">
+                    {title}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
             </div>
-            {duration && (
+            <div className="mb-2 grid grid-cols-3 gap-2">
               <div className="flex items-center">
-              <div className="flex h-[24px] w-[24px] items-center justify-center">
-                <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
-                  <Clock
-                    width={14}
-                    height={14}
-                    style={{ color: ThemOutlineColor }}
-                  />
+                <div className="flex h-[24px] w-[24px] items-center justify-center">
+                  <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
+                    <BookOpen
+                      width={14}
+                      height={14}
+                      style={{ color: ThemOutlineColor }}
+                    />
+                  </div>
                 </div>
+                <span className="ml-1 text-xs">
+                  {chaptersLength}{" "}
+                  {chaptersLength < 2
+                    ? currentLanguage.course_card_chapter
+                    : currentLanguage.course_card_chapters}
+                </span>
               </div>
-              <span className="ml-1 text-xs">
-                {formatDuration(duration.toString())}
-              </span>
-            </div>
-            )}
-            {level && (
-              <div className="flex items-center">
-              <div className="flex h-[24px] w-[24px] items-center justify-center">
-                <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
-                  <GraduationCap
-                    width={14}
-                    height={14}
-                    style={{ color: ThemOutlineColor }}
-                  />
+              <div className="grid grid-cols-3 gap-2">
+                <div className="flex items-center">
+                  <div className="flex h-[24px] w-[24px] items-center justify-center">
+                    <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
+                      <BookOpen
+                        width={14}
+                        height={14}
+                        style={{ color: ThemOutlineColor }}
+                      />
+                    </div>
+                  </div>
+                  <span className="ml-1 text-xs">
+                    {chaptersLength}{" "}
+                    {chaptersLength < 2
+                      ? currentLanguage.course_card_chapter
+                      : currentLanguage.course_card_chapters}
+                  </span>
                 </div>
+                {duration && (
+                  <div className="flex items-center">
+                    <div className="flex h-[24px] w-[24px] items-center justify-center">
+                      <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
+                        <Clock
+                          width={14}
+                          height={14}
+                          style={{ color: ThemOutlineColor }}
+                        />
+                      </div>
+                    </div>
+                    <span className="ml-1 text-xs">
+                      {formatDuration(duration.toString())}
+                    </span>
+                  </div>
+                )}
+                {level && (
+                  <div className="flex items-center">
+                    <div className="flex h-[24px] w-[24px] items-center justify-center">
+                      <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
+                        <GraduationCap
+                          width={14}
+                          height={14}
+                          style={{ color: ThemOutlineColor }}
+                        />
+                      </div>
+                    </div>
+                    <span className="ml-1 text-xs">
+                      {level || currentLanguage.course_card_no_level}
+                    </span>
+                  </div>
+                )}
               </div>
-              <span className="ml-1 text-xs">
-                {level || currentLanguage.course_card_no_level}
-              </span>
+              {progress !== null ? (
+                <CourseProgress
+                  variant={progress === 100 ? "success" : "default"}
+                  size="sm"
+                  value={progress}
+                />
+              ) : (
+                <p className="my-2 text-[16px] font-bold text-slate-700 dark:text-slate-200 md:text-sm">
+                  {price === 0 ? "Free" : formatPrice(price)}
+                </p>
+              )}
             </div>
-            )}
-          </div>
-          {progress !== null ? (
-            <CourseProgress
-              variant={progress === 100 ? "success" : "default"}
-              size="sm"
-              value={progress}
-            />
-          ) : (
-            <p className="my-2 text-[16px] font-bold text-slate-700 dark:text-slate-200 md:text-sm">
-              {price === 0 ? "Free" : formatPrice(price)}
-            </p>
-          )}
           </Link>
         </div>
       </div>

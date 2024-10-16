@@ -3,13 +3,10 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
-import { getCourses } from "@/actions/get-courses";
 import { CoursesList } from "@/components/courses-list";
 import { Categories } from "./_components/categories";
 import { Metadata } from "next";
 import { CourseCounter } from "@/components/courseCounter";
-import getBase64 from "@/lib/getLocalbase64";
-import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 
 export const metadata: Metadata = {
   title: "Courses",
@@ -74,12 +71,6 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     },
   });
 
-  const courses = await getCourses({
-    userId,
-    ...searchParams,
-    containerId: session?.user?.profile?.containerId,
-  });
-
   const containerColors: any = await db?.container?.findUnique({
     where: {
       id: session?.user?.profile?.containerId,
@@ -100,9 +91,9 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
         />
         <CoursesList
-          items={courses}
           ThemOutlineColor={containerColors?.ThemeOutlineColor!}
           DarkThemeOutlineColor={containerColors?.DarkThemeOutlineColor!}
+          profileRole={profile?.role!}
         />
       </div>
     </>

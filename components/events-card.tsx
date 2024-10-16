@@ -2,7 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Info, MoreVertical, Pencil, PlayCircle, Trash } from "lucide-react";
+import {
+  Info,
+  MoreVertical,
+  Pencil,
+  PlayCircle,
+  Star,
+  Trash,
+} from "lucide-react";
 import moment from "moment";
 import { useState } from "react";
 import { useTheme } from "next-themes";
@@ -42,6 +49,8 @@ interface EventsCardProps {
   color: string;
   ThemOutlineColor: string;
   DarkThemeOutlineColor: string;
+  currentFavorite: boolean;
+  getLiveEvents: any;
 }
 
 export const EventCard = ({
@@ -56,6 +65,8 @@ export const EventCard = ({
   color,
   ThemOutlineColor,
   DarkThemeOutlineColor,
+  currentFavorite,
+  getLiveEvents,
 }: EventsCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const { theme } = useTheme();
@@ -93,7 +104,7 @@ export const EventCard = ({
   return (
     <TooltipProvider>
       <div
-        className="rounded-lg border-2 transition duration-500 ease-in-out"
+        className="w-[305px] rounded-lg border-2 transition duration-500 ease-in-out"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
@@ -161,7 +172,19 @@ export const EventCard = ({
           </Link>
           <div className="mt-3 flex items-center justify-between">
             <CategoryItemCard label={category} colorCode={categoryColorCode} />
-            <div className="flex justify-between mr-[2px]">
+            <div className="flex items-center justify-between">
+              <Star
+                size={16}
+                fill={!!currentFavorite ? "#FFD700" : "#ffffff00"}
+                className="mr-[10px] cursor-pointer transition duration-200 ease-in-out hover:scale-110"
+                style={!!currentFavorite ? { color: "#FFD700" } : {}}
+                onClick={async () => {
+                  const response = await axios?.post(`/api/favorite/create`, {
+                    liveEventId: id,
+                  });
+                  if (response?.status === 200) getLiveEvents();
+                }}
+              />
               <DescriptionModal description={description}>
                 <Button
                   variant="ghost"

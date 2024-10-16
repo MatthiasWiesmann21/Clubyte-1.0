@@ -10,8 +10,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
-import { Category, LiveEvent } from "@prisma/client";
-import { currentProfile } from "@/lib/current-profile";
+import axios from "axios";
 import { useModal } from "@/hooks/use-modal-store";
 
 interface LiveEventWrapperProps {
@@ -30,14 +29,19 @@ export const LiveEventWrapper = ({
   profileRole,
 }: LiveEventWrapperProps) => {
   const { data: session, status } = useSession();
-  const [liveEvent, setLiveEvent] = useState([]);
+  const [liveEvent, setLiveEvent] = useState(liveEvents || []);
   const router = useRouter();
   const currentLanguage = useLanguage();
   const { onOpen } = useModal();
 
+  const getLiveEvents = async () => {
+    const response = await axios?.get(`/api/liveEvent`);
+    setLiveEvent(response?.data);
+  };
+
   useEffect(() => {
-    setLiveEvent(liveEvents);
-  }, [liveEvents]);
+    getLiveEvents();
+  }, []);
 
   if (status === "loading") {
     return <div>Loading...</div>; // Optionally show a loading state while fetching session
@@ -66,10 +70,14 @@ export const LiveEventWrapper = ({
             DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
           />
           {profileRole === "ADMIN" && (
-              <Button className="rounded-3xl mx-2 text-xs text-start" variant="outline" onClick={() => onOpen("createLiveEvent")}>
-                <PlusCircle className="mr-2 h-5 w-5" />
-                {currentLanguage.liveEvent_createEvent_button_text}
-              </Button>
+            <Button
+              className="mx-2 rounded-3xl text-start text-xs"
+              variant="outline"
+              onClick={() => onOpen("createLiveEvent")}
+            >
+              <PlusCircle className="mr-2 h-5 w-5" />
+              {currentLanguage.liveEvent_createEvent_button_text}
+            </Button>
           )}
         </div>
         <div>
@@ -95,6 +103,8 @@ export const LiveEventWrapper = ({
         }))}
         ThemeOutlineColor={container?.ThemeOutlineColor!}
         DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
+        getLiveEvents={getLiveEvents}
+        profileRole={profileRole}
       />
     </div>
   );
