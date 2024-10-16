@@ -6,7 +6,6 @@ import { formatPrice } from "@/lib/format";
 import { CourseProgress } from "@/components/course-progress";
 import { useState } from "react";
 import { useTheme } from "next-themes";
-
 import {
   Tooltip,
   TooltipContent,
@@ -97,9 +96,7 @@ export const CourseCard = ({
   const onDelete = async () => {
     try {
       setIsLoading(true);
-
       await axios.delete(`/api/courses/${id}`);
-
       toast.success("Course deleted");
       router.refresh();
     } catch {
@@ -177,6 +174,7 @@ export const CourseCard = ({
               />
             </div>
           </Link>
+
           <div className="mt-3 flex items-center justify-between">
             <Tooltip>
               <TooltipTrigger>
@@ -250,50 +248,31 @@ export const CourseCard = ({
               )}
             </div>
           </div>
+
           <Link href={`/courses/${id}`}>
             <div className="mt-2 flex flex-col">
               <Tooltip>
                 <TooltipTrigger>
-                  <p className="my-2 line-clamp-2 text-start text-[16px] font-semibold">
+                  <p className="my-2 mx-0.5 line-clamp-2 text-start text-[16px] font-semibold">
                     {title}
                   </p>
                 </TooltipTrigger>
-                <TooltipContent className="max-w-xs p-2">
+                <TooltipContent side="bottom" className="max-w-xs p-2">
                   <p className="whitespace-normal text-sm font-semibold">
                     {title}
                   </p>
                 </TooltipContent>
               </Tooltip>
             </div>
-            <div className="mb-2 grid grid-cols-3 gap-2">
-              <div className="flex items-center">
-                <div className="flex h-[24px] w-[24px] items-center justify-center">
-                  <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
-                    <BookOpen
-                      width={14}
-                      height={14}
-                      style={{ color: ThemOutlineColor }}
-                    />
-                  </div>
-                </div>
-                <span className="ml-1 text-xs">
-                  {chaptersLength}{" "}
-                  {chaptersLength < 2
-                    ? currentLanguage.course_card_chapter
-                    : currentLanguage.course_card_chapters}
-                </span>
-              </div>
+            <div className="grid grid-cols-1 gap-4">
+              {/* First row: chapterLength, duration, level */}
               <div className="grid grid-cols-3 gap-2">
                 <div className="flex items-center">
-                  <div className="flex h-[24px] w-[24px] items-center justify-center">
-                    <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
-                      <BookOpen
-                        width={14}
-                        height={14}
-                        style={{ color: ThemOutlineColor }}
-                      />
-                    </div>
-                  </div>
+                  <BookOpen
+                    width={14}
+                    height={14}
+                    style={{ color: ThemOutlineColor }}
+                  />
                   <span className="ml-1 text-xs">
                     {chaptersLength}{" "}
                     {chaptersLength < 2
@@ -303,15 +282,11 @@ export const CourseCard = ({
                 </div>
                 {duration && (
                   <div className="flex items-center">
-                    <div className="flex h-[24px] w-[24px] items-center justify-center">
-                      <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
-                        <Clock
-                          width={14}
-                          height={14}
-                          style={{ color: ThemOutlineColor }}
-                        />
-                      </div>
-                    </div>
+                    <Clock
+                      width={14}
+                      height={14}
+                      style={{ color: ThemOutlineColor }}
+                    />
                     <span className="ml-1 text-xs">
                       {formatDuration(duration.toString())}
                     </span>
@@ -319,32 +294,32 @@ export const CourseCard = ({
                 )}
                 {level && (
                   <div className="flex items-center">
-                    <div className="flex h-[24px] w-[24px] items-center justify-center">
-                      <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
-                        <GraduationCap
-                          width={14}
-                          height={14}
-                          style={{ color: ThemOutlineColor }}
-                        />
-                      </div>
-                    </div>
+                    <GraduationCap
+                      width={14}
+                      height={14}
+                      style={{ color: ThemOutlineColor }}
+                    />
                     <span className="ml-1 text-xs">
                       {level || currentLanguage.course_card_no_level}
                     </span>
                   </div>
                 )}
               </div>
-              {progress !== null ? (
-                <CourseProgress
-                  variant={progress === 100 ? "success" : "default"}
-                  size="sm"
-                  value={progress}
-                />
-              ) : (
-                <p className="my-2 text-[16px] font-bold text-slate-700 dark:text-slate-200 md:text-sm">
-                  {price === 0 ? "Free" : formatPrice(price)}
-                </p>
-              )}
+
+              {/* Second row: Price or Progress */}
+              <div>
+                {progress !== null ? (
+                  <CourseProgress
+                    variant={progress === 100 ? "success" : "default"}
+                    size="sm"
+                    value={progress}
+                  />
+                ) : (
+                  <p className="my-1 text-[16px] font-bold text-slate-700 dark:text-slate-200 md:text-sm">
+                    {price === 0 ? "Free" : formatPrice(price)}
+                  </p>
+                )}
+              </div>
             </div>
           </Link>
         </div>

@@ -69,7 +69,7 @@ const CourseListPage = async ({ searchParams }: SearchPageProps) => {
         DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
       />
       <CoursesList
-      profileRole={session?.user?.role!}
+        profileRole={session?.user?.role!}
         ThemOutlineColor={container?.ThemeOutlineColor!}
         DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
       />

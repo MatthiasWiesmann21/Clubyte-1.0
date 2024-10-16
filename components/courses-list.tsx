@@ -69,44 +69,42 @@ export const CoursesList = ({
         {items.length === 0 && (
           <div className="mt-10 text-center text-sm text-muted-foreground">
             {currentLanguage?.no_courses}
-            {/* {"currentLanguage?.no_courses"} */}
           </div>
         )}
-      </div>{" "}
-      {/* My Favorites Section (hidden on mobile) */}
-      <div className="sticky top-4 w-[400px]">
-        {profileRole === "ADMIN" ? (
-          <Link href="/admin/create/post">
-            <Button className="rounded-3xl" variant="outline">
-              <PlusCircle className="mr-2 h-4 w-4" />
-              {currentLanguage.post_createPost_button_text}
-            </Button>
-          </Link>
-        ) : (
-          <div className="mb-20"></div>
-        )}
-        <div className="mt-11 hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
-          <h1 className="mb-4 text-2xl font-medium">
-            {currentLanguage.news_myFavorites_title}
-          </h1>
-          {/* Render favorite posts (example static content for now) */}
-          {favoriteCourses?.length === 0 && (
-            <div className="flex h-16 items-center justify-center text-sm text-muted-foreground">
-              <NewspaperIcon className="m-1" size={24} />
-              <span>{currentLanguage?.news_no_posts_found}</span>
-            </div>
-          )}
-          {favoriteCourses?.map((item) => (
-            <CourseFavoriteCard
-              key={item?.id}
-              id={item?.id}
-              category={item?.category?.name ?? ""}
-              description={item?.description ?? ""}
-              colorCode={item?.category?.colorCode!}
-            />
-          ))}
-        </div>
       </div>
+      {/* My Favorites Section (hidden on mobile) */}
+      {favoriteCourses?.length > 0 && (
+        <div className="sticky top-4 w-[400px]">
+          <div className="hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
+            <h1 className="mb-4 text-2xl font-medium">
+              {currentLanguage.news_myFavorites_title}
+            </h1>
+            {favoriteCourses?.map((item) => (
+              <CourseFavoriteCard
+                key={item.id}
+                id={item.id}
+                title={item.title}
+                imageUrl={item.imageUrl!}
+                description={item.description!}
+                category={item?.category?.name!}
+                categoryColorCode={item?.category?.colorCode!}
+                progress={item.progress}
+                chaptersLength={item.chapters.length}
+                price={item.price!}
+                duration={item?.duration!}
+                level={item?.level!}
+                isFeatured={item?.isFeatured!}
+                isBestseller={item?.isBestseller!}
+                isNew={item?.isNew!}
+                currentFavorite={item?.currentFavorite!}
+                ThemOutlineColor={ThemOutlineColor}
+                DarkThemeOutlineColor={DarkThemeOutlineColor!}
+                getAllCourses={getAllCourses}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { NewspaperIcon, PlusCircle } from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
 import { PostFavoriteCard } from "@/app/(dashboard)/(routes)/news/_components/postFavorite-card";
 import { EventFavoriteCard } from "@/app/(dashboard)/(routes)/live-event/_components/eventFavorite-card";
+import { Separator } from "./ui/separator";
 
 type EventsWithProgressWithCategory = LiveEvent & {
   category: Category | null;
@@ -59,20 +60,14 @@ export const EventsList = ({
           </div>
         )}
       </div>
-      {/* My Favorites Section (hidden on mobile) */}
+      {/* My Favorites Section (hidden on mobile & when there is no Favorites) */}
       {favoriteEvents.length > 0 && (
         <div className="sticky top-4 w-[400px]">
           <div className="hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
-            <h1 className="mb-4 text-2xl font-medium">
+            <h1 className="mb-2 text-2xl font-medium">
               {currentLanguage.news_myFavorites_title}
             </h1>
-            {/* Render favorite posts (example static content for now) */}
-            {favoriteEvents?.length === 0 && (
-              <div className="flex h-16 items-center justify-center text-sm text-muted-foreground">
-                <NewspaperIcon className="m-1" size={24} />
-                <span>{currentLanguage?.news_no_posts_found}</span>
-              </div>
-            )}
+            <Separator className="mb-2" />
             {favoriteEvents?.map((item) => (
               <EventFavoriteCard
                 key={item.id}
