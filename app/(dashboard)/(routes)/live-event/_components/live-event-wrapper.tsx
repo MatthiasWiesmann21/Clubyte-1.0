@@ -10,8 +10,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
-import { Category, LiveEvent } from "@prisma/client";
-import { currentProfile } from "@/lib/current-profile";
+import axios from "axios";
 
 interface LiveEventWrapperProps {
   liveEvents: any;
@@ -29,13 +28,18 @@ export const LiveEventWrapper = ({
   profileRole,
 }: LiveEventWrapperProps) => {
   const { data: session, status } = useSession();
-  const [liveEvent, setLiveEvent] = useState([]);
+  const [liveEvent, setLiveEvent] = useState(liveEvents || []);
   const router = useRouter();
   const currentLanguage = useLanguage();
 
+  const getLiveEvents = async () => {
+    const response = await axios?.get(`/api/liveEvent`);
+    setLiveEvent(response?.data);
+  };
+
   useEffect(() => {
-    setLiveEvent(liveEvents);
-  }, [liveEvents]);
+    getLiveEvents();
+  }, []);
 
   if (status === "loading") {
     return <div>Loading...</div>; // Optionally show a loading state while fetching session
@@ -95,6 +99,8 @@ export const LiveEventWrapper = ({
         }))}
         ThemeOutlineColor={container?.ThemeOutlineColor!}
         DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
+        getLiveEvents={getLiveEvents}
+        profileRole={profileRole}
       />
     </div>
   );
