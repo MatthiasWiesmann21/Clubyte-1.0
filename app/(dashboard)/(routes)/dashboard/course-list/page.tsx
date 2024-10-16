@@ -6,7 +6,6 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Categories } from "../_components/categories";
 import { db } from "@/lib/db";
-import getBase64 from "@/lib/getLocalbase64";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
 interface SearchPageProps {
@@ -70,7 +69,7 @@ const CourseListPage = async ({ searchParams }: SearchPageProps) => {
         DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
       />
       <CoursesList
-        items={purchasedCourses}
+        profileRole={session?.user?.role!}
         ThemOutlineColor={container?.ThemeOutlineColor!}
         DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
       />

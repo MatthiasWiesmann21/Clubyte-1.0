@@ -41,6 +41,8 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   try {
     const session = await getServerSession({ req, ...authOptions });
+    const userId = session?.user?.id;
+    if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
     const liveEvent = await db.liveEvent.findMany({
       where: {
@@ -48,13 +50,30 @@ export async function GET(req: Request) {
         containerId: session?.user?.profile?.containerId,
       },
       include: {
+        favorites: true,
         category: true,
       },
       orderBy: {
         createdAt: "desc",
       },
     });
-    return NextResponse.json(liveEvent);
+
+    const profile = await db?.profile?.findFirst({
+      select: {
+        id: true,
+      },
+      where: {
+        userId: userId,
+      },
+    });
+
+    const result = liveEvent?.map((each) => {
+      const currentFavorite = each?.favorites?.some(
+        (favorite: any) => favorite?.profileId === profile?.id
+      );
+      return { ...each, currentFavorite };
+    });
+    return NextResponse.json(result);
   } catch (error) {
     console.log("[LIVE_EVENT_GET_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });

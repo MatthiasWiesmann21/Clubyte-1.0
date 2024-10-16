@@ -170,41 +170,40 @@ const NewsWrapper = ({
         <div className="sticky top-4 w-full">
           {profileRole === "ADMIN" ? (
             <Button
-            className="inline-flex items-center rounded-3xl text-xs hidden lg:inline-flex w-42"
-            variant="outline"
-            onClick={() => onOpen("createPost")}
-          >
-            <PlusCircle className="mr-2 h-4 w-4" />
-            <span>{currentLanguage.post_createPost_button_text}</span>
-          </Button>
-          
+              className="w-42 inline-flex hidden items-center rounded-3xl text-xs lg:inline-flex"
+              variant="outline"
+              onClick={() => onOpen("createPost")}
+            >
+              <PlusCircle className="mr-2 h-4 w-4" />
+              <span>{currentLanguage.post_createPost_button_text}</span>
+            </Button>
           ) : (
             <div className="mb-20"></div>
           )}
-          <div className="mt-11 hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
-            <h1 className="mb-4 text-2xl font-medium">
-              {currentLanguage.news_myFavorites_title}
-            </h1>
-            {/* Render favorite posts (example static content for now) */}
-            {favoritePosts?.length === 0 && (
-              <div className="flex h-16 items-center justify-center text-sm text-muted-foreground">
-                <NewspaperIcon className="m-1" size={24} />
-                <span>{currentLanguage?.news_no_posts_found}</span>
-              </div>
-            )}
-            {favoritePosts?.map((item) => (
-              <PostFavoriteCard
-                key={item?.id}
-                id={item?.id}
-                category={item?.category?.name ?? ""}
-                description={item?.description ?? ""}
-                createdAt={new Date(item?.publishTime!).toDateString()}
-                publisherName={item?.publisherName!}
-                publisherImageUrl={item?.publisherImageUrl!}
-                colorCode={item?.category?.colorCode!}
-              />
-            ))}
-          </div>
+          {favoritePosts.length > 0 && (
+            <div className="mt-11 hidden w-full max-w-xl rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
+              <h1 className="mb-2 text-2xl font-medium">
+                {currentLanguage.news_myFavorites_title}
+              </h1>
+              <Separator />
+              {favoritePosts?.map((item) => (
+                <PostFavoriteCard
+                  key={item?.id}
+                  id={item?.id}
+                  category={item?.category?.name ?? ""}
+                  description={item?.description ?? ""}
+                  createdAt={new Date(item?.publishTime!).toDateString()}
+                  publisherName={item?.publisherName!}
+                  publisherImageUrl={item?.publisherImageUrl!}
+                  colorCode={item?.category?.colorCode!}
+                  likesCount={item?.likesCount}
+                  updateLikeComment={getPosts}
+                  currentLike={item?.currentLike}
+                  currentFavorite={item?.currentFavorite}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

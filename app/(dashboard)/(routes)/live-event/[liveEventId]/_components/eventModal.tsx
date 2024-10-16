@@ -111,7 +111,6 @@ const EventModal = ({
                   toast.error(currentLanguage.toast_error);
                 }
               }}
-              disabled={!(() => {})}
               size="sm"
               className="w-full bg-emerald-500 hover:bg-emerald-600 md:w-auto"
             >
@@ -136,7 +135,6 @@ const EventModal = ({
                   toast.error(currentLanguage.toast_error);
                 }
               }}
-              disabled={!(() => {})}
               size="sm"
               className="w-full bg-emerald-500 hover:bg-emerald-600 md:w-auto"
             >

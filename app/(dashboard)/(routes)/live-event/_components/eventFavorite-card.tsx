@@ -1,43 +1,29 @@
-"use client";
-
 import Image from "next/image";
-import Link from "next/link";
-import {
-  Info,
-  MoreVertical,
-  Pencil,
-  PlayCircle,
-  Star,
-  Trash,
-} from "lucide-react";
-import moment from "moment";
-import { useState } from "react";
-import { useTheme } from "next-themes";
+import ClubyteLoader from "@/components/ui/clubyte-loader";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./tooltip";
-import ClubyteLoader from "./ui/clubyte-loader";
-import { CategoryItemCard } from "@/app/(dashboard)/(routes)/live-event/_components/category-item-card";
-import { Button } from "./ui/button";
+} from "@/components/tooltip";
+import { useState } from "react";
+import { Info, MoreVertical, Pencil, PlayCircle, Star, Trash } from "lucide-react";
+import { useTheme } from "next-themes";
+import moment from "moment";
+import { CategoryItemCard } from "./category-item-card";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import axios from "axios";
+import toast from "react-hot-toast";
 import { useModal } from "@/hooks/use-modal-store";
-import { DescriptionModal } from "./modals/description-modal";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { ConfirmModal } from "./modals/confirm-modal";
 import { useLanguage } from "@/lib/check-language";
 import { useIsAdmin } from "@/lib/roleCheck";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { DescriptionModal } from "@/components/modals/description-modal";
+import { ConfirmModal } from "@/components/modals/confirm-modal";
+import Link from "next/link";
 
-interface EventsCardProps {
+interface EventFavoriteCardProps {
   id: string;
   title: string;
   description: string;
@@ -46,14 +32,13 @@ interface EventsCardProps {
   categoryColorCode: string;
   startDateTime: Date | null | any;
   endDateTime: Date | null | any;
-  color: string;
   ThemOutlineColor: string;
   DarkThemeOutlineColor: string;
   currentFavorite: boolean;
   getLiveEvents: any;
 }
 
-export const EventCard = ({
+export const EventFavoriteCard = ({
   id,
   title,
   description,
@@ -62,12 +47,11 @@ export const EventCard = ({
   categoryColorCode,
   startDateTime,
   endDateTime,
-  color,
   ThemOutlineColor,
   DarkThemeOutlineColor,
   currentFavorite,
   getLiveEvents,
-}: EventsCardProps) => {
+}: EventFavoriteCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const { theme } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
@@ -239,8 +223,8 @@ export const EventCard = ({
                   {title}
                 </div>
               </TooltipTrigger>
-              <TooltipContent>
-                <div className="whitespace-normal text-sm font-medium">
+              <TooltipContent side="bottom">
+                <div className="whitespace-normal text-xs font-medium">
                   {title}
                 </div>
               </TooltipContent>

@@ -31,6 +31,7 @@ export const getCourses = async ({
         categoryId,
       },
       include: {
+        favorites: true,
         category: true,
         chapters: {
           where: {

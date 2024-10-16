@@ -1,47 +1,31 @@
-"use client";
-
 import Image from "next/image";
-import Link from "next/link";
-import { formatPrice } from "@/lib/format";
-import { CourseProgress } from "@/components/course-progress";
 import { useState } from "react";
+import { UserAvatar } from "@/components/user-avatar";
+import { PostPreview } from "@/components/post-preview";
+import ClubyteLoader from "@/components/ui/clubyte-loader";
 import { useTheme } from "next-themes";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import ClubyteLoader from "./ui/clubyte-loader";
-import {
-  BookOpen,
-  Clock,
-  GraduationCap,
-  Info,
-  Lightbulb,
-  Medal,
-  MoreVertical,
-  Pencil,
-  Star,
-  Trash,
-} from "lucide-react";
+} from "@/components/tooltip";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { useLanguage } from "@/lib/check-language";
-import { formatDuration } from "@/lib/formatDuration";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
 import { useIsAdmin } from "@/lib/roleCheck";
-import { ConfirmModal } from "./modals/confirm-modal";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { DescriptionModal } from "./modals/description-modal";
+import { BookOpen, Clock, GraduationCap, Info, Lightbulb, Medal, MoreVertical, Pencil, Star, Trash } from "lucide-react";
+import { DescriptionModal } from "@/components/modals/description-modal";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ConfirmModal } from "@/components/modals/confirm-modal";
+import { CourseProgress } from "@/components/course-progress";
+import { formatPrice } from "@/lib/format";
+import { formatDuration } from "@/lib/formatDuration";
 
-interface CourseCardProps {
+interface CourseFavoriteCardProps {
   id: string;
   title: string;
   imageUrl: string;
@@ -62,11 +46,7 @@ interface CourseCardProps {
   getAllCourses: any;
 }
 
-export const FreeText = () => {
-  return <p className="text-md font-medium text-slate-700 md:text-sm">Free</p>;
-};
-
-export const CourseCard = ({
+export const CourseFavoriteCard = ({
   id,
   title,
   imageUrl,
@@ -85,7 +65,7 @@ export const CourseCard = ({
   ThemOutlineColor,
   DarkThemeOutlineColor,
   getAllCourses,
-}: CourseCardProps) => {
+}: CourseFavoriteCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const { theme } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
@@ -113,7 +93,7 @@ export const CourseCard = ({
   return (
     <TooltipProvider>
       <div
-        className="w-[305px] rounded-lg border-2 transition duration-500 ease-in-out"
+        className="w-[305px] my-2 rounded-lg border-2 transition duration-500 ease-in-out"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
