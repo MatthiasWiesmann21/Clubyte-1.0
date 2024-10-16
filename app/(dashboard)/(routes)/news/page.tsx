@@ -6,6 +6,11 @@ import { getServerSession } from "next-auth";
 import authOptions from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { currentProfile } from "@/lib/current-profile";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "News",
+};
 
 type PostWithProgressWithCategory = Post & {
   category: Category | null;
