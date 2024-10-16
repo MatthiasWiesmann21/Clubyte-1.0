@@ -13,6 +13,11 @@ import { getCourses } from "@/actions/get-courses";
 import authOptions from "@/lib/auth";
 import { OnlineCard } from "./_components/onlineCard";
 import { currentProfile } from "@/lib/current-profile";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 interface SearchPageProps {
   searchParams: {

@@ -12,7 +12,7 @@ import getBase64 from "@/lib/getLocalbase64";
 import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 
 export const metadata: Metadata = {
-  title: "Browse",
+  title: "Courses",
 };
 
 interface SearchPageProps {
