@@ -61,8 +61,8 @@ export const EventsList = ({
         )}
       </div>
       {/* My Favorites Section (hidden on mobile & when there is no Favorites) */}
-      {favoriteEvents.length > 0 && (
-        <div className="sticky top-4 w-[400px]">
+      <div className="sticky top-4 w-[400px]">
+        {favoriteEvents.length > 0 && (
           <div className="hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
             <h1 className="mb-2 text-2xl font-medium">
               {currentLanguage.news_myFavorites_title}
@@ -86,8 +86,8 @@ export const EventsList = ({
               />
             ))}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

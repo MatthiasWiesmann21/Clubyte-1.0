@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { NewspaperIcon, PlusCircle } from "lucide-react";
 import { CourseFavoriteCard } from "@/app/(dashboard)/(routes)/dashboard/_components/courseFavorite-card";
+import { Separator } from "./ui/separator";
 
 interface CoursesListProps {
   ThemOutlineColor: string;
@@ -73,12 +74,13 @@ export const CoursesList = ({
         )}
       </div>
       {/* My Favorites Section (hidden on mobile) */}
-      {favoriteCourses?.length > 0 && (
-        <div className="sticky top-4 w-[400px]">
+      <div className="sticky top-4 w-[400px]">
+        {favoriteCourses?.length > 0 && (
           <div className="hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
-            <h1 className="mb-4 text-2xl font-medium">
+            <h1 className="mb-2 text-2xl font-medium">
               {currentLanguage.news_myFavorites_title}
             </h1>
+            <Separator className="" />
             {favoriteCourses?.map((item) => (
               <CourseFavoriteCard
                 key={item.id}
@@ -103,8 +105,8 @@ export const CoursesList = ({
               />
             ))}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
