@@ -31,7 +31,7 @@ interface CourseSidebarProps {
   progressCount: number;
 }
 
-export const CourseSidebar = async ({
+export const CourseSidebarMobile = async ({
   course,
   progressCount,
 }: CourseSidebarProps) => {
@@ -65,46 +65,27 @@ export const CourseSidebar = async ({
 
   return (
     <TooltipProvider>
-      <div className="m-3 flex hidden md:block h-full flex-col overflow-y-auto rounded-xl border-r bg-slate-100/60 shadow-sm dark:bg-[#0c0319]">
-        <div className="flex flex-col border-b p-6">
+      <div className="flex h-full flex-col overflow-y-auto border-r bg-slate-100/60 shadow-sm dark:bg-[#0c0319]">
+        <div className="flex flex-col border-b p-4">
           <div className="flex justify-between">
-            <Tooltip>
-              <TooltipTrigger>
-                <h1 className="line-clamp-2 whitespace-normal break-words text-start font-semibold">
-                  {course.title}
-                </h1>
-              </TooltipTrigger>
-              <TooltipContent side="bottom">
-                <h1 className="h-full max-w-[300px] whitespace-normal font-semibold">
-                  {course.title}
-                </h1>
-              </TooltipContent>
-            </Tooltip>
+            <h1 className="line-clamp-2 whitespace-normal break-words text-start font-semibold">
+              {course.title}
+            </h1>
             <div>
-            <Tooltip>
-              <TooltipTrigger>
-                <DescriptionModal description={course.description!}>
+              <DescriptionModal description={course.description!} title={course.title}>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <Info width={16} height={16} />
+                </Button>
+              </DescriptionModal>
+              {canAccess && (
+                <Link href={`/admin/courses/${course.id}`}>
                   <Button variant="ghost" className="h-8 w-8 p-0">
-                    <Info width={16} height={16} />
+                    <Edit width={16} height={16} />
                   </Button>
-                </DescriptionModal>
-                <TooltipContent side="bottom">
-                  <p className="h-full max-w-[300px] whitespace-normal font-semibold">
-                    {currentLanguage.courses_sidebar_infoDescription}
-                  </p>
-                </TooltipContent>
-              </TooltipTrigger>
-            </Tooltip>
-            {canAccess  && (
-              <Link href={`/admin/courses/${course.id}`}>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <Edit width={16} height={16} />
-              </Button>
-            </Link>
-            )}
-            
+                </Link>
+              )}
             </div>
-        </div>
+          </div>
           {purchase && (
             <div className="mt-4">
               <Progress progress={progress} />

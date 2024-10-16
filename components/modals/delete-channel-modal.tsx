@@ -38,13 +38,13 @@ export const DeleteChannelModal = () => {
 
       await axios.delete(url);
 
-      toast.success(currentLanguage.chat_modal_deleteChannel_success);
+      toast.success("Channel deleted");
 
       onClose();
       router.refresh();
       router.push(`/chat/servers/${server?.id}`);
     } catch (error) {
-      toast.error(currentLanguage.chat_modal_deleteChannel_error);
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }

@@ -14,7 +14,6 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
     <div className="flex p-2 h-3/4 w-full items-center justify-center">
       <main className=" h-[calc(100vh-100px)] w-full overflow-hidden rounded-[16px] dark:bg-[#0A0118]">
         <SocketProvider>
-          <ModalProvider />
           <QueryProvider>{children}</QueryProvider>
         </SocketProvider>
       </main>

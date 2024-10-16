@@ -53,8 +53,6 @@ export const NavbarRoutes = ({
   const isSearchPage = pathname === "/search";
   const isLiveEventPage = pathname === "/live-event";
 
-
-
   return (
     <>
       {isSearchPage && (
@@ -73,52 +71,47 @@ export const NavbarRoutes = ({
         </div>
       )}
       <div className="ml-auto flex gap-x-1">
-        <TooltipProvider><>
-           <Tooltip>
-            <TooltipTrigger>
-              <LanguageToggle profileId={profileId} />
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              {currentLanguage.navigation_language_tooltip}
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <ModeToggle />
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              {currentLanguage.navigation_mode_tooltip}
-            </TooltipContent>
-          </Tooltip>
-          {isAdministrationPage || isCoursePage ? (
-            <Link href="/dashboard">
-              <Button size="default" variant="ghost">
-                <LogOut className="h-5 w-5" />
-                {currentLanguage.navigation_administration_button_text_exit}
-              </Button>
-            </Link>
-          ) : canAccess ? (
+        <TooltipProvider>
+          <>
+            <LanguageToggle profileId={profileId} />
             <Tooltip>
               <TooltipTrigger>
-                <Link href="/admin/courses">
-                  <Button size="default" variant="ghost">
-                    <Settings className="h-5 w-5" />
-                  </Button>
-                </Link>
+                <ModeToggle />
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                {currentLanguage.navigation_administration_tooltip}
+                {currentLanguage.navigation_mode_tooltip}
               </TooltipContent>
             </Tooltip>
-          ) : null}
-          <div className="m-2 flex items-center justify-center">
-            <ProfileButton
-              profileId={profileId}
-              profileName={profileName}
-              profileImageUrl={profileImageUrl}
-              profileOnlineStatus={profileOnlineStatus}
-            />
-          </div> </>
+            {isAdministrationPage || isCoursePage ? (
+              <Link href="/dashboard">
+                <Button size="default" variant="ghost">
+                  <LogOut className="h-5 w-5" />
+                  {currentLanguage.navigation_administration_button_text_exit}
+                </Button>
+              </Link>
+            ) : canAccess ? (
+              <Tooltip>
+                <TooltipTrigger>
+                  <Link href="/admin/courses">
+                    <Button size="default" variant="ghost">
+                      <Settings className="h-5 w-5" />
+                    </Button>
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  {currentLanguage.navigation_administration_tooltip}
+                </TooltipContent>
+              </Tooltip>
+            ) : null}
+            <div className="m-2 flex items-center justify-center">
+              <ProfileButton
+                profileId={profileId}
+                profileName={profileName}
+                profileImageUrl={profileImageUrl}
+                profileOnlineStatus={profileOnlineStatus}
+              />
+            </div>{" "}
+          </>
         </TooltipProvider>
       </div>
     </>

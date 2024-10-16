@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
+import { useLanguage } from "@/lib/check-language";
 
 interface CourseProgressButtonProps {
   chapterId: string;
@@ -27,6 +28,7 @@ export const CourseProgressButton = ({
   const router = useRouter();
   const confetti = useConfettiStore();
   const [isLoading, setIsLoading] = useState(false);
+  const currentLanguage = useLanguage();
 
   const onClick = async () => {
     try {
@@ -65,7 +67,7 @@ export const CourseProgressButton = ({
       variant={isCompleted ? "outline" : "success"}
       className="md:w-32 lg:w-48"
     >
-      {isCompleted ? "Not completed" : "Mark as complete"}
+      {isCompleted ? currentLanguage.course_progressButton_NotComplete : currentLanguage.course_progressButton_MarkComplete}
       <Icon className="ml-2 h-4 w-4" />
     </Button>
   );

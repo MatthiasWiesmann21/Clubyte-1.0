@@ -265,7 +265,7 @@ export const CourseCard = ({
                 </TooltipContent>
               </Tooltip>
             </div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="mb-2 grid grid-cols-3 gap-2">
               <div className="flex items-center">
                 <div className="flex h-[24px] w-[24px] items-center justify-center">
                   <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
@@ -283,11 +283,11 @@ export const CourseCard = ({
                     : currentLanguage.course_card_chapters}
                 </span>
               </div>
-              {duration && (
+              <div className="grid grid-cols-3 gap-2">
                 <div className="flex items-center">
                   <div className="flex h-[24px] w-[24px] items-center justify-center">
                     <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
-                      <Clock
+                      <BookOpen
                         width={14}
                         height={14}
                         style={{ color: ThemOutlineColor }}
@@ -295,38 +295,57 @@ export const CourseCard = ({
                     </div>
                   </div>
                   <span className="ml-1 text-xs">
-                    {formatDuration(duration.toString())}
+                    {chaptersLength}{" "}
+                    {chaptersLength < 2
+                      ? currentLanguage.course_card_chapter
+                      : currentLanguage.course_card_chapters}
                   </span>
                 </div>
-              )}
-              {level && (
-                <div className="flex items-center">
-                  <div className="flex h-[24px] w-[24px] items-center justify-center">
-                    <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
-                      <GraduationCap
-                        width={14}
-                        height={14}
-                        style={{ color: ThemOutlineColor }}
-                      />
+                {duration && (
+                  <div className="flex items-center">
+                    <div className="flex h-[24px] w-[24px] items-center justify-center">
+                      <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
+                        <Clock
+                          width={14}
+                          height={14}
+                          style={{ color: ThemOutlineColor }}
+                        />
+                      </div>
                     </div>
+                    <span className="ml-1 text-xs">
+                      {formatDuration(duration.toString())}
+                    </span>
                   </div>
-                  <span className="ml-1 text-xs">
-                    {level || currentLanguage.course_card_no_level}
-                  </span>
-                </div>
+                )}
+                {level && (
+                  <div className="flex items-center">
+                    <div className="flex h-[24px] w-[24px] items-center justify-center">
+                      <div className="rounded-full bg-[#f7f9fb] p-1 dark:bg-[#2a2235]">
+                        <GraduationCap
+                          width={14}
+                          height={14}
+                          style={{ color: ThemOutlineColor }}
+                        />
+                      </div>
+                    </div>
+                    <span className="ml-1 text-xs">
+                      {level || currentLanguage.course_card_no_level}
+                    </span>
+                  </div>
+                )}
+              </div>
+              {progress !== null ? (
+                <CourseProgress
+                  variant={progress === 100 ? "success" : "default"}
+                  size="sm"
+                  value={progress}
+                />
+              ) : (
+                <p className="my-2 text-[16px] font-bold text-slate-700 dark:text-slate-200 md:text-sm">
+                  {price === 0 ? "Free" : formatPrice(price)}
+                </p>
               )}
             </div>
-            {progress !== null ? (
-              <CourseProgress
-                variant={progress === 100 ? "success" : "default"}
-                size="sm"
-                value={progress}
-              />
-            ) : (
-              <p className="my-2 text-[16px] font-bold text-slate-700 dark:text-slate-200 md:text-sm">
-                {price === 0 ? "Free" : formatPrice(price)}
-              </p>
-            )}
           </Link>
         </div>
       </div>

@@ -15,6 +15,7 @@ import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { initialProfile } from "@/lib/initial-profile";
 import AuthProvider from "./auth-provider";
+import { ModalProvider } from "@/components/providers/modal-provider";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -51,6 +52,7 @@ export default async function RootLayout({
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
         <AuthProvider session={session}>
+        <ModalProvider />
         {children}
         </AuthProvider>
       </body>

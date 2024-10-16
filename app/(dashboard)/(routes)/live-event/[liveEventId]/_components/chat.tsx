@@ -6,10 +6,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { ChatInputPost } from "../../../news/_components/chatInput";
 import { UserAvatar } from "@/components/user-avatar";
 import { Separator } from "@/components/ui/separator";
+import { useLanguage } from "@/lib/check-language";
 
 const Chat = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const path = usePathname();
+  const currentLanguage = useLanguage();
   const id = path?.split("/")[path?.split("/")?.length - 1];
   const [chat, setChat] = useState([]);
 
@@ -35,7 +37,7 @@ const Chat = () => {
 
   return (
     <div className="border-1 mx-auto mt-24 flex h-[650px] w-[95%] flex-col justify-between rounded-xl border bg-[#131313] p-3 pt-0 lg:w-[29%]">
-      <p className="my-4 text-md font-semibold">Stream Chat</p>
+      <p className="my-4 text-md font-semibold">{currentLanguage.liveEvent_chat_title}</p>
       <Separator className="mb-2" />
       <div className="h-[80%] w-full">
         <div ref={scrollRef} className="no-scrollbar h-full overflow-y-scroll">
@@ -63,7 +65,7 @@ const Chat = () => {
         </div>
       </div>
       <ChatInputPost
-        placeHolder={"Type your comment"}
+        placeHolder={currentLanguage.liveEvent_chat_inputField}
         apiUrl="/api/comment/create"
         query={{
           postId: null,

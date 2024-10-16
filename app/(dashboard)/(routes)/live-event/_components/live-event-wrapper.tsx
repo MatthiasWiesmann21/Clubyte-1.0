@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Categories } from "./categories";
 import { useSession } from "next-auth/react";
 import EventFilterSidebar from "./filter-sidebar";
@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
 import axios from "axios";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface LiveEventWrapperProps {
   liveEvents: any;
@@ -31,6 +32,7 @@ export const LiveEventWrapper = ({
   const [liveEvent, setLiveEvent] = useState(liveEvents || []);
   const router = useRouter();
   const currentLanguage = useLanguage();
+  const { onOpen } = useModal();
 
   const getLiveEvents = async () => {
     const response = await axios?.get(`/api/liveEvent`);
@@ -68,12 +70,14 @@ export const LiveEventWrapper = ({
             DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
           />
           {profileRole === "ADMIN" && (
-            <Link href="/admin/create/liveEvent" className="mx-4">
-              <Button className="rounded-3xl" variant="outline">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                {currentLanguage.liveEvent_createEvent_button_text}
-              </Button>
-            </Link>
+            <Button
+              className="mx-2 rounded-3xl text-start text-xs"
+              variant="outline"
+              onClick={() => onOpen("createLiveEvent")}
+            >
+              <PlusCircle className="mr-2 h-5 w-5" />
+              {currentLanguage.liveEvent_createEvent_button_text}
+            </Button>
           )}
         </div>
         <div>

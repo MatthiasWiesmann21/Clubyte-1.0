@@ -2,10 +2,10 @@ import createFolder from "@/app/vendor/aws/s3/createFolder";
 import { db } from "@/lib/db";
 
 import { NextResponse } from "next/server";
-import { isOwner } from "@/lib/owner";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import { isAdmin } from "@/lib/roleCheckServer";
 const getOrCreateParentFolder = async (userId: string, parentKey?: string) => {
 
   const session = await getServerSession(authOptions);
@@ -70,7 +70,9 @@ async function getFolderAndFiles(
     throw new Error("Login first to access");
   }
 
-  if (isOwner(userId)) {
+  const canAccess = await isAdmin();
+
+  if (canAccess) {
     if (key == null) {
       folder = await db.folder.findFirst({
         where: {
@@ -173,6 +175,7 @@ export async function GET(req: Request) {
 
     const id = (req as any).nextUrl.searchParams.get("key");
     const isPublicDirectory = (req as any).nextUrl.searchParams.get("isPublicDirectory");
+    const canAccess = await isAdmin();
 
     let key = null;
     if (id) {
@@ -189,7 +192,7 @@ export async function GET(req: Request) {
       throw new Error("Unauthorized");
     }
 
-    if (isOwner(userId)) {
+    if (canAccess) {
       await getOrCreateParentFolder(userId);
     }
 

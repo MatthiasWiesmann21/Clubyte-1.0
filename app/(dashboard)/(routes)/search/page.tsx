@@ -9,7 +9,7 @@ import { Metadata } from "next";
 import { CourseCounter } from "@/components/courseCounter";
 
 export const metadata: Metadata = {
-  title: "Browse",
+  title: "Courses",
 };
 
 interface SearchPageProps {

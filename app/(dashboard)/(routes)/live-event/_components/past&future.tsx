@@ -42,7 +42,7 @@ export const PastandFuture = ({
         }}
         onMouseEnter={() => setIsHoveredFuture(true)}
         onMouseLeave={() => setIsHoveredFuture(false)}
-        className={`border-1 font-semibold mr-2 flex cursor-pointer items-center justify-center p-1 text-gray-600 dark:text-white transition duration-500 ease-in-out ${
+        className={`border-1 mb-2 text-sm font-semibold mr-2 flex cursor-pointer items-center justify-center p-1 text-gray-600 dark:text-white transition duration-500 ease-in-out ${
           state === "future" ? "border-b-2 text-black" : ""
         }`}
         style={{
@@ -64,7 +64,7 @@ export const PastandFuture = ({
         }}
         onMouseEnter={() => setIsHoveredPast(true)}
         onMouseLeave={() => setIsHoveredPast(false)}
-        className={`border-1 mr-2 font-semibold flex cursor-pointer items-center justify-center p-1 text-gray-600 dark:text-white transition duration-500 ease-in-out ${
+        className={`border-1 mb-2 text-sm mr-2 font-semibold flex cursor-pointer items-center justify-center p-1 text-gray-600 dark:text-white transition duration-500 ease-in-out ${
           state === "past" ? "border-b-2 text-black" : ""
         }`}
         style={{
