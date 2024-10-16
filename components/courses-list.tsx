@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { NewspaperIcon, PlusCircle } from "lucide-react";
-import { PostFavoriteCard } from "@/app/(dashboard)/(routes)/news/_components/postFavorite-card";
+import { CourseFavoriteCard } from "@/app/(dashboard)/(routes)/dashboard/_components/courseFavorite-card";
 
 interface CoursesListProps {
   ThemOutlineColor: string;
@@ -34,7 +34,7 @@ export const CoursesList = ({
     getAllCourses();
   }, []);
 
-  const favoritePosts = items?.filter((post) => post?.currentFavorite);
+  const favoriteCourses = items?.filter((course) => course?.currentFavorite);
   return (
     <div className="flex">
       <div className="w-full">
@@ -90,21 +90,18 @@ export const CoursesList = ({
             {currentLanguage.news_myFavorites_title}
           </h1>
           {/* Render favorite posts (example static content for now) */}
-          {favoritePosts?.length === 0 && (
+          {favoriteCourses?.length === 0 && (
             <div className="flex h-16 items-center justify-center text-sm text-muted-foreground">
               <NewspaperIcon className="m-1" size={24} />
               <span>{currentLanguage?.news_no_posts_found}</span>
             </div>
           )}
-          {favoritePosts?.map((item) => (
-            <PostFavoriteCard
+          {favoriteCourses?.map((item) => (
+            <CourseFavoriteCard
               key={item?.id}
               id={item?.id}
               category={item?.category?.name ?? ""}
               description={item?.description ?? ""}
-              createdAt={new Date(item?.publishTime!).toDateString()}
-              publisherName={item?.publisherName!}
-              publisherImageUrl={item?.publisherImageUrl!}
               colorCode={item?.category?.colorCode!}
             />
           ))}

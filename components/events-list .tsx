@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { NewspaperIcon, PlusCircle } from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
 import { PostFavoriteCard } from "@/app/(dashboard)/(routes)/news/_components/postFavorite-card";
+import { EventFavoriteCard } from "@/app/(dashboard)/(routes)/live-event/_components/eventFavorite-card";
 
 type EventsWithProgressWithCategory = LiveEvent & {
   category: Category | null;
@@ -27,7 +28,7 @@ export const EventsList = ({
   profileRole,
 }: EventsListProps) => {
   const currentLanguage = useLanguage();
-  const favoritePosts = items?.filter((post) => post?.currentFavorite);
+  const favoriteEvents = items?.filter((event) => event?.currentFavorite);
   return (
     <div className="flex">
       <div className="w-full">
@@ -77,21 +78,18 @@ export const EventsList = ({
             {currentLanguage.news_myFavorites_title}
           </h1>
           {/* Render favorite posts (example static content for now) */}
-          {favoritePosts?.length === 0 && (
+          {favoriteEvents?.length === 0 && (
             <div className="flex h-16 items-center justify-center text-sm text-muted-foreground">
               <NewspaperIcon className="m-1" size={24} />
               <span>{currentLanguage?.news_no_posts_found}</span>
             </div>
           )}
-          {favoritePosts?.map((item) => (
-            <PostFavoriteCard
+          {favoriteEvents?.map((item) => (
+            <EventFavoriteCard
               key={item?.id}
               id={item?.id}
               category={item?.category?.name ?? ""}
               description={item?.description ?? ""}
-              createdAt={new Date(item?.publishTime!).toDateString()}
-              publisherName={item?.publisherName!}
-              publisherImageUrl={item?.publisherImageUrl!}
               colorCode={item?.category?.colorCode!}
             />
           ))}
