@@ -6,9 +6,9 @@ import PathMaker from "../_components/path-maker";
 import { useParams } from "next/navigation";
 import { useLanguage } from "@/lib/check-language";
 import { Switch } from "@/components/ui/switch"; // Import Switch from UI components
-import { Input } from "@/components/ui/input";   // Import Input from UI components
+import { Input } from "@/components/ui/input"; // Import Input from UI components
 import { Button } from "@/components/ui/button"; // Import Button for consistency
-import Link from "next/link";                    // For cancel button
+import Link from "next/link"; // For cancel button
 import toast from "react-hot-toast";
 
 type Params = {
@@ -66,6 +66,7 @@ const DocumentCreatePage = () => {
       });
       location.href = `/documents/${response.data.data.folderId || ""}`;
       setFileName("");
+      toast.success("File updated successfully");
     } catch (e) {
       console.log(e);
     }
@@ -119,7 +120,9 @@ const DocumentCreatePage = () => {
       </div>
       <div className="my-2 sm:flex-auto">
         <h1 className="text-2xl font-semibold leading-6 text-gray-600 dark:text-gray-300">
-          {isEdit ? `${currentLanguage.edit_file}` : `${currentLanguage.create_file}`}
+          {isEdit
+            ? `${currentLanguage.edit_file}`
+            : `${currentLanguage.create_file}`}
         </h1>
       </div>
 
@@ -171,7 +174,7 @@ const DocumentCreatePage = () => {
         )}
         <label
           htmlFor="fileName"
-          className="block text-sm font-medium leading-6 text-gray-900 dark:text-white mt-2"
+          className="mt-2 block text-sm font-medium leading-6 text-gray-900 dark:text-white"
         >
           {file?.name}
         </label>
@@ -179,7 +182,10 @@ const DocumentCreatePage = () => {
 
       {/* Switch for public/private toggle */}
       <div className="my-2 flex items-center">
-        <Switch checked={isPublic} onCheckedChange={() => setPublic(!isPublic)} />
+        <Switch
+          checked={isPublic}
+          onCheckedChange={() => setPublic(!isPublic)}
+        />
         <span className="ml-3 text-sm" id="annual-billing-label">
           <span className="font-medium text-gray-900 dark:text-gray-200">
             {currentLanguage.public}
@@ -192,7 +198,7 @@ const DocumentCreatePage = () => {
         <Link
           href={`/documents/${parentId || ""}`}
           type="button"
-          className="rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:hover:bg-[#1e293b] dark:text-gray-300"
+          className="rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-[#1e293b]"
         >
           {currentLanguage.cancel}
         </Link>
@@ -201,28 +207,7 @@ const DocumentCreatePage = () => {
           disabled={loading}
           className="mx-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm"
         >
-          {loading ? (
-            <svg
-              className="mr-3 h-5 w-5 animate-spin text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.373A8.001 8.001 0 014.373 6H2v4.373zM13 4.373V2a8 8 0 018 8h-4.373A7.961 7.961 0 0113 4.373zm4.373 9.254A8.001 8.001 0 0113 20.627v-4.373h4.373z"
-              ></path>
-            </svg>
-          ) : isEdit ? `${currentLanguage.update}` : `${currentLanguage.save}`}
+          {isEdit ? `${currentLanguage.update}` : `${currentLanguage.save}`}
         </Button>
       </div>
     </div>

@@ -65,6 +65,7 @@ const DocumentCreatePage = () => {
       });
       location.href = `/documents/${response.data.data.folderId || ""}`;
       setFileName("");
+      toast.success("File updated successfully");
     } catch (e) {
       console.log(e);
     }
