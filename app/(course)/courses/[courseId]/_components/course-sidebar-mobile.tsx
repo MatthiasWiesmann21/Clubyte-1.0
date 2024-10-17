@@ -67,8 +67,8 @@ export const CourseSidebarMobile = async ({
     <TooltipProvider>
       <div className="flex h-full flex-col overflow-y-auto border-r bg-slate-100/60 shadow-sm dark:bg-[#0c0319]">
         <div className="flex flex-col border-b p-4">
-          <div className="flex justify-between">
-            <h1 className="line-clamp-2 whitespace-normal break-words text-start font-semibold">
+          <div className="flex justify-between items-center gap-2">
+            <h1 className="line-clamp-2 break-all text-start font-semibold"> 
               {course.title}
             </h1>
             <div>

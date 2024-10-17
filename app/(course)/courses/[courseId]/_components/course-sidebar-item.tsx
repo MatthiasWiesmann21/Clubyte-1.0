@@ -110,7 +110,7 @@ export const CourseSidebarItem = ({
               />
             </button>
           </TooltipTrigger>
-          <TooltipContent className="max-w-xs p-2">
+          <TooltipContent side="right" className="max-w-xs p-2 whitespace-normal">
             <p className="whitespace-normal font-semibold">{label}</p>
           </TooltipContent>
         </Tooltip>
