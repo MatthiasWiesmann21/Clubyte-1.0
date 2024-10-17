@@ -10,6 +10,7 @@ import { Download, File, FolderOpen } from "lucide-react";
 import { useIsAdmin, useIsOperator } from "@/lib/roleCheck";
 import { useLanguage } from "@/lib/check-language";
 import { ScrollArea } from "@/components/scroll-area";
+import { Button } from "@/components/ui/button";
 
 export interface FolderTreeProps {
   name: string;
@@ -27,6 +28,7 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "300px",
+    background: "#ffffff",
   },
 };
 
@@ -163,14 +165,14 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
   };
 
   return (
-    <div className="overflow-hidden bg-transparent px-4 py-4">
+    <div className="overflow-hidden px-4 py-4">
       <Modal
         isOpen={modalIsOpen && renamingItem !== null}
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Rename Modal"
       >
-         <div>
+        <div>
           <label
             htmlFor="name"
             className="block text-sm font-medium leading-6 text-gray-900"
@@ -191,24 +193,24 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
             />
           </div>
         </div>
-        <div className="mt-4 flex justify-center">
-          <button
-            type="button"
-            className="mx-2 rounded-md bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-slate-400"
+        <div className="mt-4 flex justify-end">
+          <Button
+            className="mx-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm dark:hover:bg-[#f1f5f9] hover:bg-[#272e3f]"
             onClick={closeModal}
           >
             {currentLanguage.cancel}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className="mx-2 rounded-md bg-sky-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sky-500"
+            variant="outline"
+            className="mx-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm"
             onClick={() => {
               // TODO: Save logic here
               renameFolder();
             }}
           >
             {currentLanguage.save}
-          </button>
+          </Button>
         </div>
       </Modal>
 
@@ -218,52 +220,29 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
         style={customStyles}
         contentLabel="Delete Confirmation Modal"
       >
-        <div>
-          <p className="text-center dark:text-gray-900">
+        <div className="px-4 py-6">
+          <p className="text-center text-lg font-semibold text-gray-800">
             {currentLanguage.are_you_sure_you_want_to_delete}
           </p>
         </div>
-        <div className="mt-4 flex justify-center">
-          <button
+        <div className="mt-6 flex justify-center space-x-4">
+          <Button
             type="button"
-            className="mx-2 rounded-md bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-slate-400"
+            variant="outline"
+            className="mx-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm"
             onClick={() => setIsFolder("")}
           >
             {currentLanguage.cancel}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className="mx-2 rounded-md bg-red-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-800"
+            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white"        
             disabled={loading}
-            onClick={() => {
-              deleteDirectory();
-            }}
+            onClick={() => deleteDirectory()}
+            variant="destructive"
           >
-            {loading ? (
-              <svg
-                className="mr-3 flex h-5 w-5 animate-spin items-center justify-center text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.373A8.001 8.001 0 014.373 6H2v4.373zM13 4.373V2a8 8 0 018 8h-4.373A7.961 7.961 0 0113 4.373zm4.373 9.254A8.001 8.001 0 0113 20.627v-4.373h4.373z"
-                ></path>
-              </svg>
-            ) : (
-              <>{currentLanguage.delete}</>
-            )}
-          </button>
+            {currentLanguage.delete}
+          </Button>
         </div>
       </Modal>
 
@@ -374,7 +353,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                         <td className="relative flex items-center justify-between py-6 text-sm font-medium">
                           <Download
                             onClick={() => handleDownload(file.key, file.name)}
-                            className="cursor-pointer w-10 h-10 p-2 rounded-md hover:bg-[#cbd5e1] dark:hover:bg-[#1e293b] text-slate-900 dark:text-slate-100"
+                            className="h-10 w-10 cursor-pointer rounded-md p-2 text-slate-900 hover:bg-[#cbd5e1] dark:text-slate-100 dark:hover:bg-[#1e293b]"
                           />
                           <FlyoutMenuSetting
                             type="file"
