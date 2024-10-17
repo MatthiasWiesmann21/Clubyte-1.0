@@ -170,7 +170,46 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
         style={customStyles}
         contentLabel="Rename Modal"
       >
-        {/* Modal content for renaming */}
+         <div>
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium leading-6 text-gray-900"
+          >
+            {currentLanguage.rename + "*"}
+          </label>
+          <div className="mt-1">
+            <input
+              type="text"
+              name="name"
+              id="name"
+              className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 dark:text-gray-300 sm:text-sm sm:leading-6"
+              placeholder="Enter the new name"
+              defaultValue={renamingItem?.name}
+              onChange={(e) => {
+                setNewFileName(e.target.value);
+              }} // Set the default value to the current item's name
+            />
+          </div>
+        </div>
+        <div className="mt-4 flex justify-center">
+          <button
+            type="button"
+            className="mx-2 rounded-md bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-slate-400"
+            onClick={closeModal}
+          >
+            {currentLanguage.cancel}
+          </button>
+          <button
+            type="button"
+            className="mx-2 rounded-md bg-sky-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sky-500"
+            onClick={() => {
+              // TODO: Save logic here
+              renameFolder();
+            }}
+          >
+            {currentLanguage.save}
+          </button>
+        </div>
       </Modal>
 
       <Modal
@@ -179,7 +218,53 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
         style={customStyles}
         contentLabel="Delete Confirmation Modal"
       >
-        {/* Modal content for deletion */}
+        <div>
+          <p className="text-center dark:text-gray-900">
+            {currentLanguage.are_you_sure_you_want_to_delete}
+          </p>
+        </div>
+        <div className="mt-4 flex justify-center">
+          <button
+            type="button"
+            className="mx-2 rounded-md bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-slate-400"
+            onClick={() => setIsFolder("")}
+          >
+            {currentLanguage.cancel}
+          </button>
+          <button
+            type="button"
+            className="mx-2 rounded-md bg-red-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-800"
+            disabled={loading}
+            onClick={() => {
+              deleteDirectory();
+            }}
+          >
+            {loading ? (
+              <svg
+                className="mr-3 flex h-5 w-5 animate-spin items-center justify-center text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.373A8.001 8.001 0 014.373 6H2v4.373zM13 4.373V2a8 8 0 018 8h-4.373A7.961 7.961 0 0113 4.373zm4.373 9.254A8.001 8.001 0 0113 20.627v-4.373h4.373z"
+                ></path>
+              </svg>
+            ) : (
+              <>{currentLanguage.delete}</>
+            )}
+          </button>
+        </div>
       </Modal>
 
       <div className="sm:flex sm:items-center">
@@ -289,7 +374,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                         <td className="relative flex items-center justify-between py-6 text-sm font-medium">
                           <Download
                             onClick={() => handleDownload(file.key, file.name)}
-                            className="cursor-pointer text-slate-900 dark:text-slate-100"
+                            className="cursor-pointer w-10 h-10 p-2 rounded-md hover:bg-[#cbd5e1] dark:hover:bg-[#1e293b] text-slate-900 dark:text-slate-100"
                           />
                           <FlyoutMenuSetting
                             type="file"
