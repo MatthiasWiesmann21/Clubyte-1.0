@@ -117,7 +117,7 @@ export const PostCard = ({
               <div className="flex items-center">
                 {category && (
                   <div
-                    className={`flex items-center gap-x-1 rounded-full border px-3 py-2 text-xs font-[600] transition`}
+                    className={`flex items-center rounded-lg border-2 px-3 py-1 text-xs`}
                     style={{ borderColor: colorCode }}
                   >
                     <div className="truncate">{category}</div>

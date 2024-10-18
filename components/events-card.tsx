@@ -111,7 +111,7 @@ export const EventCard = ({
           borderColor: isHovered ? getBorderColor() : "transparent",
         }}
       >
-        <div className="group h-full overflow-hidden rounded-lg bg-slate-100/60 p-2 transition hover:shadow-sm dark:border-[#1f182b] dark:bg-[#0c0319]">
+        <div className="group h-full overflow-hidden rounded-lg bg-slate-100/80 p-2 transition hover:shadow-sm dark:border-[#1f182b] dark:bg-[#0c0319]">
           {/* Image and Date/Time Section */}
           <Link href={`/live-event/${id}`} className="relateive flex">
             <div className="relative aspect-video w-2/3 overflow-hidden rounded-l-md">
@@ -178,7 +178,7 @@ export const EventCard = ({
               <Star
                 size={16}
                 fill={!!currentFavorite ? "#FFD700" : "#ffffff00"}
-                className="mr-[10px] cursor-pointer transition duration-200 ease-in-out hover:scale-110"
+                className="mx-1 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 w-7 h-7 p-1 rounded-md transition duration-200 ease-in-out hover:scale-110"
                 style={!!currentFavorite ? { color: "#FFD700" } : {}}
                 onClick={async () => {
                   const response = await axios?.post(`/api/favorite/create`, {
