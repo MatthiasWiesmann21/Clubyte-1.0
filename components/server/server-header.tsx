@@ -86,7 +86,7 @@ export const ServerHeader = ({
               {servers?.map((each: ServerWithMembersWithProfiles, index) => (
                 <DropdownMenuItem
                   onClick={() => push(`/chat/servers/${each?.id}`)}
-                  className="flex h-10 cursor-pointer items-center p-1 text-indigo-600 dark:text-indigo-400"
+                  className="flex h-10 cursor-pointer items-center p-1"
                   key={index}
                 >
                   <Image
@@ -117,8 +117,8 @@ export const ServerHeader = ({
                   onClick={() => onOpen("createServer")}
                   className="flex h-10 cursor-pointer items-center p-1"
                 >
-                  <div className="flex h-8 cursor-pointer items-center text-indigo-600 dark:text-indigo-400">
-                    <PlusCircle className="h-6 w-6" />
+                  <div className="flex h-8 cursor-pointer items-center">
+                    <PlusCircle className="h-6 w-6 text-green-500" />
                     <p className="ml-2 text-sm font-semibold">
                       {currentLanguage.chat_server_addServer}
                     </p>

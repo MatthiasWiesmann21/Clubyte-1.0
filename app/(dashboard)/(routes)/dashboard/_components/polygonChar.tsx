@@ -93,19 +93,10 @@ const PolygonChart = ({
   const doughnutOptions = {
     animationEnabled: true,
     backgroundColor: "transparent",
-    subtitles: [
-      {
-        text: `${coursesProgress.length} Total Courses`,
-        verticalAlign: "center",
-        fontSize: 24,
-        dockInsidePlotArea: true,
-        fontColor: "white",
-      },
-    ],
     data: [
       {
         type: "doughnut",
-        innerRadius: "90%",
+        innerRadius: "80%",
         dataPoints: [
           {
             name: "Complete",
@@ -246,7 +237,7 @@ const PolygonChart = ({
             ))}
         </div>
         <div className="doughnutParent flex w-[30%] min-w-[360px] max-w-full flex-col justify-around rounded border px-4 dark:border-[#221b2e] dark:bg-[#0D071A]">
-          <p className="mt-3 text-[18px]">Course Statistics</p>
+          <p className="mt-3 text-lg">Course Statistics</p>
           <CanvasJSChart options={doughnutOptions} />
           <div className="flex flex-wrap justify-between">
             {[
@@ -272,8 +263,8 @@ const PolygonChart = ({
                   style={{ borderColor: color }}
                 />
                 <div>
-                  <p className="m-0 text-[14px] text-gray-500">{label}</p>
-                  <p className="m-0 text-[18px] font-[900]">{value}%</p>
+                  <p className="m-0 text-md text-gray-500">{label}</p>
+                  <p className="m-0 text-md font-extrabold">{value}%</p>
                 </div>
                 <div className="border-1 mx-2 my-[2%] border-r border-gray-500" />
               </div>
