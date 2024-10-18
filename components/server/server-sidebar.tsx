@@ -107,11 +107,11 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
 
   return (
     <div
-      className="flex h-full w-full flex-col bg-[#ffffff] text-primary dark:bg-[#0A0118]"
+      className="flex h-full w-full flex-col bg-slate-200/70 text-primary dark:bg-[#0A0118]"
       // style={{ border: "10px solid red" }}
     >
       <ServerHeader servers={servers} server={{...server , members : newMembers}} role={role} profile={profile} />
-      <Separator />
+      <Separator className="bg-slate-300 dark:bg-zinc-700" />
       <ScrollArea className="flex-1 px-3">
         <div className="mt-2">
           <ServerSearch
@@ -155,7 +155,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
             ]}
           />
         </div>
-        <Separator className="my-2 rounded-md bg-zinc-200 dark:bg-zinc-700" />
+        <Separator className="my-2 rounded-md bg-slate-300 dark:bg-zinc-700" />
         {!!textChannels?.length && (
           <div className="mb-2">
             <ServerSection
