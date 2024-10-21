@@ -11,7 +11,7 @@ export const Navbar = async () => {
   const profileImageUrl = profile?.imageUrl || "";
   const profileOnlineStatus = profile?.isOnline || "";
   return (
-    <div className="flex h-full items-center border-b bg-white p-4 shadow-sm dark:bg-[#0A0118]">
+    <div className="flex h-full items-center border-b-2 bg-white p-4 shadow-sm dark:bg-[#0A0118]">
       <MobileSidebar />
       <NavbarRoutes
         profileId={profileId}

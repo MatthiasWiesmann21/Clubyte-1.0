@@ -47,7 +47,7 @@ export const CategoryItem = ({
 
   const buttonStyle = isSelected
     ? { borderColor: colorCode, background: colorCode }
-    : { borderColor: "#cbd5e1", background: isHovered ? colorCode : 'transparent' };
+    : { borderColor: isHovered ? colorCode : "", background: isHovered ? colorCode : 'transparent' };
 
   return (
     <TooltipProvider>
@@ -57,7 +57,7 @@ export const CategoryItem = ({
             onClick={onClick}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className={`flex max-w-xs items-center gap-x-1 rounded-full border p-2 text-xs font-medium transition duration-300 hover:border-0`}
+            className="flex max-w-xs items-center gap-x-1 rounded-lg border-2 p-2 text-xs font-medium transition duration-300"
             style={buttonStyle}
           >
             <div className="truncate">{label?.toUpperCase()}</div>

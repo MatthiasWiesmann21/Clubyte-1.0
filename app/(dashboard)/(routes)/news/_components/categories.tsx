@@ -87,7 +87,7 @@ export const Categories = ({
               )
             );
           }}
-          className={`flex items-center gap-x-1 rounded-full border px-3 py-2 text-[12px] font-[600] transition`}
+          className={`flex items-center gap-x-1 rounded-lg border px-3 py-2 text-xs font-medium transition`}
           style={
             !currentCategoryId
               ? { borderColor: getThemeColor(), background: getThemeColor() }
@@ -126,14 +126,14 @@ export const Categories = ({
                   <span
                     key={item?.id}
                     onClick={onClick}
-                    className={`font-600 flex items-center gap-x-1 rounded-full border px-3 py-2 text-xs transition duration-300`}
+                    className={`font-600 flex items-center gap-x-1 rounded-lg border-2 px-3 py-2 text-xs transition duration-300`}
                     style={
                       isSelected || isHovered
                         ? {
                             borderColor: item?.colorCode,
                             background: item?.colorCode,
                           }
-                        : { borderColor: "#cbd5e1" }
+                        : { borderColor: isHovered ? item?.colorCode : "" }
                     }
                     onMouseEnter={() => setHoveredCategoryId(item?.id)}
                     onMouseLeave={() => setHoveredCategoryId(null)}
