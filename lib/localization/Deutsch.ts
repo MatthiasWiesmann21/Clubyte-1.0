@@ -581,4 +581,7 @@ dashboard_doughnutChart_title: "Kursstatistiken",
 liveEvent_eventMdal_title: "Möchten Sie dieses Event beenden?",
 liveEvent_eventMdal_no: "Nein",
 liveEvent_eventMdal_yes: "Ja",
+dashboard_doughnut_completed: "Abgeschlossen",
+dashboard_doughnut_inprogress: "In Bearbeitung",
+dashboard_doughnut_notStarted: "Nicht begonnen",
 };

@@ -612,4 +612,7 @@ export const Russian: Record<string, string> = {
   liveEvent_eventMdal_title: "Вы хотите завершить эту сессию?",
   liveEvent_eventMdal_no: "Нет",
   liveEvent_eventMdal_yes: "Да",
+  dashboard_doughnut_completed: "Завершено",
+  dashboard_doughnut_inprogress: "В процессе",
+  dashboard_doughnut_notStarted: "Не начато",
 };

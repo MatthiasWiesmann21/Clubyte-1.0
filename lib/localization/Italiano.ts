@@ -616,4 +616,7 @@ export const Italiano: Record<string, string> = {
   liveEvent_eventMdal_title: "Vuoi terminare questa sessione?",
   liveEvent_eventMdal_no: "No",
   liveEvent_eventMdal_yes: "Sì",
+  dashboard_doughnut_completed: "Completato",
+  dashboard_doughnut_inprogress: "In corso",
+  dashboard_doughnut_notStarted: "Non iniziato",
 };

@@ -99,17 +99,17 @@ const PolygonChart = ({
         innerRadius: "80%",
         dataPoints: [
           {
-            name: "Complete",
+            name: `${currentLanguage.dashboard_doughnut_completed}`,
             y: completed,
             color: "#12b76a",
           },
           {
-            name: "Inprogress",
+            name: `${currentLanguage.dashboard_doughnut_inprogress}`,
             y: inProgress,
             color: "#f79009",
           },
           {
-            name: "Not Started",
+            name: `${currentLanguage.dashboard_doughnut_notStarted}`,
             y: notStarted,
             color: "#84caff",
           },

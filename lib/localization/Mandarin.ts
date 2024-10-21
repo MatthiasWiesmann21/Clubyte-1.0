@@ -589,4 +589,7 @@ export const Mandarin: Record<string, string> = {
   liveEvent_eventMdal_title: "您要结束此会话吗？",
   liveEvent_eventMdal_no: "否",
   liveEvent_eventMdal_yes: "是",
+  dashboard_doughnut_completed: "已完成",
+  dashboard_doughnut_inprogress: "进行中",
+  dashboard_doughnut_notStarted: "未开始",
 };
