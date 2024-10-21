@@ -29,16 +29,13 @@ export const Categories = ({
   const currentCategoryId = searchParams?.get("categoryId");
   const currentTitle = searchParams?.get("title");
   const { theme } = useTheme();
-  const [hoveredCategoryId, setHoveredCategoryId] = useState<string | null>(
-    null
-  );
+  const [hoveredCategoryId, setHoveredCategoryId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const all =
     items
       ?.map((each) => each?._count?.posts ?? 0)
-      ?.reduce((accumulator, currentValue) => accumulator + currentValue, 0) ??
-    0;
+      ?.reduce((accumulator, currentValue) => accumulator + currentValue, 0) ?? 0;
 
   const getThemeColor = () => {
     return theme === "dark" ? DarkThemeOutlineColor : ThemeOutlineColor;
@@ -57,8 +54,8 @@ export const Categories = ({
   };
 
   return (
-    <div className="relative flex items-center">
-      {/* Button zum Scrollen nach links */}
+    <div className="relative flex items-center justify-start w-full sm:w-full md:w-[540px] lg:w-[700px] xl:w-[800px]">
+      {/* Button for scrolling left */}
       <Button
         onClick={scrollLeft}
         className="p-2 mb-1 mr-2 rounded-full hover:text-slate-600 text-slate-400 dark:text-slate-200"
@@ -69,7 +66,7 @@ export const Categories = ({
 
       <div
         ref={scrollRef}
-        className="no-scrollbar flex w-full items-center gap-x-2 overflow-x-auto pb-1 scroll-smooth"
+        className="no-scrollbar justify-start flex-grow flex items-center gap-x-2 overflow-x-auto pb-1 scroll-smooth"
       >
         <button
           onClick={() => {
@@ -156,7 +153,7 @@ export const Categories = ({
         })}
       </div>
 
-      {/* Button zum Scrollen nach rechts */}
+      {/* Button for scrolling right */}
       <Button
         onClick={scrollRight}
         className="p-2 mb-1 ml-2 rounded-full hover:text-slate-600 text-slate-400 dark:text-slate-200"
