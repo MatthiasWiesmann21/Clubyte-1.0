@@ -30,9 +30,9 @@ export const Sidebar = async () => {
   });
 
   return (
-    <div className="-y-auto flex h-full flex-col border-r bg-white shadow-sm dark:bg-[#0A0118]">
+    <div className="-y-auto flex h-full flex-col border-r-2 bg-white shadow-sm dark:bg-[#0A0118]">
       <PrivacyPolicyModal profile={profile} />
-      <div className="flex h-[80px] items-center justify-center border-b">
+      <div className="flex h-[80px] items-center justify-center border-b-2">
         <Logo
           imageUrl={container?.imageUrl || ""}
           imageUrlDark={container?.imageUrlDark || ""}
