@@ -606,11 +606,14 @@ export const Italiano: Record<string, string> = {
   course_progressButton_NotComplete: "Non completato",
   course_progressButton_MarkComplete: "Segna come completato",
   createContainer_title: "Nomina il tuo Contenitore",
-  createCotainer_description:
-    "Qual è il nome del Contenitore o Cliente che utilizzerai?",
+  createCotainer_description: "Qual è il nome del Contenitore o Cliente che utilizzerai?",
   createContainer_form_label: "Nome del Contenitore",
   createContainer_form_placeholder: "es. 'Cliente XYZ'",
   createContainer_form_description: "Cosa insegnerai in questo contenitore?",
   createContainer_cancel: "Annulla",
   createContainer_submit: "Crea",
+  dashboard_doughnutChart_title: "Statistiche del corso",
+  liveEvent_eventMdal_title: "Vuoi terminare questa sessione?",
+  liveEvent_eventMdal_no: "No",
+  liveEvent_eventMdal_yes: "Sì",
 };

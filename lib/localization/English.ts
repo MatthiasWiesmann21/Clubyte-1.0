@@ -580,4 +580,8 @@ createContainer_form_placeholder: "e.g. 'Customer XYZ'",
 createContainer_form_description: "What will you teach in this container?",
 createContainer_cancel: "Cancel",
 createContainer_submit: "Create",
+dashboard_doughnutChart_title: "Course Statistics",
+liveEvent_eventMdal_title: "Do you want to end this session?",
+liveEvent_eventMdal_no: "No",
+liveEvent_eventMdal_yes: "Yes",
 };

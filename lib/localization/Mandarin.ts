@@ -585,4 +585,8 @@ export const Mandarin: Record<string, string> = {
   createContainer_form_description: "你将在这个容器中教授什么内容？",
   createContainer_cancel: "取消",
   createContainer_submit: "创建",
+  dashboard_doughnutChart_title: "课程统计",
+  liveEvent_eventMdal_title: "您要结束此会话吗？",
+  liveEvent_eventMdal_no: "否",
+  liveEvent_eventMdal_yes: "是",
 };
