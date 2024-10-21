@@ -10,8 +10,7 @@ import ClubyteLoader from "@/components/ui/clubyte-loader";
 import { useTheme } from "next-themes";
 import { Separator } from "@/components/ui/separator";
 import { PostFavoriteCard } from "./postFavorite-card";
-import { BookX, NewspaperIcon, PlusCircle } from "lucide-react";
-import Link from "next/link";
+import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
 
@@ -109,9 +108,9 @@ const NewsWrapper = ({
 
   return (
     <div className="space-y-4 px-4 pt-4 dark:bg-[#110524]">
-      <div className="flex flex-col items-start justify-center md:flex-row md:space-x-4">
+      <div className="flex flex-col items-start justify-center w-full md:flex-row md:space-x-4">
         {/* Main Newsfeed Section */}
-        <div className="w-full max-w-3xl">
+        <div className="flex-grow w-full">
           <Categories
             items={categories}
             ThemeOutlineColor={ThemeOutlineColor}

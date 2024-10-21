@@ -34,10 +34,10 @@ export const Categories = ({
     return theme === "dark" ? DarkThemeOutlineColor : ThemeOutlineColor;
   };
 
-  // Ref für den scrollbaren Container
+  // Ref for the scrollable container
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Funktionen für Scroll-Buttons
+  // Scroll functions
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
@@ -51,24 +51,30 @@ export const Categories = ({
   };
 
   return (
-    <div className="relative flex items-center">
-      {/* Button zum Scrollen nach links */}
+    <div className="relative flex items-center justify-start w-full sm:w-full md:w-[540px] lg:w-[700px] xl:w-[800px]">
+      {/* Scroll left button */}
       <Button
         onClick={scrollLeft}
-        className="p-2 mb-2 mr-2 rounded-full hover:text-slate-600 text-slate-400 dark:text-slate-200" 
+        className="p-2 mb-1 mr-2 rounded-full hover:text-slate-600 text-slate-400 dark:text-slate-200"
         variant="ghost"
       >
         <ChevronLeftCircleIcon size={14} className="h-6 w-6" />
       </Button>
+
+      {/* Scrollable container */}
       <div
         ref={scrollRef}
-        className="no-scrollbar flex items-center gap-x-2 overflow-x-auto pb-2 scroll-smooth"
+        className="no-scrollbar flex-grow flex items-center gap-x-2 overflow-x-auto pb-1 scroll-smooth"
+        style={{ justifyContent: items.length < 5 ? "space-between" : "flex-start" }}
       >
+        {/* 'All' Category Item */}
         <CategoryItem
           label={"All"}
           colorCode={getThemeColor()}
           categoryAmmount={all}
         />
+        
+        {/* Individual Category Items */}
         {items.map((item) => (
           <CategoryItem
             key={item.id}
@@ -80,10 +86,10 @@ export const Categories = ({
         ))}
       </div>
 
-      {/* Button zum Scrollen nach rechts */}
+      {/* Scroll right button */}
       <Button
         onClick={scrollRight}
-        className="p-2 mb-2 ml-2 rounded-full hover:text-slate-600 text-slate-400 dark:text-slate-200"
+        className="p-2 mb-1 ml-2 rounded-full hover:text-slate-600 text-slate-400 dark:text-slate-200"
         variant="ghost"
       >
         <ChevronRightCircleIcon size={14} className="h-6 w-6" />
