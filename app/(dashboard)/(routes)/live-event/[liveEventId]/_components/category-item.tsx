@@ -1,7 +1,6 @@
 "use client";
 
-import qs from "query-string";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 interface CategoryItemProps {
   label: string;
@@ -25,7 +24,7 @@ export const CategoryItem = ({
 
   return (
     <div
-      className="flex border-2 items-center gap-x-1 rounded-full border-slate-300 p-2 text-sm transition hover:border-sky-700 line-clamp-1"
+      className="flex border-2 items-center gap-x-1 rounded-lg border-slate-300 p-2 text-xs transition line-clamp-1"
       style={ {borderColor: colorCode }}
     >
       <div className="truncate">{label?.toUpperCase()}</div>

@@ -104,14 +104,14 @@ export const EventCard = ({
   return (
     <TooltipProvider>
       <div
-        className="w-[305px] rounded-lg border-2 transition duration-500 ease-in-out"
+        className="w-[305px] rounded-lg border-2 transition duration-300 ease-in-out"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
           borderColor: isHovered ? getBorderColor() : "transparent",
         }}
       >
-        <div className="group h-full overflow-hidden rounded-lg bg-slate-100/80 p-2 transition hover:shadow-sm dark:border-[#1f182b] dark:bg-[#0c0319]">
+        <div className="group h-full overflow-hidden rounded-lg bg-slate-100 p-2 transition dark:border-[#1f182b] dark:bg-[#0c0319] hover:shadow-lg">
           {/* Image and Date/Time Section */}
           <Link href={`/live-event/${id}`} className="relateive flex">
             <div className="relative aspect-video w-2/3 overflow-hidden rounded-l-md">

@@ -38,3 +38,21 @@ export async function POST(
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+export async function GET() {
+
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
+
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  const container = await db.container.findUnique({
+    where: {
+      id: session?.user?.profile?.containerId,
+    },
+  });
+
+  return NextResponse.json({ icon: container?.icon });
+}

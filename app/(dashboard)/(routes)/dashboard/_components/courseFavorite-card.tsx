@@ -160,7 +160,7 @@ export const CourseFavoriteCard = ({
               <TooltipTrigger>
                 <span
                   style={{ borderColor: categoryColorCode }}
-                  className="line-clamp-1 max-w-[130px] rounded-[12px] border-2 px-3 py-1 text-start text-[12px]"
+                  className="line-clamp-1 max-w-[130px] rounded-lg border-2 px-3 py-1 text-start text-xs"
                 >
                   {category}
                 </span>

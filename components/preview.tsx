@@ -18,7 +18,7 @@ export const Preview = ({ value }: PreviewProps) => {
   const currentLanguage = useLanguage();
 
   return (
-    <div className="mt-5 pt-4 rounded-lg bg-slate-100/60 dark:bg-[#0c0319]">
+    <div className="mt-4 pt-3 rounded-lg bg-slate-100 border-2 dark:bg-[#0c0319]">
       <span className="ml-4 text-sm font-bold">{currentLanguage.chapter_aboutcourse_title}</span>
       <span className="text-gray-500">
         <ReactQuill theme="bubble" value={value} readOnly />

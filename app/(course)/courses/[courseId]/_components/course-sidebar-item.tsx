@@ -74,7 +74,7 @@ export const CourseSidebarItem = ({
 
   return (
     <TooltipProvider>
-      <div className="relative flex w-full items-center">
+      <div className="relative flex w-full items-center border-b-2">
         <Tooltip>
           <TooltipTrigger asChild>
             {/* Main button to open chapter */}

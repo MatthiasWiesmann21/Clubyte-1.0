@@ -61,7 +61,7 @@ export const Categories = ({
       {/* Button zum Scrollen nach links */}
       <Button
         onClick={scrollLeft}
-        className="p-2 mb-6 mr-2 rounded-full hover:text-slate-600 text-slate-400 dark:text-slate-200"
+        className="p-2 mb-1 mr-2 rounded-full hover:text-slate-600 text-slate-400 dark:text-slate-200"
         variant="ghost"
       >
         <ChevronLeftCircleIcon size={14} className="h-6 w-6" />
@@ -69,7 +69,7 @@ export const Categories = ({
 
       <div
         ref={scrollRef}
-        className="no-scrollbar flex w-full items-center gap-x-2 overflow-x-auto pb-6 scroll-smooth"
+        className="no-scrollbar flex w-full items-center gap-x-2 overflow-x-auto pb-1 scroll-smooth"
       >
         <button
           onClick={() => {
@@ -159,7 +159,7 @@ export const Categories = ({
       {/* Button zum Scrollen nach rechts */}
       <Button
         onClick={scrollRight}
-        className="p-2 mb-6 ml-2 rounded-full hover:text-slate-600 text-slate-400 dark:text-slate-200"
+        className="p-2 mb-1 ml-2 rounded-full hover:text-slate-600 text-slate-400 dark:text-slate-200"
         variant="ghost"
       >
         <ChevronRightCircleIcon size={14} className="h-6 w-6" />

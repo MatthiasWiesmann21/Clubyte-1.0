@@ -4,7 +4,7 @@ import React from "react";
 const arr = ["EXEL", "WORD", "PDF"];
 
 const Files = () => (
-  <div className="mt-5 py-4 pl-4" style={{ background: "rgba(0, 0, 0, 0.3)" }}>
+  <div className="mt-5 py-4 pl-4">
     <div className="text-[18px] font-bold">Download Files</div>
     <div className="mt-4 flex text-gray-500">
       {arr?.map((each, index) => (
