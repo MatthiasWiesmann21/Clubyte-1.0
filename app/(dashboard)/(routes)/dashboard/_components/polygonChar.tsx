@@ -223,7 +223,7 @@ const PolygonChart = ({
                         <Eye className="h-5 w-5"
                               style={{
                               color:
-                                hoveredCourse === index ? "#ffffff" : "#334155",
+                                hoveredCourse === index ? "#ffffff" : "",
                             }}
                         />
                         </div>

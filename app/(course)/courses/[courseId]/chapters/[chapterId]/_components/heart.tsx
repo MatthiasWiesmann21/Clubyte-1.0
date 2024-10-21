@@ -10,7 +10,7 @@ const Love = ({ chapter, getData }: any) => (
         });
         if (response?.status === 200) getData();
       }}
-      className="flex cursor-pointer items-center justify-around rounded-[10px] border border-[#fff] bg-slate-100/60 p-2 hover:shadow-sm dark:border-[#1e172a] dark:bg-[#0c0319]"
+      className="flex cursor-pointer items-center justify-around rounded-lg border border-[#fff] bg-slate-100 p-2 hover:shadow-sm dark:border-[#1e172a] dark:bg-[#0c0319]"
     >
       {chapter?.likes?.length}
       <Heart

@@ -182,7 +182,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
             <div className="flex flex-col items-center justify-between px-4 pb-2 md:flex-row">
               {chapter?.author && (
                 <div>
-                  <span className="flex items-center text-[14px] text-gray-500">
+                  <span className="flex items-center text-sm text-gray-500">
                     {currentLanguage.course_chapter_author_text}{" "}
                     {chapter?.author}
                   </span>
@@ -193,7 +193,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
             <div className="p-4 pt-0">
               <Preview value={chapter?.description!} />
             </div>
-            <div className="m-4 mt-0 rounded-lg bg-slate-100/60 pt-4 dark:bg-[#0c0319]">
+            <div className="m-4 mt-0 rounded-lg border-2 bg-slate-100 pt-3 dark:bg-[#0c0319]">
               <span className="ml-4 text-sm font-bold">
                 {currentLanguage.chapter_CourseDocuments_Title}
               </span>

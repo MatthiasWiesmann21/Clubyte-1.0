@@ -46,10 +46,11 @@ const CourseTable = ({ courses, colors }: CourseTableProps) => {
           onMouseEnter={() => setIsViewAllHovered(true)}
           onMouseLeave={() => setIsViewAllHovered(false)}
           href={`/dashboard/course-list`}
-          className="flex items-center justify-center rounded-full border-1 px-4 py-2 text-sm transition duration-300 ease-in-out"
+          className="border-2 flex items-center justify-center rounded-full px-3 py-1 text-sm transition duration-300 ease-in-out"
           style={{
             borderColor: getButtonColor(),
             backgroundColor: isViewAllHovered ? getButtonColor() : "",
+            color: isViewAllHovered ? "#ffffff" : "",
           }}
         >
           {currentLanguage.dashboard_courseTable_viewAllCourses_button_text}
@@ -132,18 +133,18 @@ const CourseTable = ({ courses, colors }: CourseTableProps) => {
                 <div
                   onMouseEnter={() => setHoveredCourse(index)}
                   onMouseLeave={() => setHoveredCourse(null)}
-                  className="border-2 text-slate-600 rounded-full p-1 text-xs transition duration-300 ease-in-out"
+                  className="rounded-full border-2 p-1 text-xs text-slate-600 transition duration-300 ease-in-out"
                   style={{
                     borderColor: getButtonColor(),
                     backgroundColor:
                       hoveredCourse === index ? getButtonColor() : "",
                   }}
                 >
-                  <Eye className="h-5 w-5"
-                  style={{
-                    color:
-                      hoveredCourse === index ? "#ffffff" : "#334155",
-                  }}
+                  <Eye
+                    className="h-5 w-5"
+                    style={{
+                      color: hoveredCourse === index ? "#ffffff" : "",
+                    }}
                   />
                 </div>
               </Link>

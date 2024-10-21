@@ -7,9 +7,9 @@ const Link = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/api/containers/all');
+      const response = await fetch('/api/containers');
       const data = await response.json();
-      setFavicon(data.icon);
+      setFavicon(data?.icon);
     };
 
     fetchData();

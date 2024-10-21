@@ -19,7 +19,7 @@ export const EventPreview = ({ value }: PreviewProps) => {
 
   return (
     <div
-      className="mt-4 rounded-lg bg-slate-100/60 dark:bg-[#0c0319] p-4"
+      className="mt-2 rounded-lg bg-slate-100 dark:bg-[#0c0319] py-4 px-2 border-2"
     >
       <span className="ml-4 text-sm font-bold">
         {currentLanguage.chapter_aboutevent_title}

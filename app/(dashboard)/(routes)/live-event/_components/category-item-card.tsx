@@ -49,7 +49,7 @@ export const CategoryItemCard = ({
     <TooltipProvider>
       <button
         onClick={onClick}
-        className={`flex items-center rounded-[12px] border-2 px-3 py-1 text-[12px]`}
+        className={`flex items-center rounded-lg border-2 px-3 py-1 text-xs`}
         style={{ borderColor: colorCode }}
         type="button"
       >

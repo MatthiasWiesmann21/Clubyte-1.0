@@ -113,7 +113,7 @@ export const CourseCard = ({
   return (
     <TooltipProvider>
       <div
-        className="w-[305px] rounded-lg border-2 transition duration-500 ease-in-out"
+        className="w-[305px] rounded-lg border-2 transition duration-300 ease-in-out"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
@@ -180,7 +180,7 @@ export const CourseCard = ({
               <TooltipTrigger>
                 <span
                   style={{ borderColor: categoryColorCode }}
-                  className="line-clamp-1 max-w-[130px] rounded-[12px] border-2 px-3 py-1 text-start text-[12px]"
+                  className="line-clamp-1 max-w-[130px] rounded-lg border-2 px-3 py-1 text-start text-xs"
                 >
                   {category}
                 </span>

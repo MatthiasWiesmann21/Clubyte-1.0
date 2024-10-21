@@ -42,9 +42,7 @@ const EventFilterSidebar = ({
   const { theme } = useTheme();
 
   const getPrimaryButtonColor = () => {
-    return theme === "dark"
-      ? DarkPrimaryButtonColor
-      : PrimaryButtonColor;
+    return theme === "dark" ? DarkPrimaryButtonColor : PrimaryButtonColor;
   };
 
   return (
@@ -57,15 +55,23 @@ const EventFilterSidebar = ({
             borderColor: getPrimaryButtonColor(),
             backgroundColor: isViewAllHovered ? getPrimaryButtonColor() : "",
           }}
-          className="border-5 h-10 w-24 items-center justify-center rounded-full border bg-transparent text-gray-700 transition duration-500 ease-in-out"
+          className="h-10 w-24 items-center justify-center rounded-full border-2 bg-transparent text-gray-700 transition duration-500 ease-in-out"
           variant="default"
           size="sm"
         >
           <SlidersHorizontal
             className="pr-1 text-gray-800 dark:text-white"
             size={24}
+            style={{
+              color: isViewAllHovered ? "#ffffff" : "",
+            }}
           />
-          <p className="text-gray-800 dark:text-white">
+          <p
+            style={{
+              color: isViewAllHovered ? "#ffffff" : "",
+            }}
+            className="text-gray-800 dark:text-white"
+          >
             {currentLanguage.live_event_filter_button_text}
           </p>
         </Button>
