@@ -64,8 +64,7 @@ export const Categories = ({
       {/* Scrollable container */}
       <div
         ref={scrollRef}
-        className="no-scrollbar flex-grow flex items-center gap-x-2 overflow-x-auto pb-1 scroll-smooth"
-        style={{ justifyContent: items.length < 5 ? "space-between" : "flex-start" }}
+        className="no-scrollbar flex-grow flex-start flex items-center gap-x-2 overflow-x-auto pb-1 scroll-smooth"
       >
         {/* 'All' Category Item */}
         <CategoryItem
