@@ -191,6 +191,7 @@ const NewsWrapper = ({
                   id={item?.id}
                   category={item?.category?.name ?? ""}
                   description={item?.description ?? ""}
+                  imageUrl={item?.imageUrl ?? ""}
                   createdAt={new Date(item?.publishTime!).toDateString()}
                   publisherName={item?.publisherName!}
                   publisherImageUrl={item?.publisherImageUrl!}
