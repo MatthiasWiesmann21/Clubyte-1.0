@@ -161,10 +161,10 @@ export const EventCard = ({
               </p>
               <p className="text-sm">{moment(startDateTime).format("YYYY")}</p>
               <span className="mt-3 w-full rounded-md bg-gray-400/60 px-2 py-1 pb-3 text-xs font-medium dark:bg-gray-700">
-                <p className="mt-2 text-xs font-semibold">
+                <p className="mt-2 text-sm font-semibold">
                   {moment(startDateTime).format("dddd")}
                 </p>
-                <p className="mt-2 text-xs font-medium">
+                <p className="mt-2 text-sm font-medium">
                   {moment(startDateTime).format("HH:mm")}
                 </p>
               </span>
