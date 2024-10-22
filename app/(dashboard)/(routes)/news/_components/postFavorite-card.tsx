@@ -31,6 +31,7 @@ import toast from "react-hot-toast";
 interface PostFavoriteCardProps {
   id: string;
   description: string;
+  imageUrl: string;
   createdAt: string;
   publisherName: string;
   publisherImageUrl: string;
@@ -45,6 +46,7 @@ interface PostFavoriteCardProps {
 export const PostFavoriteCard = ({
   id,
   description,
+  imageUrl,
   createdAt,
   publisherName,
   publisherImageUrl,
@@ -148,6 +150,16 @@ export const PostFavoriteCard = ({
             <div className="font-400 text-sm text-black dark:text-white">
               <PostPreview value={description} />
             </div>
+            {imageUrl && (
+              <div className="relative mt-4 h-64 w-full overflow-hidden">
+                <Image
+                  src={imageUrl}
+                  alt="post"
+                  fill
+                  className="object-cover"
+                  />
+                  </div>
+            )}
             <div className="flex items-center justify-between pt-2">
               <div className="flex">
                 <div

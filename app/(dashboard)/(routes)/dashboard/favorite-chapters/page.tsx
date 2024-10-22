@@ -6,7 +6,7 @@ import authOptions from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { languageServer } from "@/lib/check-language-server";
-import FavoriteChaptersList from "./_components/favoriteCHaptersList";
+import FavoriteChaptersList from "./_components/favoriteChaptersList";
 
 const FavoriteChapters = async () => {
   const session = await getServerSession(authOptions);
@@ -38,7 +38,7 @@ const FavoriteChapters = async () => {
         className="mb-6 flex items-center text-sm transition hover:opacity-75"
       ><ArrowLeft className="mr-2 h-4 w-4" />
         {currentLanguage.courses_list_backToDashboard_button_text}</Link>
-      <FavoriteChaptersList courses={courses} colors={container?.colors} />
+      <FavoriteChaptersList courses={courses} colors={container} />
     </div>
   );
 };
