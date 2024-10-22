@@ -10,6 +10,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
 import AppSVG from "@/components/appsvg";
+import { Input } from "@/components/ui/input";
 
 export default function SignIn() {
   const [userEmail, setUserEmail] = useState("");
@@ -59,9 +60,7 @@ export default function SignIn() {
   };
 
   const renderRight = () => {
-    return (
-      <AppSVG svg="signIn" customclass="w-full h-full" />
-    );
+    return <AppSVG svg="signIn" customclass="w-full h-full" />;
   };
 
   const renderGoogleIcon = () => {
@@ -88,12 +87,12 @@ export default function SignIn() {
               >
                 Email
               </label>
-              <input
+              <Input
                 id="email"
                 type="email"
                 name="email"
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-lg text-gray-700 dark:text-gray-200 focus:border-gray-300 focus:outline-none"
+                className="h-12 w-full rounded-lg border border-gray-300 px-2 py-2 text-lg text-gray-700 focus:border-gray-300 focus:outline-none dark:text-gray-200"
                 placeholder="Enter your email"
                 autoComplete="off"
                 autoFocus
@@ -107,18 +106,18 @@ export default function SignIn() {
                 Password
               </label>
               <div className="relative">
-                <input
+                <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   name="password"
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
                   }
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-lg text-gray-700 dark:text-gray-200 focus:border-gray-300 focus:outline-none"
+                  className="h-12 w-full rounded-lg border border-gray-300 px-2 py-2 text-lg text-gray-700 focus:border-gray-300 focus:outline-none dark:text-gray-200"
                   placeholder="Enter your password"
                 />
                 <span
-                  className="absolute right-3 top-4 cursor-pointer"
+                  className="absolute right-3 top-3 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff /> : <Eye />}
@@ -136,20 +135,9 @@ export default function SignIn() {
             <Button
               onClick={handleSubmit}
               type="button"
-              className="h-14 w-full rounded-full bg-[#EC2089] px-4 text-white hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              className="h-14 w-full rounded-full bg-pink-600 hover:bg-pink-700 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
-              <div className="flex justify-center text-xl">
-                {beingSubmitted ? (
-                  <Image
-                    src="/loader-blur-white.svg"
-                    alt="preloader"
-                    width={20}
-                    height={20}
-                  />
-                ) : (
-                  "Login"
-                )}
-              </div>
+              <div className="flex justify-center text-xl">Login</div>
             </Button>
             <div className="mt-2 flex justify-center text-lg">
               <p>
@@ -166,7 +154,7 @@ export default function SignIn() {
             </div>
             <div className="button-boxes flex w-full justify-center gap-2">
               <div
-                className="flex items-center cursor-pointer"
+                className="flex cursor-pointer items-center"
                 onClick={handleGoogleSignIn}
               >
                 {renderGoogleIcon()}
