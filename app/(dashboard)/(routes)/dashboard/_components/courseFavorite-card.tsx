@@ -100,7 +100,7 @@ export const CourseFavoriteCard = ({
           borderColor: isHovered ? getBorderColor() : "transparent",
         }}
       >
-        <div className="group h-full w-full overflow-hidden rounded-lg bg-slate-100/60 p-2 transition dark:bg-[#0c0319]">
+        <div className="group h-full w-full overflow-hidden rounded-lg bg-slate-100/80 p-2 transition dark:bg-[#0c0319]">
           <Link href={`/courses/${id}`}>
             <div className="relative aspect-video w-full overflow-hidden rounded-md border-2 border-slate-300/50 dark:border-slate-700/60">
               <div className="absolute left-2 top-2 z-10 flex space-x-2">
@@ -160,7 +160,7 @@ export const CourseFavoriteCard = ({
               <TooltipTrigger>
                 <span
                   style={{ borderColor: categoryColorCode }}
-                  className="line-clamp-1 max-w-[130px] rounded-[12px] border-2 px-3 py-1 text-start text-[12px]"
+                  className="line-clamp-1 max-w-[130px] rounded-lg border-2 px-3 py-1 text-start text-xs"
                 >
                   {category}
                 </span>
@@ -175,7 +175,7 @@ export const CourseFavoriteCard = ({
               <Star
                 size={16}
                 fill={!!currentFavorite ? "#FFD700" : "#ffffff00"}
-                className="mr-[10px] cursor-pointer transition duration-200 ease-in-out hover:scale-110"
+                className="mx-1 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 w-7 h-7 p-1 rounded-md transition duration-200 ease-in-out hover:scale-110"
                 style={!!currentFavorite ? { color: "#FFD700" } : {}}
                 onClick={async () => {
                   const response = await axios?.post(`/api/favorite/create`, {

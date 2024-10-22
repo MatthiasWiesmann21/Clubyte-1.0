@@ -620,4 +620,11 @@ export const Espanol: Record<string, string> = {
   createContainer_form_description: "¿Qué enseñarás en este contenedor?",
   createContainer_cancel: "Cancelar",
   createContainer_submit: "Crear",
+  dashboard_doughnutChart_title: "Estadísticas del curso",
+liveEvent_eventMdal_title: "Deseas finalizar esta sesión?",
+liveEvent_eventMdal_no: "No",
+liveEvent_eventMdal_yes: "Sí",
+dashboard_doughnut_completed: "Completado",
+dashboard_doughnut_inprogress: "En progreso",
+dashboard_doughnut_notStarted: "No iniciado",
 };

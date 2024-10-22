@@ -63,7 +63,7 @@ const DocumentPage = () => {
     );
   } else
     return (
-      <div className="no-scrollbar m-4 rounded-lg bg-slate-100/60 dark:bg-[#0c0319]">
+      <div className="no-scrollbar m-4 rounded-lg border-2 bg-slate-100/60 dark:bg-[#0c0319]">
         <AssetsTable folderStructure={folderStructure} />
       </div>
     );

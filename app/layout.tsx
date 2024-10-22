@@ -1,21 +1,15 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
-import { SessionProvider } from "next-auth/react";
-import { ToastProvider } from "@/components/providers/toaster-provider";
-import { ConfettiProvider } from "@/components/providers/confetti-provider";
 import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/providers/theme-provider";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
-import { Providers } from "./redux/provider";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
-import Link from "@/components/link";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { initialProfile } from "@/lib/initial-profile";
 import AuthProvider from "./auth-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
+import { redirect } from "next/navigation";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -36,9 +30,10 @@ export default async function RootLayout({
 
   const user = session?.user;
 
-  if (user) {
-    
+  if (!user) {
+    return redirect("/");
   }
+
   return (
     <html lang="en">
       <body className={cn(font.className, "bg-white dark:bg-[#110524]")}>

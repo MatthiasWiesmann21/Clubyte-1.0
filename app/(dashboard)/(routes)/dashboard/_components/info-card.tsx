@@ -17,10 +17,10 @@ export const InfoCard = async ({
 }: InfoCardProps) => {
 
   return (
-    <div className="flex items-center gap-x-2 rounded-md border p-3 dark:border-[#221b2e] dark:bg-[#0D071A]">
+    <div className="flex items-center gap-x-2 rounded-md border-2 p-3 dark:border-[#221b2e] dark:bg-[#0D071A]">
       <IconBadge variant={variant} icon={Icon} />
       <div>
-        <p className="text-sm text-gray-500">{label}</p>
+        <p className="text-sm text-gray-600">{label}</p>
         <p className="font-medium">{`${
           numberOfItems < 10 && 0
         }${numberOfItems}`}</p>

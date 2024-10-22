@@ -97,6 +97,7 @@ export const TitleForm = ({
                       disabled={isSubmitting}
                       placeholder={currentLanguage.categories_TitleForm_placeholder}
                       {...field}
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormControl>
                   <FormMessage />

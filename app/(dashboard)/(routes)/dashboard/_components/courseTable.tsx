@@ -39,17 +39,18 @@ const CourseTable = ({ courses, colors }: CourseTableProps) => {
   };
 
   return (
-    <div className="rounded-md border dark:border-[#221b2e] dark:bg-[#0D071A]">
+    <div className="rounded-md border-2 dark:border-[#221b2e] dark:bg-[#0D071A]">
       <div className="flex items-center justify-between p-2 text-lg">
         <div>{currentLanguage.dashboard_courseTable_CourseStatus_Title}</div>
         <Link
           onMouseEnter={() => setIsViewAllHovered(true)}
           onMouseLeave={() => setIsViewAllHovered(false)}
           href={`/dashboard/course-list`}
-          className="flex items-center justify-center rounded-full border px-4 py-2 text-sm transition duration-300 ease-in-out"
+          className="border-2 flex items-center justify-center rounded-full px-3 py-1 text-sm transition duration-300 ease-in-out"
           style={{
             borderColor: getButtonColor(),
             backgroundColor: isViewAllHovered ? getButtonColor() : "",
+            color: isViewAllHovered ? "#ffffff" : "",
           }}
         >
           {currentLanguage.dashboard_courseTable_viewAllCourses_button_text}
@@ -132,14 +133,19 @@ const CourseTable = ({ courses, colors }: CourseTableProps) => {
                 <div
                   onMouseEnter={() => setHoveredCourse(index)}
                   onMouseLeave={() => setHoveredCourse(null)}
-                  className="border-1 rounded-full border p-1 text-xs transition duration-300 ease-in-out"
+                  className="rounded-full border-2 p-1 text-xs text-slate-600 transition duration-300 ease-in-out"
                   style={{
                     borderColor: getButtonColor(),
                     backgroundColor:
                       hoveredCourse === index ? getButtonColor() : "",
                   }}
                 >
-                  <Eye />
+                  <Eye
+                    className="h-5 w-5"
+                    style={{
+                      color: hoveredCourse === index ? "#ffffff" : "",
+                    }}
+                  />
                 </div>
               </Link>
             </div>

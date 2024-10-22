@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const Link = () => {
@@ -7,9 +8,9 @@ const Link = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/api/containers/all');
-      const data = await response.json();
-      setFavicon(data.icon);
+      const response = await axios.get('/api/containers');
+      const data = await response.data();
+      setFavicon(data?.icon);
     };
 
     fetchData();

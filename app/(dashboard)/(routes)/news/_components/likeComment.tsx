@@ -208,7 +208,7 @@ const LikeComment = ({
           </div>
         </div>
         <div
-          className="font-500 flex cursor-pointer items-center rounded-full bg-slate-200 p-3 text-sm transition duration-500 ease-in-out hover:bg-slate-300 dark:bg-slate-800/50 dark:hover:bg-slate-700/80"
+          className="flex cursor-pointer items-center rounded-lg bg-slate-200 p-3 text-sm transition duration-300 ease-in-out hover:bg-slate-300 dark:bg-slate-800/50 dark:hover:bg-slate-700/80"
           onClick={() => setShowComments(!isShowComments)}
         >
           <MessageSquare className="mr-1 h-5 w-6" />

@@ -93,32 +93,23 @@ const PolygonChart = ({
   const doughnutOptions = {
     animationEnabled: true,
     backgroundColor: "transparent",
-    subtitles: [
-      {
-        text: `${coursesProgress.length} Total Courses`,
-        verticalAlign: "center",
-        fontSize: 24,
-        dockInsidePlotArea: true,
-        fontColor: "white",
-      },
-    ],
     data: [
       {
         type: "doughnut",
-        innerRadius: "90%",
+        innerRadius: "80%",
         dataPoints: [
           {
-            name: "Complete",
+            name: `${currentLanguage.dashboard_doughnut_completed}`,
             y: completed,
             color: "#12b76a",
           },
           {
-            name: "Inprogress",
+            name: `${currentLanguage.dashboard_doughnut_inprogress}`,
             y: inProgress,
             color: "#f79009",
           },
           {
-            name: "Not Started",
+            name: `${currentLanguage.dashboard_doughnut_notStarted}`,
             y: notStarted,
             color: "#84caff",
           },
@@ -144,11 +135,11 @@ const PolygonChart = ({
   return (
     <TooltipProvider>
       <div className="graphParent flex justify-between">
-        <div className="min-w-xs mr-2 w-full rounded border dark:border-[#221b2e] dark:bg-[#0D071A]">
+        <div className="min-w-xs mr-2 w-full rounded border-2 dark:border-[#221b2e] dark:bg-[#0D071A]">
           <div className="flex items-center justify-between p-2 text-lg">
             <div>{currentLanguage.dashboard_popularChapter_title}</div>
           </div>
-          <div className="flex items-center justify-between bg-slate-100 p-2 dark:bg-[#150D22]">
+          <div className="flex items-center justify-between bg-slate-200 p-2 dark:bg-[#150D22]">
             <p className="w-[40%] text-xs">
               {currentLanguage.dashboard_popularChapter_chapterName_text}
             </p>
@@ -222,14 +213,19 @@ const PolygonChart = ({
                         <div
                           onMouseEnter={() => setHoveredCourse(index)}
                           onMouseLeave={() => setHoveredCourse(null)}
-                          className="border-1 rounded-full border p-1 text-xs transition duration-300 ease-in-out"
+                          className="border-2 rounded-full p-1 text-xs transition duration-300 ease-in-out"
                           style={{
                             borderColor: getButtonColor(),
                             backgroundColor:
                               hoveredCourse === index ? getButtonColor() : "",
                           }}
                         >
-                          <Eye />
+                        <Eye className="h-5 w-5"
+                              style={{
+                              color:
+                                hoveredCourse === index ? "#ffffff" : "",
+                            }}
+                        />
                         </div>
                       </Link>
                     </TooltipTrigger>
@@ -245,8 +241,8 @@ const PolygonChart = ({
               </div>
             ))}
         </div>
-        <div className="doughnutParent flex w-[30%] min-w-[360px] max-w-full flex-col justify-around rounded border px-4 dark:border-[#221b2e] dark:bg-[#0D071A]">
-          <p className="mt-3 text-[18px]">Course Statistics</p>
+        <div className="doughnutParent flex w-[30%] min-w-[360px] max-w-full flex-col justify-around rounded border-2 px-4 dark:border-[#221b2e] dark:bg-[#0D071A]">
+          <p className="mt-3 text-lg">{currentLanguage.dashboard_doughnutChart_title}</p>
           <CanvasJSChart options={doughnutOptions} />
           <div className="flex flex-wrap justify-between">
             {[
@@ -272,8 +268,8 @@ const PolygonChart = ({
                   style={{ borderColor: color }}
                 />
                 <div>
-                  <p className="m-0 text-[14px] text-gray-500">{label}</p>
-                  <p className="m-0 text-[18px] font-[900]">{value}%</p>
+                  <p className="m-0 text-md text-gray-500">{label}</p>
+                  <p className="m-0 text-md font-extrabold">{value}%</p>
                 </div>
                 <div className="border-1 mx-2 my-[2%] border-r border-gray-500" />
               </div>

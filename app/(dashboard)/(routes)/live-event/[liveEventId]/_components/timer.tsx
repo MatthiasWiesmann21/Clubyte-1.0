@@ -13,7 +13,7 @@ const Each = ({ str, num }: { str: string; num: number }) => (
 const Timer = ({ timeRemaining, endDateTime }: any) => (
   <div className="absolute inset-0 z-10 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-md backdrop-filter">
     {new Date(endDateTime) < new Date() ? (
-      <div className="text-lg font-semibold">The Event has ended</div>
+      <div className="text-lg font-semibold text-white">The Event has ended</div>
     ) : (
       <>
         <Each str="Days" num={timeRemaining?.days} />

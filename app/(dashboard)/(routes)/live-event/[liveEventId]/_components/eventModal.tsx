@@ -1,8 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
-import questionMark from "../../../../../../assets/icons/questionMarkImg.png";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import moment from "moment";
 import axios from "axios";
@@ -10,6 +8,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { useLanguage } from "@/lib/check-language";
+import { CircleHelp } from "lucide-react";
 
 const customStyles = {
   content: {
@@ -82,9 +81,9 @@ const EventModal = ({
       <Modal isOpen={modalIsOpen && !isEnded} style={customStyles}>
         <div className="flex flex-col items-center">
           <div className="w-[15%]">
-            <Image className="" alt="questionMark" src={questionMark} />
+            <CircleHelp />
           </div>
-          <p className="my-[3%] text-black">Do you want to end this session?</p>
+          <p className="my-[3%] text-black">{currentLanguage.liveEvent_eventMdal_title}</p>
           {remainingTime && (
             <p className="my-[3%] mt-0 text-[32px] font-black text-black">
               {formatTime(remainingTime)}
@@ -114,7 +113,7 @@ const EventModal = ({
               size="sm"
               className="w-full bg-emerald-500 hover:bg-emerald-600 md:w-auto"
             >
-              No
+              {currentLanguage.liveEvent_eventMdal_no}
             </Button>
             <Button
               onClick={async () => {
@@ -138,7 +137,7 @@ const EventModal = ({
               size="sm"
               className="w-full bg-emerald-500 hover:bg-emerald-600 md:w-auto"
             >
-              Yes
+              {currentLanguage.liveEvent_eventMdal_yes}
             </Button>
           </div>
         </div>

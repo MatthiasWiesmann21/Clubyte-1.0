@@ -34,7 +34,7 @@ export const CourseCounter = ({
 
   return (
     canAccess && (
-      <div className="text-prima flex w-full items-center rounded-full border border-black p-3 text-center text-sm text-slate-400 dark:border-white">
+      <div className="text-prima flex w-full items-center rounded-lg border-2 border-slate-300 p-3 text-center text-sm font-medium text-slate-400 dark:border-white">
         <div className="space-between flex items-center">
           <Info className="mr-2 h-5 w-5" />
           <p className="text-md xs:text-xs text-start">
@@ -47,11 +47,11 @@ export const CourseCounter = ({
         <div className="ml-auto">
           {isFrontend && (
             <Button
-              className="rounded-3xl xs:text-xs text-start"
+              className="rounded-lg border-2 border-slate-300 dark:border-slate-800 hover:border-slate-100 p-3 text-md xs:text-xs text-start"
               variant="outline"
               onClick={() => onOpen("createCourse")}
             >
-              <PlusCircle className="mr-2 h-4 w-4" />
+              <PlusCircle className="mr-2 h-5 w-5" />
               {currentLanguage.courses_createCourse_button_text}
             </Button>
           )}

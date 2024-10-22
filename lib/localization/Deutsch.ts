@@ -577,5 +577,11 @@ createContainer_form_placeholder: "z.B. 'Kunde XYZ'",
 createContainer_form_description: "Was wirst du in diesem Container lehren?",
 createContainer_cancel: "Abbrechen",
 createContainer_submit: "Erstellen",
-
+dashboard_doughnutChart_title: "Kursstatistiken",
+liveEvent_eventMdal_title: "Möchten Sie dieses Event beenden?",
+liveEvent_eventMdal_no: "Nein",
+liveEvent_eventMdal_yes: "Ja",
+dashboard_doughnut_completed: "Abgeschlossen",
+dashboard_doughnut_inprogress: "In Bearbeitung",
+dashboard_doughnut_notStarted: "Nicht begonnen",
 };

@@ -75,7 +75,7 @@ export const PostFavoriteCard = ({
 
   return (
     <TooltipProvider>
-      <div className="group my-5 h-full overflow-hidden rounded-lg border bg-[#f6f8fa] hover:shadow-sm dark:border-[#2e3135] dark:bg-[#1b1f23]">
+      <div className="group my-5 h-full overflow-hidden rounded-lg border-2 bg-[#f6f8fa] hover:shadow-sm dark:border-[#2e3135] dark:bg-[#1b1f23]">
         <div className="group h-full overflow-hidden hover:shadow-sm">
           <div className="m-4 flex flex-col">
             <div className="flex items-start justify-between">
@@ -105,7 +105,7 @@ export const PostFavoriteCard = ({
               <div className="flex items-center">
                 {category && (
                   <div
-                    className={`flex items-center gap-x-1 rounded-full border px-3 py-2 text-xs font-[600] transition`}
+                    className={`flex items-center gap-x-1 rounded-lg border-2 px-3 py-1 text-xs font-600 transition`}
                     style={{ borderColor: colorCode }}
                   >
                     <div className="truncate">{category}</div>

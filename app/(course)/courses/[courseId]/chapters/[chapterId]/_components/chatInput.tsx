@@ -79,7 +79,7 @@ export const ChatInputPost = ({
                 <div className={`relative flex items-center py-4 ${className}`}>
                   <Input
                     disabled={isLoading}
-                    className="flex w-full rounded-3xl border-none border-input bg-zinc-200/90 px-2 py-2 pr-10 text-sm text-zinc-600 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-700/75 dark:text-zinc-200"
+                    className="flex w-full rounded-lg border-none border-input bg-zinc-200/90 px-2 py-2 pr-10 text-sm text-zinc-600 placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-700/75 dark:text-zinc-200"
                     placeholder={placeHolder}
                     {...field}
                   />

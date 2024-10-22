@@ -46,10 +46,10 @@ export const OnlineCard = ({ profileId }: { profileId: string }) => {
     });
   };
   return (
-    <div className="flex items-center gap-x-2 rounded-md border p-3 dark:border-[#221b2e] dark:bg-[#0D071A]">
+    <div className="flex items-center gap-x-2 rounded-md border-2 p-3 dark:border-[#221b2e] dark:bg-[#0D071A]">
       <IconBadge variant={"default"} icon={Users} />
       <div>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-600">
           {currentLanguage?.infocard_currentOnlineUsers}
         </p>
         <p className="font-medium">
