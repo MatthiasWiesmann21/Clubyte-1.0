@@ -51,11 +51,11 @@ export const Categories = ({
   };
 
   return (
-    <div className="relative flex items-center">
+    <div className="relative flex items-center justify-start w-full sm:w-full md:w-[540px] lg:w-[700px] xl:w-[800px]">
       {/* Button zum Scrollen nach links */}
       <Button
         onClick={scrollLeft}
-        className="p-2 mb-2 mr-2 rounded-full"
+        className="p-2 mb-1 mr-2 rounded-full hover:text-slate-600 text-slate-400 dark:text-slate-200"
         variant="ghost"
       >
         <ChevronLeftCircleIcon size={14} className="h-6 w-6" />
@@ -63,7 +63,7 @@ export const Categories = ({
 
       <div
         ref={scrollRef}
-        className="no-scrollbar flex items-center gap-x-2 overflow-x-auto pb-2 scroll-smooth"
+        className="no-scrollbar flex-grow flex-start flex items-center gap-x-2 overflow-x-auto pb-1 scroll-smooth"
       >
         <CategoryItem
           label={"All"}
@@ -84,7 +84,7 @@ export const Categories = ({
       {/* Button zum Scrollen nach rechts */}
       <Button
         onClick={scrollRight}
-        className="p-2 mb-2 ml-2 rounded-full"
+        className="p-2 mb-1 ml-2 rounded-full hover:text-slate-600 text-slate-400 dark:text-slate-200"
         variant="ghost"
       >
         <ChevronRightCircleIcon size={14} className="h-6 w-6" />
