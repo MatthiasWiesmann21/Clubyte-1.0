@@ -92,7 +92,7 @@ export const EventFavoriteCard = ({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
-          borderColor: isHovered ? getBorderColor() : "transparent",
+          borderColor: isHovered ? getBorderColor() : "",
         }}
       >
         <div className="group h-full overflow-hidden rounded-lg bg-slate-100/60 p-2 transition hover:shadow-sm dark:border-[#1f182b] dark:bg-[#0c0319]">

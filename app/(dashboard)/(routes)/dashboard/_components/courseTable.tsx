@@ -46,7 +46,7 @@ const CourseTable = ({ courses, colors }: CourseTableProps) => {
           onMouseEnter={() => setIsViewAllHovered(true)}
           onMouseLeave={() => setIsViewAllHovered(false)}
           href={`/dashboard/course-list`}
-          className="border-2 flex items-center justify-center rounded-full px-3 py-1 text-sm transition duration-300 ease-in-out"
+          className="border-2 flex items-center justify-center rounded-full px-2 py-1 text-xs transition duration-300 ease-in-out"
           style={{
             borderColor: getButtonColor(),
             backgroundColor: isViewAllHovered ? getButtonColor() : "",

@@ -97,7 +97,7 @@ export const CourseFavoriteCard = ({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
-          borderColor: isHovered ? getBorderColor() : "transparent",
+          borderColor: isHovered ? getBorderColor() : "",
         }}
       >
         <div className="group h-full w-full overflow-hidden rounded-lg bg-slate-100/80 p-2 transition dark:bg-[#0c0319]">
