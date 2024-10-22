@@ -52,7 +52,9 @@ export const OnlineCard = ({ profileId }: { profileId: string }) => {
         <p className="text-sm text-gray-500">
           {currentLanguage?.infocard_currentOnlineUsers}
         </p>
-        <p className="font-medium">{userCount}</p>
+        <p className="font-medium">
+          {userCount < 10 ? `0${userCount}` : userCount}
+        </p>
       </div>
     </div>
   );

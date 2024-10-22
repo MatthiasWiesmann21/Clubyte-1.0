@@ -34,7 +34,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
   const member = await db.member.findFirst({
     where: {
       serverId: params.serverId,
-      profileId: profile?.id || '',
+      profileId: profile?.id || "",
       containerId: session?.user?.profile?.containerId,
     },
   });
@@ -70,7 +70,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
           <ChatInput
             name={channel.name}
             type="channel"
-            apiUrl="/api/socket/messages"
+            apiUrl="/api/chat/messages"
             query={{
               channelId: channel.id,
               serverId: channel.serverId,
