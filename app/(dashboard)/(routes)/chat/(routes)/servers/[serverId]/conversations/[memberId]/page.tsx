@@ -31,7 +31,7 @@ const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
   const currentMember = await db.member.findFirst({
     where: {
       serverId: params.serverId,
-      profileId: profile?.id || '',
+      profileId: profile?.id || "",
       containerId: session?.user?.profile?.containerId,
     },
     include: {
@@ -87,7 +87,7 @@ const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
           <ChatInput
             name={otherMember.profile.name}
             type="conversation"
-            apiUrl="/api/socket/direct-messages"
+            apiUrl="/api/chat/messages"
             query={{
               conversationId: conversation.id,
             }}
