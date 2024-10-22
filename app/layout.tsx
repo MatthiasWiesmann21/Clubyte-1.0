@@ -18,7 +18,6 @@ export const metadata: Metadata = {
   description: "Bring your Community together.",
 };
 
-
 export default async function RootLayout({
   children,
 }: {
@@ -30,9 +29,9 @@ export default async function RootLayout({
 
   const user = session?.user;
 
-  if (!user) {
-    return redirect("/");
-  }
+  // if (!user) {
+  //   return redirect("/");
+  // }
 
   return (
     <html lang="en">
@@ -47,8 +46,8 @@ export default async function RootLayout({
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
         <AuthProvider session={session}>
-        <ModalProvider />
-        {children}
+          <ModalProvider />
+          {children}
         </AuthProvider>
       </body>
     </html>
