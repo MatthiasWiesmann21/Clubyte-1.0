@@ -34,7 +34,7 @@ export const CourseCounter = ({
 
   return (
     canAccess && (
-      <div className="text-prima flex w-full items-center rounded-lg border-2 border-slate-300 p-3 text-center text-sm font-medium text-slate-400 dark:border-white">
+      <div className="text-prima flex w-full items-center rounded-lg border-2 p-3 text-center text-sm font-medium text-slate-400">
         <div className="space-between flex items-center">
           <Info className="mr-2 h-5 w-5" />
           <p className="text-md xs:text-xs text-start">

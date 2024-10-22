@@ -434,7 +434,7 @@ export const Russian: Record<string, string> = {
   profile_TitleForm_placeholder: "ИмяПользователя123",
   profile_TitleForm_save: "Сохранить",
   courses_list_backToDashboard_button_text: "Вернуться к панели",
-  dashboard_courseTable_CourseStatus_Title: "Статус курса",
+  dashboard_courseTable_CourseStatus_Title: "Мои Курсы",
   dashboard_courseTable_courseName: "Название курса",
   dashboard_courseTable_paid: "Оплачено",
   dashboard_courseTable_progress: "Прогресс",
@@ -615,4 +615,5 @@ export const Russian: Record<string, string> = {
   dashboard_doughnut_completed: "Завершено",
   dashboard_doughnut_inprogress: "В процессе",
   dashboard_doughnut_notStarted: "Не начато",
+  dashboard_courseTable_viewFavoriteChapters_button_text: "Мои Избранные",
 };

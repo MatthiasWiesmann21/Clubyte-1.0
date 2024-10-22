@@ -418,7 +418,7 @@ export const Mandarin: Record<string, string> = {
   profile_TitleForm_placeholder: "用户名123",
   profile_TitleForm_save: "保存",
   courses_list_backToDashboard_button_text: "返回仪表板",
-  dashboard_courseTable_CourseStatus_Title: "课程状态",
+  dashboard_courseTable_CourseStatus_Title: "我的课程",
   dashboard_courseTable_courseName: "课程名称",
   dashboard_courseTable_paid: "已支付",
   dashboard_courseTable_progress: "进度",
@@ -592,4 +592,5 @@ export const Mandarin: Record<string, string> = {
   dashboard_doughnut_completed: "已完成",
   dashboard_doughnut_inprogress: "进行中",
   dashboard_doughnut_notStarted: "未开始",
+  dashboard_courseTable_viewFavoriteChapters_button_text: "我的收藏",
 };

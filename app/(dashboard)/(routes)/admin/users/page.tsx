@@ -11,8 +11,7 @@ const UserPage = async () => {
   const userId = session?.user.id||null;
 
   const isRoleAdmins = await isAdmin();
-  const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || (userId && await isOwner(userId));
+  const canAccess = isRoleAdmins || (userId && await isOwner(userId));
 
   if (!canAccess) {
     return redirect("/search");

@@ -138,6 +138,20 @@ const PolygonChart = ({
         <div className="min-w-xs mr-2 w-full rounded border-2 dark:border-[#221b2e] dark:bg-[#0D071A]">
           <div className="flex items-center justify-between p-2 text-lg">
             <div>{currentLanguage.dashboard_popularChapter_title}</div>
+            <Link
+              onMouseEnter={() => setHoveredCourse(-1)}
+              onMouseLeave={() => setHoveredCourse(null)}
+              className="border-2 flex items-center justify-center rounded-full px-2 py-1 text-xs transition duration-300 ease-in-out"
+              style={{
+                borderColor: getButtonColor(),
+                backgroundColor:
+                  hoveredCourse === -1 ? getButtonColor() : "",
+                  color: hoveredCourse ? "#ffffff" : "",
+              }}
+              href={`/dashboard/favorite-chapters`}            
+            >
+              {currentLanguage.dashboard_courseTable_viewFavoriteChapters_button_text}
+            </Link>
           </div>
           <div className="flex items-center justify-between bg-slate-200 p-2 dark:bg-[#150D22]">
             <p className="w-[40%] text-xs">
@@ -213,19 +227,19 @@ const PolygonChart = ({
                         <div
                           onMouseEnter={() => setHoveredCourse(index)}
                           onMouseLeave={() => setHoveredCourse(null)}
-                          className="border-2 rounded-full p-1 text-xs transition duration-300 ease-in-out"
+                          className="rounded-full border-2 p-1 text-xs transition duration-300 ease-in-out"
                           style={{
                             borderColor: getButtonColor(),
                             backgroundColor:
                               hoveredCourse === index ? getButtonColor() : "",
                           }}
                         >
-                        <Eye className="h-5 w-5"
-                              style={{
-                              color:
-                                hoveredCourse === index ? "#ffffff" : "",
+                          <Eye
+                            className="h-5 w-5"
+                            style={{
+                              color: hoveredCourse === index ? "#ffffff" : "",
                             }}
-                        />
+                          />
                         </div>
                       </Link>
                     </TooltipTrigger>
@@ -242,7 +256,9 @@ const PolygonChart = ({
             ))}
         </div>
         <div className="doughnutParent flex w-[30%] min-w-[360px] max-w-full flex-col justify-around rounded border-2 px-4 dark:border-[#221b2e] dark:bg-[#0D071A]">
-          <p className="mt-3 text-lg">{currentLanguage.dashboard_doughnutChart_title}</p>
+          <p className="mt-3 text-lg">
+            {currentLanguage.dashboard_doughnutChart_title}
+          </p>
           <CanvasJSChart options={doughnutOptions} />
           <div className="flex flex-wrap justify-between">
             {[
@@ -268,8 +284,8 @@ const PolygonChart = ({
                   style={{ borderColor: color }}
                 />
                 <div>
-                  <p className="m-0 text-md text-gray-500">{label}</p>
-                  <p className="m-0 text-md font-extrabold">{value}%</p>
+                  <p className="text-md m-0 text-gray-500">{label}</p>
+                  <p className="text-md m-0 font-extrabold">{value}%</p>
                 </div>
                 <div className="border-1 mx-2 my-[2%] border-r border-gray-500" />
               </div>

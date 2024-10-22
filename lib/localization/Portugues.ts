@@ -433,7 +433,7 @@ export const Portugues: Record<string, string> = {
   profile_TitleForm_placeholder: "NomeUsuario123",
   profile_TitleForm_save: "Salvar",
   courses_list_backToDashboard_button_text: "Voltar ao Painel",
-  dashboard_courseTable_CourseStatus_Title: "Status do Curso",
+  dashboard_courseTable_CourseStatus_Title: "Meus Cursos",
   dashboard_courseTable_courseName: "Nome do Curso",
   dashboard_courseTable_paid: "Pago",
   dashboard_courseTable_progress: "Progresso",
@@ -621,4 +621,5 @@ export const Portugues: Record<string, string> = {
   dashboard_doughnut_completed: "Concluído",
   dashboard_doughnut_inprogress: "Em andamento",
   dashboard_doughnut_notStarted: "Não iniciado",
+  dashboard_courseTable_viewFavoriteChapters_button_text: "Meus Favoritos",
 };
