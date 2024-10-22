@@ -10,6 +10,7 @@ import { ModeToggle } from '@/components/mode-toggle';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppSVG from '@/components/appsvg';
+import { Input } from '@/components/ui/input';
 
 export default function SignUp() {
   const router = useRouter();
@@ -123,12 +124,12 @@ export default function SignUp() {
               <label className="mb-2 block text-lg md:text-xl font-medium text-black dark:text-white" htmlFor="name">
                 Name
               </label>
-              <input
+              <Input
                 id="name"
                 type="text"
                 name="name"
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 dark:text-gray-200 focus:border-gray-300 focus:outline-none text-lg"
+                className="w-full rounded-lg border border-gray-300 px-2 py-2 h-12 text-gray-700 dark:text-gray-200 focus:border-gray-300 focus:outline-none text-lg"
                 placeholder="Enter your name"
                 autoComplete='off'
                 autoFocus
@@ -138,12 +139,12 @@ export default function SignUp() {
               <label className="mb-2 block text-lg md:text-xl font-medium text-black dark:text-white" htmlFor="email">
                 Email
               </label>
-              <input
+              <Input
                 id="email"
                 type="email"
                 name="email"
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 dark:text-gray-200 focus:border-gray-300 focus:outline-none text-lg"
+                className="w-full rounded-lg border border-gray-300 px-2 py-2 h-12 text-gray-700 dark:text-gray-200 focus:border-gray-300 focus:outline-none text-lg"
                 placeholder="Enter your email"
                 autoComplete='off'
               />
@@ -153,12 +154,12 @@ export default function SignUp() {
                 Password
               </label>
               <div className="relative">
-                <input
+                <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   name="password"
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 dark:text-gray-200 focus:border-gray-300 focus:outline-none text-lg"
+                  className="w-full rounded-lg border border-gray-300 px-2 py-2 h-12 text-gray-700 dark:text-gray-200 focus:border-gray-300 focus:outline-none text-lg"
                   placeholder="Enter your password"
                 />
                 <span className='absolute right-3 top-3 cursor-pointer' onClick={() => setShowPassword(!showPassword)}>
@@ -171,12 +172,12 @@ export default function SignUp() {
                 Confirm Password
               </label>
               <div className="relative">
-                <input
+                <Input
                   id="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
                   onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 dark:text-gray-200 focus:border-gray-300 focus:outline-none text-lg"
+                  className="w-full rounded-lg border border-gray-300 px-2 py-2 h-12 text-gray-700 dark:text-gray-200 focus:border-gray-300 focus:outline-none text-lg"
                   placeholder="Confirm your password"
                 />
                 <span className='absolute right-3 top-3 cursor-pointer' onClick={() => setShowConfirmPassword(!showConfirmPassword)}>{showConfirmPassword ? <EyeOff /> : <Eye />}</span>
@@ -185,7 +186,7 @@ export default function SignUp() {
             <Button
               onClick={handleSubmit}
               type="button"
-              className="w-full bg-[#EC2089] text-white px-4 h-14 rounded-full hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              className="w-full bg-pink-600 text-white px-4 h-14 rounded-full hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
               <div className="flex justify-center text-lg md:text-xl">
                 {beingSubmitted ? <Image src="/loader-blur-white.svg" alt="preloader" width={20} height={20} />  : 'Sign Up'}

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import AppSVG from "@/components/appsvg";
+import { Input } from "@/components/ui/input";
 
 export default function SignUp() {
   const [sendingEmail, setSendingEmail] = useState(false);
@@ -79,26 +80,26 @@ export default function SignUp() {
             <div className="form-header">
               <Link
                 href={`/auth/sign-in`}
-                className="mb-2 flex items-center text-lg transition hover:opacity-75"
+                className="mb-2 flex items-center text-md transition hover:opacity-75"
               >
-                <ArrowLeft className="mr-2 h-6 w-6" />
+                <ArrowLeft className="mr-2 h-5 w-5" />
                 Back to login
               </Link>
               <h2>Forgot your password?</h2>
             </div>
             <div className="mb-4 mt-6">
               <label
-                className="mb-2 block text-lg font-medium text-black dark:text-white"
+                className="mb-2 block text-xl font-medium text-black dark:text-white"
                 htmlFor="email"
               >
                 Email
               </label>
-              <input
+              <Input
                 id="email"
                 type="email"
                 name="email"
                 onChange={(e) => setUserEmail(e.target.value)}
-                className="w-full rounded-lg border border-gray-400 px-4 py-3 text-gray-700 dark:text-gray-200 focus:border-gray-500 focus:outline-none"
+                className="w-full rounded-lg border text-lg border-gray-400 px-2 py-2 h-12 text-gray-700 dark:text-gray-200 focus:border-gray-500 focus:outline-none"
                 placeholder="Enter your email"
                 autoComplete="off"
                 autoFocus

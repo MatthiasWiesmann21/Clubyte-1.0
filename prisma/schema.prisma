@@ -12,6 +12,7 @@ generator client {
 model Container {
   id            String  @id @default(uuid())
   name          String  @unique
+  domain        String? @unique
   link          String? @db.Text
   icon          String? @db.Text
   imageUrl      String? @db.Text
