@@ -120,7 +120,7 @@ export const CourseCard = ({
           borderColor: isHovered ? getBorderColor() : "",
         }}
       >
-        <div className="group h-full w-full overflow-hidden rounded-lg bg-slate-100/80 p-2 transition dark:bg-[#0c0319] hover:shadow-lg">
+        <div className="group h-full w-full overflow-hidden rounded-lg bg-slate-100/80 p-2 transition hover:shadow-lg dark:bg-[#0c0319]">
           <Link href={`/courses/${id}`}>
             <div className="relative aspect-video w-full overflow-hidden rounded-md border-2 border-slate-300/50 dark:border-slate-700/60">
               <div className="absolute left-2 top-2 z-10 flex space-x-2">
@@ -195,7 +195,7 @@ export const CourseCard = ({
               <Star
                 size={16}
                 fill={!!currentFavorite ? "#FFD700" : "#ffffff00"}
-                className="mx-1 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 w-7 h-7 p-1 rounded-md transition duration-200 ease-in-out hover:scale-110"
+                className="mx-1 h-7 w-7 cursor-pointer rounded-md p-1 transition duration-200 ease-in-out hover:scale-110 hover:bg-slate-200 dark:hover:bg-slate-700"
                 style={!!currentFavorite ? { color: "#FFD700" } : {}}
                 onClick={async () => {
                   const response = await axios?.post(`/api/favorite/create`, {
@@ -250,10 +250,10 @@ export const CourseCard = ({
           </div>
 
           <Link href={`/courses/${id}`}>
-            <div className="mt-2 flex flex-col">
+            <div className="mt-2">
               <Tooltip>
                 <TooltipTrigger>
-                  <p className="my-2 mx-0.5 line-clamp-2 text-start text-[16px] font-semibold">
+                  <p className="text-md mx-0.5 my-2 line-clamp-2 text-start font-semibold">
                     {title}
                   </p>
                 </TooltipTrigger>
@@ -266,11 +266,10 @@ export const CourseCard = ({
             </div>
             <div className="grid grid-cols-1 gap-4">
               {/* First row: chapterLength, duration, level */}
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid sm:grid-cols-3 xs:grid-cols-2 gap-1">
                 <div className="flex items-center">
                   <BookOpen
-                    width={14}
-                    height={14}
+                    className="h-5 w-5" // fixed width and height (e.g., w-5 = 20px)
                     style={{ color: ThemOutlineColor }}
                   />
                   <span className="ml-1 text-xs">
@@ -283,8 +282,7 @@ export const CourseCard = ({
                 {duration && (
                   <div className="flex items-center">
                     <Clock
-                      width={14}
-                      height={14}
+                      className="h-5 w-5" // ensure fixed width and height here as well
                       style={{ color: ThemOutlineColor }}
                     />
                     <span className="ml-1 text-xs">
@@ -295,8 +293,7 @@ export const CourseCard = ({
                 {level && (
                   <div className="flex items-center">
                     <GraduationCap
-                      width={14}
-                      height={14}
+                      className="h-5 w-5" // fixed size for GraduationCap
                       style={{ color: ThemOutlineColor }}
                     />
                     <span className="ml-1 text-xs">
