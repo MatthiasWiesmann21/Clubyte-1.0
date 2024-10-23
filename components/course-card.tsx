@@ -269,7 +269,7 @@ export const CourseCard = ({
               <div className="grid sm:grid-cols-3 xs:grid-cols-2 gap-1">
                 <div className="flex items-center">
                   <BookOpen
-                    className="h-5 w-5" // fixed width and height (e.g., w-5 = 20px)
+                    className="h-4 w-4" // fixed width and height (e.g., w-5 = 20px)
                     style={{ color: ThemOutlineColor }}
                   />
                   <span className="ml-1 text-xs">
@@ -282,7 +282,7 @@ export const CourseCard = ({
                 {duration && (
                   <div className="flex items-center">
                     <Clock
-                      className="h-5 w-5" // ensure fixed width and height here as well
+                      className="h-4 w-4" // ensure fixed width and height here as well
                       style={{ color: ThemOutlineColor }}
                     />
                     <span className="ml-1 text-xs">
@@ -293,7 +293,7 @@ export const CourseCard = ({
                 {level && (
                   <div className="flex items-center">
                     <GraduationCap
-                      className="h-5 w-5" // fixed size for GraduationCap
+                      className="h-4 w-4" // fixed size for GraduationCap
                       style={{ color: ThemOutlineColor }}
                     />
                     <span className="ml-1 text-xs">

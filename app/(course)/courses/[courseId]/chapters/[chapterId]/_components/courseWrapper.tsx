@@ -199,7 +199,6 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
                 </div>
               )}
             </div>
-            <Separator />
             <div className="p-4 pt-0">
               <Preview value={chapter?.description!} duration={chapter?.duration ?? ""} level={chapter?.level ?? ""} ThemeOutlineColor={ThemeOutlineColor} />
             </div>
