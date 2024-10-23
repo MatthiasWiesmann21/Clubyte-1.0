@@ -40,7 +40,7 @@ export const CoursesList = ({
     <div className="flex">
       <div className="w-full">
         <div
-          className="flex w-full gap-2"
+          className="flex w-full gap-1"
           // className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4"
         >
           {items.map((item) => (
