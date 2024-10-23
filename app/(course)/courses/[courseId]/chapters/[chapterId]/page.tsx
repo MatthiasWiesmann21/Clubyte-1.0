@@ -34,6 +34,12 @@ const ChapterIdPage = async ({
     return redirect("/");
   }
 
+  const container = await db.container.findUnique({
+    where: {
+      id: session?.user?.profile?.containerId,
+    },
+  })
+
   const _course = await db.course.findUnique({
     where: {
       id: params.courseId,
@@ -66,7 +72,7 @@ const ChapterIdPage = async ({
 
   return (
     <div className="flex justify-between">
-      <CourseWrapper params={params} currentLanguage={currentLanguage} profileImage={profile?.imageUrl!} purchaseLabel={currentLanguage.chapter_purchaseBanner_text}/>
+      <CourseWrapper params={params} currentLanguage={currentLanguage} profileImage={profile?.imageUrl!} purchaseLabel={currentLanguage.chapter_purchaseBanner_text} ThemeOutlineColor={container?.ThemeOutlineColor ?? ""}/>
       <div className="max-h-[500px] min-h-[400px] md:min-w-[270px] md:max-w-[350px] lg:min-w-[350px] lg:max-w-[400px]">
         <CourseSidebar course={_course} progressCount={progressCount} />
       </div>

@@ -15,11 +15,13 @@ import { ChapterActions } from "./_components/chapter-actions";
 import { languageServer } from "@/lib/check-language-server";
 import { AuthorForm } from "./_components/author-form";
 import authOptions from "@/lib/auth"; // Ensure this is correctly configured
+import { DurationForm } from "./_components/duration-form";
+import { LevelForm } from "./_components/level-form";
 
 const ChapterIdPage = async ({
-  params
+  params,
 }: {
-  params: { courseId: string; chapterId: string }
+  params: { courseId: string; chapterId: string };
 }) => {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
@@ -32,7 +34,7 @@ const ChapterIdPage = async ({
   const chapter = await db.chapter.findUnique({
     where: {
       id: params.chapterId,
-      courseId: params.courseId
+      courseId: params.courseId,
     },
   });
 
@@ -40,11 +42,7 @@ const ChapterIdPage = async ({
     return redirect("/");
   }
 
-  const requiredFields = [
-    chapter.title,
-    chapter.description,
-    chapter.videoUrl,
-  ];
+  const requiredFields = [chapter.title, chapter.description, chapter.videoUrl];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -66,12 +64,12 @@ const ChapterIdPage = async ({
           <div className="w-full">
             <Link
               href={`/admin/courses/${params.courseId}`}
-              className="flex items-center text-sm hover:opacity-75 transition mb-6"
+              className="mb-6 flex items-center text-sm transition hover:opacity-75"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowLeft className="mr-2 h-4 w-4" />
               {currentLanguage.courses_chapter_backToCourse_button_text}
             </Link>
-            <div className="flex items-center justify-between w-full">
+            <div className="flex w-full items-center justify-between">
               <div className="flex flex-col gap-y-2">
                 <h1 className="text-2xl font-medium">
                   {currentLanguage.courses_chapter_title}
@@ -89,7 +87,7 @@ const ChapterIdPage = async ({
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-4">
             <div>
               <div className="flex items-center gap-x-2">
@@ -108,10 +106,22 @@ const ChapterIdPage = async ({
                 courseId={params.courseId}
                 chapterId={params.chapterId}
               />
-              <AuthorForm
+              <DurationForm
                 initialData={chapter}
                 courseId={params.courseId}
-                chapterId={params.chapterId} 
+                chapterId={params.chapterId}
+              />
+              <LevelForm
+                initialData={chapter}
+                courseId={params.courseId}
+                chapterId={params.chapterId}
+                options={[
+                  { label: "Beginner", value: "Beginner" },
+                  { label: "Intermediate", value: "Intermediate" },
+                  { label: "Advanced", value: "Advanced" },
+                  { label: "Expert", value: "Expert" },
+                  { label: "Master", value: "Master" },
+                ]}
               />
             </div>
             <div>
@@ -139,6 +149,11 @@ const ChapterIdPage = async ({
               initialData={chapter}
               chapterId={params.chapterId}
               courseId={params.courseId}
+            />
+            <AuthorForm
+              initialData={chapter}
+              courseId={params.courseId}
+              chapterId={params.chapterId}
             />
           </div>
         </div>
