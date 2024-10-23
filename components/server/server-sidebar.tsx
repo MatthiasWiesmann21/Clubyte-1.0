@@ -25,7 +25,7 @@ const iconMap = {
   [ChannelType.VIDEO]: <Video className="mr-2 h-4 w-4" />,
 };
 
-const roleIconMap : any = {
+const roleIconMap: any = {
   [MemberRole.GUEST]: null,
   [MemberRole.MODERATOR]: (
     <ShieldCheck className="mr-2 h-4 w-4 text-indigo-500" />
@@ -39,7 +39,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   if (!profile) {
     return redirect("/");
   }
-  
+
   const servers = await db.server.findMany({
     orderBy: {
       createdAt: "asc",
@@ -53,7 +53,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
     },
   });
 
-  const server  = await db.server.findFirst({
+  const server = await db.server.findFirst({
     where: {
       id: serverId,
       containerId: profile.containerId,
@@ -65,22 +65,23 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
         },
       },
       members: {
-        include: {
-        },
+        include: {},
         orderBy: {
           role: "asc",
         },
       },
     },
   });
-  const newMembers = await Promise.all((server?.members as any[]).map(async (member) =>{
-    const profile = await db.profile.findFirst({
-      where : {
-        id : member.profileId
-      }
-    });
-    return ({...member , profile })
-  }))
+  const newMembers = await Promise.all(
+    (server?.members as any[]).map(async (member) => {
+      const profile = await db.profile.findFirst({
+        where: {
+          id: member.profileId,
+        },
+      });
+      return { ...member, profile };
+    })
+  );
 
   const textChannels = server?.channels.filter(
     (channel) => channel.type === ChannelType.TEXT
@@ -110,7 +111,12 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
       className="flex h-full w-full flex-col bg-slate-200/70 text-primary dark:bg-[#0A0118]"
       // style={{ border: "10px solid red" }}
     >
-      <ServerHeader servers={servers} server={{...server , members : newMembers}} role={role} profile={profile} />
+      <ServerHeader
+        servers={servers}
+        server={{ ...server, members: newMembers }}
+        role={role}
+        profile={profile}
+      />
       <Separator className="bg-slate-300 dark:bg-zinc-700" />
       <ScrollArea className="flex-1 px-3">
         <div className="mt-2">
@@ -222,12 +228,19 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               sectionType="members"
               role={role}
               label={currentLanguage.chat_serversection_label_member}
-              server={{...server , members : newMembers}}
+              server={{ ...server, members: newMembers }}
             />
             <div className="space-y-[2px]">
-              {newMembers.map((member) => (
-                <ServerMember key={member.id} member={member} server={server} profileOnlineStatus={profile.isOnline} />
-              ))}
+              {newMembers
+                ?.filter((member) => member.profileId !== profile.id)
+                .map((member) => (
+                  <ServerMember
+                    key={member.id}
+                    member={member}
+                    server={server}
+                    profileOnlineStatus={profile.isOnline}
+                  />
+                ))}
             </div>
           </div>
         )}
