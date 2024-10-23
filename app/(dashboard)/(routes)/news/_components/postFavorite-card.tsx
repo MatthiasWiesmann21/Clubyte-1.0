@@ -30,32 +30,39 @@ import toast from "react-hot-toast";
 
 interface PostFavoriteCardProps {
   id: string;
-  description: string;
   imageUrl: string;
+  category: string;
+  description: string;
   createdAt: string;
   publisherName: string;
   publisherImageUrl: string;
-  category: string;
   colorCode?: string;
   likesCount: number;
-  currentFavorite: boolean;
+  favoritesCount: number;
   currentLike: boolean;
+  currentFavorite: boolean;
+  commentsWithLikes: any;
+  commentsCount: number;
   updateLikeComment: any;
+  profileImage: string;
 }
 
 export const PostFavoriteCard = ({
   id,
-  description,
   imageUrl,
+  category,
+  description,
   createdAt,
   publisherName,
   publisherImageUrl,
-  category,
   colorCode,
   likesCount,
   currentLike,
   currentFavorite,
+  commentsWithLikes,
+  commentsCount,
   updateLikeComment,
+  profileImage,
 }: PostFavoriteCardProps) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const { theme } = useTheme();
@@ -79,8 +86,8 @@ export const PostFavoriteCard = ({
     <TooltipProvider>
       <div className="group my-5 h-full overflow-hidden rounded-lg border-2 bg-[#f6f8fa] hover:shadow-sm dark:border-[#2e3135] dark:bg-[#1b1f23]">
         <div className="group h-full overflow-hidden hover:shadow-sm">
-          <div className="m-4 flex flex-col">
-            <div className="flex items-start justify-between">
+          <div className="flex flex-col">
+            <div className="mx-4 mt-5 flex items-start justify-between">
               <div className="flex items-center">
                 <UserAvatar
                   src={publisherImageUrl}
@@ -107,7 +114,7 @@ export const PostFavoriteCard = ({
               <div className="flex items-center">
                 {category && (
                   <div
-                    className={`flex items-center gap-x-1 rounded-lg border-2 px-3 py-1 text-xs font-600 transition`}
+                    className={`font-600 flex items-center gap-x-1 rounded-lg border-2 px-3 py-1 text-xs transition`}
                     style={{ borderColor: colorCode }}
                   >
                     <div className="truncate">{category}</div>
@@ -147,61 +154,44 @@ export const PostFavoriteCard = ({
                 )}
               </div>
             </div>
-            <div className="font-400 text-sm text-black dark:text-white">
+            <div className="font-500 mx-4 text-sm text-black dark:text-white">
               <PostPreview value={description} />
             </div>
             {imageUrl && (
-              <div className="relative mt-4 h-64 w-full overflow-hidden">
+              <div className="relative mt-4 flex aspect-video w-full items-center justify-center rounded-md">
+                {isImageLoading ? (
+                  theme === "dark" ? (
+                    <ClubyteLoader
+                      className="h-64 w-64"
+                      theme="dark"
+                      color="1b1f23"
+                    />
+                  ) : (
+                    <ClubyteLoader
+                      className="h-64 w-64"
+                      theme="light"
+                      color="f6f8fa"
+                    />
+                  )
+                ) : null}
                 <Image
                   src={imageUrl}
                   alt="post"
                   fill
                   className="object-cover"
-                  />
-                  </div>
-            )}
-            <div className="flex items-center justify-between pt-2">
-              <div className="flex">
-                <div
-                  onClick={async () => {
-                    const response = await axios?.post(`/api/like/create`, {
-                      postId: id,
-                    });
-                    if (response?.status === 200) updateLikeComment(true);
-                  }}
-                  className="m-2 flex cursor-pointer items-center justify-around "
-                >
-                  <Heart
-                    className={
-                      !!currentLike
-                        ? "text-[#f43f5e] transition duration-200 ease-in-out hover:scale-110"
-                        : "border-black transition duration-200 ease-in-out hover:scale-110"
-                    }
-                    fill={!!currentLike ? "#f43f5e" : "transparent"}
-                  />
-                  <span className="ml-2 mr-1">{likesCount}</span>
-                  Likes
-                </div>
-                <div
-                  onClick={async () => {
-                    const response = await axios?.post(`/api/favorite/create`, {
-                      postId: id,
-                    });
-                    if (response?.status === 200) updateLikeComment(true);
-                  }}
-                  className="m-2 flex cursor-pointer items-center justify-around "
-                >
-                  <Star
-                    className={
-                      !!currentFavorite
-                        ? "text-[#FFD700] transition duration-200 ease-in-out hover:scale-110"
-                        : "border-black transition duration-200 ease-in-out hover:scale-110"
-                    }
-                    fill={!!currentFavorite ? "#FFD700" : "transparent"}
-                  />
-                </div>
+                />
               </div>
-            </div>
+            )}
+            <LikeComment
+              id={id}
+              profileImage={profileImage}
+              likesCount={likesCount}
+              currentLike={currentLike}
+              currentFavorite={currentFavorite}
+              commentsWithLikes={commentsWithLikes}
+              commentsCount={commentsCount}
+              updateLikeComment={updateLikeComment}
+            />
           </div>
         </div>
       </div>

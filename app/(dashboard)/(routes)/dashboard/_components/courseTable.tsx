@@ -32,7 +32,7 @@ const CourseTable = ({ courses, colors }: CourseTableProps) => {
   );
 
   const getButtonColor = () => {
-    if (theme === "dark") {
+    if (theme !== "dark") {
       return colors?.DarkPrimaryButtonColor;
     }
     return colors?.PrimaryButtonColor;
@@ -143,7 +143,14 @@ const CourseTable = ({ courses, colors }: CourseTableProps) => {
                   <Eye
                     className="h-5 w-5"
                     style={{
-                      color: hoveredCourse === index ? "#ffffff" : "",
+                      color:
+                        theme === "dark"
+                          ? hoveredCourse === index
+                            ? "#ffffff"
+                            : "#ffffff"
+                          : hoveredCourse === index
+                          ? "#ffffff"
+                          : "#000000",
                     }}
                   />
                 </div>

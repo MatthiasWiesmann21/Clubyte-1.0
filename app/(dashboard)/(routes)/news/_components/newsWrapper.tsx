@@ -13,6 +13,7 @@ import { PostFavoriteCard } from "./postFavorite-card";
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
+import { ScrollArea } from "@/components/scroll-area";
 
 type PostWithProgressWithCategory = Post & {
   category: Category | null;
@@ -108,9 +109,9 @@ const NewsWrapper = ({
 
   return (
     <div className="space-y-4 px-4 pt-4 dark:bg-[#110524]">
-      <div className="flex flex-col items-start justify-center w-full md:flex-row md:space-x-4">
+      <div className="flex w-full flex-col items-start justify-center md:flex-row md:space-x-4">
         {/* Main Newsfeed Section */}
-        <div className="flex-grow w-full">
+        <div className="w-full flex-grow">
           <Categories
             items={categories}
             ThemeOutlineColor={ThemeOutlineColor}
@@ -166,10 +167,10 @@ const NewsWrapper = ({
         </div>
 
         {/* My Favorites Section (hidden on mobile) */}
-        <div className="sticky top-8 w-full">
+        <div className="top-8 w-full">
           {profileRole === "ADMIN" ? (
             <Button
-              className="w-42 inline-flex hidden text-slate-400 items-center rounded-lg border-2 text-sm lg:inline-flex hover:border-transparent"
+              className="w-42 inline-flex hidden items-center rounded-lg border-2 text-sm text-slate-400 hover:border-transparent lg:inline-flex"
               variant="outline"
               onClick={() => onOpen("createPost")}
             >
@@ -189,17 +190,21 @@ const NewsWrapper = ({
                 <PostFavoriteCard
                   key={item?.id}
                   id={item?.id}
+                  imageUrl={item?.imageUrl ?? ""}
                   category={item?.category?.name ?? ""}
                   description={item?.description ?? ""}
-                  imageUrl={item?.imageUrl ?? ""}
                   createdAt={new Date(item?.publishTime!).toDateString()}
                   publisherName={item?.publisherName!}
                   publisherImageUrl={item?.publisherImageUrl!}
                   colorCode={item?.category?.colorCode!}
                   likesCount={item?.likesCount}
-                  updateLikeComment={getPosts}
+                  favoritesCount={item?.favoritesCount}
                   currentLike={item?.currentLike}
                   currentFavorite={item?.currentFavorite}
+                  commentsWithLikes={item?.commentsWithLikes}
+                  commentsCount={item?.commentsCount}
+                  updateLikeComment={getPosts}
+                  profileImage={profileImage}
                 />
               ))}
             </div>
