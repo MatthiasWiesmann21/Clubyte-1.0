@@ -9,7 +9,7 @@ const Link = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get('/api/containers');
-      const data = await response.data();
+      const data = await response.data;
       setFavicon(data?.icon);
     };
 

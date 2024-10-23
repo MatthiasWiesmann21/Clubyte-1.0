@@ -57,7 +57,7 @@ export const ServerHeader = ({
         <div className="mr-2 flex-grow">
           <DropdownMenu>
             <DropdownMenuTrigger className="focus:outline-none" asChild>
-              <button className="text-md flex h-12 w-full items-center rounded-xl px-3 font-semibold transition duration-300 ease-in-out hover:bg-zinc-700/10 dark:border-neutral-800 dark:hover:bg-zinc-700/50">
+              <button className="text-md flex h-12 w-full items-center rounded-lg px-3 font-semibold transition duration-300 ease-in-out hover:bg-zinc-700/10 dark:border-neutral-800 dark:hover:bg-zinc-700/50">
                 <Image
                   priority
                   src={server?.imageUrl}
