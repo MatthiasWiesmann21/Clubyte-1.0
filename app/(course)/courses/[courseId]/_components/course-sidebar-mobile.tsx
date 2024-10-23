@@ -72,7 +72,7 @@ export const CourseSidebarMobile = async ({
               {course.title}
             </h1>
             <div>
-              <DescriptionModal description={course.description!} title={course.title}>
+              <DescriptionModal description={course.description!} title={course.title!}>
                 <Button variant="ghost" className="h-8 w-8 p-0">
                   <Info width={16} height={16} />
                 </Button>
