@@ -97,39 +97,8 @@ export const ChatMessages = ({
     );
   }
 
-  // const fetchChatMessages = async () => {
-  //   const response = await fetch(`${apiUrl}?${paramKey}=${paramValue}`);
-  //   if (!response.ok) {
-  //     throw new Error("Failed to fetch messages");
-  //   }
-  //   const data = await response?.json();
-  //   setChatMessages(data);
-  // };
-
-  // useEffect(() => {
-  //   fetchChatMessages();
-
-  //   // Initialize socket connection
-  //   const socket = io("/api/socket", {
-  //     query: socketQuery, // pass query params such as authentication if needed
-  //   });
-
-  //   // Listen for incoming messages on the socket
-  //   socket.on(
-  //     `chat:${paramValue}:messages`,
-  //     (newMessage: MessageWithMemberWithProfile) => {
-  //       setChatMessages((prevMessages) => [newMessage, ...prevMessages]); // Add new message to the top
-  //     }
-  //   );
-
-  //   // Clean up socket connection on component unmount
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, [paramValue, socketUrl]);
-
   return (
-    <div ref={chatRef} className="flex flex-1 flex-col overflow-y-auto py-4">
+    <div ref={chatRef} className="flex flex-1 flex-col overflow-y-auto pt-4">
       <ScrollArea>
         {!hasNextPage && <div className="flex-1" />}
         {!hasNextPage && <ChatWelcome type={type} name={name} />}

@@ -6,9 +6,7 @@ import { db } from "@/lib/db";
 
 const MESSAGES_BATCH = 10;
 
-export async function GET(
-  req: Request
-) {
+export async function GET(req: Request) {
   try {
     const profile = await currentProfile();
     const { searchParams } = new URL(req.url);
@@ -19,7 +17,7 @@ export async function GET(
     if (!profile) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-  
+
     if (!conversationId) {
       return new NextResponse("Conversation ID missing", { status: 400 });
     }
@@ -40,13 +38,13 @@ export async function GET(
           member: {
             include: {
               profile: true,
-            }
-          }
+            },
+          },
         },
         orderBy: {
           createdAt: "desc",
-        }
-      })
+        },
+      });
     } else {
       messages = await db.directMessage.findMany({
         take: MESSAGES_BATCH,
@@ -57,12 +55,12 @@ export async function GET(
           member: {
             include: {
               profile: true,
-            }
-          }
+            },
+          },
         },
         orderBy: {
           createdAt: "desc",
-        }
+        },
       });
     }
 
@@ -74,10 +72,82 @@ export async function GET(
 
     return NextResponse.json({
       items: messages,
-      nextCursor
+      nextCursor,
     });
   } catch (error) {
     console.log("[DIRECT_MESSAGES_GET]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+export async function POST(req: Request) {
+  try {
+    const profile = await currentProfile();
+
+    const { content, fileUrl } = await req.json();
+    const { searchParams } = new URL(req.url);
+    const conversationId = searchParams.get("conversationId");
+
+    if (!profile) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    if (!conversationId) {
+      return new NextResponse("Conversation ID missing", { status: 400 });
+    }
+
+    if (!content && !fileUrl) {
+      return new NextResponse("Content missing", { status: 400 });
+    }
+
+    const conversation = await db.conversation.findFirst({
+      where: {
+        id: conversationId,
+        OR: [
+          { memberOne: { profileId: profile.id } },
+          { memberTwo: { profileId: profile.id } },
+        ],
+      },
+      include: {
+        memberOne: { include: { profile: true } },
+        memberTwo: { include: { profile: true } },
+      },
+    });
+
+    if (!conversation) {
+      return new NextResponse("Conversation not found", { status: 404 });
+    }
+
+    const member =
+      conversation.memberOne.profileId === profile.id
+        ? conversation.memberOne
+        : conversation.memberTwo;
+
+    const message = await db.directMessage.create({
+      data: {
+        content,
+        fileUrl,
+        conversationId: conversationId as string,
+        memberId: member.id,
+      },
+      include: {
+        member: {
+          include: {
+            profile: true,
+          },
+        },
+      },
+    });
+
+    const channelKey = `chat:${conversationId}:messages`;
+
+    // @ts-ignore
+    // Emit the message to Socket.IO
+    req?.socket?.server?.io?.emit(channelKey, message);
+
+    return NextResponse.json(message);
+  } catch (error) {
+    console.log("[DIRECT_MESSAGES_POST]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
