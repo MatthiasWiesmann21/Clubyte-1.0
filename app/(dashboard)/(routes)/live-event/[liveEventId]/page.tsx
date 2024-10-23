@@ -66,7 +66,7 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   return liveEvent ? (
     <div className="flex flex-wrap">
       <div className="flex w-full flex-col lg:w-[69%] lg:pb-20">
-        <div className="flex flex-col items-end justify-between p-4 pt-6 md:flex-row md:items-center">
+        <div className="flex flex-row items-end justify-between p-4 pt-6 md:items-center">
           <div className="flex max-w-[70%] items-center">
             <CategoryItem
               label={category?.name ?? ""}
@@ -135,11 +135,11 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
         </div>
 
         <div>
-          <div className="flex flex-col items-center justify-between p-4 md:flex-row">
-            <h2 className="mb-2 text-xl font-medium">{liveEvent?.title}</h2>
+          <div className="flex items-center justify-between p-4 flex-row">
+            <h2 className="mb-2 line-clamp-1 text-lg font-medium">{liveEvent?.title}</h2>
             <div className="flex items-center space-x-2">
-              <Love liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
               <Favorite liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
+              <Love liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
             </div>
           </div>
           <Separator />

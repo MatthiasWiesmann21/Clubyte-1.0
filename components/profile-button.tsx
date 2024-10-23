@@ -100,7 +100,7 @@ const ProfileButton = ({
           variant="ghost"
         >
           <div className="flex items-center justify-center rounded-full p-1 transition duration-200 ease-in-out hover:bg-[#f1f5f9] dark:hover:bg-[#1e293b]">
-            <UserAvatar src={profileImageUrl} />
+            <UserAvatar src={profileImageUrl} className="h-10 w-10" />
           </div>
           <div
             className={cn(

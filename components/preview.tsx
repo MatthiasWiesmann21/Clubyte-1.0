@@ -24,11 +24,11 @@ export const Preview = ({ value, duration, level, ThemeOutlineColor }: PreviewPr
   const currentLanguage = useLanguage();
 
   return (
-    <div className="mt-4 rounded-lg border-2 bg-slate-100 pt-3 dark:bg-[#0c0319]">
+    <div className="mt-4 rounded-lg border-2 bg-slate-100 pt-2 dark:bg-[#0c0319]">
       <span className="ml-4 text-sm font-bold">
         {currentLanguage.chapter_aboutcourse_title}
       </span>
-      <div className="mx-4 grid grid-cols-2 text-sm font-bold items-center">
+      <div className="mx-4 mt-2 grid grid-cols-2 text-sm font-bold items-center">
         {duration && (
           <div className="flex items-center my-2">
             <Clock
