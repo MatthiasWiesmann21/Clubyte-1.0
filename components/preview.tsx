@@ -28,10 +28,9 @@ export const Preview = ({ value, duration, level, ThemeOutlineColor }: PreviewPr
       <span className="ml-4 text-sm font-bold">
         {currentLanguage.chapter_aboutcourse_title}
       </span>
-      <Separator />
-      <div className="m-4 text-sm font-bold items-center">
+      <div className="mx-4 grid grid-cols-2 text-sm font-bold items-center">
         {duration && (
-          <div className="flex items-center">
+          <div className="flex items-center my-2">
             <Clock
               className="h-5 w-5" // ensure fixed width and height here as well
               style={{ color: ThemeOutlineColor }}
@@ -42,7 +41,7 @@ export const Preview = ({ value, duration, level, ThemeOutlineColor }: PreviewPr
           </div>
         )}
         {level && (
-          <div className="flex items-center">
+          <div className="flex items-center my-2">
             <GraduationCap
               className="h-5 w-5" // fixed size for GraduationCap
               style={{ color: ThemeOutlineColor }}
@@ -53,6 +52,7 @@ export const Preview = ({ value, duration, level, ThemeOutlineColor }: PreviewPr
           </div>
         )}
       </div>
+      <Separator />
       <span className="text-gray-500">
         <ReactQuill theme="bubble" value={value} readOnly />
       </span>
