@@ -221,6 +221,8 @@ model Chapter {
   description String? @db.Text
   videoUrl    String? @db.Text
   position    Int
+  duration    String?
+  level       String?
   isPublished Boolean @default(false)
   isFree      Boolean @default(false)
   author      String? @db.Text

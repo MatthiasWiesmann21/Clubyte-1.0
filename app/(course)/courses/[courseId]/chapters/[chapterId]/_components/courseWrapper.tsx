@@ -37,6 +37,8 @@ interface Attachment {
 interface Chapter {
   isFree: boolean;
   title: string;
+  duration: string;
+  level: string;
   videoUrl: string;
   description: string;
   author: string;
@@ -60,6 +62,7 @@ interface CourseWrapperProps {
   currentLanguage: CurrentLanguage;
   profileImage: string;
   purchaseLabel: string;
+  ThemeOutlineColor: string;
 }
 
 interface Chapter {
@@ -69,6 +72,8 @@ interface Chapter {
   videoUrl: string;
   position: number;
   isPublished: boolean;
+  duration: string;
+  level: string;
   isFree: boolean;
   author: string;
   courseId: string;
@@ -90,7 +95,9 @@ interface DataObject {
   attachments: any[]; // specify the type if possible
   nextChapter: any; // specify the type if possible
   userProgress: any; // specify the type if possible
-  purchase: any; // specify the type if possible
+  purchase: any;
+  duration: any;
+  level: any; // specify the type if possible
 }
 
 const CourseWrapper: React.FC<CourseWrapperProps> = ({
@@ -98,6 +105,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
   currentLanguage,
   profileImage,
   purchaseLabel,
+  ThemeOutlineColor,
 }) => {
   const [data, setData] = useState<DataObject>({
     chapter: null,
@@ -106,9 +114,11 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
     nextChapter: null,
     userProgress: null,
     purchase: null,
+    duration: null,
+    level: null,
   });
 
-  const { chapter, course, attachments, nextChapter, userProgress, purchase } =
+  const { chapter, course, attachments, nextChapter, userProgress, purchase, duration, level, } =
     data;
   const isLocked = !chapter?.isFree && !purchase;
   const completeOnEnd = !!purchase && !userProgress?.isCompleted;
@@ -191,7 +201,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
             </div>
             <Separator />
             <div className="p-4 pt-0">
-              <Preview value={chapter?.description!} />
+              <Preview value={chapter?.description!} duration={chapter?.duration ?? ""} level={chapter?.level ?? ""} ThemeOutlineColor={ThemeOutlineColor} />
             </div>
             <div className="m-4 mt-0 rounded-lg border-2 bg-slate-100 pt-3 dark:bg-[#0c0319]">
               <span className="ml-4 text-sm font-bold">
