@@ -22,7 +22,7 @@ import { useLanguage } from "@/lib/check-language";
 
 interface TitleFormProps {
   initialData: {
-    title: string;
+    title: string | null;
   };
   courseId: string;
 }
@@ -42,7 +42,9 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: initialData.title
+      ? { title: initialData.title }
+      : { title: "" },
   });
 
   const { isSubmitting, isValid } = form.formState;
