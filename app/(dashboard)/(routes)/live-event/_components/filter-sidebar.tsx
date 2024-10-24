@@ -55,7 +55,7 @@ const EventFilterSidebar = ({
             borderColor: getPrimaryButtonColor(),
             backgroundColor: isViewAllHovered ? getPrimaryButtonColor() : "",
           }}
-          className="h-10 w-24 items-center justify-center rounded-full border-2 bg-transparent text-gray-700 transition duration-500 ease-in-out"
+          className="h-10 w-24 mt-1 ml-2 items-center justify-center rounded-full border-2 bg-transparent text-gray-700 transition duration-500 ease-in-out"
           variant="default"
           size="sm"
         >

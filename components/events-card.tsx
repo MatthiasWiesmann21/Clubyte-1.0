@@ -46,7 +46,6 @@ interface EventsCardProps {
   categoryColorCode: string;
   startDateTime: Date | null | any;
   endDateTime: Date | null | any;
-  color: string;
   ThemOutlineColor: string;
   DarkThemeOutlineColor: string;
   currentFavorite: boolean;
@@ -62,7 +61,6 @@ export const EventCard = ({
   categoryColorCode,
   startDateTime,
   endDateTime,
-  color,
   ThemOutlineColor,
   DarkThemeOutlineColor,
   currentFavorite,

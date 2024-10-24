@@ -46,7 +46,6 @@ export const EventsList = ({
               categoryColorCode={item?.category?.colorCode!}
               startDateTime={item?.startDateTime}
               endDateTime={item?.endDateTime}
-              color={item?.color}
               ThemOutlineColor={ThemeOutlineColor!}
               DarkThemeOutlineColor={DarkThemeOutlineColor!}
               currentFavorite={item?.currentFavorite}
