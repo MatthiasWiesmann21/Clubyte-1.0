@@ -182,7 +182,6 @@ const PolygonChart = ({
                     <Image
                       alt="img"
                       src={each?.imageUrl}
-                      objectFit="contain"
                       width={64}
                       height={36}
                       className="rounded-sm"

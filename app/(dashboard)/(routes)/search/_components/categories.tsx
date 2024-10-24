@@ -51,7 +51,7 @@ export const Categories = ({
   };
 
   return (
-    <div className="relative flex items-center justify-start w-full sm:w-full md:w-[540px] lg:w-[700px] xl:w-[800px]">
+    <div className="relative flex items-center justify-start w-full">
       {/* Scroll left button */}
       <Button
         onClick={scrollLeft}

@@ -93,7 +93,7 @@ export const CourseFavoriteCard = ({
   return (
     <TooltipProvider>
       <div
-        className="w-[305px] my-2 rounded-lg border-2 transition duration-500 ease-in-out"
+        className="w-full my-2 rounded-lg border-2 transition duration-500 ease-in-out"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
