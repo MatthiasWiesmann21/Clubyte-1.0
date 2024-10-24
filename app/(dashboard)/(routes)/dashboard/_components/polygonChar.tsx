@@ -141,16 +141,17 @@ const PolygonChart = ({
             <Link
               onMouseEnter={() => setHoveredCourse(-1)}
               onMouseLeave={() => setHoveredCourse(null)}
-              className="border-2 flex items-center justify-center rounded-full px-2 py-1 text-xs transition duration-300 ease-in-out"
+              className="flex items-center justify-center rounded-full border-2 px-2 py-1 text-xs transition duration-300 ease-in-out"
               style={{
                 borderColor: getButtonColor(),
-                backgroundColor:
-                  hoveredCourse === -1 ? getButtonColor() : "",
-                  color: hoveredCourse ? "#ffffff" : "",
+                backgroundColor: hoveredCourse === -1 ? getButtonColor() : "",
+                color: hoveredCourse ? "#ffffff" : "",
               }}
-              href={`/dashboard/favorite-chapters`}            
+              href={`/dashboard/favorite-chapters`}
             >
-              {currentLanguage.dashboard_courseTable_viewFavoriteChapters_button_text}
+              {
+                currentLanguage.dashboard_courseTable_viewFavoriteChapters_button_text
+              }
             </Link>
           </div>
           <div className="flex items-center justify-between bg-slate-200 p-2 dark:bg-[#150D22]">

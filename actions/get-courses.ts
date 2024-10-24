@@ -87,7 +87,23 @@ export const getCourses = async ({
         })
       );
 
-    return coursesWithProgress;
+    const profile = await db?.profile?.findFirst({
+      select: {
+        id: true,
+      },
+      where: {
+        userId: userId,
+      },
+    });
+
+    const result = coursesWithProgress?.map((each: any) => {
+      const currentFavorite = each?.favorites?.some(
+        (favorite: any) => favorite?.profileId === profile?.id
+      );
+      return { ...each, currentFavorite };
+    });
+
+    return result;
   } catch (error) {
     console.log("[GET_COURSES]", error);
     return [];
