@@ -9,7 +9,6 @@ import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import AuthProvider from "./auth-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
-import { redirect } from "next/navigation";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -23,15 +22,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const profile = await initialProfile();
-
   const session = await getServerSession(authOptions);
-
-  const user = session?.user;
-
-  // if (!user) {
-  //   return redirect("/");
-  // }
 
   return (
     <html lang="en">

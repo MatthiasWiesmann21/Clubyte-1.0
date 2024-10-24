@@ -22,20 +22,22 @@ export const CoursesList = ({
 }: CoursesListProps) => {
   const searchParams = useSearchParams();
   const categoryId = searchParams?.get("categoryId") || "";
+  const title = searchParams?.get("title") || "";
   const currentLanguage = useLanguage();
   const [items, setItems] = useState<any[]>([]);
+  const [Favorites, setFavorites] = useState<any[]>([]);
 
   const getAllCourses = async () => {
     const response = await fetch(`/api/search?categoryId=${categoryId}`);
     const data = await response.json();
     setItems(data);
+    setFavorites(data?.filter((course: any) => course?.currentFavorite));
   };
 
   useEffect(() => {
     getAllCourses();
-  }, []);
+  }, [categoryId, title]);
 
-  const favoriteCourses = items?.filter((course) => course?.currentFavorite);
   return (
     <div className="flex w-[600px] lg:w-full">
       <div>
@@ -72,13 +74,13 @@ export const CoursesList = ({
       </div>
       {/* My Favorites Section (hidden on mobile) */}
       <div className="top-4 w-[400px]">
-        {favoriteCourses?.length > 0 && (
+        {Favorites?.length > 0 && (
           <div className="ml-2 hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
             <h1 className="mb-2 text-2xl font-medium">
               {currentLanguage.news_myFavorites_title}
             </h1>
             <Separator className="" />
-            {favoriteCourses?.map((item) => (
+            {Favorites?.map((item) => (
               <CourseFavoriteCard
                 key={item.id}
                 id={item.id}

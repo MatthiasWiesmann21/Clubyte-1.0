@@ -35,13 +35,17 @@ export const LiveEventWrapper = ({
   const { onOpen } = useModal();
 
   const getLiveEvents = async () => {
-    const response = await axios?.get(`/api/liveEvent`);
+    const response = await axios?.get(
+      `/api/liveEvent?categoryId=${searchParams?.categoryId || ""}&title=${
+        searchParams?.title || ""
+      }`
+    );
     setLiveEvent(response?.data);
   };
 
   useEffect(() => {
     getLiveEvents();
-  }, []);
+  }, [searchParams]);
 
   if (status === "loading") {
     return <div>Loading...</div>; // Optionally show a loading state while fetching session
@@ -71,7 +75,7 @@ export const LiveEventWrapper = ({
           />
           {profileRole === "ADMIN" && (
             <Button
-              className="text-sm rounded-lg border-2 text-slate-500 border-slate-300 p-3 mt-1 text-start hover:border-slate-100 dark:border-slate-800"
+              className="mt-1 rounded-lg border-2 border-slate-300 p-3 text-start text-sm text-slate-500 hover:border-slate-100 dark:border-slate-800"
               variant="outline"
               onClick={() => onOpen("createLiveEvent")}
             >
