@@ -112,7 +112,7 @@ export const EventCard = ({
         <div className="group h-full overflow-hidden rounded-lg bg-slate-100 p-2 transition dark:border-[#1f182b] dark:bg-[#0c0319] hover:shadow-lg">
           {/* Image and Date/Time Section */}
           <Link href={`/live-event/${id}`} className="relateive flex">
-            <div className="relative aspect-video w-full md:w-2/3 overflow-hidden rounded-md">
+            <div className="relative aspect-video w-full md:w-2/3 overflow-hidden rounded-md md:rounded-l-md md:rounded-r-none">
               {isLive && (
                 <p className="absolute left-2 top-2 z-10 flex rounded-md bg-rose-600 p-1 text-white dark:bg-rose-600 dark:text-white">
                   Live
@@ -150,7 +150,7 @@ export const EventCard = ({
               />
             </div>
             {/* Date and Time Section */}
-            <div className="flex w-1/3 flex-col max-h-44 hidden md:block items-center py-6 justify-center rounded-md bg-slate-300 p-2 ml-2 text-center dark:bg-gray-800">
+            <div className="flex w-1/3 flex-col max-h-44 hidden md:block items-center py-6 justify-center md:rounded-r-md md:rounded-l-none bg-slate-300 p-2 text-center dark:bg-gray-800">
               <p className="text-xl font-bold">
                 {moment(startDateTime).format("DD")}
               </p>

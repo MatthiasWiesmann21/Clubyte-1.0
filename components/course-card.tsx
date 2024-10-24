@@ -175,12 +175,12 @@ export const CourseCard = ({
             </div>
           </Link>
 
-          <div className="mt-3 flex items-center justify-between">
+          <div className="mt-3 w-full flex items-center justify-between">
             <Tooltip>
               <TooltipTrigger>
                 <span
                   style={{ borderColor: categoryColorCode }}
-                  className="line-clamp-1 max-w-[130px] rounded-lg border-2 px-3 py-1 text-start text-xs"
+                  className="line-clamp-1 max-w-[150px] rounded-lg border-2 px-2 py-1 text-start text-xs"
                 >
                   {category}
                 </span>
@@ -250,7 +250,7 @@ export const CourseCard = ({
           </div>
 
           <Link href={`/courses/${id}`}>
-            <div className="mt-2">
+            <div className="mt-1">
               <Tooltip>
                 <TooltipTrigger>
                   <p className="text-md mx-0.5 my-2 line-clamp-2 text-start font-semibold">
