@@ -53,7 +53,7 @@ const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
           </div>
           <Actions disabled={!isComplete} profileId={params.profileId} />
         </div>
-        <div className="mt-16 grid grid-cols-2 gap-6 md:grid-cols-2">
+        <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={User2Icon} />

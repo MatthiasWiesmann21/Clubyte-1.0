@@ -12,7 +12,7 @@ import { ColorForm } from "./_components/color-form";
 import { CategoryTypeForm } from "./_components/categorytype-form";
 import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
-import authOptions  from "@/lib/auth"; // Ensure this is properly configured
+import authOptions from "@/lib/auth"; // Ensure this is properly configured
 
 const CategoryIdPage = async ({
   params,
@@ -22,7 +22,7 @@ const CategoryIdPage = async ({
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
   const currentLanguage = await languageServer();
-  
+
   if (!userId) {
     return redirect("/");
   }
@@ -72,7 +72,7 @@ const CategoryIdPage = async ({
             isPublished={category.isPublished}
           />
         </div>
-        <div className="mt-16">
+        <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={LayoutGridIcon} />
@@ -85,6 +85,8 @@ const CategoryIdPage = async ({
             </div>
             <TitleForm initialData={category} categoryId={category.id} />
             <ColorForm initialData={category} categoryId={category.id} />
+          </div>
+          <div className="lg:mt-12">
             <CategoryTypeForm initialData={category} categoryId={category.id} />
           </div>
         </div>
