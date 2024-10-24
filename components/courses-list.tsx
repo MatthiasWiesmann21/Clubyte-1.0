@@ -37,7 +37,7 @@ export const CoursesList = ({
 
   const favoriteCourses = items?.filter((course) => course?.currentFavorite);
   return (
-    <div className="flex w-[620px] lg:w-full">
+    <div className="flex w-[600px] lg:w-full">
       <div>
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {items.map((item) => (
@@ -71,7 +71,7 @@ export const CoursesList = ({
         )}
       </div>
       {/* My Favorites Section (hidden on mobile) */}
-      <div className="top-4 w-[250px] xl:w-[400px]">
+      <div className="top-4 w-[400px]">
         {favoriteCourses?.length > 0 && (
           <div className="ml-2 hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
             <h1 className="mb-2 text-2xl font-medium">

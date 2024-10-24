@@ -57,10 +57,12 @@ const Reply = ({
   val,
   id,
   updateLikeComment,
+  profileImage,
 }: {
   val: any;
   id: string;
   updateLikeComment: any;
+  profileImage: string;
 }) => {
   const user = useSelector((state: any) => state?.user);
   const [showReplyInput, setShowReplyInput] = useState(false);
@@ -120,7 +122,7 @@ const Reply = ({
             <div className="flex items-center justify-between">
               <UserAvatar
                 className="min-h-64 min-w-64 max-w-64 mr-3 max-h-64"
-                src={user?.imageUrl}
+                src={profileImage}
               />
               <div className="w-full">
                 <ChatInputPost
@@ -200,6 +202,7 @@ const LikeComment = ({
                 val={val}
                 id={id}
                 updateLikeComment={updateLikeComment}
+                profileImage={profileImage}
               />
             ))}
           </div>
