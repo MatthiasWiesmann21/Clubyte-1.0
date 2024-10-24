@@ -113,7 +113,7 @@ export const CourseCard = ({
   return (
     <TooltipProvider>
       <div
-        className="w-[305px] rounded-lg border-2 transition duration-300 ease-in-out"
+        className="w-full rounded-lg border-2 transition duration-300 ease-in-out"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
