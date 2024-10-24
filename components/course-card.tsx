@@ -266,7 +266,7 @@ export const CourseCard = ({
             </div>
             <div className="grid grid-cols-1 gap-4">
               {/* First row: chapterLength, duration, level */}
-              <div className="grid sm:grid-cols-3 xs:grid-cols-2 gap-1">
+              <div className="grid lg:grid-cols-3 xs:grid-cols-2 gap-1">
                 <div className="flex items-center">
                   <BookOpen
                     className="h-4 w-4" // fixed width and height (e.g., w-5 = 20px)
