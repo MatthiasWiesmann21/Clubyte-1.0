@@ -8,6 +8,7 @@ import { Categories } from "../_components/categories";
 import { db } from "@/lib/db";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import { PurchasedCoursesList } from "../_components/purchasedCourseList";
 interface SearchPageProps {
   searchParams: {
     title: string;
@@ -68,8 +69,8 @@ const CourseListPage = async ({ searchParams }: SearchPageProps) => {
         ThemeOutlineColor={container?.ThemeOutlineColor!}
         DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
       />
-      <CoursesList
-        profileRole={session?.user?.role!}
+      <PurchasedCoursesList
+        items={purchasedCourses}
         ThemOutlineColor={container?.ThemeOutlineColor!}
         DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
       />

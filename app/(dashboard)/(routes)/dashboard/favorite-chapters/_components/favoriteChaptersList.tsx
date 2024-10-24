@@ -35,14 +35,15 @@ const FavoriteChaptersList = ({
   };
 
   const sortedChapters = courses.flatMap((course: any) =>
-    course.chapters.map((chapter: any) => {
-      return {
-        ...course,
-        ...chapter,
-        courseName: course?.title,
-        currentFavorite: chapter?.favorites,
-      };
-    })
+    course.chapters.map((chapter: any) => ({
+      ...course,
+      ...chapter,
+      courseName: course?.title,
+    }))
+  );
+
+  const favoriteChapters = sortedChapters?.filter(
+    (chap: any) => chap?.currentFavorite
   );
 
   return (
@@ -60,7 +61,7 @@ const FavoriteChaptersList = ({
               {currentLanguage.dashboard_popularChapter_action_text}
             </p>
           </div>
-          {sortedChapters
+          {favoriteChapters
             ?.sort(
               (a: any, b: any) => (b.totalCount || 0) - (a.totalCount || 0)
             )
