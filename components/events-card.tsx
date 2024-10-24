@@ -153,13 +153,14 @@ export const EventCard = ({
             </div>
             {/* Date and Time Section */}
             <div className="flex w-1/4 flex-col h-36 hidden md:block items-center py-6 justify-center rounded-md bg-slate-300 p-2 ml-2 text-center dark:bg-gray-800">
-              <p className="text-2xl font-bold">
+              <p className="text-xl font-bold">
                 {moment(startDateTime).format("DD")}
               </p>
-              <p className="text-xk font-semibold">
+              <p className="text-lg font-semibold">
                 {moment(startDateTime).format("MMM")}
               </p>
-              <p className="text-md">{moment(startDateTime).format("YYYY")}</p>
+              <p className="text-sm font-medium">{moment(startDateTime).format("YYYY")}</p>
+              <p className="text-sm font-medium">{moment(startDateTime).format("HH:mm")}</p>
             </div>
           </Link>
           <div className="mt-3 flex items-center justify-between">
@@ -224,7 +225,7 @@ export const EventCard = ({
             </div>
           </div>
           {/* Event Title */}
-          <Link href={`/live-event/${id}`}>
+          <Link className="" href={`/live-event/${id}`}>
             <Tooltip>
               <TooltipTrigger>
                 <div className="line-clamp-2 py-2 text-start text-sm font-medium md:text-base">
@@ -237,6 +238,16 @@ export const EventCard = ({
                 </div>
               </TooltipContent>
             </Tooltip>
+            <div className="flex block md:hidden gap-2 items-center py-2 justify-center rounded-md bg-slate-300 mt-2 text-center dark:bg-gray-800">
+              <p className="text-md font-bold">
+                {moment(startDateTime).format("DD")}
+              </p>
+              <p className="text-sm font-medium">
+                {moment(startDateTime).format("MMM")}
+              </p>
+              <p className="text-md font-medium">{moment(startDateTime).format("YYYY")}</p>
+              <p className="text-md font-medium">{moment(startDateTime).format("HH:mm")}</p>
+            </div>
           </Link>
         </div>
       </div>

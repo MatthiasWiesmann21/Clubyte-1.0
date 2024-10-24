@@ -66,57 +66,43 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   return liveEvent ? (
     <div className="flex flex-wrap">
       <div className="flex w-full flex-col lg:w-[69%] lg:pb-20">
-        <div className="flex flex-row items-end justify-between p-4 pt-6 md:items-center">
-          <div className="flex max-w-[70%] items-center">
-            <CategoryItem
-              label={category?.name ?? ""}
-              colorCode={category?.colorCode ?? ""}
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col items-end px-1">
-              <p className="text-xs">{`Starts: ${moment(
-                liveEvent?.startDateTime
-              )?.format("DD-MM-YY HH:mm")}`}</p>
-              <p className="text-xs">{`Ends: ${moment(
-                liveEvent?.endDateTime
-              )?.format("DD-MM-YY HH:mm")}`}</p>
-            </div>
-            <div className="ml-2">
-              {isAdmin && (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className="h-10 w-10 p-0"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <span className="sr-only">Open menu</span>
-                      <MoreVertical className="h-5 w-5" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <Link href={`/admin/live-event/${params?.liveEventId}`}>
-                      <DropdownMenuItem>
-                        <Pencil className="mr-2 h-4 w-4" />
-                        {currentLanguage.course_card_edit}
-                      </DropdownMenuItem>
-                    </Link>
-                    <ConfirmModal onConfirm={onDelete}>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="flex w-full justify-start p-2"
-                      >
-                        <Trash className="mr-2 h-4 w-4" />
-                        {currentLanguage.course_card_delete}
-                      </Button>
-                    </ConfirmModal>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              )}
-            </div>
-          </div>
+        <div className="flex w-full items-end justify-end p-4 pt-6">
+          {" "}
+          {/* Changed justify-items-end to justify-end */}
+          {isAdmin && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="ml-auto h-10 w-10 p-0" // Add ml-auto to push it to the right
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <span className="sr-only">Open menu</span>
+                  <MoreVertical className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" side="right">
+                {" "}
+                {/* Ensure the menu is aligned to the right */}
+                <Link href={`/admin/live-event/${params?.liveEventId}`}>
+                  <DropdownMenuItem>
+                    <Pencil className="mr-2 h-4 w-4" />
+                    {currentLanguage.course_card_edit}
+                  </DropdownMenuItem>
+                </Link>
+                <ConfirmModal onConfirm={onDelete}>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="flex w-full justify-end p-2"
+                  >
+                    <Trash className="mr-2 h-4 w-4" />
+                    {currentLanguage.course_card_delete}
+                  </Button>
+                </ConfirmModal>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
         <div className="px-4 py-2">
           <VideoPlayer
@@ -135,8 +121,10 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
         </div>
 
         <div>
-          <div className="flex items-center justify-between p-4 flex-row">
-            <h2 className="mb-2 line-clamp-1 text-lg font-medium">{liveEvent?.title}</h2>
+          <div className="flex flex-row items-center justify-between p-4">
+            <h2 className="mb-2 line-clamp-2 text-lg font-medium">
+              {liveEvent?.title}
+            </h2>
             <div className="flex items-center space-x-2">
               <Favorite liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
               <Love liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
@@ -144,7 +132,11 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
           </div>
           <Separator />
           <div className="p-4">
-            <EventPreview value={liveEvent?.description!} />
+            <EventPreview
+              value={liveEvent?.description!}
+              startDateTime={liveEvent?.startDateTime!}
+              endDateTime={liveEvent?.endDateTime!}
+            />
           </div>
         </div>
       </div>

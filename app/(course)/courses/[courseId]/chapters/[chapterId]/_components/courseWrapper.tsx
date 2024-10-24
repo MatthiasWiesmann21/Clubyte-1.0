@@ -157,10 +157,10 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
             />
           </div>
           <div>
-            <div className="flex flex-col items-center justify-between px-4 md:flex-row">
+            <div className="flex flex-col items-center justify-between px-4 lg:flex-row">
               <Tooltip>
                 <TooltipTrigger>
-                  <h2 className="mb-2 line-clamp-1 text-start text-xl font-medium">
+                  <h2 className="mb-2 line-clamp-2 text-start text-xl font-medium">
                     {chapter?.title}
                   </h2>
                 </TooltipTrigger>
