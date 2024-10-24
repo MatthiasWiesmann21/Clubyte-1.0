@@ -29,7 +29,7 @@ export const EventsList = ({
   const currentLanguage = useLanguage();
   const favoriteEvents = items?.filter((event) => event?.currentFavorite);
   return (
-    <div className="flex w-[600px] lg:w-full">
+    <div className="flex w-full">
       <div>
         <div
           className="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"

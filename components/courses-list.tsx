@@ -37,7 +37,7 @@ export const CoursesList = ({
 
   const favoriteCourses = items?.filter((course) => course?.currentFavorite);
   return (
-    <div className="flex w-[600px] lg:w-full">
+    <div className="flex w-full">
       <div>
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {items.map((item) => (

@@ -246,7 +246,7 @@ export const CourseFavoriteCard = ({
             </div>
             <div className="grid grid-cols-1 gap-4">
               {/* First row: chapterLength, duration, level */}
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 gap-1">
                 <div className="flex items-center">
                   <BookOpen
                     width={14}

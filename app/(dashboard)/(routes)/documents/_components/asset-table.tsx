@@ -270,16 +270,13 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                 <table className="min-w-full table-auto divide-y divide-gray-300">
                   <thead>
                     <tr>
-                      <th className="sm:w-18 relative px-4 sm:px-8">
+                      <th className="sm:w-18 relative px-4 py-3.5 text-left">
                         <span className="block text-sm font-semibold text-gray-900 dark:text-gray-300">
                           {currentLanguage.type}
                         </span>
                       </th>
                       <th className="py-3.5 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">
                         {currentLanguage.name}
-                      </th>
-                      <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">
-                        {currentLanguage.created_at}
                       </th>
                       <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">
                         {currentLanguage.actions}
@@ -290,12 +287,12 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                     {folderStructure?.subFolders?.map(
                       (item: any, i: number) => (
                         <tr key={i}>
-                          <td className="relative pl-6 sm:w-12 lg:w-12">
+                          <td className="relative px-3.5 sm:w-18 py-1">
                             <div
                               onClick={() =>
                                 (location.href = `${currentDocPath}${item.id}`)
                               }
-                              className="m-1 mr-3 flex h-10 w-10 cursor-pointer items-center justify-center rounded bg-slate-300 p-3 dark:bg-slate-600"
+                              className="m-1 flex h-10 w-10 cursor-pointer items-center justify-center rounded bg-slate-300 p-3 dark:bg-slate-600"
                             >
                               <FolderOpen />
                             </div>
@@ -304,12 +301,9 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                             onClick={() =>
                               (location.href = `${currentDocPath}${item.id}`)
                             }
-                            className="cursor-pointer py-1 pr-3 text-sm font-medium text-gray-900 dark:text-gray-200"
+                            className="cursor-pointer py-1 text-sm font-medium text-gray-900 dark:text-gray-200"
                           >
                             {item.name}
-                          </td>
-                          <td className="whitespace-nowrap px-3 py-1 text-sm text-gray-500 dark:text-gray-400">
-                            {formatDate(item.createdAt)}
                           </td>
                           <td className="flex items-center justify-end py-3 text-sm font-medium">
                             <FlyoutMenuSetting
@@ -333,7 +327,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                     )}
                     {folderStructure?.files?.map((file: any, index: number) => (
                       <tr key={index}>
-                        <td className="relative py-3 pl-6">
+                        <td className="relative px-3.5 sm:w-18 py-1">
                           <div
                             onClick={() => handleDownload(file.key, file.name)}
                             className="m-1 mr-3 flex h-10 w-10 cursor-pointer items-center justify-center rounded bg-slate-300 p-3 dark:bg-slate-600"
@@ -343,14 +337,11 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                         </td>
                         <td
                           onClick={() => handleDownload(file.key, file.name)}
-                          className="cursor-pointer py-1 pr-3 text-sm font-medium text-gray-900 dark:text-gray-200"
+                          className="cursor-pointer py-1 text-sm font-medium text-gray-900 dark:text-gray-200"
                         >
                           {file.name}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-1 text-sm text-gray-500 dark:text-gray-400">
-                          {formatDate(file.createdAt)}
-                        </td>
-                        <td className="relative flex items-center justify-between py-4 text-sm font-medium">
+                        <td className="relative flex items-center justify-between py-3 text-sm font-medium">
                           <Download
                             onClick={() => handleDownload(file.key, file.name)}
                             className="h-10 w-10 cursor-pointer rounded-md p-2 text-slate-900 hover:bg-[#cbd5e1] dark:text-slate-100 dark:hover:bg-[#1e293b]"

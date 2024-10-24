@@ -49,13 +49,13 @@ export const CategoryItemCard = ({
     <TooltipProvider>
       <button
         onClick={onClick}
-        className={`flex items-center rounded-lg border-2 px-3 py-1 text-xs`}
+        className={`flex items-center rounded-lg border-2 px-2 py-1 text-xs`}
         style={{ borderColor: colorCode }}
         type="button"
       >
         <Tooltip>
           <TooltipTrigger>
-            <div className="line-clamp-1 text-start text-xs max-w-[148px]">{label}</div>
+            <div className="line-clamp-1 text-start text-xs max-w-[150px]">{label}</div>
           </TooltipTrigger>
           <TooltipContent>
             <div className="text-start text-xs whitespace-normal">{label}</div>
