@@ -87,7 +87,7 @@ const ChapterIdPage = async ({
             </div>
           </div>
         </div>
-        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div className="space-y-4">
             <div>
               <div className="flex items-center gap-x-2">
