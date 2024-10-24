@@ -37,13 +37,13 @@ export const EventPreview = ({
         <div>
           <Separator className="my-2" />
           <div className="my-2 grid grid-cols-2 items-start px-1">
-            <div className="flex flex-row items-center gap-x-2">
+            <div className="flex flex-row items-center gap-x-1">
               <Clock className="h-6 w-6 text-slate-500 dark:text-slate-600" />
               <p className="text-sm font-medium">{`Starts: ${moment(
                 startDateTime
               )?.format("DD-MM-YY HH:mm")}`}</p>
             </div>
-            <div className="flex flex-row items-center gap-x-2">
+            <div className="flex flex-row items-center gap-x-1">
               <Clock8 className="h-6 w-6 text-slate-500 dark:text-slate-600" />
               <p className="text-sm font-medium">{`Ends: ${moment(
                 endDateTime

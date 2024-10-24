@@ -30,10 +30,9 @@ export const EventsList = ({
   const favoriteEvents = items?.filter((event) => event?.currentFavorite);
   return (
     <div className="flex">
-      <div className="w-full">
+      <div>
         <div
-          className="flex w-full gap-2"
-          // className="grid gap-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-4"
+          className="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
         >
           {items.map((item: any) => (
             <EventCard
@@ -46,7 +45,6 @@ export const EventsList = ({
               categoryColorCode={item?.category?.colorCode!}
               startDateTime={item?.startDateTime}
               endDateTime={item?.endDateTime}
-              color={item?.color}
               ThemOutlineColor={ThemeOutlineColor!}
               DarkThemeOutlineColor={DarkThemeOutlineColor!}
               currentFavorite={item?.currentFavorite}
@@ -61,9 +59,9 @@ export const EventsList = ({
         )}
       </div>
       {/* My Favorites Section (hidden on mobile & when there is no Favorites) */}
-      <div className="sticky top-4 w-[400px]">
+      <div className="top-4 w-[250px] xl:w-[400px]">
         {favoriteEvents.length > 0 && (
-          <div className="hidden w-full max-w-lg rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
+          <div className="hidden w-full max-w-lg rounded-lg p-2 ml-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
             <h1 className="mb-2 text-2xl font-medium">
               {currentLanguage.news_myFavorites_title}
             </h1>

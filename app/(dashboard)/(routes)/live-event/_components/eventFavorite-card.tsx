@@ -88,7 +88,7 @@ export const EventFavoriteCard = ({
   return (
     <TooltipProvider>
       <div
-        className="w-[305px] rounded-lg border-2 transition duration-500 ease-in-out"
+        className="w-full rounded-lg border-2 transition duration-500 ease-in-out"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
@@ -136,22 +136,15 @@ export const EventFavoriteCard = ({
               />
             </div>
             {/* Date and Time Section */}
-            <div className="flex w-1/3 flex-col items-center justify-center rounded-r-md bg-gray-100 p-2 text-center dark:bg-gray-800">
+            <div className="flex w-1/3 flex-col max-h-44 hidden md:block items-center py-6 justify-center rounded-md bg-slate-300 p-2 ml-2 text-center dark:bg-gray-800">
               <p className="text-xl font-bold">
                 {moment(startDateTime).format("DD")}
               </p>
-              <p className="text-md font-semibold">
+              <p className="text-lg font-semibold">
                 {moment(startDateTime).format("MMM")}
               </p>
-              <p className="text-sm">{moment(startDateTime).format("YYYY")}</p>
-              <span className="mt-3 w-full rounded-md bg-gray-200 px-2 py-1 pb-3 text-xs font-medium dark:bg-gray-700">
-                <p className="mt-2 text-sm font-semibold">
-                  {moment(startDateTime).format("dddd")}
-                </p>
-                <p className="mt-2 text-sm font-medium">
-                  {moment(startDateTime).format("HH:mm")}
-                </p>
-              </span>
+              <p className="text-sm font-medium">{moment(startDateTime).format("YYYY")}</p>
+              <p className="text-sm font-medium">{moment(startDateTime).format("HH:mm")}</p>
             </div>
           </Link>
           <div className="mt-3 flex items-center justify-between">
