@@ -87,6 +87,7 @@ export const EventDescriptionForm = ({
           {initialData.description && (
             <EventPreview
               value={initialData.description}
+              isAdmin={true}
             />
           )}
         </div>

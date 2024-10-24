@@ -94,7 +94,7 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="flex w-full justify-end p-2"
+                    className="flex w-full justify-start p-2"
                   >
                     <Trash className="mr-2 h-4 w-4" />
                     {currentLanguage.course_card_delete}
@@ -136,6 +136,7 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
               value={liveEvent?.description!}
               startDateTime={liveEvent?.startDateTime!}
               endDateTime={liveEvent?.endDateTime!}
+              isAdmin={false}
             />
           </div>
         </div>
