@@ -6,6 +6,8 @@ import { db } from "@/lib/db";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req?.url);
+  const categoryId = searchParams?.get("categoryId") || "";
+  const title = searchParams?.get("title") || "";
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
   try {
@@ -13,7 +15,8 @@ export async function GET(req: Request) {
 
     const courses: any[] = await getCourses({
       userId,
-      ...searchParams,
+      ...(categoryId && { categoryId }),
+      title,
       containerId: session?.user?.profile?.containerId,
     });
 
