@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  Calendar,
   Copy,
   Info,
   MoreVertical,
@@ -40,6 +41,7 @@ import { useIsAdmin } from "@/lib/roleCheck";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { AddToCalendarButton } from 'add-to-calendar-button-react';
 
 interface EventsCardProps {
   id: string;
@@ -170,7 +172,7 @@ export const EventCard = ({
             </div>
           </Link>
           <div className="mt-3 flex items-center justify-between">
-            <div className="mr-4">
+            <div className="mr-2">
               <CategoryItemCard
                 label={category}
                 colorCode={categoryColorCode}
@@ -196,6 +198,14 @@ export const EventCard = ({
                 onClick={() => onOpen("invite")}
               >
                 <Share2 width={16} height={16} />
+              </Button>
+            
+              <Button
+                variant="ghost"
+                className="h-8 w-8 p-0"
+                // TODO: add new "add to calendar" component here
+              >
+                <Calendar width={16} height={16} />
               </Button>
               <DescriptionModal description={description}>
                 <Button
