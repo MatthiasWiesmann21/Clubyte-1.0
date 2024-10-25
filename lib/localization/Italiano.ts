@@ -623,4 +623,5 @@ export const Italiano: Record<string, string> = {
   courses_list_backToCourses_button_text:"Torna ai Corsi",
   dashboard_courseTable_viewMyFavourties_button_text: "I Miei Corsi Preferiti",
   dashboard_eventTable_viewFavoriteEvents_button_text: "I Miei Eventi Preferiti",
+  live_event_futureAndPast_button_text_all: "Tutti",
 };

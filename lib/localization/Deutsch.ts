@@ -588,4 +588,5 @@ dashboard_courseTable_viewFavoriteChapters_button_text: "Meine Favouriten",
 courses_list_backToCourses_button_text:"Zurück zu den Kursen",
 dashboard_courseTable_viewMyFavourties_button_text: "Meine Favouriten",
 dashboard_eventTable_viewFavoriteEvents_button_text: "Meine Event Favouriten",
+live_event_futureAndPast_button_text_all: "Alle",
 };

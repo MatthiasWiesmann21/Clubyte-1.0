@@ -39,7 +39,7 @@ export const PastandFuture = ({
             state === "" || isHoveredFuture ? getThemeColor() : "transparent",
         }}
       >
-        All
+        {currentLanguage.live_event_futureAndPast_button_text_all}
       </div>
       <div
         onClick={async () => updateQueryParams({ state: "future" }, replace)}

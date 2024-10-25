@@ -1,12 +1,5 @@
 import { Category, LiveEvent } from "@prisma/client";
 import { EventCard } from "@/components/events-card";
-import Link from "next/link";
-import { Button } from "./ui/button";
-import { NewspaperIcon, PlusCircle } from "lucide-react";
-import { useLanguage } from "@/lib/check-language";
-import { PostFavoriteCard } from "@/app/(dashboard)/(routes)/news/_components/postFavorite-card";
-import { EventFavoriteCard } from "@/app/(dashboard)/(routes)/live-event/_components/eventFavorite-card";
-import { Separator } from "./ui/separator";
 
 type EventsWithProgressWithCategory = LiveEvent & {
   category: Category | null;
@@ -26,8 +19,6 @@ export const EventsList = ({
   DarkThemeOutlineColor,
   getLiveEvents,
 }: EventsListProps) => {
-  const currentLanguage = useLanguage();
-  const favoriteEvents = items?.filter((event) => event?.currentFavorite);
   return (
     <div className="flex w-full flex-col items-start justify-center gap-4">
       <div>

@@ -619,4 +619,5 @@ export const Russian: Record<string, string> = {
   courses_list_backToCourses_button_text:"Назад к Курсам",
   dashboard_courseTable_viewMyFavourties_button_text: "Мои Любимые",
   dashboard_eventTable_viewFavoriteEvents_button_text: "Мои Любимые События",
+  live_event_futureAndPast_button_text_all: "Все",
 };

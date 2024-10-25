@@ -596,4 +596,5 @@ export const Mandarin: Record<string, string> = {
   courses_list_backToCourses_button_text:"返回课程",
   dashboard_courseTable_viewMyFavourties_button_text: "我最喜欢的课程",
   dashboard_eventTable_viewFavoriteEvents_button_text: "我喜欢的活动",
+  live_event_futureAndPast_button_text_all: "全部",
 };

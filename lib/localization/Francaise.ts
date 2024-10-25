@@ -634,4 +634,5 @@ export const Francaise: Record<string, string> = {
   courses_list_backToCourses_button_text:"Retour aux Cours",
   dashboard_courseTable_viewMyFavourties_button_text: "Mes Cours Favoris",
   dashboard_eventTable_viewFavoriteEvents_button_text: "Mes Événements Préférés",
+  live_event_futureAndPast_button_text_all: "Tous",
 };
