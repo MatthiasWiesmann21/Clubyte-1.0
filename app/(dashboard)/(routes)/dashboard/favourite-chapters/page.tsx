@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getCourses } from "@/actions/get-courses";
+import { getAllChapters } from "@/actions/get-all-chapter";
 import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/auth";
@@ -21,9 +21,8 @@ const FavoriteChapters = async () => {
 
   const userId = session.user.id;
 
-  const courses = await getCourses({
+  const chapters = await getAllChapters({
     userId,
-    containerId: session?.user?.profile?.containerId,
   });
 
   const container: any = await db.container.findUnique({
@@ -36,9 +35,11 @@ const FavoriteChapters = async () => {
       <Link
         href={`/dashboard`}
         className="mb-6 flex items-center text-sm transition hover:opacity-75"
-      ><ArrowLeft className="mr-2 h-4 w-4" />
-        {currentLanguage.courses_list_backToDashboard_button_text}</Link>
-      <FavoriteChaptersList courses={courses} colors={container} />
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        {currentLanguage.courses_list_backToDashboard_button_text}
+      </Link>
+      <FavoriteChaptersList chapters={chapters} colors={container} />
     </div>
   );
 };

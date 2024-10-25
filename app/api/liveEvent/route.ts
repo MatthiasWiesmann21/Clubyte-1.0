@@ -47,7 +47,17 @@ export async function GET(req: Request) {
 
     // Extract query parameters
     const { query } = parse(req.url!, true); // Parse the URL to extract query params
-    const { categoryId, title } = query; // Extract the categoryId and title from the query params
+    const { categoryId, title, state } = query; // Extract the categoryId and title from the query params
+
+    // Define the date filter based on `state`
+    let dateFilter = {};
+    const currentDate = new Date();
+
+    if (state === "past") {
+      dateFilter = { startDateTime: { lte: currentDate } }; // Past events
+    } else if (state === "future") {
+      dateFilter = { startDateTime: { gt: currentDate } }; // Future events
+    }
 
     const liveEvent = await db.liveEvent.findMany({
       where: {
@@ -55,6 +65,7 @@ export async function GET(req: Request) {
         containerId: session?.user?.profile?.containerId,
         ...(categoryId && { categoryId: categoryId as string }), // Conditionally apply the filter for categoryId
         ...(title && { title: { contains: title as string } }), // Conditionally apply the filter for title
+        ...dateFilter,
       },
       include: {
         favorites: true,

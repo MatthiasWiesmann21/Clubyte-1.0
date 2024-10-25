@@ -1,7 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
-// @ts-ignore
-import CanvasJSReact from "@canvasjs/react-charts";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Container } from "@prisma/client";
 import Link from "next/link";
@@ -17,13 +15,12 @@ import { Eye } from "lucide-react";
 
 const FavoriteChaptersList = ({
   colors,
-  courses,
+  chapters,
 }: {
   colors: Container | any;
-  courses: any;
+  chapters: any;
 }) => {
   const currentLanguage = useLanguage();
-  const [coursesProgress, setCoursesProgress] = useState([]);
   const [hoveredCourse, setHoveredCourse] = useState<number | null>(null);
   const { theme } = useTheme();
 
@@ -34,15 +31,7 @@ const FavoriteChaptersList = ({
     return colors?.PrimaryButtonColor!;
   };
 
-  const sortedChapters = courses.flatMap((course: any) =>
-    course.chapters.map((chapter: any) => ({
-      ...course,
-      ...chapter,
-      courseName: course?.title,
-    }))
-  );
-
-  const favoriteChapters = sortedChapters?.filter(
+  const favoriteChapters = chapters?.filter(
     (chap: any) => chap?.currentFavorite
   );
 
@@ -74,7 +63,7 @@ const FavoriteChaptersList = ({
                   <TooltipTrigger className="flex w-[45%] items-center">
                     <Image
                       alt="img"
-                      src={each?.imageUrl}
+                      src={each?.course?.imageUrl}
                       objectFit="contain"
                       width={64}
                       height={36}

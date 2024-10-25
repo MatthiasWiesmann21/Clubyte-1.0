@@ -1,25 +1,22 @@
 "use client";
 
 import { useLanguage } from "@/lib/check-language";
-import axios from "axios";
+import { updateQueryParams } from "@/utils/utils";
 import { useTheme } from "next-themes";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export const PastandFuture = ({
-  setLiveEvent,
-  getEvent,
-  liveEvent,
   ThemeOutlineColor,
   DarkThemeOutlineColor,
 }: {
-  setLiveEvent: any;
-  getEvent: any;
-  liveEvent: any[];
   ThemeOutlineColor: string;
   DarkThemeOutlineColor: string;
 }) => {
+  const { replace } = useRouter();
+  const searchParams = useSearchParams();
+  const state = searchParams?.get("state") || "";
   const currentLanguage = useLanguage();
-  const [state, setState] = useState("past");
   const [isHoveredFuture, setIsHoveredFuture] = useState(false);
   const [isHoveredPast, setIsHoveredPast] = useState(false);
   const { theme } = useTheme();
@@ -31,40 +28,40 @@ export const PastandFuture = ({
   return (
     <div className="flex items-center justify-between">
       <div
-        onClick={async () => {
-          const response = await axios?.get(`/api/liveEvent`);
-          setLiveEvent(
-            response?.data?.filter(
-              (each: any) => new Date(each?.startDateTime) > new Date()
-            )
-          );
-          setState("future");
-        }}
+        onClick={async () => updateQueryParams({ state: "" }, replace)}
         onMouseEnter={() => setIsHoveredFuture(true)}
         onMouseLeave={() => setIsHoveredFuture(false)}
-        className={`border-1 mb-2 text-sm font-semibold mr-2 flex cursor-pointer items-center justify-center p-1 text-gray-600 dark:text-white transition duration-500 ease-in-out ${
+        className={`border-1 mb-2 mr-2 flex cursor-pointer items-center justify-center p-1 text-sm font-semibold text-gray-600 transition duration-500 ease-in-out dark:text-white ${
+          state === "" ? "border-b-2 text-black" : ""
+        }`}
+        style={{
+          borderColor:
+            state === "" || isHoveredFuture ? getThemeColor() : "transparent",
+        }}
+      >
+        {currentLanguage.live_event_futureAndPast_button_text_all}
+      </div>
+      <div
+        onClick={async () => updateQueryParams({ state: "future" }, replace)}
+        onMouseEnter={() => setIsHoveredFuture(true)}
+        onMouseLeave={() => setIsHoveredFuture(false)}
+        className={`border-1 mb-2 mr-2 flex cursor-pointer items-center justify-center p-1 text-sm font-semibold text-gray-600 transition duration-500 ease-in-out dark:text-white ${
           state === "future" ? "border-b-2 text-black" : ""
         }`}
         style={{
           borderColor:
-            state === "future" || isHoveredFuture ? getThemeColor() : "transparent",
+            state === "future" || isHoveredFuture
+              ? getThemeColor()
+              : "transparent",
         }}
       >
         {currentLanguage.live_event_futureAndPast_button_text_future}
       </div>
       <div
-        onClick={async () => {
-          const response = await axios?.get(`/api/liveEvent`);
-          setLiveEvent(
-            response?.data?.filter(
-              (each: any) => new Date(each?.startDateTime) < new Date()
-            )
-          );
-          setState("past");
-        }}
+        onClick={async () => updateQueryParams({ state: "past" }, replace)}
         onMouseEnter={() => setIsHoveredPast(true)}
         onMouseLeave={() => setIsHoveredPast(false)}
-        className={`border-1 mb-2 text-sm mr-2 font-semibold flex cursor-pointer items-center justify-center p-1 text-gray-600 dark:text-white transition duration-500 ease-in-out ${
+        className={`border-1 mb-2 mr-2 flex cursor-pointer items-center justify-center p-1 text-sm font-semibold text-gray-600 transition duration-500 ease-in-out dark:text-white ${
           state === "past" ? "border-b-2 text-black" : ""
         }`}
         style={{

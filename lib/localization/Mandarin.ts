@@ -592,5 +592,9 @@ export const Mandarin: Record<string, string> = {
   dashboard_doughnut_completed: "已完成",
   dashboard_doughnut_inprogress: "进行中",
   dashboard_doughnut_notStarted: "未开始",
-  dashboard_courseTable_viewFavoriteChapters_button_text: "我的收藏",
+  dashboard_courseTable_viewFavoriteChapters_button_text: "我最喜欢的章节",
+  courses_list_backToCourses_button_text:"返回课程",
+  dashboard_courseTable_viewMyFavourties_button_text: "我最喜欢的课程",
+  dashboard_eventTable_viewFavoriteEvents_button_text: "我喜欢的活动",
+  live_event_futureAndPast_button_text_all: "全部",
 };

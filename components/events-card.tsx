@@ -3,10 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  Copy,
   Info,
   MoreVertical,
   Pencil,
   PlayCircle,
+  Share,
+  Share2,
+  Share2Icon,
   Star,
   Trash,
 } from "lucide-react";
@@ -109,10 +113,10 @@ export const EventCard = ({
           borderColor: isHovered ? getBorderColor() : "",
         }}
       >
-        <div className="group h-full overflow-hidden rounded-lg bg-slate-100 p-2 transition dark:border-[#1f182b] dark:bg-[#0c0319] hover:shadow-lg">
+        <div className="group h-full overflow-hidden rounded-lg bg-slate-100 p-2 transition hover:shadow-lg dark:border-[#1f182b] dark:bg-[#0c0319]">
           {/* Image and Date/Time Section */}
           <Link href={`/live-event/${id}`} className="relateive flex">
-            <div className="relative aspect-video w-full md:w-2/3 overflow-hidden rounded-md md:rounded-l-md md:rounded-r-none">
+            <div className="relative aspect-video w-full overflow-hidden rounded-md md:w-2/3 md:rounded-l-md md:rounded-r-none">
               {isLive && (
                 <p className="absolute left-2 top-2 z-10 flex rounded-md bg-rose-600 p-1 text-white dark:bg-rose-600 dark:text-white">
                   Live
@@ -150,26 +154,33 @@ export const EventCard = ({
               />
             </div>
             {/* Date and Time Section */}
-            <div className="flex w-1/3 flex-col max-h-44 hidden md:block items-center py-6 justify-center md:rounded-r-md md:rounded-l-none bg-slate-300 p-2 text-center dark:bg-gray-800">
+            <div className="flex hidden max-h-44 w-1/3 flex-col items-center justify-center bg-slate-300 p-2 py-6 text-center dark:bg-gray-800 md:block md:rounded-l-none md:rounded-r-md">
               <p className="text-xl font-bold">
                 {moment(startDateTime).format("DD")}
               </p>
               <p className="text-lg font-semibold">
                 {moment(startDateTime).format("MMM")}
               </p>
-              <p className="text-sm font-medium">{moment(startDateTime).format("YYYY")}</p>
-              <p className="text-sm font-medium">{moment(startDateTime).format("HH:mm")}</p>
+              <p className="text-sm font-medium">
+                {moment(startDateTime).format("YYYY")}
+              </p>
+              <p className="text-sm font-medium">
+                {moment(startDateTime).format("HH:mm")}
+              </p>
             </div>
           </Link>
           <div className="mt-3 flex items-center justify-between">
             <div className="mr-4">
-            <CategoryItemCard label={category} colorCode={categoryColorCode} />
+              <CategoryItemCard
+                label={category}
+                colorCode={categoryColorCode}
+              />
             </div>
             <div className="flex items-center justify-between">
               <Star
                 size={16}
                 fill={!!currentFavorite ? "#FFD700" : "#ffffff00"}
-                className="mx-1 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 w-7 h-7 p-1 rounded-md transition duration-200 ease-in-out hover:scale-110"
+                className="mx-1 h-7 w-7 cursor-pointer rounded-md p-1 transition duration-200 ease-in-out hover:scale-110 hover:bg-slate-200 dark:hover:bg-slate-700"
                 style={!!currentFavorite ? { color: "#FFD700" } : {}}
                 onClick={async () => {
                   const response = await axios?.post(`/api/favorite/create`, {
@@ -178,6 +189,14 @@ export const EventCard = ({
                   if (response?.status === 200) getLiveEvents();
                 }}
               />
+              <Button
+                variant="ghost"
+                className="h-8 w-8 p-0"
+                // TODO: add new invite (share) component here
+                onClick={() => onOpen("invite")}
+              >
+                <Share2 width={16} height={16} />
+              </Button>
               <DescriptionModal description={description}>
                 <Button
                   variant="ghost"
@@ -187,6 +206,7 @@ export const EventCard = ({
                   <Info width={16} height={16} />
                 </Button>
               </DescriptionModal>
+
               {isAdmin && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -236,15 +256,19 @@ export const EventCard = ({
                 </div>
               </TooltipContent>
             </Tooltip>
-            <div className="flex block md:hidden gap-2 items-center py-2 justify-center rounded-md bg-slate-300 mt-2 text-center dark:bg-gray-800">
+            <div className="mt-2 block flex items-center justify-center gap-2 rounded-md bg-slate-300 py-2 text-center dark:bg-gray-800 md:hidden">
               <p className="text-md font-bold">
                 {moment(startDateTime).format("DD")}
               </p>
               <p className="text-sm font-medium">
                 {moment(startDateTime).format("MMM")}
               </p>
-              <p className="text-md font-medium">{moment(startDateTime).format("YYYY")}</p>
-              <p className="text-md font-medium">{moment(startDateTime).format("HH:mm")}</p>
+              <p className="text-md font-medium">
+                {moment(startDateTime).format("YYYY")}
+              </p>
+              <p className="text-md font-medium">
+                {moment(startDateTime).format("HH:mm")}
+              </p>
             </div>
           </Link>
         </div>

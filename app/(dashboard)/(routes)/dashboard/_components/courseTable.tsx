@@ -42,19 +42,34 @@ const CourseTable = ({ courses, colors }: CourseTableProps) => {
     <div className="rounded-md border-2 dark:border-[#221b2e] dark:bg-[#0D071A]">
       <div className="flex items-center justify-between p-2 text-lg">
         <div>{currentLanguage.dashboard_courseTable_CourseStatus_Title}</div>
+        <div className="flex gap-2">
         <Link
-          onMouseEnter={() => setIsViewAllHovered(true)}
-          onMouseLeave={() => setIsViewAllHovered(false)}
+          onMouseEnter={() => setHoveredCourse(-1)}
+          onMouseLeave={() => setHoveredCourse(null)}
+          href={`/search/favourite-courses`}
+          className="border-2 flex items-center justify-center rounded-full px-2 py-1 text-xs transition duration-300 ease-in-out"
+          style={{
+            borderColor: getButtonColor(),
+            backgroundColor: hoveredCourse === -1 ? getButtonColor() : "",
+            color: hoveredCourse === -1 ? "#ffffff" : "",
+          }}
+        >
+          {currentLanguage.dashboard_courseTable_viewMyFavourties_button_text}
+        </Link>
+        <Link
+          onMouseEnter={() => setHoveredCourse(-2)}
+          onMouseLeave={() => setHoveredCourse(null)}
           href={`/dashboard/course-list`}
           className="border-2 flex items-center justify-center rounded-full px-2 py-1 text-xs transition duration-300 ease-in-out"
           style={{
             borderColor: getButtonColor(),
-            backgroundColor: isViewAllHovered ? getButtonColor() : "",
-            color: isViewAllHovered ? "#ffffff" : "",
+            backgroundColor: hoveredCourse === -2 ? getButtonColor() : "",
+            color: hoveredCourse === -2 ? "#ffffff" : "",
           }}
         >
           {currentLanguage.dashboard_courseTable_viewAllCourses_button_text}
         </Link>
+        </div>
       </div>
       <div className="flex items-center justify-between bg-slate-100 p-2 dark:bg-[#150D22]">
         <p className="w-[45%] text-sm">
