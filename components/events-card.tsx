@@ -41,8 +41,6 @@ import { useIsAdmin } from "@/lib/roleCheck";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { AddToCalendarButton } from 'add-to-calendar-button-react';
-
 interface EventsCardProps {
   id: string;
   title: string;
