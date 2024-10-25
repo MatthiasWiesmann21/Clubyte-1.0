@@ -35,8 +35,6 @@ const FavoriteChaptersList = ({
     (chap: any) => chap?.currentFavorite
   );
 
-  console.log("favoriteChapters", favoriteChapters);
-
   return (
     <TooltipProvider>
       <div className="graphParent flex justify-between">
