@@ -59,7 +59,7 @@ interface CourseCardProps {
   currentFavorite: boolean;
   ThemOutlineColor: string;
   DarkThemeOutlineColor: string;
-  getAllCourses: any;
+  getAllCourses?: any;
 }
 
 export const FreeText = () => {
@@ -175,7 +175,7 @@ export const CourseCard = ({
             </div>
           </Link>
 
-          <div className="mt-3 w-full flex items-center justify-between">
+          <div className="mt-3 flex w-full items-center justify-between">
             <Tooltip>
               <TooltipTrigger>
                 <span
@@ -192,18 +192,20 @@ export const CourseCard = ({
               </TooltipContent>
             </Tooltip>
             <div className="flex items-center justify-between">
-              <Star
-                size={16}
-                fill={!!currentFavorite ? "#FFD700" : "#ffffff00"}
-                className="mx-1 h-7 w-7 cursor-pointer rounded-md p-1 transition duration-200 ease-in-out hover:scale-110 hover:bg-slate-200 dark:hover:bg-slate-700"
-                style={!!currentFavorite ? { color: "#FFD700" } : {}}
-                onClick={async () => {
-                  const response = await axios?.post(`/api/favorite/create`, {
-                    courseId: id,
-                  });
-                  if (response?.status === 200) getAllCourses();
-                }}
-              />
+              {getAllCourses && (
+                <Star
+                  size={16}
+                  fill={!!currentFavorite ? "#FFD700" : "#ffffff00"}
+                  className="mx-1 h-7 w-7 cursor-pointer rounded-md p-1 transition duration-200 ease-in-out hover:scale-110 hover:bg-slate-200 dark:hover:bg-slate-700"
+                  style={!!currentFavorite ? { color: "#FFD700" } : {}}
+                  onClick={async () => {
+                    const response = await axios?.post(`/api/favorite/create`, {
+                      courseId: id,
+                    });
+                    if (response?.status === 200) getAllCourses();
+                  }}
+                />
+              )}
               <DescriptionModal description={description}>
                 <Button
                   variant="ghost"
@@ -266,7 +268,7 @@ export const CourseCard = ({
             </div>
             <div className="grid grid-cols-1 gap-4">
               {/* First row: chapterLength, duration, level */}
-              <div className="grid lg:grid-cols-3 xs:grid-cols-2 gap-1">
+              <div className="xs:grid-cols-2 grid gap-1 lg:grid-cols-3">
                 <div className="flex items-center">
                   <BookOpen
                     className="h-4 w-4" // fixed width and height (e.g., w-5 = 20px)

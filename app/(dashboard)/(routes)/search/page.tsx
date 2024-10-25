@@ -7,6 +7,10 @@ import { CoursesList } from "@/components/courses-list";
 import { Categories } from "./_components/categories";
 import { Metadata } from "next";
 import { CourseCounter } from "@/components/courseCounter";
+import { useLanguage } from "@/lib/check-language";
+import { Button } from "@/components/ui/button";
+import { languageServer } from "@/lib/check-language-server";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Courses",
@@ -20,6 +24,7 @@ interface SearchPageProps {
 }
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
+  const currentLanguage = await languageServer();
   // Get the session from NextAuth
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
@@ -85,11 +90,25 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           courses={existingCourses}
           isFrontend
         />
-        <Categories
-          items={categoriesWithCourseCounts}
-          ThemeOutlineColor={container?.ThemeOutlineColor!}
-          DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
-        />
+        <div className="flex w-full">
+          <div className="w-full lg:w-[90%]">
+          <Categories
+            items={categoriesWithCourseCounts}
+            ThemeOutlineColor={container?.ThemeOutlineColor!}
+            DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
+          />
+          </div>
+          <div className="hidden lg:block w-[10%] items-center justify-center">
+          <Link
+            className="w-full h-8 mt-1 flex items-center justify-center rounded-full border-2 px-2 py-1 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
+            href={"/search/favorite-courses"}
+            >
+            {
+              currentLanguage.dashboard_courseTable_viewFavoriteChapters_button_text
+            }
+          </Link>
+          </div>
+        </div>
         <CoursesList
           ThemOutlineColor={containerColors?.ThemeOutlineColor!}
           DarkThemeOutlineColor={containerColors?.DarkThemeOutlineColor!}
