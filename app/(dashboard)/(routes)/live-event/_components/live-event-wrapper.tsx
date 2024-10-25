@@ -95,11 +95,26 @@ export const LiveEventWrapper = ({
           />
         </div>
       </div>
-      <Categories
-        items={categories}
-        ThemeOutlineColor={container?.ThemeOutlineColor!}
-        DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
-      />
+      <div className="flex w-full">
+        <div className="w-full lg:w-[90%]">
+          <Categories
+            items={categories}
+            ThemeOutlineColor={container?.ThemeOutlineColor!}
+            DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
+          />
+        </div>
+
+        <div className="hidden w-[10%] items-center justify-center lg:block">
+          <Link
+            className="mt-1 flex h-8 w-full items-center justify-center rounded-full border-2 px-2 py-1 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
+            href={"/live-event/favorite-events"}
+          >
+            {
+              currentLanguage.dashboard_courseTable_viewFavoriteChapters_button_text
+            }
+          </Link>
+        </div>
+      </div>
       <EventsList
         items={liveEvent?.map((each: any) => ({
           ...each,
