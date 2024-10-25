@@ -38,7 +38,7 @@ export const LiveEventWrapper = ({
     const response = await axios?.get(
       `/api/liveEvent?categoryId=${searchParams?.categoryId || ""}&title=${
         searchParams?.title || ""
-      }`
+      }&state=${searchParams?.state}`
     );
     setLiveEvent(response?.data);
   };
@@ -63,13 +63,6 @@ export const LiveEventWrapper = ({
       <div className="mr-1 flex justify-between">
         <div className="flex">
           <PastandFuture
-            setLiveEvent={setLiveEvent}
-            getEvent={{
-              userId,
-              ...searchParams,
-              containerId: session?.user?.profile?.containerId,
-            }}
-            liveEvent={liveEvent}
             ThemeOutlineColor={container?.ThemeOutlineColor!}
             DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
           />
