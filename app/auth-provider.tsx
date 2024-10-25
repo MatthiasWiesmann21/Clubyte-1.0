@@ -1,7 +1,6 @@
 "use client";
 import { SessionProvider } from "next-auth/react";
 import { Providers } from "./redux/provider";
-import Link from "@/components/link";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ConfettiProvider } from "@/components/providers/confetti-provider";
 import { ToastProvider } from "@/components/providers/toaster-provider";
@@ -17,12 +16,12 @@ export default function AuthProvider({
   return (
     <SessionProvider session={session}>
       <Providers>
-        <Link />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem={false}
-          storageKey="discord-theme">
+          storageKey="discord-theme"
+        >
           <ConfettiProvider />
           <ToastProvider />
           {children}
