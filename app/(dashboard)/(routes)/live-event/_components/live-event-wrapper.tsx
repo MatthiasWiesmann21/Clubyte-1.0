@@ -110,7 +110,7 @@ export const LiveEventWrapper = ({
             href={"/live-event/favorite-events"}
           >
             {
-              currentLanguage.dashboard_courseTable_viewFavoriteChapters_button_text
+              currentLanguage.dashboard_eventTable_viewFavoriteEvents_button_text
             }
           </Link>
         </div>

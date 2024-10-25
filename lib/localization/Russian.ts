@@ -615,5 +615,8 @@ export const Russian: Record<string, string> = {
   dashboard_doughnut_completed: "Завершено",
   dashboard_doughnut_inprogress: "В процессе",
   dashboard_doughnut_notStarted: "Не начато",
-  dashboard_courseTable_viewFavoriteChapters_button_text: "Мои Избранные",
+  dashboard_courseTable_viewFavoriteChapters_button_text: "Мои Любимые Главы",
+  courses_list_backToCourses_button_text:"Назад к Курсам",
+  dashboard_courseTable_viewMyFavourties_button_text: "Мои Любимые",
+  dashboard_eventTable_viewFavoriteEvents_button_text: "Мои Любимые События",
 };

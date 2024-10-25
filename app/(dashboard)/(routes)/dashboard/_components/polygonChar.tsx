@@ -14,6 +14,7 @@ import {
   Tooltip,
 } from "@/components/tooltip";
 import { Eye } from "lucide-react";
+import { set } from "date-fns";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -27,6 +28,7 @@ const PolygonChart = ({
   const currentLanguage = useLanguage();
   const [coursesProgress, setCoursesProgress] = useState([]);
   const [hoveredCourse, setHoveredCourse] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
   const { theme } = useTheme();
 
   const getButtonColor = () => {
@@ -139,15 +141,15 @@ const PolygonChart = ({
           <div className="flex items-center justify-between p-2 text-lg">
             <div>{currentLanguage.dashboard_popularChapter_title}</div>
             <Link
-              onMouseEnter={() => setHoveredCourse(-1)}
-              onMouseLeave={() => setHoveredCourse(null)}
+              onMouseEnter={() => setHovered(1)}
+              onMouseLeave={() => setHovered(null)}
               className="flex items-center justify-center rounded-full border-2 px-2 py-1 text-xs transition duration-300 ease-in-out"
               style={{
                 borderColor: getButtonColor(),
-                backgroundColor: hoveredCourse === -1 ? getButtonColor() : "",
-                color: hoveredCourse ? "#ffffff" : "",
+                backgroundColor: hovered === 1 ? getButtonColor() : "",
+                color: hovered === 1 ? "#ffffff" : "",
               }}
-              href={`/dashboard/favorite-chapters`}
+              href={`/dashboard/favourite-chapters`}
             >
               {
                 currentLanguage.dashboard_courseTable_viewFavoriteChapters_button_text

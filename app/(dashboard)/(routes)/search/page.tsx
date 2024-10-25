@@ -104,7 +104,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
             href={"/search/favorite-courses"}
             >
             {
-              currentLanguage.dashboard_courseTable_viewFavoriteChapters_button_text
+              currentLanguage.dashboard_courseTable_viewMyFavourties_button_text
             }
           </Link>
           </div>
@@ -112,7 +112,6 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
         <CoursesList
           ThemOutlineColor={containerColors?.ThemeOutlineColor!}
           DarkThemeOutlineColor={containerColors?.DarkThemeOutlineColor!}
-          profileRole={profile?.role!}
         />
       </div>
     </>

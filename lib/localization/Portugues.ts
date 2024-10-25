@@ -621,5 +621,8 @@ export const Portugues: Record<string, string> = {
   dashboard_doughnut_completed: "Concluído",
   dashboard_doughnut_inprogress: "Em andamento",
   dashboard_doughnut_notStarted: "Não iniciado",
-  dashboard_courseTable_viewFavoriteChapters_button_text: "Meus Favoritos",
+  dashboard_courseTable_viewFavoriteChapters_button_text: "Meus Capítulos Favoritos",
+  courses_list_backToCourses_button_text:"Voltar aos Cursos",
+  dashboard_courseTable_viewMyFavourties_button_text: "Meus Cursos Favoritos",
+  dashboard_eventTable_viewFavoriteEvents_button_text: "Meus Eventos Favoritos",
 };

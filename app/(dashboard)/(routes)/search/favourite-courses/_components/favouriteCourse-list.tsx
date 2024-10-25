@@ -75,6 +75,11 @@ export const FavouriteCoursesList = ({
             ))}
           </div>
         )}
+        {items.length === 0 && (
+          <div className="mt-10 text-center text-sm text-muted-foreground">
+            {currentLanguage?.no_courses}
+          </div>
+        )}
       </div>
     </div>
   );
