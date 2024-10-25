@@ -101,7 +101,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           <div className="hidden lg:block w-[10%] items-center justify-center">
           <Link
             className="w-full h-8 mt-1 flex items-center justify-center rounded-full border-2 px-2 py-1 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
-            href={"/search/favorite-courses"}
+            href={"/search/favourite-courses"}
             >
             {
               currentLanguage.dashboard_courseTable_viewMyFavourties_button_text
