@@ -17,6 +17,7 @@ import { AuthorForm } from "./_components/author-form";
 import authOptions from "@/lib/auth"; // Ensure this is correctly configured
 import { DurationForm } from "./_components/duration-form";
 import { LevelForm } from "./_components/level-form";
+import GoBackButton from "@/components/goBackButton";
 
 const ChapterIdPage = async ({
   params,
@@ -62,13 +63,7 @@ const ChapterIdPage = async ({
       <div className="p-6">
         <div className="flex items-center justify-between">
           <div className="w-full">
-            <Link
-              href={`/admin/courses/${params.courseId}`}
-              className="mb-6 flex items-center text-sm transition hover:opacity-75"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              {currentLanguage.courses_chapter_backToCourse_button_text}
-            </Link>
+            <GoBackButton buttonText={currentLanguage.goBack_button_text} />
             <div className="flex w-full items-center justify-between">
               <div className="flex flex-col gap-y-2">
                 <h1 className="text-2xl font-medium">

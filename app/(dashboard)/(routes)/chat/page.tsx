@@ -13,6 +13,16 @@ const SetupPage = async () => {
   if (!session?.user) {
     return redirect("/");
   }
+
+  const container = await db.container.findUnique({
+    where: {
+      id: session?.user?.profile?.containerId!,
+    },
+  });
+  if (container?.clientPackage === "STARTER") {
+    return redirect("/dashboard");
+  }
+
   const profile = await currentProfile();
   const server = await db.server.findFirst({
     orderBy: {

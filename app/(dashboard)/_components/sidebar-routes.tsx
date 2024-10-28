@@ -29,6 +29,7 @@ interface NavColor {
   navBackgroundColor: string;
   navDarkPrimaryColor: string;
   navDarkBackgroundColor: string;
+  clientPackage: string;
 }
 
 export const SidebarRoutes = ({
@@ -36,6 +37,7 @@ export const SidebarRoutes = ({
   navBackgroundColor,
   navDarkPrimaryColor,
   navDarkBackgroundColor,
+  clientPackage,
 }: NavColor) => {
   const currentLanguage = useLanguage();
 
@@ -87,7 +89,7 @@ export const SidebarRoutes = ({
     },
     {
       icon: Layout,
-      label: `${currentLanguage.nav_item_Dashboard}`,
+      label: `${currentLanguage.nav_item_dashboard}`,
       href: "/dashboard",
       isNew: false,
     },
@@ -144,15 +146,13 @@ export const SidebarRoutes = ({
     },
   ];
 
-  const client = useSelector((state: any) => state?.user);
-
   const pathname = usePathname();
 
   const isAdministrationPage = pathname?.includes("/admin");
 
   const routes = isAdministrationPage
     ? AdministrationRoutes
-    : client?.container?.clientPackage === "STARTER"
+    : clientPackage === "STARTER"
     ? packageStarterRoutes
     : userRoutes;
 

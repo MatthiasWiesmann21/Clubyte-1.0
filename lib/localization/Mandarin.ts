@@ -599,4 +599,5 @@ export const Mandarin: Record<string, string> = {
   live_event_futureAndPast_button_text_all: "全部",
   no_events_found: "未找到活动",
   courses_list_backToLiveEvents_button_text: "返回直播活动",
+  goBack_button_text: "返回",
 };

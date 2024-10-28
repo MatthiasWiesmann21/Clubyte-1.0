@@ -35,10 +35,10 @@ const LiveEventPage = async () => {
 
   if (client?.clientPackage === "STARTER") {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div className="text-2xl font-bold mb-2">Live-Event Feature</div>
-        <div className="text-lg mb-4">{currentLanguage.liveEvent_PremiumFeature_description}</div>
-        <Button className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+      <div className="flex flex-col items-center justify-center h-screen mx-4">
+        <p className="text-2xl font-bold mb-2">Live-Event Feature</p>
+        <p className="text-lg mb-4">{currentLanguage.liveEvent_PremiumFeature_description}</p>
+        <Button className="px-6 py-2 bg-pink-500 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
           <a href="https://clubyte.live/pricing" className="flex items-center">
             {currentLanguage.liveEvent_PremiumFeature_button_text}
           </a>

@@ -9,6 +9,7 @@ import { RoleForm } from "./_components/role-form";
 import { IsBannedForm } from "./_components/isBanned-form";
 import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
+import GoBackButton from "@/components/goBackButton";
 
 const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
   const currentLanguage = await languageServer();
@@ -35,13 +36,7 @@ const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
   return (
     <>
       <div className="p-6">
-        <Link
-          href={`/admin/users`}
-          className="mb-6 flex items-center text-sm transition hover:opacity-75"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          {currentLanguage.user_setup_backToUserAdminList_button_text}
-        </Link>
+        <GoBackButton buttonText={currentLanguage.goBack_button_text} />
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl font-medium">

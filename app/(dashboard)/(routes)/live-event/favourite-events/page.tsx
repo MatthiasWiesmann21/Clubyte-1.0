@@ -39,11 +39,15 @@ const FavoriteEventsPage = async ({ searchParams }: SearchPageProps) => {
     return redirect("/profile/manageUsername");
   }
 
-  const containerColors: any = await db?.container?.findUnique({
+  const containerColors = await db?.container?.findUnique({
     where: {
       id: session?.user?.profile?.containerId,
     },
   });
+
+  if(containerColors?.clientPackage === "STARTER"){
+    return redirect("/dashboard");
+  }
 
   return (
     <div className="space-y-4 p-4">

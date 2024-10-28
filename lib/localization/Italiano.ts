@@ -626,4 +626,5 @@ export const Italiano: Record<string, string> = {
   live_event_futureAndPast_button_text_all: "Tutti",
   no_events_found: "Nessun evento trovato",
   courses_list_backToLiveEvents_button_text: "Torna agli eventi live",
+  goBack_button_text: "Indietro",
 };

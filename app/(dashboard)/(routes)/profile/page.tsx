@@ -10,6 +10,7 @@ import { currentProfile } from "@/lib/current-profile";
 import { EmailForm } from "./_components/email-form";
 import { ImageForm } from "./_components/image-form";
 import Link from "next/link";
+import GoBackButton from "@/components/goBackButton";
 
 const UserNamePage = async () => {
   const user = await currentProfile();
@@ -30,13 +31,7 @@ const UserNamePage = async () => {
 
   return (
     <div className="p-4">
-      <Link
-        href={`/dashboard`}
-        className="mb-6 flex items-center text-sm transition hover:opacity-75"
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        {currentLanguage.profile_backToDashboard_button_text}
-      </Link>
+      <GoBackButton buttonText={currentLanguage.goBack_button_text} />
       <div className="mt-8 items-center justify-center">
         <div>
           <div className="flex items-center gap-x-2">

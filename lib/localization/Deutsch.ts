@@ -591,4 +591,5 @@ dashboard_eventTable_viewFavoriteEvents_button_text: "Meine Event Favouriten",
 live_event_futureAndPast_button_text_all: "Alle",
 no_events_found: "Keine Events gefunden",
 courses_list_backToLiveEvents_button_text: "Zurück zu Live-Events",
+goBack_button_text: "Zurück",
 };

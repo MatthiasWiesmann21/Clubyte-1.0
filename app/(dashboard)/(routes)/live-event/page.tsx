@@ -60,6 +60,10 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     },
   });
 
+  if (container?.clientPackage === "STARTER") {
+    return redirect("/dashboard");
+  }
+
   return (
     <LiveEventWrapper
       liveEvents={liveEvents}
