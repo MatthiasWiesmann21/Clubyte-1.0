@@ -1,5 +1,6 @@
 import { Category, LiveEvent } from "@prisma/client";
 import { EventCard } from "@/components/events-card";
+import { useLanguage } from "@/lib/check-language";
 
 type EventsWithProgressWithCategory = LiveEvent & {
   category: Category | null;
@@ -19,6 +20,7 @@ export const EventsList = ({
   DarkThemeOutlineColor,
   getLiveEvents,
 }: EventsListProps) => {
+  const currentLanguage = useLanguage();
   return (
     <div className="flex w-full flex-col items-start justify-center gap-4">
       <div>
@@ -43,7 +45,7 @@ export const EventsList = ({
         </div>
         {items.length === 0 && (
           <div className="mt-10 text-center text-sm text-muted-foreground">
-            No Events found
+            {currentLanguage.no_events_found}
           </div>
         )}
       </div>

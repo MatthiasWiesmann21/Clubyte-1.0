@@ -100,7 +100,7 @@ export const LiveEventWrapper = ({
         <div className="hidden w-[10%] items-center justify-center lg:block">
           <Link
             className="mt-1 flex h-8 w-full items-center justify-center rounded-full border-2 px-2 py-1 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
-            href={"/live-event/favorite-events"}
+            href={"/live-event/favourite-events"}
           >
             {
               currentLanguage.dashboard_eventTable_viewFavoriteEvents_button_text
