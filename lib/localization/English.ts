@@ -592,4 +592,7 @@ courses_list_backToCourses_button_text:"Back to Courses",
 dashboard_courseTable_viewMyFavourties_button_text: "My Favourite Courses",
 dashboard_eventTable_viewFavoriteEvents_button_text: "My Favourite Events",
 live_event_futureAndPast_button_text_all: "All",
+no_events_found:"No Events Found",
+courses_list_backToLiveEvents_button_text: "Back to Live-Events",
+
 };

@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import {
+  AlertTriangle,
   ArrowLeft,
   CircleDollarSign,
   File,
@@ -21,6 +22,8 @@ import { MaxCoursesForm } from "./_components/max-courses-form";
 import authOptions from "@/lib/auth"; // Ensure this is properly configured
 import { DomainForm } from "./_components/domain-form";
 import Link from "next/link";
+import { ClientMailForm } from "./_components/clientMail-form";
+import { ActiveForm } from "./_components/isActive-form";
 
 const ContainerIdPage = async ({
   params,
@@ -72,7 +75,8 @@ const ContainerIdPage = async ({
           </div>
           <Actions disabled={!isComplete} containerId={params.containerId} />
         </div>
-        <div className="mt-16 grid grid-cols-2 gap-6 md:grid-cols-2">
+        <div className="mt-16 grid grid-cols-3 gap-6 md:grid-cols-2">
+       
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={LayoutGridIcon} />
@@ -87,6 +91,7 @@ const ContainerIdPage = async ({
             />
             <ShowContainerId initialData={container} />
           </div>
+          
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={Image} />
@@ -111,6 +116,19 @@ const ContainerIdPage = async ({
                 { label: "Unlimited", value: 1000 },
               ]}
             />
+            <ClientMailForm 
+              // @ts-ignore
+              initialData={container} containerId={container.id}
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge variant="danger" icon={AlertTriangle} />
+              <h2 className="text-xl">
+                <span className="text-rose-600">Important</span>
+              </h2>
+            </div>
+            <ActiveForm initialData={container} containerId={container.id} />
           </div>
         </div>
       </div>

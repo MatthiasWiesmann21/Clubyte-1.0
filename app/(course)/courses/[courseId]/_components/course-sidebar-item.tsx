@@ -99,7 +99,7 @@ export const CourseSidebarItem = ({
                     )}
                   />
                 </div>
-                <span className="line-clamp-2 text-start">{label}</span>
+                <span className="line-clamp-2 text-start w-3/5">{label}</span>
               </div>
               <div
                 className={cn(

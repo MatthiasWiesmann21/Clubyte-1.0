@@ -11,8 +11,10 @@ generator client {
 
 model Container {
   id            String  @id @default(uuid())
+  active        Boolean @default(true)
   name          String  @unique
   domain        String? @unique
+  clientMail    String? @db.Text
   link          String? @db.Text
   icon          String? @db.Text
   imageUrl      String? @db.Text

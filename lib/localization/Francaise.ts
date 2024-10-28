@@ -635,4 +635,6 @@ export const Francaise: Record<string, string> = {
   dashboard_courseTable_viewMyFavourties_button_text: "Mes Cours Favoris",
   dashboard_eventTable_viewFavoriteEvents_button_text: "Mes Événements Préférés",
   live_event_futureAndPast_button_text_all: "Tous",
+  no_events_found: "Aucun événement trouvé",
+  courses_list_backToLiveEvents_button_text: "Retour aux événements en direct",
 };
