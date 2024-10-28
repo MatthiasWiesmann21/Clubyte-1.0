@@ -47,6 +47,7 @@ export const Sidebar = async () => {
           navDarkBackgroundColor={
             container?.navDarkBackgroundColor || "#ff00ff"
           }
+          clientPackage={container?.clientPackage!}
         />
       </div>
       {container?.clientPackage != "EXPERT" && (

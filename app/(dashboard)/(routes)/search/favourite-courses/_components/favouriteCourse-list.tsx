@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { CourseCard } from "@/components/course-card";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import GoBackButton from "@/components/goBackButton";
 
 interface CoursesListProps {
   ThemOutlineColor: string;
@@ -39,13 +40,7 @@ export const FavouriteCoursesList = ({
 
   return (
     <div className="flex w-full flex-col items-start justify-center gap-4">
-      <Link
-        href={`/search`}
-        className="mb-2 flex items-center text-sm transition hover:opacity-75"
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        {currentLanguage.courses_list_backToCourses_button_text}
-      </Link>
+      <GoBackButton buttonText={currentLanguage.goBack_button_text} />
       {/* My Favorites Section (hidden on mobile) */}
       <div>
         {Favorites?.length > 0 && (

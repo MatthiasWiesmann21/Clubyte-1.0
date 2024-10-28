@@ -17,6 +17,7 @@ import { StartDateTimeForm } from "./_components/startDateTime-form";
 import { EndDateTimeForm } from "./_components/endDateTime-form";
 import { languageServer } from "@/lib/check-language-server";
 import authOptions from "@/lib/auth"; // Ensure this is configured correctly
+import GoBackButton from "@/components/goBackButton";
 
 const LiveEventIdPage = async ({
   params,
@@ -29,6 +30,16 @@ const LiveEventIdPage = async ({
 
   if (!userId) {
     return redirect("/");
+  }
+
+  const container = await db.container.findUnique({
+    where: {
+      id: session?.user?.profile?.containerId,
+    },
+  });
+
+  if (container?.clientPackage === "STARTER") {
+    return redirect("/admin/live-event");
   }
 
   const liveEvent = await db.liveEvent.findUnique({
@@ -75,13 +86,7 @@ const LiveEventIdPage = async ({
         <Banner label={currentLanguage.liveEvent_unpublish_banner} />
       )}
       <div className="p-6">
-        <Link
-          href={`/admin/live-event`}
-          className="mb-6 flex items-center text-sm transition hover:opacity-75"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          {currentLanguage.liveEvent_setup_backToEventAdminList_button_text}
-        </Link>
+        <GoBackButton buttonText={currentLanguage.goBack_button_text} />
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl font-medium">{currentLanguage.liveEvent_setup_title}</h1>

@@ -622,4 +622,5 @@ export const Russian: Record<string, string> = {
   live_event_futureAndPast_button_text_all: "Все",
   no_events_found: "События не найдены",
   courses_list_backToLiveEvents_button_text: "Назад к живым событиям",
+  goBack_button_text: "Назад",
 };

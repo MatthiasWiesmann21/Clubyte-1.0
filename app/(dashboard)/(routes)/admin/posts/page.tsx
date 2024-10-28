@@ -22,7 +22,7 @@ const PostsPage = async () => {
 
   if (!canAccess) {
     return redirect("/search");
-  }
+  } 
 
   const posts = await db.post.findMany({
     where: {

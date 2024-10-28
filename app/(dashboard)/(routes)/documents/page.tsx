@@ -9,6 +9,7 @@ import ClubyteLoader from "@/components/ui/clubyte-loader";
 import { useTheme } from "next-themes";
 import { FileX } from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
+import { get } from "http";
 
 export type DocumentFolderTree = {
   name: string;
@@ -27,6 +28,7 @@ export type DocumentFile = {
 const DocumentPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [folderStructure, setFolderStructure] = useState<any>(null);
+  const [container, setContainer] = useState<any>(null);
   const { theme } = useTheme();
   const currentLanguage = useLanguage();
 
@@ -42,6 +44,20 @@ const DocumentPage = () => {
 
   useEffect(() => {
     getFolder();
+  }, []);
+
+  const getContainer = async () => {
+    try {
+      const response = await axios.get(`/api/containers`);
+      setContainer(response.data.data);
+      return response.data.data;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    getContainer();
   }, []);
 
   if (isLoading) {

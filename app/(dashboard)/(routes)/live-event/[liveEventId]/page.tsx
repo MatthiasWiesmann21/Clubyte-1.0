@@ -27,6 +27,7 @@ import { ConfirmModal } from "@/components/modals/confirm-modal";
 import toast from "react-hot-toast";
 import { useLanguage } from "@/lib/check-language";
 import { useIsAdmin } from "@/lib/roleCheck";
+import { getContainer } from "@/actions/get-container";
 
 const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   const { theme } = useTheme();

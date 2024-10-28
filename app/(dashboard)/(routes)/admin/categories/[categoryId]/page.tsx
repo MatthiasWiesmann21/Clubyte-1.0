@@ -13,6 +13,7 @@ import { CategoryTypeForm } from "./_components/categorytype-form";
 import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
 import authOptions from "@/lib/auth"; // Ensure this is properly configured
+import GoBackButton from "@/components/goBackButton";
 
 const CategoryIdPage = async ({
   params,
@@ -50,13 +51,7 @@ const CategoryIdPage = async ({
         <Banner label={currentLanguage.category_unpublish_banner} />
       )}
       <div className="p-6">
-        <Link
-          href={`/admin/categories`}
-          className="mb-6 flex items-center text-sm transition hover:opacity-75"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          {currentLanguage.category_setup_backToCategoryAdminList_button_text}
-        </Link>
+        <GoBackButton buttonText={currentLanguage.goBack_button_text} />
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl font-medium">
