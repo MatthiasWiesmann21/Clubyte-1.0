@@ -52,7 +52,7 @@ export const LiveEventWrapper = ({
   }
 
   if (!session) {
-    router.push("/auth/signin");
+    router.push("/auth/signin?callbackUrl= ");
     return <></>; // Ensure a valid JSX element is always returned
   }
 
