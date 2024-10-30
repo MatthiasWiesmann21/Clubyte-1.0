@@ -35,39 +35,35 @@ export const CoursesList = ({
   }, [categoryId, title]);
 
   return (
-    <div className="flex w-full flex-col items-start justify-center gap-4">
-      <div>
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-          {items.map((item) => (
-            <CourseCard
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              imageUrl={item.imageUrl!}
-              description={item.description!}
-              category={item?.category?.name!}
-              categoryColorCode={item?.category?.colorCode!}
-              progress={item.progress}
-              chaptersLength={item.chapters.length}
-              price={item.price!}
-              duration={item?.duration!}
-              level={item?.level!}
-              isFeatured={item?.isFeatured!}
-              isBestseller={item?.isBestseller!}
-              isNew={item?.isNew!}
-              currentFavorite={item?.currentFavorite!}
-              ThemOutlineColor={ThemOutlineColor}
-              DarkThemeOutlineColor={DarkThemeOutlineColor!}
-              getAllCourses={getAllCourses}
-            />
-          ))}
+    <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+      {items.map((item) => (
+        <CourseCard
+          key={item.id}
+          id={item.id}
+          title={item.title}
+          imageUrl={item.imageUrl!}
+          description={item.description!}
+          category={item?.category?.name!}
+          categoryColorCode={item?.category?.colorCode!}
+          progress={item.progress}
+          chaptersLength={item.chapters.length}
+          price={item.price!}
+          duration={item?.duration!}
+          level={item?.level!}
+          isFeatured={item?.isFeatured!}
+          isBestseller={item?.isBestseller!}
+          isNew={item?.isNew!}
+          currentFavorite={item?.currentFavorite!}
+          ThemOutlineColor={ThemOutlineColor}
+          DarkThemeOutlineColor={DarkThemeOutlineColor!}
+          getAllCourses={getAllCourses}
+        />
+      ))}
+      {items.length === 0 && (
+        <div className="mt-10 text-center text-sm text-muted-foreground">
+          {currentLanguage?.no_courses}
         </div>
-        {items.length === 0 && (
-          <div className="mt-10 text-center text-sm text-muted-foreground">
-            {currentLanguage?.no_courses}
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 };
