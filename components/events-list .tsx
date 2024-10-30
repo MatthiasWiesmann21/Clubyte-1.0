@@ -22,33 +22,29 @@ export const EventsList = ({
 }: EventsListProps) => {
   const currentLanguage = useLanguage();
   return (
-    <div className="flex w-full flex-col items-start justify-center gap-4">
-      <div>
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-          {items.map((item: any) => (
-            <EventCard
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              description={item.description}
-              imageUrl={item.imageUrl!}
-              category={item?.category?.name!}
-              categoryColorCode={item?.category?.colorCode!}
-              startDateTime={item?.startDateTime}
-              endDateTime={item?.endDateTime}
-              ThemOutlineColor={ThemeOutlineColor!}
-              DarkThemeOutlineColor={DarkThemeOutlineColor!}
-              currentFavorite={item?.currentFavorite}
-              getLiveEvents={getLiveEvents}
-            />
-          ))}
+    <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+      {items.map((item: any) => (
+        <EventCard
+          key={item.id}
+          id={item.id}
+          title={item.title}
+          description={item.description}
+          imageUrl={item.imageUrl!}
+          category={item?.category?.name!}
+          categoryColorCode={item?.category?.colorCode!}
+          startDateTime={item?.startDateTime}
+          endDateTime={item?.endDateTime}
+          ThemOutlineColor={ThemeOutlineColor!}
+          DarkThemeOutlineColor={DarkThemeOutlineColor!}
+          currentFavorite={item?.currentFavorite}
+          getLiveEvents={getLiveEvents}
+        />
+      ))}
+      {items.length === 0 && (
+        <div className="mt-10 text-center text-sm text-muted-foreground">
+          {currentLanguage.no_events_found}
         </div>
-        {items.length === 0 && (
-          <div className="mt-10 text-center text-sm text-muted-foreground">
-            {currentLanguage.no_events_found}
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 };
