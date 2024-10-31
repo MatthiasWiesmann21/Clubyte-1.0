@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/lib/check-language";
 
 export const SocketIndicator = () => {
-  const { isConnected } = useSocket();
+  const isConnected = useSocket();
   const currentLanguage = useLanguage();
 
   if (!isConnected) {
