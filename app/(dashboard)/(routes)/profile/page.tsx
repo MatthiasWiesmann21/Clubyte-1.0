@@ -11,6 +11,7 @@ import { EmailForm } from "./_components/email-form";
 import { ImageForm } from "./_components/image-form";
 import Link from "next/link";
 import GoBackButton from "@/components/goBackButton";
+import { NewPasswordForm } from "./_components/newPassword-form";
 
 const UserNamePage = async () => {
   const user = await currentProfile();
@@ -43,6 +44,7 @@ const UserNamePage = async () => {
           <TitleForm initialData={profile} profileId={profile.id} />
           <EmailForm initialData={profile} profileId={profile.id} />
           <ImageForm initialData={profile} profileId={profile.id} />
+          <NewPasswordForm profileId={profile.id} currentPassword={profile.password!} />
         </div>
       </div>
     </div>
