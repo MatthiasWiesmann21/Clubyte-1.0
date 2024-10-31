@@ -1,15 +1,12 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { io as ClientIO } from "socket.io-client";
+import { io as ClientIO, Socket } from "socket.io-client";
 
-type SocketContextType = {
-  socket: any | null;
-  isConnected: boolean;
-};
+type SocketContextType = any;
 
 const SocketContext = createContext<SocketContextType>({
-  socket: null,
+  userSocket: null,
   isConnected: false,
 });
 
@@ -17,47 +14,39 @@ export const useSocket = () => {
   return useContext(SocketContext);
 };
 
-// Create a singleton for the socket instance
-let socketInstance: any;
-
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
-  const [socket, setSocket] = useState(null);
-  const [isConnected, setIsConnected] = useState(false);
+  const [userSocket, setUserSocket] = useState<Socket | null>(null);
+  const [chatSocket, setChatSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    if (!socketInstance) {
-      // Initialize socket instance only once
-      socketInstance = new (ClientIO as any)(
-        process.env.NEXT_PUBLIC_SITE_URL!,
+    if (!userSocket) {
+      const userNamespaceSocket = ClientIO(
+        process.env.NEXT_PUBLIC_SITE_URL + "/userCount",
         {
-          path: "/api/socket/io",
-          addTrailingSlash: false,
+          path: "/api/socket",
         }
       );
+      setUserSocket(userNamespaceSocket);
+    }
 
-      socketInstance.on("connect_error", (err: any) => {
-        console.error("Connection error:", err.message);
-      });
-
-      socketInstance.on("connect", () => {
-        setIsConnected(true);
-        console.log("Socket connected");
-      });
-
-      socketInstance.on("disconnect", () => {
-        setIsConnected(false);
-        console.log("Socket disconnected");
-      });
+    if (!chatSocket) {
+      const chatNamespaceSocket = ClientIO(
+        process.env.NEXT_PUBLIC_SITE_URL + "/chat",
+        {
+          path: "/api/socket",
+        }
+      );
+      setChatSocket(chatNamespaceSocket);
     }
 
     return () => {
-      // Clean up on unmount
-      socketInstance.disconnect();
+      userSocket?.disconnect();
+      chatSocket?.disconnect();
     };
   }, []);
 
   return (
-    <SocketContext.Provider value={{ socket, isConnected }}>
+    <SocketContext.Provider value={{ userSocket, chatSocket }}>
       {children}
     </SocketContext.Provider>
   );

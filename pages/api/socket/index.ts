@@ -1,54 +1,55 @@
-import { Server as SocketServer } from "socket.io";
-import { NextApiRequest, NextApiResponse } from "next";
-import { Server as HTTPServer } from "http";
+import { Server as NetServer } from "http";
+import { NextApiRequest } from "next";
+import { Server as ServerIO, Namespace } from "socket.io";
 import { db } from "@/lib/db";
 
-type NextApiResponseWithIO = NextApiResponse & {
-  socket: {
-    server: HTTPServer & { io?: SocketServer };
-  };
+export const config = {
+  api: {
+    bodyParser: false,
+  },
 };
 
 const ACTIVE_STATUSES = ["Online", "Not Available", "Do Not Disturb"];
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponseWithIO
-) {
+const ioHandler = (req: NextApiRequest, res: any) => {
   if (!res.socket.server.io) {
-    console.log("Initializing new Socket.IO instance");
-
-    const io = new SocketServer(res.socket.server as any, {
+    const httpServer: NetServer = res.socket.server as any;
+    const io = new ServerIO(httpServer, {
       path: "/api/socket",
       transports: ["websocket", "polling"],
     });
 
-    res.socket.server.io = io;
+    const userNamespace: Namespace = io.of("/userCount");
+    const chatNamespace: Namespace = io.of("/chat");
 
-    io.on("connection", async (socket) => {
-      console.log("New client connected");
+    // Handling user counts
+    userNamespace.on("connection", (socket) => {
+      console.log("User count namespace connected");
 
-      // Listen for the `join` event to receive profileId from the client
       socket.on("join", async ({ profileId }) => {
-        const profile = await db.profile.findUnique({
-          where: { id: profileId },
-        });
-        if (!profile) return;
-        console.log(`User with profile IDzz ${profileId} has joined.`);
-
-        if (profile.isOnline === "Offline") {
-          await db.profile.update({
+        try {
+          const profile = await db.profile.findUnique({
             where: { id: profileId },
-            data: { isOnline: "Online" },
           });
+          if (!profile) return;
+          console.log(`User with profile IDzz ${profileId} has joined.`);
+
+          if (profile.isOnline === "Offline") {
+            await db.profile.update({
+              where: { id: profileId },
+              data: { isOnline: "Online" },
+            });
+          }
+          // Emit the updated online user count
+          const onlineUsersCount = await db.profile.count({
+            where: { isOnline: { in: ACTIVE_STATUSES } },
+          });
+          userNamespace.emit("userCount", onlineUsersCount);
+          // Store the profileId in the socket instance for reference on disconnect
+          socket.data.profileId = profileId;
+        } catch (error) {
+          console.error("Error fetching or updating profile:", error);
         }
-        // Emit the updated online user count
-        const onlineUsersCount = await db.profile.count({
-          where: { isOnline: { in: ACTIVE_STATUSES } },
-        });
-        io.emit("userCount", onlineUsersCount);
-        // Store the profileId in the socket instance for reference on disconnect
-        socket.data.profileId = profileId;
       });
 
       // Listen for `statusUpdate` event and update the status
@@ -62,7 +63,7 @@ export default async function handler(
         const onlineUsersCount = await db.profile.count({
           where: { isOnline: { in: ACTIVE_STATUSES } },
         });
-        io.emit("userCount", onlineUsersCount);
+        userNamespace.emit("userCount", onlineUsersCount);
       });
 
       // Listen for disconnections
@@ -92,9 +93,21 @@ export default async function handler(
         }
       });
     });
+
+    // Handling chat messages
+    chatNamespace.on("connection", (socket) => {
+      console.log("Chat namespace connected");
+
+      socket.on("message", (message) => {
+        chatNamespace.emit("message", message); // Emit to other users in chat namespace
+      });
+    });
+
+    res.socket.server.io = io;
   } else {
     console.log("Socket.IO already initialized");
   }
-
   res.end();
-}
+};
+
+export default ioHandler;

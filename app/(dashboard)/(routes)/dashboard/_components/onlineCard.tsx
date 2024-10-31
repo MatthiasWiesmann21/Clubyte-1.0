@@ -2,49 +2,42 @@
 import { Users } from "lucide-react";
 import { IconBadge } from "@/components/icon-badge";
 import { useLanguage } from "@/lib/check-language";
-import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
-
-let socket: any;
+import { useEffect, useRef, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
 export const OnlineCard = ({ profileId }: { profileId: string }) => {
   const currentLanguage = useLanguage();
   const [userCount, setUserCount] = useState(0);
-  console.log("profileId", profileId);
+  const socket = useRef<Socket | null>(null);
 
   useEffect(() => {
-    if (!socket) {
-      socketInitializer();
-    }
+    socketInitializer();
 
-    // // Cleanup on unmount to prevent memory leaks
-    // return () => {
-    //   if (socket) {
-    //     socket.disconnect();
-    //   }
-    // };
+    return () => {
+      socket.current?.off("userCount");
+      socket.current?.disconnect(); // Clean up socket connection on component unmount
+    };
   }, []);
 
   const socketInitializer = async () => {
-    await fetch("/api/socket"); // Initialize the socket
+    await fetch("/api/socket"); // Initialize server-side socket
 
-    console.log("Attempting to connect to socket...");
-
-    // Check if socket is already initialized
-    socket = io({
+    // Connect to the "userCount" namespace
+    socket.current = io("/userCount", {
       path: "/api/socket",
       transports: ["websocket"],
     });
 
-    socket.on("connect", () => {
-      // Emit the profileId to the server after connection
-      socket.emit("join", { profileId });
+    socket.current.on("connect", () => {
+      socket.current?.emit("join", { profileId });
     });
 
-    socket.on("userCount", (count: number) => {
+    // Attach the event listener here after ensuring the socket is initialized
+    socket.current.on("userCount", (count: number) => {
       setUserCount(count);
     });
   };
+
   return (
     <div className="flex items-center gap-x-2 rounded-md border-2 p-3 dark:border-[#221b2e] dark:bg-[#0D071A]">
       <IconBadge variant={"default"} icon={Users} />
