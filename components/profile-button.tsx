@@ -76,6 +76,7 @@ const ProfileButton = ({
   };
 
   useEffect(() => {
+    fetchUserDetails();
     socketInitializer();
     return () => {
       if (socket) {
