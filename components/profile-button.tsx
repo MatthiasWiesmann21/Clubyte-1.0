@@ -54,12 +54,19 @@ const ProfileButton = ({
   const [status, setStatus] = useState(profileOnlineStatus);
 
   const socketInitializer = async () => {
-    await fetch("/api/socket");
-    socket = io({ path: "/api/socket", transports: ["websocket"] });
+    if (!socket) {
+      await fetch("/api/socket"); // Ensure the socket API route is ready
+      socket = io({ path: "/api/socket", transports: ["websocket"] });
 
-    socket.on("connect", () => {
-      socket.emit("join", { profileId });
-    });
+      socket.on("connect", () => {
+        socket.emit("join", { profileId });
+      });
+
+      // Adding this check to ensure `socket.on` is attached only when socket is ready
+      socket.on("userCount", (count: number) => {
+        fetchUserDetails(); // Update the user count in real-time
+      });
+    }
   };
 
   const fetchUserDetails = async () => {
@@ -69,9 +76,14 @@ const ProfileButton = ({
   };
 
   useEffect(() => {
-    if (!socket) socketInitializer();
     fetchUserDetails();
-  }, [profileOnlineStatus]);
+    socketInitializer();
+    return () => {
+      if (socket) {
+        socket.off("userCount"); // Clean up event listener on component unmount
+      }
+    };
+  }, [profileId, profileOnlineStatus]);
 
   const updateProfileStatus = async (isOnline: string) => {
     try {

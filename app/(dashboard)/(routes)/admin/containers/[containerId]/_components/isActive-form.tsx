@@ -4,10 +4,9 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Category, Container } from "@prisma/client";
+import { Container } from "@prisma/client";
 
 import {
   Form,
@@ -15,15 +14,12 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
-import { useLanguage } from "@/lib/check-language";
 
 interface activeFormProps {
-  initialData: Container;
+  initialData: Container | any;
   containerId: string;
 }
 
@@ -31,14 +27,7 @@ const formSchema = z.object({
   active: z.boolean().default(true),
 });
 
-export const ActiveForm = ({
-  initialData,
-  containerId,
-}: activeFormProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const currentLanguage = useLanguage();
-  const toggleEdit = () => setIsEditing((current) => !current);
-
+export const ActiveForm = ({ initialData, containerId }: activeFormProps) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -54,7 +43,6 @@ export const ActiveForm = ({
     try {
       await axios.patch(`/api/containers/${containerId}`, values);
       toast.success("Active Status updated");
-      toggleEdit();
       router.refresh();
     } catch {
       toast.error("Something went wrong");
@@ -62,15 +50,12 @@ export const ActiveForm = ({
   };
 
   return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 border-red-600 dark:border-red-600 rounded-md p-4">
+    <div className="mt-6 rounded-md border border-red-600 bg-slate-200 p-4 dark:border-red-600 dark:bg-slate-700">
       <div className="flex items-center justify-between font-medium">
         Active
       </div>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="mt-2"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-2">
           <FormField
             control={form.control}
             name="active"
@@ -98,7 +83,7 @@ export const ActiveForm = ({
           type="submit"
           onClick={() => onSubmit(form.getValues())}
         >
-            Save
+          Save
         </Button>
       </div>
     </div>

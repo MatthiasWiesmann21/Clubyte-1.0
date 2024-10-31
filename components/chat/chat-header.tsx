@@ -49,7 +49,12 @@ export const ChatHeader = ({
       <p className="text-md font-semibold text-black dark:text-white">{name}</p>
       <div className="ml-auto flex items-center">
         {type === "conversation" && <ChatVideoButton />}
-        <SocketIndicator />
+        
+        {/* 
+        Removing this for now, as it's not working properly
+        and it currently does not look good. Ask @matthias for information.
+        <SocketIndicator /> 
+        */}
       </div>
     </div>
   );

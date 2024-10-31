@@ -110,7 +110,7 @@ export const NavbarRoutes = ({
                 profileImageUrl={profileImageUrl}
                 profileOnlineStatus={profileOnlineStatus}
               />
-            </div>{" "}
+            </div>
           </>
         </TooltipProvider>
       </div>
