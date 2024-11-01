@@ -600,4 +600,15 @@ export const Mandarin: Record<string, string> = {
   no_events_found: "未找到活动",
   courses_list_backToLiveEvents_button_text: "返回直播活动",
   goBack_button_text: "返回",
+  profile_oldPassword_placeholder: "当前密码",
+  profile_newPasswordForm_title: "密码",
+  profile_newPasswordForm_cancel: "取消",
+  profile_newPasswordForm_edit: "编辑",
+  profile_newPasswordForm_placeholder: "新密码",
+  profile_confirmPasswordForm_placeholder: "确认新密码",
+  profile_newPasswordForm_save: "保存",
+  modal_share_link_title: "分享",
+  modal_share_link_label: "分享链接",
+  profile_manageBilling: "账单",
+
 };

@@ -17,7 +17,7 @@ import { CreateCourseModal } from "@/components/modals/create-course-modal";
 import { CreatePostModal } from "@/components/modals/create-post-modal";
 import { CreateLiveEventModal } from "@/components/modals/create-LiveEvent-modal";
 import { CreateCategoryModal } from "@/components/modals/create-category-modal";
-import { CreateContainerModal } from "../modals/create-container-modal";
+import { CreateContainerModal } from "@/components/modals/create-container-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -33,7 +33,7 @@ export const ModalProvider = () => {
   return (
     <>
       <CreateServerModal />
-      {/* <InviteModal /> */}
+      <InviteModal />
       <EditServerModal />
       <MembersModal />
       <CreateChannelModal />

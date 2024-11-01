@@ -22,6 +22,7 @@ import {
   Medal,
   MoreVertical,
   Pencil,
+  Share2,
   Star,
   Trash,
 } from "lucide-react";
@@ -40,6 +41,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { DescriptionModal } from "./modals/description-modal";
+import { ShareLinkModal } from "./modals/share-link-modal";
 
 interface CourseCardProps {
   id: string;
@@ -206,6 +208,11 @@ export const CourseCard = ({
                   }}
                 />
               )}
+              <ShareLinkModal id={id} path={"/courses"}>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <Share2 width={16} height={16} />
+                </Button>
+              </ShareLinkModal>
               <DescriptionModal description={description}>
                 <Button
                   variant="ghost"

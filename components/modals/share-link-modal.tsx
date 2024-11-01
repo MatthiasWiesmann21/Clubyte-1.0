@@ -1,36 +1,40 @@
 "use client";
 
-import axios from "axios";
-import { Check, Copy, RefreshCw } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { useModal } from "@/hooks/use-modal-store";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useOrigin } from "@/hooks/use-origin";
 import { useLanguage } from "@/lib/check-language";
+import { usePathname } from "next/navigation";
 
-export const InviteModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
-  const origin = useOrigin();
+// Define props with id (string or number) and any additional children elements
+interface ShareLinkModalProps {
+  id: string | number;
+  path?: string;
+  children: React.ReactNode;
+}
+
+export const ShareLinkModal = ({ id, path, children }: ShareLinkModalProps) => {
   const currentLanguage = useLanguage();
-  const isModalOpen = isOpen && type === "invite";
-  const { server } = data;
+  const pathname = usePathname();
 
   const [copied, setCopied] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const inviteUrl = `${origin}/chat/invite/${server?.inviteCode}`;
+  // Construct the invite URL with id parameter
+  // @ts-ignore
+  const inviteUrl = `${window.location.origin}${!path ? `${pathname}` : `${path}`}/${id}`;
 
   const onCopy = () => {
     navigator.clipboard.writeText(inviteUrl);
@@ -38,39 +42,29 @@ export const InviteModal = () => {
     setTimeout(() => setCopied(false), 1000);
   };
 
-  const onNew = async () => {
-    try {
-      setIsLoading(true);
-      const response = await axios.patch(
-        `/api/chat/servers/${server?.id}/invite-code`
-      );
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
-    <AlertDialog open={isModalOpen} onOpenChange={onClose}>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        {children}
+      </AlertDialogTrigger>
       <AlertDialogContent className="overflow-hidden p-0">
         <AlertDialogHeader className="px-6 pt-8">
           <AlertDialogTitle className="text-center text-2xl font-bold">
-            {currentLanguage.chat_modal_invite_title}
+            {currentLanguage.modal_share_link_title}
           </AlertDialogTitle>
         </AlertDialogHeader>
         <div className="p-6">
           <Label className="text-xs font-bold uppercase">
-            {currentLanguage.chat_modal_invite_link_label}
+            {currentLanguage.modal_share_link_label}
           </Label>
           <div className="mt-2 flex items-center gap-x-2">
             <Input
-              disabled={isLoading}
+              disabled={true}
               className="ring-offset-0"
               value={inviteUrl}
               readOnly
             />
-            <Button disabled={isLoading} onClick={onCopy} size="icon">
+            <Button onClick={onCopy} size="icon">
               {copied ? (
                 <Check className="h-4 w-4" />
               ) : (
@@ -78,16 +72,6 @@ export const InviteModal = () => {
               )}
             </Button>
           </div>
-          <Button
-            onClick={onNew}
-            disabled={isLoading}
-            variant="link"
-            size="sm"
-            className="mt-4 text-xs"
-          >
-            {currentLanguage.chat_modal_invite_new}
-            <RefreshCw className="ml-2 h-4 w-4" />
-          </Button>
         </div>
         <AlertDialogFooter className="px-6 py-4">
           <AlertDialogCancel>
