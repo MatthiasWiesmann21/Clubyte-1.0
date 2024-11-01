@@ -33,7 +33,7 @@ export const ModalProvider = () => {
   return (
     <>
       <CreateServerModal />
-      {/* <InviteModal /> */}
+      <InviteModal />
       <EditServerModal />
       <MembersModal />
       <CreateChannelModal />
