@@ -20,11 +20,12 @@ export const CourseNavbar = async ({ course, progressCount }: CourseNavbarProps)
   const profileName = profile?.name || "";
   const profileImageUrl = profile?.imageUrl || "";
   const profileOnlineStatus = profile?.isOnline || "";
+  const profileRole = profile?.role || "";
 
   return (
     <div className="flex h-full items-center border-b bg-[#ffffff] p-4 shadow-sm dark:bg-[#0A0118]">
       <CourseMobileSidebar course={course} progressCount={progressCount} />
-      <NavbarRoutes profileId={profileId} profileName={profileName} profileImageUrl={profileImageUrl} profileOnlineStatus={profileOnlineStatus}/>
+      <NavbarRoutes profileId={profileId} profileName={profileName} profileImageUrl={profileImageUrl} profileOnlineStatus={profileOnlineStatus} profileRole={profileRole} />
     </div>
   );
 };
