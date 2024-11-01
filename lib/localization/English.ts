@@ -602,4 +602,7 @@ profile_newPasswordForm_edit: "Edit",
 profile_newPasswordForm_placeholder: "new Password",
 profile_confirmPasswordForm_placeholder: "confirm new Password",
 profile_newPasswordForm_save: "Save",
+modal_share_link_title: "Share",
+modal_share_link_label: "Share Link",
+profile_manageBilling: "Billing",
 };

@@ -18,6 +18,7 @@ export const Navbar = async () => {
         profileName={profileName}
         profileImageUrl={profileImageUrl}
         profileOnlineStatus={profileOnlineStatus}
+        profileRole={profile?.role || ""}
       />
     </div>
   );

@@ -10,6 +10,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { useModal } from "@/hooks/use-modal-store";
@@ -18,15 +19,22 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
 import { usePathname } from "next/navigation";
 
-export const ShareLinkModal = ({ id }: { id: string | number }) => {
-  const { isOpen, onClose, type, data } = useModal();
+// Define props with id (string or number) and any additional children elements
+interface ShareLinkModalProps {
+  id: string | number;
+  path?: string;
+  children: React.ReactNode;
+}
+
+export const ShareLinkModal = ({ id, path, children }: ShareLinkModalProps) => {
   const currentLanguage = useLanguage();
-  const isModalOpen = isOpen && type === "invite";
   const pathname = usePathname();
 
   const [copied, setCopied] = useState(false);
 
-  const inviteUrl = `${window.location.origin}${pathname}/${id}`;
+  // Construct the invite URL with id parameter
+  // @ts-ignore
+  const inviteUrl = `${window.location.origin}${!path ? `${pathname}` : `${path}`}/${id}`;
 
   const onCopy = () => {
     navigator.clipboard.writeText(inviteUrl);
@@ -35,16 +43,19 @@ export const ShareLinkModal = ({ id }: { id: string | number }) => {
   };
 
   return (
-    <AlertDialog open={isModalOpen} onOpenChange={onClose}>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        {children}
+      </AlertDialogTrigger>
       <AlertDialogContent className="overflow-hidden p-0">
         <AlertDialogHeader className="px-6 pt-8">
           <AlertDialogTitle className="text-center text-2xl font-bold">
-            {currentLanguage.chat_modal_invite_title}
+            {currentLanguage.modal_share_link_title}
           </AlertDialogTitle>
         </AlertDialogHeader>
         <div className="p-6">
           <Label className="text-xs font-bold uppercase">
-            {currentLanguage.chat_modal_invite_link_label}
+            {currentLanguage.modal_share_link_label}
           </Label>
           <div className="mt-2 flex items-center gap-x-2">
             <Input
@@ -53,7 +64,7 @@ export const ShareLinkModal = ({ id }: { id: string | number }) => {
               value={inviteUrl}
               readOnly
             />
-            <Button disabled={true} onClick={onCopy} size="icon">
+            <Button onClick={onCopy} size="icon">
               {copied ? (
                 <Check className="h-4 w-4" />
               ) : (

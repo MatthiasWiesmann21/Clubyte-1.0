@@ -28,6 +28,7 @@ interface NavbarRoutesProps {
   profileName: string;
   profileImageUrl: string;
   profileOnlineStatus: string;
+  profileRole: string;
 }
 
 export const NavbarRoutes = ({
@@ -35,6 +36,7 @@ export const NavbarRoutes = ({
   profileName,
   profileImageUrl,
   profileOnlineStatus,
+  profileRole,
 }: NavbarRoutesProps) => {
   const router = useRouter();
   const { data: session } = useSession();
@@ -109,6 +111,7 @@ export const NavbarRoutes = ({
                 profileName={profileName}
                 profileImageUrl={profileImageUrl}
                 profileOnlineStatus={profileOnlineStatus}
+                profileRole={profileRole}
               />
             </div>
           </>

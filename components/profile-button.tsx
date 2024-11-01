@@ -24,13 +24,14 @@ import axios from "axios";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import { LogOutIcon, UserCog2Icon } from "lucide-react";
+import { CreditCardIcon, LogOutIcon, UserCog2Icon } from "lucide-react";
 
 interface ProfileButtonProps {
   profileId: string;
   profileName: string;
   profileImageUrl: string;
   profileOnlineStatus: string;
+  profileRole: string;
 }
 
 const statusColors: { [key: string]: string } = {
@@ -48,6 +49,7 @@ const ProfileButton = ({
   profileName,
   profileImageUrl,
   profileOnlineStatus,
+  profileRole,
 }: ProfileButtonProps) => {
   const currentLanguage = useLanguage();
   const router = useRouter();
@@ -170,10 +172,17 @@ const ProfileButton = ({
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
         </DropdownMenuSub>
+        {profileRole === "CLIENT ADMIN" && (
+          <DropdownMenuItem onClick={() => router.push("/admin/billing")}>
+            <CreditCardIcon className="mr-2 h-6 w-6" />
+            {currentLanguage.profile_manageBilling}
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem onClick={() => router.push("/profile")}>
           <UserCog2Icon className="mr-2 h-6 w-6" />
           {currentLanguage.profile_manageAccount}
         </DropdownMenuItem>
+
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOutIcon className="mr-2 h-6 w-6" />
           {currentLanguage.profile_signOut}

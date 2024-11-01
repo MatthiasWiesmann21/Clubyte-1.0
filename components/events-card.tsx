@@ -119,7 +119,6 @@ export const EventCard = ({
 
   return (
     <TooltipProvider>
-      <ShareLinkModal id={id} />
       <div
         className="w-full rounded-lg border-2 transition duration-300 ease-in-out"
         onMouseEnter={() => setIsHovered(true)}
@@ -204,14 +203,11 @@ export const EventCard = ({
                   if (response?.status === 200) getLiveEvents();
                 }}
               />
-              <Button
-                variant="ghost"
-                className="h-8 w-8 p-0"
-                // TODO: add new invite (share) component here
-                onClick={() => onOpen("invite")}
-              >
-                <Share2 width={16} height={16} />
-              </Button>
+              <ShareLinkModal id={id}>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <Share2 width={16} height={16} />
+                </Button>
+              </ShareLinkModal>
               <Button
                 onClick={handleCalendarClick}
                 variant="ghost"
