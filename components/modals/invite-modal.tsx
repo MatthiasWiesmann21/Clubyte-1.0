@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { useOrigin } from "@/hooks/use-origin";
 import { useLanguage } from "@/lib/check-language";
 
-export const InviteModal = () => {
+export const InviteModal = ({ id }: { id: number | string }) => {
   const { isOpen, onClose, type, data } = useModal();
   const origin = useOrigin();
   const currentLanguage = useLanguage();
@@ -30,7 +30,7 @@ export const InviteModal = () => {
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const inviteUrl = `${origin}/chat/invite/${server?.inviteCode}`;
+  const inviteUrl = `${origin}/chat/invite/${id}`;
 
   const onCopy = () => {
     navigator.clipboard.writeText(inviteUrl);
@@ -41,7 +41,9 @@ export const InviteModal = () => {
   const onNew = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.patch(`/api/chat/servers/${server?.id}/invite-code`);
+      const response = await axios.patch(
+        `/api/chat/servers/${server?.id}/invite-code`
+      );
     } catch (error) {
       console.error(error);
     } finally {
@@ -51,17 +53,17 @@ export const InviteModal = () => {
 
   return (
     <AlertDialog open={isModalOpen} onOpenChange={onClose}>
-      <AlertDialogContent className="p-0 overflow-hidden">
-        <AlertDialogHeader className="pt-8 px-6">
-          <AlertDialogTitle className="text-2xl text-center font-bold">
+      <AlertDialogContent className="overflow-hidden p-0">
+        <AlertDialogHeader className="px-6 pt-8">
+          <AlertDialogTitle className="text-center text-2xl font-bold">
             {currentLanguage.chat_modal_invite_title}
           </AlertDialogTitle>
         </AlertDialogHeader>
         <div className="p-6">
-          <Label className="uppercase text-xs font-bold">
+          <Label className="text-xs font-bold uppercase">
             {currentLanguage.chat_modal_invite_link_label}
           </Label>
-          <div className="flex items-center mt-2 gap-x-2">
+          <div className="mt-2 flex items-center gap-x-2">
             <Input
               disabled={isLoading}
               className="ring-offset-0"
@@ -69,7 +71,11 @@ export const InviteModal = () => {
               readOnly
             />
             <Button disabled={isLoading} onClick={onCopy} size="icon">
-              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              {copied ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
             </Button>
           </div>
           <Button
@@ -77,10 +83,10 @@ export const InviteModal = () => {
             disabled={isLoading}
             variant="link"
             size="sm"
-            className="text-xs mt-4"
+            className="mt-4 text-xs"
           >
             {currentLanguage.chat_modal_invite_new}
-            <RefreshCw className="w-4 h-4 ml-2" />
+            <RefreshCw className="ml-2 h-4 w-4" />
           </Button>
         </div>
         <AlertDialogFooter className="px-6 py-4">
