@@ -110,7 +110,7 @@ export const EventCard = ({
       endDate: moment(endDateTime).format("YYYY-MM-DD"),
       startTime: moment(startDateTime).format("HH:mm"),
       endTime: moment(endDateTime).format("HH:mm"),
-      options: ["Google", "iCal"],
+      options: ["Apple", "Google", "iCal", "Outlook.com", "Microsoft 365", "Microsoft Teams", "Yahoo"],
       // timeZone: "America/Los_Angeles",
     };
 

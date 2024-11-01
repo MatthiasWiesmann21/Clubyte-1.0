@@ -40,11 +40,8 @@ const FavoriteChaptersList = ({
       <div className="graphParent flex justify-between">
         <div className="min-w-xs mr-2 w-full rounded border-2 dark:border-[#221b2e] dark:bg-[#0D071A]">
           <div className="flex items-center justify-between bg-slate-200 p-2 dark:bg-[#150D22]">
-            <p className="w-[45%] text-xs">
+            <p className="w-[90%] text-xs">
               {currentLanguage.dashboard_popularChapter_chapterName_text}
-            </p>
-            <p className="w-[45%] text-xs">
-              {currentLanguage.dashboard_popularChapter_courseName_text}
             </p>
             <p className="w-[10%] text-xs">
               {currentLanguage.dashboard_popularChapter_action_text}
@@ -81,19 +78,6 @@ const FavoriteChaptersList = ({
                   <TooltipContent>
                     <p className="font-semibolb h-full max-w-[300px] whitespace-normal">
                       {each?.title}
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger className="w-[45%] text-start">
-                    <p className="line-clamp-1">{each?.courseName}</p>
-                    <p className="line-clamp-1 text-xs text-gray-500">
-                      {each?.category?.name}
-                    </p>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="h-full max-w-[300px] whitespace-normal font-semibold">
-                      {each?.courseName}
                     </p>
                   </TooltipContent>
                 </Tooltip>
