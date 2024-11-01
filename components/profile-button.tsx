@@ -173,7 +173,7 @@ const ProfileButton = ({
           </DropdownMenuPortal>
         </DropdownMenuSub>
         {profileRole === "CLIENT ADMIN" && (
-          <DropdownMenuItem onClick={() => router.push("/admin/billing")}>
+          <DropdownMenuItem onClick={() => router.push("/billing")}>
             <CreditCardIcon className="mr-2 h-6 w-6" />
             {currentLanguage.profile_manageBilling}
           </DropdownMenuItem>
