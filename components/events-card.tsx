@@ -4,14 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Calendar,
-  Copy,
   Info,
   MoreVertical,
   Pencil,
   PlayCircle,
-  Share,
   Share2,
-  Share2Icon,
   Star,
   Trash,
 } from "lucide-react";
@@ -41,6 +38,8 @@ import { useIsAdmin } from "@/lib/roleCheck";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { atcb_action } from "add-to-calendar-button-react";
+import { InviteModal } from "./modals/invite-modal";
 interface EventsCardProps {
   id: string;
   title: string;
@@ -103,8 +102,24 @@ export const EventCard = ({
     return theme === "dark" ? DarkThemeOutlineColor : ThemOutlineColor;
   };
 
+  const handleCalendarClick = () => {
+    const config: any = {
+      name: title,
+      description: description,
+      startDate: moment(startDateTime).format("YYYY-MM-DD"),
+      endDate: moment(endDateTime).format("YYYY-MM-DD"),
+      startTime: moment(startDateTime).format("HH:mm"),
+      endTime: moment(endDateTime).format("HH:mm"),
+      options: ["Apple", "Google", "iCal", "Outlook.com", "Microsoft 365", "Microsoft Teams", "Yahoo"],
+      // timeZone: "America/Los_Angeles",
+    };
+
+    atcb_action(config);
+  };
+
   return (
     <TooltipProvider>
+      <InviteModal id={id} />
       <div
         className="w-full rounded-lg border-2 transition duration-300 ease-in-out"
         onMouseEnter={() => setIsHovered(true)}
@@ -197,8 +212,8 @@ export const EventCard = ({
               >
                 <Share2 width={16} height={16} />
               </Button>
-            
               <Button
+                onClick={handleCalendarClick}
                 variant="ghost"
                 className="h-8 w-8 p-0"
                 // TODO: add new "add to calendar" component here
