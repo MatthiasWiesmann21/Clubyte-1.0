@@ -16,11 +16,13 @@ interface CourseMobileSidebarProps {
     })[];
   };
   progressCount: number;
+  ThemeOutlineColor: string;
 };
 
 export const CourseMobileSidebar = ({ 
   course,
   progressCount,
+  ThemeOutlineColor,
 }: CourseMobileSidebarProps) => {
   return (
     <Sheet>
@@ -31,6 +33,7 @@ export const CourseMobileSidebar = ({
         <CourseSidebarMobile
           course={course}
           progressCount={progressCount}
+          ThemeOutlineColor={ThemeOutlineColor}
         />
       </SheetContent>
     </Sheet>

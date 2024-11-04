@@ -6,12 +6,13 @@ import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import { useIsClientAdmin } from "@/lib/roleCheck";
 const UserPage = async () => {
   const session = await getServerSession(authOptions);
   const userId = session?.user.id||null;
 
   const isRoleAdmins = await isAdmin();
-  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const isClientAdmin = await useIsClientAdmin();
   const canAccess = isRoleAdmins || isClientAdmin || (userId && await isOwner(userId));
 
   if (!canAccess) {

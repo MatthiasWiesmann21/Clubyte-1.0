@@ -12,6 +12,7 @@ import { languageServer } from "@/lib/check-language-server";
 import { DarkPrimaryButtonColorForm } from "./_components/darkPrimary-color-form";
 import Link from "next/link";
 import authOptions from "@/lib/auth"; // Ensure this is configured correctly
+import { useIsClientAdmin } from "@/lib/roleCheck";
 
 const DesignSettingsPage = async () => {
   const session = await getServerSession(authOptions);
@@ -24,7 +25,7 @@ const DesignSettingsPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const isClientAdmin = await useIsClientAdmin();
   const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || await isOwner(userId);
 
   if (!canAccess) {

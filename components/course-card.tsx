@@ -35,13 +35,14 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { useIsAdmin } from "@/lib/roleCheck";
+import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import { ConfirmModal } from "./modals/confirm-modal";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { DescriptionModal } from "./modals/description-modal";
 import { ShareLinkModal } from "./modals/share-link-modal";
+import { CourseInfoModal } from "./modals/course-info-modal";
 
 interface CourseCardProps {
   id: string;
@@ -49,7 +50,7 @@ interface CourseCardProps {
   imageUrl: string;
   description: string;
   chaptersLength: number;
-  duration: number;
+  duration: string;
   level: string;
   price: number;
   isFeatured: boolean;
@@ -93,8 +94,11 @@ export const CourseCard = ({
   const [isLoading, setIsLoading] = useState(true);
   const currentLanguage = useLanguage();
   const isAdmin = useIsAdmin();
+  const isClientAdmin = useIsClientAdmin();
   const router = useRouter();
 
+  const canAccess = isAdmin || isClientAdmin;
+  
   const onDelete = async () => {
     try {
       setIsLoading(true);
@@ -213,7 +217,7 @@ export const CourseCard = ({
                   <Share2 width={16} height={16} />
                 </Button>
               </ShareLinkModal>
-              <DescriptionModal description={description}>
+              <CourseInfoModal description={description} title={title} chapters={chaptersLength} duration={duration} level={level} ThemeOutlineColor={ThemOutlineColor}>
                 <Button
                   variant="ghost"
                   className="h-8 w-8 p-0"
@@ -221,8 +225,8 @@ export const CourseCard = ({
                 >
                   <Info width={16} height={16} />
                 </Button>
-              </DescriptionModal>
-              {isAdmin && (
+              </CourseInfoModal>
+              {canAccess && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button

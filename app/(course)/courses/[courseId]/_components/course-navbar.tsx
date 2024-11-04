@@ -12,9 +12,10 @@ interface CourseNavbarProps {
     })[];
   };
   progressCount: number;
+  ThemeOutlineColor: string;
 }
 
-export const CourseNavbar = async ({ course, progressCount }: CourseNavbarProps) => {
+export const CourseNavbar = async ({ course, progressCount, ThemeOutlineColor }: CourseNavbarProps) => {
   const profile = await currentProfile();
   const profileId = profile?.id || "";
   const profileName = profile?.name || "";
@@ -24,7 +25,7 @@ export const CourseNavbar = async ({ course, progressCount }: CourseNavbarProps)
 
   return (
     <div className="flex h-full items-center border-b bg-[#ffffff] p-4 shadow-sm dark:bg-[#0A0118]">
-      <CourseMobileSidebar course={course} progressCount={progressCount} />
+      <CourseMobileSidebar course={course} progressCount={progressCount} ThemeOutlineColor={ThemeOutlineColor} />
       <NavbarRoutes profileId={profileId} profileName={profileName} profileImageUrl={profileImageUrl} profileOnlineStatus={profileOnlineStatus} profileRole={profileRole} />
     </div>
   );

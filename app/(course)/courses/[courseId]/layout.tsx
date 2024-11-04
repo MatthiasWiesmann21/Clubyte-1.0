@@ -23,6 +23,12 @@ const CourseLayout = async ({
 
   const userId = session.user.id;
 
+  const container = await db.container.findUnique({
+    where: {
+      id: session?.user?.profile?.containerId,
+    },
+  })
+
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
@@ -56,7 +62,7 @@ const CourseLayout = async ({
   return (
     <div className="h-full">
       <div className="fixed inset-y-0 z-50 h-[80px] w-full md:pl-60">
-        <CourseNavbar course={course} progressCount={progressCount} />
+        <CourseNavbar course={course} progressCount={progressCount} ThemeOutlineColor={container?.ThemeOutlineColor ?? ""} />
       </div>
       <div className="fixed inset-y-0 z-50 hidden h-full w-60 flex-col md:flex">
         <Sidebar />
