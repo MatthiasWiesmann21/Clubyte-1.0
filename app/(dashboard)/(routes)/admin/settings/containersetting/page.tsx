@@ -19,13 +19,15 @@ const ContainerSettingsPage = async () => {
     const userId = session?.user?.id;
     const currentLanguage = await languageServer();
     
+    
     if (!userId) {
         return redirect("/admin/customize");
     }
 
+    const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
     const isRoleAdmins = await isAdmin();
     const isRoleOperator = await isOperator();
-    const canAccess = isRoleAdmins || isRoleOperator || await isOwner(userId);
+    const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || await isOwner(userId);
 
     if (!canAccess) {
         return redirect("/admin/customize");

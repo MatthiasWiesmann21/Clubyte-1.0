@@ -69,7 +69,8 @@ const CourseIdPage = async ({
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
+  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || isOwner(userId);
 
   if (!course || !canAccess) {
     return redirect("/");

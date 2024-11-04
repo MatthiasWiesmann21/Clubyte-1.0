@@ -24,7 +24,8 @@ const DesignSettingsPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || await isOwner(userId);
+  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || await isOwner(userId);
 
   if (!canAccess) {
     return redirect("/search");

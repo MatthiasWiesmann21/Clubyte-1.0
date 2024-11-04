@@ -21,7 +21,8 @@ const LiveEventPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
+  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || await isOwner(userId);
 
   if (!canAccess) {
     return redirect("/search");
@@ -58,7 +59,7 @@ const LiveEventPage = async () => {
 
   return (
     <div className="p-6">
-      <DataTable columns={columns} data={liveEvent} />
+      <DataTable columns={columns} data={liveEvent} profileRole={session?.user?.profile?.role} />
     </div>
   );
 };

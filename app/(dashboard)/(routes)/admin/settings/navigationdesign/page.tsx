@@ -15,10 +15,11 @@ import { getServerSession } from "next-auth";
 const CustomizeSettingsPage = async () => {
   const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
-  const userId = session?.user.id || ''; 
+  const userId = session?.user.id || '';
+  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN"; 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || (userId && await isOwner(userId));
+  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || (userId && await isOwner(userId));
   if (!canAccess) {
     return redirect("/search");
   }

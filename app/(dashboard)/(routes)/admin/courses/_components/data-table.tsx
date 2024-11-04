@@ -32,11 +32,13 @@ import { useModal } from "@/hooks/use-modal-store";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  profileRole: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  profileRole,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -46,6 +48,7 @@ export function DataTable<TData, TValue>({
   const currentLanguage = useLanguage();
 
   const isAdmin = useIsAdmin();
+  const isClientAdmin = profileRole === "CLIENT ADMIN";
 
   const table = useReactTable({
     data,
@@ -73,7 +76,7 @@ export function DataTable<TData, TValue>({
           }
           className="mr-5 max-w-sm border-[#000000] dark:border-[#ffffff]"
         />
-        {isAdmin && (
+        {isAdmin || isClientAdmin && (
             <Button onClick={() => onOpen("createCourse")}>
               <PlusCircle className="mr-2 h-4 w-4" />
               {currentLanguage.courses_createCourse_button_text}
