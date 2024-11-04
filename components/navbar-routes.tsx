@@ -45,9 +45,10 @@ export const NavbarRoutes = ({
 
   const isAdmin = useIsAdmin();
   const isOperator = useIsOperator();
+  const isClientAdmin = profileRole === "CLIENT ADMIN";
 
   const userId = session?.user?.id;
-  const canAccess = isAdmin || isOperator || isOwner(userId);
+  const canAccess = isAdmin || isOperator || isClientAdmin || isOwner(userId);
 
   const isAdministrationPage = pathname?.startsWith("/admin");
   const isCoursePage = pathname?.includes("/courses");

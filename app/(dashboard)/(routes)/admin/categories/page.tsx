@@ -13,7 +13,8 @@ const CategoriesPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || (userId && await isOwner(userId));
+  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || (userId && await isOwner(userId));
 
   if (!userId || !canAccess) {
     return redirect("/search");
@@ -28,7 +29,7 @@ const CategoriesPage = async () => {
   return (
     <div className="p-6">
       {/* @ts-ignore */}
-      <DataTable columns={columns} data={categories} />
+      <DataTable columns={columns} data={categories} profileRole={session?.user?.profile?.role} />
     </div>
   );
 };

@@ -13,6 +13,7 @@ import authOptions  from "@/lib/auth"; // Ensure this is properly configured
 const AnalyticsPage = async () => {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
+  
   const currentLanguage = await languageServer();
 
   if (!userId) {
@@ -21,7 +22,8 @@ const AnalyticsPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
+  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || isOwner(userId);
 
   if (!canAccess) {
     return redirect("/search");

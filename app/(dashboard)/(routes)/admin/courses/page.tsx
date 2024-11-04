@@ -20,7 +20,8 @@ const CoursesPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
+  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || isOwner(userId);
 
   if (!canAccess) {
     return redirect("/search");
@@ -50,7 +51,7 @@ const CoursesPage = async () => {
   return (
     <div className="p-6">
       <CourseCounter courses={existingCourses} maxCourses={container?.maxCourses ?? 0} />
-      <DataTable columns={columns} data={courses} />
+      <DataTable columns={columns} data={courses} profileRole={session?.user?.profile?.role} />
     </div>
   );
 };

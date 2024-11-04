@@ -16,7 +16,8 @@ const ThemeDesignPage = async () => {
   const userId = session?.user.id || ''; // Extract userId from session
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || (userId && await isOwner(userId));
+  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || (userId && await isOwner(userId));
 
   if (!canAccess) {
     return redirect("/search");
