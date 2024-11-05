@@ -3,10 +3,9 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import authOptions  from "@/lib/auth"; // Ensure this is properly configured
-import { useIsClientAdmin } from "@/lib/roleCheck";
 
 const CategoriesPage = async () => {
   const session = await getServerSession(authOptions);
@@ -14,8 +13,8 @@ const CategoriesPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const isClientAdmin = await useIsClientAdmin();
-  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || (userId && await isOwner(userId));
+  const isRoleClientAdmin = await isClientAdmin();
+  const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || (userId && await isOwner(userId));
 
   if (!userId || !canAccess) {
     return redirect("/search");

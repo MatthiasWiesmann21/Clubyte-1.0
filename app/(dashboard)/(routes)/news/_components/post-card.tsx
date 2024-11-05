@@ -26,7 +26,7 @@ import { useLanguage } from "@/lib/check-language";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useIsAdmin } from "@/lib/roleCheck";
+import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 
 interface PostCardProps {
   id: string;
@@ -71,6 +71,10 @@ export const PostCard = ({
   const currentLanguage = useLanguage();
   const router = useRouter();
   const isAdmin = useIsAdmin();
+  const isClientAdmin = useIsClientAdmin();
+
+  const canAccess = isAdmin || isClientAdmin;
+
   const onDelete = async () => {
     try {
       await axios.delete(`/api/posts/${id}`);
@@ -123,7 +127,7 @@ export const PostCard = ({
                     <div className="truncate">{category}</div>
                   </div>
                 )}
-                {isAdmin && (
+                {canAccess && (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button

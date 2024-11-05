@@ -5,11 +5,10 @@ import { db } from "@/lib/db";
 
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import { CourseCounter } from "@/components/courseCounter";
 import authOptions from "@/lib/auth"; // Ensure this is correctly configured
-import { useIsClientAdmin } from "@/lib/roleCheck";
 
 const CoursesPage = async () => {
   const session = await getServerSession(authOptions);
@@ -21,8 +20,8 @@ const CoursesPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const isClientAdmin = await useIsClientAdmin();
-  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || isOwner(userId);
+  const isRoleClientAdmin = await isClientAdmin();
+  const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || isOwner(userId);
 
   if (!canAccess) {
     return redirect("/search");

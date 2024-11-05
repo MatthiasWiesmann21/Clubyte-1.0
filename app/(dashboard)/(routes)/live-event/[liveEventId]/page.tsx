@@ -26,7 +26,7 @@ import Link from "next/link";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import toast from "react-hot-toast";
 import { useLanguage } from "@/lib/check-language";
-import { useIsAdmin } from "@/lib/roleCheck";
+import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import { getContainer } from "@/actions/get-container";
 
 const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
@@ -36,6 +36,9 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   const [category, setCategory] = useState<any>();
   const currentLanguage = useLanguage();
   const isAdmin = useIsAdmin();
+  const isClientAdmin = useIsClientAdmin();
+
+  const canAccess = isAdmin || isClientAdmin;
 
   const getLiveEvent = async () => {
     const response = await axios?.get(`/api/liveEvent/${params?.liveEventId}`, {
@@ -70,7 +73,7 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
         <div className="flex w-full items-end justify-end p-4 pt-6">
           {" "}
           {/* Changed justify-items-end to justify-end */}
-          {isAdmin && (
+          {canAccess && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button

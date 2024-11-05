@@ -7,7 +7,7 @@ import FlyoutMenuCreate from "./flyout-menu-create";
 import FlyoutMenuSetting from "./flyout-menu-setting";
 import Modal from "react-modal";
 import { Download, File, FolderOpen } from "lucide-react";
-import { useIsAdmin, useIsOperator } from "@/lib/roleCheck";
+import { useIsAdmin, useIsClientAdmin, useIsOperator } from "@/lib/roleCheck";
 import { useLanguage } from "@/lib/check-language";
 import { ScrollArea } from "@/components/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -55,8 +55,9 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
 
   const isAdmin = useIsAdmin();
   const isOperator = useIsOperator();
+  const isClientAdmin = useIsClientAdmin();
 
-  const canAccess = isAdmin || isOperator || session?.user;
+  const canAccess = isAdmin || isOperator || isClientAdmin || session?.user;
 
   function openModal() {
     setIsOpen(true);

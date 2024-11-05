@@ -6,10 +6,9 @@ import { getAnalytics } from "@/actions/get-analytics";
 import { DataCard } from "./_components/data-card";
 import { Chart } from "./_components/chart";
 import { isOwner } from "@/lib/owner";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { languageServer } from "@/lib/check-language-server";
 import authOptions  from "@/lib/auth"; // Ensure this is properly configured
-import { useIsClientAdmin } from "@/lib/roleCheck";
 
 const AnalyticsPage = async () => {
   const session = await getServerSession(authOptions);
@@ -23,8 +22,8 @@ const AnalyticsPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const isClientAdmin = await useIsClientAdmin();
-  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || isOwner(userId);
+  const isRoleClientAdmin = await isClientAdmin();
+  const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || isOwner(userId);
 
   if (!canAccess) {
     return redirect("/search");
