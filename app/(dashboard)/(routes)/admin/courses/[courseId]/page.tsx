@@ -16,14 +16,13 @@ import { AttachmentForm } from "./_components/attachment-form";
 import { ChaptersForm } from "./_components/chapters-form";
 import { Actions } from "./_components/actions";
 import { languageServer } from "@/lib/check-language-server";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import authOptions from "@/lib/auth"; // Ensure this is correctly configured
 import { DurationForm } from "./_components/duration-form";
 import { LevelForm } from "./_components/level-form";
 import { SpecialTypeForm } from "./_components/specialType-form";
 import GoBackButton from "@/components/goBackButton";
-import { useIsClientAdmin } from "@/lib/roleCheck";
 
 const CourseIdPage = async ({
   params
@@ -70,8 +69,8 @@ const CourseIdPage = async ({
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const isClientAdmin = await useIsClientAdmin();
-  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || isOwner(userId);
+  const isRoleClientAdmin = await isClientAdmin();
+  const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || isOwner(userId);
 
   if (!course || !canAccess) {
     return redirect("/");

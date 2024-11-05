@@ -2,19 +2,19 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { languageServer } from "@/lib/check-language-server";
 import { isOwner } from "@/lib/owner";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { MenuRoutes } from "./menu-routes";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { useIsClientAdmin } from "@/lib/roleCheck";
+
 const CustomizeMenuPage = async () => {
   const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
   const userId = session?.user.id || ''; 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const isClientAdmin = await useIsClientAdmin();
-  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || (userId && await isOwner(userId));
+  const isRoleClientAdmin = await isClientAdmin();
+  const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || (userId && await isOwner(userId));
 
   if (!canAccess) {
     return redirect("/search");

@@ -4,10 +4,9 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import authOptions from "@/lib/auth"; // Ensure this is configured correctly
-import { useIsClientAdmin } from "@/lib/roleCheck";
 
 const PostsPage = async () => {
   const session = await getServerSession(authOptions);
@@ -19,8 +18,8 @@ const PostsPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const isClientAdmin = await useIsClientAdmin();
-  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || await isOwner(userId);
+  const isRoleClientAdmin = await isClientAdmin();
+  const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || await isOwner(userId);
 
   if (!canAccess) {
     return redirect("/search");

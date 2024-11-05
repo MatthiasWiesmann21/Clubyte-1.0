@@ -9,11 +9,10 @@ import { ImageForm } from "./_components/image-form";
 import { ImageFormDark } from "./_components/image-form-dark";
 import { ImageFormIcon } from "./_components/image-form-icon";
 import { languageServer } from "@/lib/check-language-server";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import Link from "next/link";
 import authOptions from "@/lib/auth"; // Make sure this is configured correctly
-import { useIsClientAdmin } from "@/lib/roleCheck";
 
 const ContainerSettingsPage = async () => {
     const session = await getServerSession(authOptions);
@@ -25,10 +24,10 @@ const ContainerSettingsPage = async () => {
         return redirect("/admin/customize");
     }
 
-    const isClientAdmin = await useIsClientAdmin();
+    const isRoleClientAdmin = await isClientAdmin();
     const isRoleAdmins = await isAdmin();
     const isRoleOperator = await isOperator();
-    const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || await isOwner(userId);
+    const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || await isOwner(userId);
 
     if (!canAccess) {
         return redirect("/admin/customize");

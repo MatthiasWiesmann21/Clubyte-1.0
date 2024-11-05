@@ -22,6 +22,11 @@ const getUser = async () => {
     }
 };
 
+export const isClientAdmin = async () => {
+    const getUserRole = await getUser();
+    return getUserRole === "CLIENT ADMIN";
+};
+
 export const isAdmin = async () => {
     const getUserRole = await getUser();
     return getUserRole === "ADMIN";

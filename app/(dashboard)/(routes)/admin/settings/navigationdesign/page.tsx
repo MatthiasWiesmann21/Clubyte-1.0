@@ -3,7 +3,7 @@ import { ArrowLeft, PaletteIcon } from "lucide-react";
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
 import { PrimaryNavColorForm } from "./_components/nav-primary-color-form";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import { languageServer } from "@/lib/check-language-server";
 import { BackgorundNavColorForm } from "./_components/nav-background-color-form";
@@ -12,15 +12,15 @@ import { DarkBackgorundNavColorForm } from "./_components/nav-darkBackground-col
 import Link from "next/link";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { useIsClientAdmin } from "@/lib/roleCheck";
+
 const CustomizeSettingsPage = async () => {
   const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
   const userId = session?.user.id || '';
-  const isClientAdmin = await useIsClientAdmin();
+  const isRoleClientAdmin = await isClientAdmin();
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || (userId && await isOwner(userId));
+  const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || (userId && await isOwner(userId));
   if (!canAccess) {
     return redirect("/search");
   }

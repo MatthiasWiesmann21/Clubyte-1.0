@@ -20,7 +20,7 @@ import { Edit, Info } from "lucide-react";
 import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
 import { useIsAdmin } from "@/lib/roleCheck";
-import { isAdmin } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin } from "@/lib/roleCheckServer";
 import { CourseInfoModal } from "@/components/modals/course-info-modal";
 
 interface CourseSidebarProps {
@@ -40,7 +40,10 @@ export const CourseSidebar = async ({
 }: CourseSidebarProps) => {
   const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
-  const canAccess = await isAdmin();
+  const isRoleAdmin = await isAdmin();
+  const isRoleClientAdmin = await isClientAdmin();
+
+  const canAccess = isRoleAdmin || isRoleClientAdmin;
 
   if (!session?.user?.id) {
     return redirect("/");

@@ -2,18 +2,18 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { useIsClientAdmin } from "@/lib/roleCheck";
+
 const UserPage = async () => {
   const session = await getServerSession(authOptions);
   const userId = session?.user.id||null;
 
   const isRoleAdmins = await isAdmin();
-  const isClientAdmin = await useIsClientAdmin();
-  const canAccess = isRoleAdmins || isClientAdmin || (userId && await isOwner(userId));
+  const isRoleClientAdmin = await isClientAdmin();
+  const canAccess = isRoleAdmins || isRoleClientAdmin || (userId && await isOwner(userId));
 
   if (!canAccess) {
     return redirect("/search");

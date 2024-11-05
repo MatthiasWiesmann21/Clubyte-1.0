@@ -28,7 +28,7 @@ import { ConfirmModal } from "@/components/modals/confirm-modal";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useLanguage } from "@/lib/check-language";
-import { useIsAdmin } from "@/lib/roleCheck";
+import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 
 interface CourseSidebarItemProps {
   label: string;
@@ -49,6 +49,9 @@ export const CourseSidebarItem = ({
   const router = useRouter();
   const currentLanguage = useLanguage();
   const isAdmin = useIsAdmin();
+  const isClientAdmin = useIsClientAdmin();
+
+  const canAccess = isAdmin || isClientAdmin;
 
   const Icon = isLocked ? Lock : isCompleted ? CheckCircle : PlayCircle;
   const isActive =
@@ -116,7 +119,7 @@ export const CourseSidebarItem = ({
         </Tooltip>
 
         {/* Dropdown Menu Trigger - Separate from Tooltip */}
-        {isAdmin && (
+        {canAccess && (
           <div className="absolute right-0 pr-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

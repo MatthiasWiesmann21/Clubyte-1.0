@@ -6,13 +6,12 @@ import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
 
 import { PrimaryButtonColorForm } from "./_components/primary-color-form";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import { languageServer } from "@/lib/check-language-server";
 import { DarkPrimaryButtonColorForm } from "./_components/darkPrimary-color-form";
 import Link from "next/link";
 import authOptions from "@/lib/auth"; // Ensure this is configured correctly
-import { useIsClientAdmin } from "@/lib/roleCheck";
 
 const DesignSettingsPage = async () => {
   const session = await getServerSession(authOptions);
@@ -25,8 +24,8 @@ const DesignSettingsPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const isClientAdmin = await useIsClientAdmin();
-  const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || await isOwner(userId);
+  const isRoleClientAdmin = await isClientAdmin();
+  const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || await isOwner(userId);
 
   if (!canAccess) {
     return redirect("/search");
