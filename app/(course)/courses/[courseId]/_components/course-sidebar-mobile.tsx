@@ -21,6 +21,7 @@ import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
 import { useIsAdmin } from "@/lib/roleCheck";
 import { isAdmin } from "@/lib/roleCheckServer";
+import { CourseInfoModal } from "@/components/modals/course-info-modal";
 
 interface CourseSidebarProps {
   course: Course & {
@@ -29,11 +30,13 @@ interface CourseSidebarProps {
     })[];
   };
   progressCount: number;
+  ThemeOutlineColor: string;
 }
 
 export const CourseSidebarMobile = async ({
   course,
   progressCount,
+  ThemeOutlineColor,
 }: CourseSidebarProps) => {
   const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
@@ -72,11 +75,11 @@ export const CourseSidebarMobile = async ({
               {course.title}
             </h1>
             <div>
-              <DescriptionModal description={course.description!} title={course.title!}>
-                <Button variant="ghost" className="h-8 w-8 p-0">
+            <CourseInfoModal description={course.description!} title={course.title!} level={course.level!} duration={course.duration!} chapters={course.chapters.length} ThemeOutlineColor={ThemeOutlineColor}> 
+            <Button variant="ghost" className="h-8 w-8 p-0">
                   <Info width={16} height={16} />
                 </Button>
-              </DescriptionModal>
+              </CourseInfoModal>
               {canAccess && (
                 <Link href={`/admin/courses/${course.id}`}>
                   <Button variant="ghost" className="h-8 w-8 p-0">

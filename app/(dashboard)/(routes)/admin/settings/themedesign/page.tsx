@@ -10,13 +10,14 @@ import { DarkThemeOutlineColorForm } from "./_components/darkPrimary-color-form"
 import Link from "next/link";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import { useIsClientAdmin } from "@/lib/roleCheck";
 const ThemeDesignPage = async () => {
   const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
   const userId = session?.user.id || ''; // Extract userId from session
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const isClientAdmin = await useIsClientAdmin();
   const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || (userId && await isOwner(userId));
 
   if (!canAccess) {

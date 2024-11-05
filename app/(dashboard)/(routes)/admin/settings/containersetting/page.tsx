@@ -13,6 +13,7 @@ import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import Link from "next/link";
 import authOptions from "@/lib/auth"; // Make sure this is configured correctly
+import { useIsClientAdmin } from "@/lib/roleCheck";
 
 const ContainerSettingsPage = async () => {
     const session = await getServerSession(authOptions);
@@ -24,7 +25,7 @@ const ContainerSettingsPage = async () => {
         return redirect("/admin/customize");
     }
 
-    const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+    const isClientAdmin = await useIsClientAdmin();
     const isRoleAdmins = await isAdmin();
     const isRoleOperator = await isOperator();
     const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || await isOwner(userId);

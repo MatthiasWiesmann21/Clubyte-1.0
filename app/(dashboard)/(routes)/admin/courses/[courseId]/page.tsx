@@ -23,6 +23,7 @@ import { DurationForm } from "./_components/duration-form";
 import { LevelForm } from "./_components/level-form";
 import { SpecialTypeForm } from "./_components/specialType-form";
 import GoBackButton from "@/components/goBackButton";
+import { useIsClientAdmin } from "@/lib/roleCheck";
 
 const CourseIdPage = async ({
   params
@@ -69,7 +70,7 @@ const CourseIdPage = async ({
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const isClientAdmin = await useIsClientAdmin();
   const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || isOwner(userId);
 
   if (!course || !canAccess) {

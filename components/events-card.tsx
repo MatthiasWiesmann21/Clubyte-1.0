@@ -34,12 +34,13 @@ import {
 } from "./ui/dropdown-menu";
 import { ConfirmModal } from "./modals/confirm-modal";
 import { useLanguage } from "@/lib/check-language";
-import { useIsAdmin } from "@/lib/roleCheck";
+import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { atcb_action } from "add-to-calendar-button-react";
 import { ShareLinkModal } from "./modals/share-link-modal";
+import { EventInfoModal } from "./modals/event-info-modal";
 interface EventsCardProps {
   id: string;
   title: string;
@@ -75,7 +76,10 @@ export const EventCard = ({
   const { onOpen } = useModal();
   const currentLanguage = useLanguage();
   const isAdmin = useIsAdmin();
+  const isClientAdmin = useIsClientAdmin();
   const router = useRouter();
+
+  const canAccess = isAdmin || isClientAdmin;
 
   const onDelete = async () => {
     try {
@@ -216,7 +220,7 @@ export const EventCard = ({
               >
                 <Calendar width={16} height={16} />
               </Button>
-              <DescriptionModal description={description}>
+              <EventInfoModal description={description} title={title} startDateTime={startDateTime} endDateTime={endDateTime}>
                 <Button
                   variant="ghost"
                   className="h-8 w-8 p-0"
@@ -224,9 +228,8 @@ export const EventCard = ({
                 >
                   <Info width={16} height={16} />
                 </Button>
-              </DescriptionModal>
-
-              {isAdmin && (
+              </EventInfoModal>
+              {canAccess && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button

@@ -7,6 +7,7 @@ import { columns } from "./_components/columns";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import authOptions from "@/lib/auth"; // Ensure this is configured correctly
+import { useIsClientAdmin } from "@/lib/roleCheck";
 
 const PostsPage = async () => {
   const session = await getServerSession(authOptions);
@@ -18,7 +19,7 @@ const PostsPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const isClientAdmin = await useIsClientAdmin();
   const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || await isOwner(userId);
 
   if (!canAccess) {

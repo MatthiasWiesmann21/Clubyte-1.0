@@ -9,6 +9,7 @@ import { isOwner } from "@/lib/owner";
 import { isAdmin, isOperator } from "@/lib/roleCheckServer";
 import { languageServer } from "@/lib/check-language-server";
 import authOptions  from "@/lib/auth"; // Ensure this is properly configured
+import { useIsClientAdmin } from "@/lib/roleCheck";
 
 const AnalyticsPage = async () => {
   const session = await getServerSession(authOptions);
@@ -22,7 +23,7 @@ const AnalyticsPage = async () => {
 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
-  const isClientAdmin = session?.user?.profile?.role === "CLIENT ADMIN";
+  const isClientAdmin = await useIsClientAdmin();
   const canAccess = isRoleAdmins || isRoleOperator || isClientAdmin || isOwner(userId);
 
   if (!canAccess) {

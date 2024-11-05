@@ -21,6 +21,7 @@ import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
 import { useIsAdmin } from "@/lib/roleCheck";
 import { isAdmin } from "@/lib/roleCheckServer";
+import { CourseInfoModal } from "@/components/modals/course-info-modal";
 
 interface CourseSidebarProps {
   course: Course & {
@@ -29,11 +30,13 @@ interface CourseSidebarProps {
     })[];
   };
   progressCount: number;
+  ThemeOutlineColor: string;
 }
 
 export const CourseSidebar = async ({
   course,
   progressCount,
+  ThemeOutlineColor,
 }: CourseSidebarProps) => {
   const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
@@ -83,11 +86,11 @@ export const CourseSidebar = async ({
             <div>
             <Tooltip>
               <TooltipTrigger>
-                <DescriptionModal description={course.description!}>
+                <CourseInfoModal description={course.description!} title={course.title!} level={course.level!} duration={course.duration!} chapters={course.chapters.length} ThemeOutlineColor={ThemeOutlineColor}> 
                   <Button variant="ghost" className="h-8 w-8 p-0">
                     <Info width={16} height={16} />
                   </Button>
-                </DescriptionModal>
+                </CourseInfoModal>
                 <TooltipContent side="bottom">
                   <p className="h-full max-w-[300px] whitespace-normal font-semibold">
                     {currentLanguage.courses_sidebar_infoDescription}
