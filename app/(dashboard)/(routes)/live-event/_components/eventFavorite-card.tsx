@@ -33,7 +33,7 @@ interface EventFavoriteCardProps {
   startDateTime: Date | null | any;
   endDateTime: Date | null | any;
   ThemOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  DarkThemeColor: string;
   currentFavorite: boolean;
   getLiveEvents: any;
 }
@@ -48,7 +48,7 @@ export const EventFavoriteCard = ({
   startDateTime,
   endDateTime,
   ThemOutlineColor,
-  DarkThemeOutlineColor,
+  DarkThemeColor,
   currentFavorite,
   getLiveEvents,
 }: EventFavoriteCardProps) => {
@@ -82,7 +82,7 @@ export const EventFavoriteCard = ({
     ) >= new Date();
 
   const getBorderColor = () => {
-    return theme === "dark" ? DarkThemeOutlineColor : ThemOutlineColor;
+    return theme === "dark" ? DarkThemeColor : ThemOutlineColor;
   };
 
   return (

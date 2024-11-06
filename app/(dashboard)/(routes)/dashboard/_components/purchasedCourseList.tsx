@@ -10,11 +10,11 @@ type CourseWithProgressWithCategory = Course & {
 
 interface CoursesListProps {
   items: CourseWithProgressWithCategory[] | any[];
-  ThemOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 }
 
-export const PurchasedCoursesList = async ({ items, ThemOutlineColor, DarkThemeOutlineColor }: CoursesListProps) => {
+export const PurchasedCoursesList = async ({ items, ThemeColor, DarkThemeColor }: CoursesListProps) => {
   const currentLanguage = await languageServer();
   return (
     <div>
@@ -37,8 +37,8 @@ export const PurchasedCoursesList = async ({ items, ThemOutlineColor, DarkThemeO
           isBestseller={item?.isBestseller!}
           isNew={item?.isNew!}
           currentFavorite={item?.currentFavorite!}
-          ThemOutlineColor={ThemOutlineColor}
-          DarkThemeOutlineColor={DarkThemeOutlineColor!}
+          ThemeColor={ThemeColor!}
+          DarkThemeColor={DarkThemeColor!}
           />
         ))}
       </div>

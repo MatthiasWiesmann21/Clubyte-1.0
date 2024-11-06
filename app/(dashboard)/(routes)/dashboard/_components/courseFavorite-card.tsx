@@ -41,8 +41,8 @@ interface CourseFavoriteCardProps {
   category: string;
   categoryColorCode: string;
   currentFavorite: boolean;
-  ThemOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
   getAllCourses: any;
 }
 
@@ -62,8 +62,8 @@ export const CourseFavoriteCard = ({
   category,
   categoryColorCode,
   currentFavorite,
-  ThemOutlineColor,
-  DarkThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
   getAllCourses,
 }: CourseFavoriteCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -86,8 +86,8 @@ export const CourseFavoriteCard = ({
     }
   };
 
-  const getBorderColor = () => {
-    return theme === "dark" ? DarkThemeOutlineColor : ThemOutlineColor;
+  const getThemeColor = () => {
+    return theme === "dark" ? DarkThemeColor : ThemeColor;
   };
 
   return (
@@ -97,7 +97,7 @@ export const CourseFavoriteCard = ({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
-          borderColor: isHovered ? getBorderColor() : "",
+          borderColor: isHovered ? getThemeColor() : "",
         }}
       >
         <div className="group h-full w-full overflow-hidden rounded-lg bg-slate-100/80 p-2 transition dark:bg-[#0c0319]">
@@ -251,7 +251,7 @@ export const CourseFavoriteCard = ({
                   <BookOpen
                     width={14}
                     height={14}
-                    style={{ color: ThemOutlineColor }}
+                    style={{ color: getThemeColor() }}
                   />
                   <span className="ml-1 text-xs">
                     {chaptersLength}{" "}
@@ -265,7 +265,7 @@ export const CourseFavoriteCard = ({
                     <Clock
                       width={14}
                       height={14}
-                      style={{ color: ThemOutlineColor }}
+                      style={{ color: getThemeColor() }}
                     />
                     <span className="ml-1 text-xs">
                       {formatDuration(duration.toString())}
@@ -277,7 +277,7 @@ export const CourseFavoriteCard = ({
                     <GraduationCap
                       width={14}
                       height={14}
-                      style={{ color: ThemOutlineColor }}
+                      style={{ color: getThemeColor() }}
                     />
                     <span className="ml-1 text-xs">
                       {level || currentLanguage.course_card_no_level}

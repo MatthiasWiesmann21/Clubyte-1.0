@@ -60,8 +60,8 @@ interface CourseCardProps {
   category: string;
   categoryColorCode: string;
   currentFavorite: boolean;
-  ThemOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
   getAllCourses?: any;
 }
 
@@ -85,8 +85,8 @@ export const CourseCard = ({
   category,
   categoryColorCode,
   currentFavorite,
-  ThemOutlineColor,
-  DarkThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
   getAllCourses,
 }: CourseCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -112,8 +112,8 @@ export const CourseCard = ({
     }
   };
 
-  const getBorderColor = () => {
-    return theme === "dark" ? DarkThemeOutlineColor : ThemOutlineColor;
+  const getThemeColor = () => {
+    return theme === "dark" ? DarkThemeColor : ThemeColor;
   };
 
   return (
@@ -123,7 +123,7 @@ export const CourseCard = ({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
-          borderColor: isHovered ? getBorderColor() : "",
+          borderColor: isHovered ? getThemeColor() : "",
         }}
       >
         <div className="group h-full w-full overflow-hidden rounded-lg bg-slate-100/80 p-2 transition hover:shadow-lg dark:bg-[#0c0319]">
@@ -217,7 +217,7 @@ export const CourseCard = ({
                   <Share2 width={16} height={16} />
                 </Button>
               </ShareLinkModal>
-              <CourseInfoModal description={description} title={title} chapters={chaptersLength} duration={duration} level={level} ThemeOutlineColor={ThemOutlineColor}>
+              <CourseInfoModal description={description} title={title} chapters={chaptersLength} duration={duration} level={level} ThemeColor={ThemeColor} DarkThemeColor={DarkThemeColor}>
                 <Button
                   variant="ghost"
                   className="h-8 w-8 p-0"
@@ -283,7 +283,7 @@ export const CourseCard = ({
                 <div className="flex items-center">
                   <BookOpen
                     className="h-4 w-4" // fixed width and height (e.g., w-5 = 20px)
-                    style={{ color: ThemOutlineColor }}
+                    style={{ color: getThemeColor() }}
                   />
                   <span className="ml-1 text-xs">
                     {chaptersLength}{" "}
@@ -296,7 +296,7 @@ export const CourseCard = ({
                   <div className="flex items-center">
                     <Clock
                       className="h-4 w-4" // ensure fixed width and height here as well
-                      style={{ color: ThemOutlineColor }}
+                      style={{ color: getThemeColor() }}
                     />
                     <span className="ml-1 text-xs">
                       {formatDuration(duration.toString())}
@@ -307,7 +307,7 @@ export const CourseCard = ({
                   <div className="flex items-center">
                     <GraduationCap
                       className="h-4 w-4" // fixed size for GraduationCap
-                      style={{ color: ThemOutlineColor }}
+                      style={{ color: getThemeColor() }}
                     />
                     <span className="ml-1 text-xs">
                       {level || currentLanguage.course_card_no_level}

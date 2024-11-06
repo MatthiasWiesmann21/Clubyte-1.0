@@ -62,7 +62,7 @@ const NewsPage = async ({ searchParams }: SearchPageProps) => {
       searchParams={searchParams}
       categories={categories}
       ThemeOutlineColor={container?.ThemeOutlineColor!}
-      DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
+      DarkThemeColor={container?.DarkThemeColor!}
       profileImage={profile?.imageUrl!}
       profileRole={profile?.role!}
       // TODO: Add course, chapter, liveEvent to the props

@@ -14,14 +14,14 @@ import { useRef, useState } from "react";
 
 interface CategoriesProps {
   items: Category[] | any[];
-  ThemeOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 }
 
 export const Categories = ({
   items,
-  ThemeOutlineColor,
-  DarkThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
 }: CategoriesProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,7 +41,7 @@ export const Categories = ({
     0;
 
   const getThemeColor = () => {
-    return theme === "dark" ? DarkThemeOutlineColor : ThemeOutlineColor;
+    return theme === "dark" ? DarkThemeColor : ThemeColor;
   };
 
   const scrollLeft = () => {

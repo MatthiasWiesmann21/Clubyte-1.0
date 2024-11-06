@@ -32,10 +32,17 @@ const CourseTable = ({ courses, colors }: CourseTableProps) => {
   );
 
   const getButtonColor = () => {
-    if (theme !== "dark") {
+    if (theme === "dark") {
       return colors?.DarkPrimaryButtonColor;
     }
     return colors?.PrimaryButtonColor;
+  };
+
+  const getThemeColor = () => {
+    if (theme === "dark") {
+      return colors?.DarkThemeColor;
+    }
+    return colors?.ThemeColor;
   };
 
   return (
@@ -137,7 +144,7 @@ const CourseTable = ({ courses, colors }: CourseTableProps) => {
               <Line
                 percent={each?.progress!}
                 strokeWidth={3}
-                strokeColor="#EA2088"
+                strokeColor={getThemeColor()}
               />
             </div>
             <div className="w-[5%]">

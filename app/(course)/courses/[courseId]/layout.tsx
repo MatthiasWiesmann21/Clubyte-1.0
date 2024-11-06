@@ -62,7 +62,7 @@ const CourseLayout = async ({
   return (
     <div className="h-full">
       <div className="fixed inset-y-0 z-50 h-[80px] w-full md:pl-60">
-        <CourseNavbar course={course} progressCount={progressCount} ThemeOutlineColor={container?.ThemeOutlineColor ?? ""} />
+        <CourseNavbar course={course} progressCount={progressCount} ThemeColor={container?.ThemeColor!} DarkThemeColor={container?.DarkThemeColor!} />
       </div>
       <div className="fixed inset-y-0 z-50 hidden h-full w-60 flex-col md:flex">
         <Sidebar />

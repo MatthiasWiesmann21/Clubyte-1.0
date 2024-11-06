@@ -10,14 +10,14 @@ import { ArrowLeft } from "lucide-react";
 import GoBackButton from "@/components/goBackButton";
 
 interface CoursesListProps {
-  ThemOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
   profileRole: string;
 }
 
 export const FavouriteCoursesList = ({
-  ThemOutlineColor,
-  DarkThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
   profileRole,
 }: CoursesListProps) => {
   const searchParams = useSearchParams();
@@ -63,8 +63,8 @@ export const FavouriteCoursesList = ({
                 isBestseller={item?.isBestseller!}
                 isNew={item?.isNew!}
                 currentFavorite={item?.currentFavorite!}
-                ThemOutlineColor={ThemOutlineColor}
-                DarkThemeOutlineColor={DarkThemeOutlineColor!}
+                ThemeColor={ThemeColor!}
+                DarkThemeColor={DarkThemeColor!}
                 getAllCourses={getAllCourses}
               />
             ))}

@@ -94,8 +94,8 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           <div className="w-full lg:w-[90%]">
           <Categories
             items={categoriesWithCourseCounts}
-            ThemeOutlineColor={container?.ThemeOutlineColor!}
-            DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
+            ThemeColor={container?.ThemeColor!}
+            DarkThemeColor={container.DarkThemeColor!}
           />
           </div>
           <div className="hidden lg:block w-[10%] items-center justify-center">
@@ -110,8 +110,8 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           </div>
         </div>
         <CoursesList
-          ThemOutlineColor={containerColors?.ThemeOutlineColor!}
-          DarkThemeOutlineColor={containerColors?.DarkThemeOutlineColor!}
+          ThemeColor={containerColors?.ThemeColor!}
+          DarkThemeColor={containerColors?.DarkThemeColor!}
         />
       </div>
     </>

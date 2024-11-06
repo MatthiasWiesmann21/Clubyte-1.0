@@ -498,14 +498,6 @@ export const Francaise: Record<string, string> = {
   customize_PrimaryButtonColorForm_save: "Enregistrer",
   customize_DarkPrimaryButtonColorForm_title:
     "Color de bouton principal en mode sombre",
-  customize_ThemeColorForm_title: "Couleur du contour du thème",
-  customize_ThemeColorForm_cancel: "Annuler",
-  customize_ThemeColorForm_edit: "Modifier",
-  customize_ThemeColorForm_save: "Enregistrer",
-  customize_ThemeColorsDark_title:
-    "Personnalisez la couleur de votre thème pour le mode sombre",
-  customize_DarkThemeColorForm_title:
-    "Couleur du contour du thème pour le mode sombre",
   dashboard_popularChapter_chapterName_text: "Nom du chapitre",
   dashboard_popularChapter_courseName_text: "Nom du cours",
   dashboard_popularChapter_likes_text: "J'aime",
@@ -648,4 +640,13 @@ export const Francaise: Record<string, string> = {
   modal_share_link_title: "Partager",
   modal_share_link_label: "Partager le lien",
   profile_manageBilling: "Facturation",
+  customize_customizeTheme_title: "Personnalisez la couleur de votre thème",
+  customize_ThemeColors_title: "Personnalisez la couleur de votre thème",
+  customize_ThemeColorForm_title: "Couleur du thème",
+  customize_ThemeColorForm_cancel: "Annuler",
+  customize_ThemeColorForm_edit: "Modifier",
+  customize_THemeColorForm_save: "Enregistrer",
+  customize_ThemeColorsDark_title: "Personnalisez la couleur de votre thème pour le mode sombre",
+  customize_DarkThemeColorForm_title: "Couleur du thème pour le mode sombre",
+  customize_ThemeColorForm_save: "Enregistrer",
 };

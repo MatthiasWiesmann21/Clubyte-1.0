@@ -52,8 +52,8 @@ const FavoriteEventsPage = async ({ searchParams }: SearchPageProps) => {
   return (
     <div className="space-y-4 p-4">
       <FavouriteEventsList
-        ThemOutlineColor={containerColors?.ThemeOutlineColor!}
-        DarkThemeOutlineColor={containerColors?.DarkThemeOutlineColor!}
+        ThemeColor={containerColors?.ThemeColor!}
+        DarkThemeColor={containerColors?.DarkThemeColor!}
         profileRole={profile?.role!}
       />
     </div>
