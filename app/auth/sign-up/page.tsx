@@ -10,8 +10,10 @@ import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AppSVG from "@/components/appsvg";
 import { Input } from "@/components/ui/input";
+import { useContainerData } from "@/hooks/useContainerData";
 
 export default function SignUp() {
+  const { container, loading } = useContainerData();
   const router = useRouter();
   const [beingSubmitted, setBeingSubmitted] = useState(false);
   const [form, setForm] = useState({
@@ -107,19 +109,6 @@ export default function SignUp() {
       </div>
     );
   };
-
-  const getContainerData = async () => {
-    const response = await fetch("/api/auth/container", {
-      method: "GET",
-    });
-    const data = await response.json();
-
-    console.log("qwerty", data);
-  };
-
-  useEffect(() => {
-    getContainerData();
-  }, []);
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center md:flex-row">
