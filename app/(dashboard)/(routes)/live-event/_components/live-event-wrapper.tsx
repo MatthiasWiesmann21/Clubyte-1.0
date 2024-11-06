@@ -63,8 +63,8 @@ export const LiveEventWrapper = ({
       <div className="mr-1 flex justify-between">
         <div className="flex">
           <PastandFuture
-            ThemeOutlineColor={container?.ThemeOutlineColor!}
-            DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
+            ThemeColor={container?.ThemeColor!}
+            DarkThemeColor={container?.DarkThemeColor!}
           />
           {profileRole === "ADMIN" && (
             <Button
@@ -92,8 +92,8 @@ export const LiveEventWrapper = ({
         <div className="w-full lg:w-[90%]">
           <Categories
             items={categories}
-            ThemeOutlineColor={container?.ThemeOutlineColor!}
-            DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
+            ThemeColor={container?.ThemeColor!}
+            DarkThemeColor={container?.DarkThemeColor!}
           />
         </div>
 
@@ -113,8 +113,8 @@ export const LiveEventWrapper = ({
           ...each,
           color: container?.navDarkBackgroundColor,
         }))}
-        ThemeOutlineColor={container?.ThemeOutlineColor!}
-        DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
+        ThemeColor={container?.ThemeColor!}
+        DarkThemeColor={container?.DarkThemeColor!}
         getLiveEvents={getLiveEvents}
       />
     </div>

@@ -10,13 +10,13 @@ import { CourseFavoriteCard } from "@/app/(dashboard)/(routes)/dashboard/_compon
 import { Separator } from "./ui/separator";
 
 interface CoursesListProps {
-  ThemOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 }
 
 export const CoursesList = ({
-  ThemOutlineColor,
-  DarkThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
 }: CoursesListProps) => {
   const searchParams = useSearchParams();
   const categoryId = searchParams?.get("categoryId") || "";
@@ -54,8 +54,8 @@ export const CoursesList = ({
           isBestseller={item?.isBestseller!}
           isNew={item?.isNew!}
           currentFavorite={item?.currentFavorite!}
-          ThemOutlineColor={ThemOutlineColor}
-          DarkThemeOutlineColor={DarkThemeOutlineColor!}
+          ThemeColor={ThemeColor!}
+          DarkThemeColor={DarkThemeColor!}
           getAllCourses={getAllCourses}
         />
       ))}

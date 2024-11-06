@@ -6,7 +6,6 @@ import { db } from "@/lib/db";
 import { Metadata } from "next";
 import { FavouriteCoursesList } from "./_components/favouriteCourse-list";
 
-
 export const metadata: Metadata = {
   title: "Courses",
 };
@@ -48,8 +47,8 @@ const FavoriteCoursesPage = async ({ searchParams }: SearchPageProps) => {
   return (
     <div className="space-y-4 p-4">
       <FavouriteCoursesList
-        ThemOutlineColor={containerColors?.ThemeOutlineColor!}
-        DarkThemeOutlineColor={containerColors?.DarkThemeOutlineColor!}
+        ThemeColor={containerColors?.ThemeColor!}
+        DarkThemeColor={containerColors?.DarkThemeColor!}
         profileRole={profile?.role!}
       />
     </div>

@@ -31,7 +31,7 @@ interface NewsWrapperProps {
   };
   categories: any;
   ThemeOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  DarkThemeColor: string;
   profileImage: string;
   profileRole: string;
 }
@@ -40,7 +40,7 @@ const NewsWrapper = ({
   searchParams,
   categories,
   ThemeOutlineColor,
-  DarkThemeOutlineColor,
+  DarkThemeColor,
   profileImage,
   profileRole,
 }: NewsWrapperProps) => {
@@ -115,7 +115,7 @@ const NewsWrapper = ({
           <Categories
             items={categories}
             ThemeOutlineColor={ThemeOutlineColor}
-            DarkThemeOutlineColor={DarkThemeOutlineColor}
+            DarkThemeColor={DarkThemeColor}
           />
           {posts?.map((item) => (
             <PostCard

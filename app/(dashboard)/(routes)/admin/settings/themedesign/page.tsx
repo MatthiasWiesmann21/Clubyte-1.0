@@ -2,14 +2,14 @@ import { redirect } from "next/navigation";
 import { ArrowLeft, PaletteIcon } from "lucide-react";
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
-import { ThemeOutlineColorForm } from "./_components/primary-color-form";
 import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import { languageServer } from "@/lib/check-language-server";
-import { DarkThemeOutlineColorForm } from "./_components/darkPrimary-color-form";
+import { DarkThemeColorForm } from "./_components/darkPrimary-color-form";
 import Link from "next/link";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import { ThemeColorForm } from "./_components/primary-color-form";
 const ThemeDesignPage = async () => {
   const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
@@ -60,9 +60,9 @@ const ThemeDesignPage = async () => {
               {currentLanguage.requiredFields}
             </span>
           </div>
-          <ThemeOutlineColorForm
+          <ThemeColorForm
             initialData={{
-              ThemeOutlineColor: container.ThemeOutlineColor || "#0369a0",
+              ThemeColor: container.ThemeColor || "#0369a0",
             }}
             containerId={container.id}
           />
@@ -75,10 +75,10 @@ const ThemeDesignPage = async () => {
               {currentLanguage.requiredFields}
             </span>
           </div>
-          <DarkThemeOutlineColorForm
+          <DarkThemeColorForm
             initialData={{
-              DarkThemeOutlineColor:
-                container.DarkThemeOutlineColor || "#0369a0",
+              DarkThemeColor:
+                container.DarkThemeColor || "#0369a0",
             }}
             containerId={container.id}
           />

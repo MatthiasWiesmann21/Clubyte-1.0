@@ -50,8 +50,8 @@ interface EventsCardProps {
   categoryColorCode: string;
   startDateTime: Date | null | any;
   endDateTime: Date | null | any;
-  ThemOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
   currentFavorite: boolean;
   getLiveEvents: any;
 }
@@ -65,8 +65,8 @@ export const EventCard = ({
   categoryColorCode,
   startDateTime,
   endDateTime,
-  ThemOutlineColor,
-  DarkThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
   currentFavorite,
   getLiveEvents,
 }: EventsCardProps) => {
@@ -103,7 +103,7 @@ export const EventCard = ({
     ) >= new Date();
 
   const getBorderColor = () => {
-    return theme === "dark" ? DarkThemeOutlineColor : ThemOutlineColor;
+    return theme === "dark" ? DarkThemeColor : ThemeColor;
   };
 
   const handleCalendarClick = () => {

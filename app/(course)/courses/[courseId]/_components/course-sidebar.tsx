@@ -19,7 +19,6 @@ import { Button } from "@/components/ui/button";
 import { Edit, Info } from "lucide-react";
 import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
-import { useIsAdmin } from "@/lib/roleCheck";
 import { isAdmin, isClientAdmin } from "@/lib/roleCheckServer";
 import { CourseInfoModal } from "@/components/modals/course-info-modal";
 
@@ -30,13 +29,15 @@ interface CourseSidebarProps {
     })[];
   };
   progressCount: number;
-  ThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 }
 
 export const CourseSidebar = async ({
   course,
   progressCount,
-  ThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
 }: CourseSidebarProps) => {
   const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
@@ -89,7 +90,7 @@ export const CourseSidebar = async ({
             <div>
             <Tooltip>
               <TooltipTrigger>
-                <CourseInfoModal description={course.description!} title={course.title!} level={course.level!} duration={course.duration!} chapters={course.chapters.length} ThemeOutlineColor={ThemeOutlineColor}> 
+                <CourseInfoModal description={course.description!} title={course.title!} level={course.level!} duration={course.duration!} chapters={course.chapters.length} ThemeColor={ThemeColor} DarkThemeColor={DarkThemeColor}> 
                   <Button variant="ghost" className="h-8 w-8 p-0">
                     <Info width={16} height={16} />
                   </Button>
@@ -113,7 +114,7 @@ export const CourseSidebar = async ({
         </div>
           {purchase && (
             <div className="mt-4">
-              <Progress progress={progress} />
+              <Progress progress={progress} ThemeColor={ThemeColor} DarkThemeColor={DarkThemeColor} />
             </div>
           )}
         </div>

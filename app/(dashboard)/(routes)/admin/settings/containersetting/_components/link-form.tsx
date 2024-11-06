@@ -107,6 +107,7 @@ export const LinkForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={()=>onSubmit(form.getValues())}
               >
                 {currentLanguage.customize_ContainerLinkForm_save}
               </Button>

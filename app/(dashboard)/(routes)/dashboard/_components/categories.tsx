@@ -15,14 +15,14 @@ interface EnhancedCategory extends Category {
 
 interface CategoriesProps {
   items: EnhancedCategory[];
-  ThemeOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 }
 
 export const Categories = ({
   items,
-  ThemeOutlineColor,
-  DarkThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
 }: CategoriesProps) => {
   const all =
     items
@@ -31,7 +31,7 @@ export const Categories = ({
 
   const { theme } = useTheme();
   const getThemeColor = () => {
-    return theme === "dark" ? DarkThemeOutlineColor : ThemeOutlineColor;
+    return theme === "dark" ? DarkThemeColor : ThemeColor;
   };
 
   // Ref für den scrollbaren Container

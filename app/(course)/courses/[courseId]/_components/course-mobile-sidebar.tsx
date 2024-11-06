@@ -16,24 +16,27 @@ interface CourseMobileSidebarProps {
     })[];
   };
   progressCount: number;
-  ThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 };
 
 export const CourseMobileSidebar = ({ 
   course,
   progressCount,
-  ThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
 }: CourseMobileSidebarProps) => {
   return (
     <Sheet>
       <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition">
         <Menu />
       </SheetTrigger>
-      <SheetContent side="left" className="w-64">
+      <SheetContent side="left" className="w-64 bg-slate-100 dark:bg-[#0c0319]">
         <CourseSidebarMobile
           course={course}
           progressCount={progressCount}
-          ThemeOutlineColor={ThemeOutlineColor}
+          ThemeColor={ThemeColor}
+          DarkThemeColor={DarkThemeColor}
         />
       </SheetContent>
     </Sheet>

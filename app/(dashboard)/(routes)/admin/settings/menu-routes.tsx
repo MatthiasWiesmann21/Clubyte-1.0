@@ -1,26 +1,8 @@
 "use client";
 
 import {
-  BarChartIcon,
-  ClapperboardIcon,
-  Compass,
-  FolderOpen,
-  Globe2,
-  Layout,
-  LayoutDashboard,
-  LayoutGridIcon,
-  ListIcon,
-  Mail,
-  MailIcon,
-  MessageCircle,
-  NewspaperIcon,
   PaletteIcon,
-  PinIcon,
-  Server,
-  ServerIcon,
   Settings,
-  UserCircle2Icon,
-  Video,
 } from "lucide-react";
 
 import { MenuItem } from "./menu-item";
@@ -80,8 +62,8 @@ export const MenuRoutes = ({
           href={route.href}
           isNew={route.isNew}
           somethingImportant={route.somethingImportant}
-          ThemeOutlineColor={container?.ThemeOutlineColor!}
-          DarkThemeOutlineColor={container?.DarkThemeOutlineColor!}
+          ThemeColor={container?.ThemeColor!}
+          DarkThemeColor={container?.DarkThemeColor!}
         />
       ))}
     </div>

@@ -121,7 +121,7 @@ export const DarkBackgorundNavColorForm = ({ initialData, containerId }: DarkBac
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button disabled={!isValid || isSubmitting} type="submit">
+              <Button disabled={!isValid || isSubmitting} type="submit" onClick={()=>onSubmit(form.getValues())}>
                 {currentLanguage.customize_PrimaryColorForm_save}
               </Button>
             </div>

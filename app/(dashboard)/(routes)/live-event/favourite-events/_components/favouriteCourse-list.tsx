@@ -11,14 +11,14 @@ import { EventCard } from "@/components/events-card";
 import GoBackButton from "@/components/goBackButton";
 
 interface EventListProps {
-  ThemOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
   profileRole: string;
 }
 
 export const FavouriteEventsList = ({
-  ThemOutlineColor,
-  DarkThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
   profileRole,
 }: EventListProps) => {
   const searchParams = useSearchParams();
@@ -57,8 +57,8 @@ export const FavouriteEventsList = ({
                 categoryColorCode={item?.category?.colorCode!}
                 startDateTime={item?.startDateTime}
                 endDateTime={item?.endDateTime}
-                ThemOutlineColor={ThemOutlineColor}
-                DarkThemeOutlineColor={DarkThemeOutlineColor!}
+                ThemeColor={ThemeColor}
+                DarkThemeColor={DarkThemeColor!}
                 currentFavorite={item?.currentFavorite}
                 getLiveEvents={getLiveEvents}
               />
