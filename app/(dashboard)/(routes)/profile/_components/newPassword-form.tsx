@@ -20,11 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
 import { Profile } from "@prisma/client";
-
-interface NewPasswordFormProps {
-  profileId: string;
-  currentPassword: string;
-};
+import { signIn } from "next-auth/react";
 
 const passwordStrengthSchema = z
   .string()
@@ -32,22 +28,22 @@ const passwordStrengthSchema = z
   .regex(/[A-Z]/, { message: "Password must contain an uppercase letter" })
   .regex(/[0-9]/, { message: "Password must contain a number" });
 
-const formSchema = z.object({
-  oldPassword: z.string().min(1, { message: "Old password is required" }),
-  newPassword: passwordStrengthSchema,
-  confirmPassword: z.string(),
-}).refine((data) => data.newPassword !== data.oldPassword, {
-  message: "New password must be different from the old password",
-  path: ["newPassword"],
-}).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+const formSchema = z
+  .object({
+    oldPassword: z.string().min(1, { message: "Old password is required" }),
+    newPassword: passwordStrengthSchema,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword !== data.oldPassword, {
+    message: "New password must be different from the old password",
+    path: ["newPassword"],
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
-export const NewPasswordForm = ({
-  profileId,
-  currentPassword,
-}: NewPasswordFormProps) => {
+export const NewPasswordForm = ({ initialData }: { initialData: Profile }) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -60,52 +56,69 @@ export const NewPasswordForm = ({
       oldPassword: "",
       newPassword: "",
       confirmPassword: "",
-    }
+    },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (values.oldPassword !== currentPassword) {
-      toast.error("Old password is incorrect");
-      return;
-    }
-
     try {
-      await axios.patch(`/api/profile/${profileId}`, { password: values.newPassword });
+      if (values.newPassword !== values.confirmPassword) {
+        toast.error("New Passwords do not match");
+        return;
+      }
+
+      const response = await signIn("credentials", {
+        email: initialData?.email,
+        password: values.oldPassword,
+        redirect: false,
+      });
+
+      if (response?.error) {
+        toast.error("Invalid Old Password");
+        return;
+      }
+
+      // Attempt to update the password
+      const res: any = await axios.patch(`/api/profile/${initialData?.id}`, {
+        password: values.newPassword,
+      });
+
       toast.success("Password updated");
       toggleEdit();
       router.refresh();
-    } catch {
-      toast.error("Something went wrong");
+    } catch (error: any) {
+      // Check for specific error messages from the server
+      const errorMessage = error.response?.data?.message;
+      if (error.response?.status === 400 && errorMessage) {
+        toast.error(errorMessage);
+      } else {
+        toast.error("Something went wrong");
+      }
     }
-  }
+  };
 
   return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
+      <div className="flex items-center justify-between font-medium">
         {currentLanguage.profile_newPasswordForm_title}
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>{currentLanguage.profile_newPasswordForm_cancel}</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
+              <Pencil className="mr-2 h-4 w-4" />
               {currentLanguage.profile_newPasswordForm_edit}
             </>
           )}
         </Button>
       </div>
-      {!isEditing && (
-        <p className="text-sm mt-2">
-          ••••••••
-        </p>
-      )}
+      {!isEditing && <p className="mt-2 text-sm">••••••••</p>}
       {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -115,7 +128,9 @@ export const NewPasswordForm = ({
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder={currentLanguage.profile_oldPassword_placeholder}
+                      placeholder={
+                        currentLanguage.profile_oldPassword_placeholder
+                      }
                       disabled={isSubmitting}
                       {...field}
                     />
@@ -133,7 +148,9 @@ export const NewPasswordForm = ({
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder={currentLanguage.profile_newPasswordForm_placeholder}
+                      placeholder={
+                        currentLanguage.profile_newPasswordForm_placeholder
+                      }
                       disabled={isSubmitting}
                       {...field}
                     />
@@ -151,7 +168,9 @@ export const NewPasswordForm = ({
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder={currentLanguage.profile_confirmPasswordForm_placeholder}
+                      placeholder={
+                        currentLanguage.profile_confirmPasswordForm_placeholder
+                      }
                       disabled={isSubmitting}
                       {...field}
                     />
@@ -165,7 +184,7 @@ export const NewPasswordForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
-                onClick={()=>onSubmit(form.getValues())}
+                onClick={() => onSubmit(form.getValues())}
               >
                 {currentLanguage.profile_newPasswordForm_save}
               </Button>
@@ -175,4 +194,4 @@ export const NewPasswordForm = ({
       )}
     </div>
   );
-}
+};

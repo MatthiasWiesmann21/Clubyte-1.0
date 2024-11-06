@@ -17,7 +17,7 @@ const UserNamePage = async () => {
   const user = await currentProfile();
   const currentLanguage = await languageServer();
   if (!user?.id) {
-    return redirect("/sign-in");
+    return redirect("/auth/sign-in");
   }
 
   const profile = await db.profile.findUnique({
@@ -44,7 +44,7 @@ const UserNamePage = async () => {
           <TitleForm initialData={profile} profileId={profile.id} />
           <EmailForm initialData={profile} profileId={profile.id} />
           <ImageForm initialData={profile} profileId={profile.id} />
-          <NewPasswordForm profileId={profile.id} currentPassword={profile.password!} />
+          <NewPasswordForm initialData={profile} />
         </div>
       </div>
     </div>
