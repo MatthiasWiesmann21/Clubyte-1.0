@@ -72,9 +72,9 @@ const ChapterIdPage = async ({
 
   return (
     <div className="flex justify-between">
-      <CourseWrapper params={params} currentLanguage={currentLanguage} profileImage={profile?.imageUrl!} purchaseLabel={currentLanguage.chapter_purchaseBanner_text} ThemeOutlineColor={container?.ThemeOutlineColor ?? ""}/>
+      <CourseWrapper params={params} currentLanguage={currentLanguage} profileImage={profile?.imageUrl!} purchaseLabel={currentLanguage.chapter_purchaseBanner_text} ThemeColor={container?.ThemeColor ?? ""} DarkThemeColor={container?.DarkThemeColor ?? ""}/>
       <div className="max-h-[500px] min-h-[400px] md:min-w-[270px] md:max-w-[350px] lg:min-w-[350px] lg:max-w-[400px]">
-        <CourseSidebar course={_course} progressCount={progressCount} ThemeOutlineColor={container?.ThemeOutlineColor ?? ""}/>
+        <CourseSidebar course={_course} progressCount={progressCount} ThemeColor={container?.ThemeColor ?? ""} DarkThemeColor={container?.DarkThemeColor ?? ""}/>
       </div>
     </div>
   );

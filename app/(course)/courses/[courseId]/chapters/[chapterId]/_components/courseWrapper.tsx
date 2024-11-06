@@ -62,7 +62,8 @@ interface CourseWrapperProps {
   currentLanguage: CurrentLanguage;
   profileImage: string;
   purchaseLabel: string;
-  ThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 }
 
 interface Chapter {
@@ -105,7 +106,8 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
   currentLanguage,
   profileImage,
   purchaseLabel,
-  ThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
 }) => {
   const [data, setData] = useState<DataObject>({
     chapter: null,
@@ -200,7 +202,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
               )}
             </div>
             <div className="p-4 pt-0">
-              <Preview value={chapter?.description!} duration={chapter?.duration ?? ""} level={chapter?.level ?? ""} ThemeOutlineColor={ThemeOutlineColor} />
+              <Preview value={chapter?.description!} duration={chapter?.duration ?? ""} level={chapter?.level ?? ""} ThemeColor={ThemeColor} DarkThemeColor={DarkThemeColor}/>
             </div>
             <div className="m-4 mt-0 rounded-lg border-2 bg-slate-100 pt-3 dark:bg-[#0c0319]">
               <span className="ml-4 text-sm font-bold">

@@ -30,13 +30,15 @@ interface CourseSidebarProps {
     })[];
   };
   progressCount: number;
-  ThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 }
 
 export const CourseSidebarMobile = async ({
   course,
   progressCount,
-  ThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
 }: CourseSidebarProps) => {
   const session = await getServerSession(authOptions);
   const currentLanguage = await languageServer();
@@ -78,7 +80,7 @@ export const CourseSidebarMobile = async ({
               {course.title}
             </h1>
             <div>
-            <CourseInfoModal description={course.description!} title={course.title!} level={course.level!} duration={course.duration!} chapters={course.chapters.length} ThemeOutlineColor={ThemeOutlineColor}> 
+            <CourseInfoModal description={course.description!} title={course.title!} level={course.level!} duration={course.duration!} chapters={course.chapters.length} ThemeColor={ThemeColor} DarkThemeColor={DarkThemeColor}> 
             <Button variant="ghost" className="h-8 w-8 p-0">
                   <Info width={16} height={16} />
                 </Button>
@@ -94,7 +96,7 @@ export const CourseSidebarMobile = async ({
           </div>
           {purchase && (
             <div className="mt-4">
-              <Progress progress={progress} />
+              <Progress progress={progress} ThemeColor={ThemeColor} DarkThemeColor={DarkThemeColor} />
             </div>
           )}
         </div>

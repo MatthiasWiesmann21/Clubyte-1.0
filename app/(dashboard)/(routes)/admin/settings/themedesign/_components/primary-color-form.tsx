@@ -23,20 +23,20 @@ import { Input } from "@/components/ui/input";
 import { useDispatch } from "react-redux";
 import { useLanguage } from "@/lib/check-language";
 
-interface ThemeOutlineColorFormProps {
+interface ThemeColorFormProps {
   initialData: {
-    ThemeOutlineColor: string;
+    ThemeColor: string;
   };
   containerId: string;
 }
 
 const formSchema = z.object({
-  ThemeOutlineColor: z.string().min(1, {
+  ThemeColor: z.string().min(1, {
     message: "Color is required",
   }),
 });
 
-export const ThemeOutlineColorForm = ({ initialData, containerId }: ThemeOutlineColorFormProps) => {
+export const ThemeColorForm = ({ initialData, containerId }: ThemeColorFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -83,10 +83,10 @@ export const ThemeOutlineColorForm = ({ initialData, containerId }: ThemeOutline
       </div>
       {!isEditing && (
         <div
-          style={{ backgroundColor: initialData.ThemeOutlineColor }}
+          style={{ backgroundColor: initialData.ThemeColor }}
           className="mt-2 h-8 w-8 rounded-md"
         >
-          <p className="mt-3 p-1 pl-10 text-sm">{initialData.ThemeOutlineColor}</p>
+          <p className="mt-3 p-1 pl-10 text-sm">{initialData.ThemeColor}</p>
         </div>
       )}
       {isEditing && (
@@ -97,7 +97,7 @@ export const ThemeOutlineColorForm = ({ initialData, containerId }: ThemeOutline
           >
             <FormField
               control={form.control}
-              name="ThemeOutlineColor"
+              name="ThemeColor"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -114,14 +114,14 @@ export const ThemeOutlineColorForm = ({ initialData, containerId }: ThemeOutline
                     />
                   </FormControl>
                   <FormLabel className="p-1">
-                    {field.value || initialData.ThemeOutlineColor}
+                    {field.value || initialData.ThemeColor}
                   </FormLabel>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button disabled={!isValid || isSubmitting} type="submit">
+              <Button disabled={!isValid || isSubmitting} type="submit" onClick={()=>onSubmit(form.getValues())}>
                 {currentLanguage.customize_ThemeColorForm_save}
               </Button>
             </div>

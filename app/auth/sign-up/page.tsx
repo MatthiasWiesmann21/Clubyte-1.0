@@ -10,10 +10,14 @@ import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AppSVG from "@/components/appsvg";
 import { Input } from "@/components/ui/input";
+import { useContainerData } from "@/hooks/useContainerData";
+import { useTheme } from "next-themes";
 
 export default function SignUp() {
+  const { container, loading } = useContainerData();
   const router = useRouter();
   const [beingSubmitted, setBeingSubmitted] = useState(false);
+  const { theme } = useTheme();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -22,6 +26,14 @@ export default function SignUp() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const getButtonColor = () => {
+    if (theme === "dark") {
+      return container?.DarkPrimaryButtonColor;
+    } else {
+      return container?.PrimaryButtonColor;
+    }
+  };
 
   const handleGoogleSignIn = (event: any) => {
     event.preventDefault();
@@ -107,19 +119,6 @@ export default function SignUp() {
       </div>
     );
   };
-
-  const getContainerData = async () => {
-    const response = await fetch("/api/auth/container", {
-      method: "GET",
-    });
-    const data = await response.json();
-
-    console.log("qwerty", data);
-  };
-
-  useEffect(() => {
-    getContainerData();
-  }, []);
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center md:flex-row">
@@ -218,7 +217,8 @@ export default function SignUp() {
           <Button
             onClick={handleSubmit}
             type="button"
-            className="h-14 w-full rounded-full bg-pink-600 px-4 text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="h-14 w-full rounded-full px-4 text-white"
+            style={{ backgroundColor: getButtonColor() }}
           >
             <div className="flex justify-center text-lg md:text-xl">
               {beingSubmitted ? (
@@ -236,7 +236,7 @@ export default function SignUp() {
           <div className="mt-2 flex justify-center text-lg">
             <p>
               Already have an account?{" "}
-              <span className="text-pink-500">
+              <span style={{ color: getButtonColor() }}>
                 <Link href="/auth/sign-in" className="hover:underline">
                   Sign In
                 </Link>

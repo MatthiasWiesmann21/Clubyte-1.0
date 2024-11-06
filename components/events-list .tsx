@@ -9,15 +9,15 @@ type EventsWithProgressWithCategory = LiveEvent & {
 
 interface EventsListProps {
   items: EventsWithProgressWithCategory[];
-  ThemeOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
   getLiveEvents: any;
 }
 
 export const EventsList = ({
   items,
-  ThemeOutlineColor,
-  DarkThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
   getLiveEvents,
 }: EventsListProps) => {
   const currentLanguage = useLanguage();
@@ -34,8 +34,8 @@ export const EventsList = ({
           categoryColorCode={item?.category?.colorCode!}
           startDateTime={item?.startDateTime}
           endDateTime={item?.endDateTime}
-          ThemOutlineColor={ThemeOutlineColor!}
-          DarkThemeOutlineColor={DarkThemeOutlineColor!}
+          ThemeColor={ThemeColor!}
+          DarkThemeColor={DarkThemeColor!}
           currentFavorite={item?.currentFavorite}
           getLiveEvents={getLiveEvents}
         />

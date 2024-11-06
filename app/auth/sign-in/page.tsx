@@ -11,9 +11,13 @@ import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
 import AppSVG from "@/components/appsvg";
 import { Input } from "@/components/ui/input";
+import { useContainerData } from "@/hooks/useContainerData";
+import { useTheme } from "next-themes";
 
 export default function SignIn() {
+  const { container, loading } = useContainerData();
   const [userEmail, setUserEmail] = useState("");
+  const { theme } = useTheme();
   const router = useRouter();
   const [beingSubmitted, setBeingSubmitted] = useState(false);
   const [beingSubmittedGoogle, setBeingSubmittedGoogle] = useState(false);
@@ -22,6 +26,15 @@ export default function SignIn() {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+
+  const getButtonColor = () => {
+    if (theme === "dark") {
+      return container?.DarkPrimaryButtonColor;
+    } else {
+      return container?.PrimaryButtonColor;
+    }
+  };
+
   const handleGoogleSignIn = async (event: any) => {
     try {
       setBeingSubmittedGoogle(true);
@@ -126,7 +139,8 @@ export default function SignIn() {
               <div className="mt-3 flex items-center justify-between text-right">
                 <Link
                   href="/auth/forgot-password"
-                  className="text-lg text-pink-500 hover:underline"
+                  className="text-lg hover:underline"
+                  style={{ color: getButtonColor() }}
                 >
                   Forgot password?
                 </Link>
@@ -135,14 +149,15 @@ export default function SignIn() {
             <Button
               onClick={handleSubmit}
               type="button"
-              className="h-14 w-full rounded-full bg-pink-600 hover:bg-pink-700 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              className="h-14 w-full rounded-full px-4 text-white"
+              style={{ backgroundColor: getButtonColor() }}
             >
               <div className="flex justify-center text-xl">Login</div>
             </Button>
             <div className="mt-2 flex justify-center text-lg">
               <p>
                 Don’t have an account?{" "}
-                <span className="text-pink-500">
+                <span style={{ color: getButtonColor() }}>
                   <Link href="/auth/sign-up" className="hover:underline">
                     Sign Up
                   </Link>

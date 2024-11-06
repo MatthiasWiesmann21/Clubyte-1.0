@@ -33,6 +33,9 @@ model Container {
   ThemeOutlineColor     String? @default("#e72192")
   DarkThemeOutlineColor String? @default("#e72192")
 
+  ThemeColor     String? @default("#e72192")
+  DarkThemeColor String? @default("#e72192")
+
   courses    Course[]
   categories Category[]
   posts      Post[]

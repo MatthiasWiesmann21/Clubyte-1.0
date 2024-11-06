@@ -14,8 +14,8 @@ CREATE TABLE `Container` (
     `navDarkBackgroundColor` VARCHAR(191) NULL DEFAULT '#f7d4f0',
     `PrimaryButtonColor` VARCHAR(191) NULL DEFAULT '#e72192',
     `DarkPrimaryButtonColor` VARCHAR(191) NULL DEFAULT '#e72192',
-    `ThemeOutlineColor` VARCHAR(191) NULL DEFAULT '#e72192',
-    `DarkThemeOutlineColor` VARCHAR(191) NULL DEFAULT '#e72192',
+    `ThemeColor` VARCHAR(191) NULL DEFAULT '#e72192',
+    `DarkThemeColor` VARCHAR(191) NULL DEFAULT '#e72192',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 

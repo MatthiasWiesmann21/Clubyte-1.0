@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import authOptions from "@/lib/auth";
 import { isOwner } from "@/lib/owner";
 import { isAdmin } from "@/lib/roleCheckServer";
+import bcrypt from "bcrypt";
 
 export async function DELETE(
   req: Request,
@@ -13,11 +14,11 @@ export async function DELETE(
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const isRoleAdmins = await isAdmin();
-    const canAccess = isRoleAdmins || (userId && await isOwner(userId));
+    const canAccess = isRoleAdmins || (userId && (await isOwner(userId)));
     const profile = await db.profile.findUnique({
       where: {
         id: params.profileId,
-      }
+      },
     });
 
     if (!profile) {
@@ -44,19 +45,50 @@ export async function PATCH(
   try {
     const session = await getServerSession(authOptions);
     const values = await req.json();
+
+    if (values?.password) {
+      const existingProfile: any = await db.profile.findUnique({
+        where: {
+          id: params.profileId,
+          containerId: session?.user?.profile?.containerId,
+        },
+      });
+
+      if (!existingProfile) {
+        return NextResponse.json(
+          { message: "Profile not found" },
+          { status: 404 }
+        );
+      }
+
+      const isSamePassword = await bcrypt.compare(
+        values.password,
+        existingProfile.password
+      );
+
+      if (isSamePassword) {
+        return NextResponse.json(
+          { message: "Exisiting Password" },
+          { status: 400 }
+        );
+      }
+    }
+
+    const hashedPassword = await bcrypt.hash(values.password, 10);
     const profile = await db.profile.update({
       where: {
         id: params.profileId,
         containerId: session?.user?.profile?.containerId,
       },
       data: {
-        ...values
-      }
+        ...values,
+        ...(values.password && { password: hashedPassword }),
+      },
     });
 
     return NextResponse.json(profile);
   } catch (error) {
     console.log("[PROFILE_UPDATE]", error);
-    return new NextResponse("Internal Error", { status: 500 });
+    return NextResponse.json({ message: "Internal Error" }, { status: 500 });
   }
 }

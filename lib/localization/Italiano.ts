@@ -488,14 +488,6 @@ export const Italiano: Record<string, string> = {
   customize_PrimaryButtonColorForm_save: "Salva",
   customize_DarkPrimaryButtonColorForm_title:
     "Colore del Pulsante Primario in Modalità Scura",
-  customize_ThemeColorForm_title: "Colore del contorno del tema",
-  customize_ThemeColorForm_cancel: "Annulla",
-  customize_ThemeColorForm_edit: "Modifica",
-  customize_ThemeColorForm_save: "Salva",
-  customize_ThemeColorsDark_title:
-    "Personalizza il colore del tema per la modalità scura",
-  customize_DarkThemeColorForm_title:
-    "Colore del contorno del tema per la modalità scura",
   dashboard_popularChapter_chapterName_text: "Nome del capitolo",
   dashboard_popularChapter_courseName_text: "Nome del corso",
   dashboard_popularChapter_likes_text: "Mi piace",
@@ -637,4 +629,14 @@ export const Italiano: Record<string, string> = {
   modal_share_link_title: "Condividi",
   modal_share_link_label: "Condividi link",
   profile_manageBilling: "Fatturazione",
+  settings_menu_themedesign_title: "Design del tema",
+  customize_customizeTheme_title: "Personalizza il colore del tuo tema",
+  customize_ThemeColors_title: "Personalizza il colore del tuo tema",
+  customize_ThemeColorForm_title: "Colore del tema",
+  customize_ThemeColorForm_cancel: "Annulla",
+  customize_ThemeColorForm_edit: "Modifica",
+  customize_THemeColorForm_save: "Salva",
+  customize_ThemeColorsDark_title: "Personalizza il colore del tuo tema per la modalità scura",
+  customize_DarkThemeColorForm_title: "Colore del tema per la modalità scura",
+  customize_ThemeColorForm_save: "Salva",
 };

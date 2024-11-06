@@ -16,6 +16,7 @@ import { EventPreview } from "../event-preview";
 import { DescriptionPreview } from "../description-preview";
 import { BookOpen, Clock, GraduationCap } from "lucide-react";
 import { formatDuration } from "@/lib/formatDuration";
+import { useTheme } from "next-themes";
 
 interface CourseInfoModalProps {
   children: React.ReactNode;
@@ -24,7 +25,8 @@ interface CourseInfoModalProps {
   duration?: string;
   level?: string;
   chapters?: number;
-  ThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 }
 
 export const CourseInfoModal = ({
@@ -34,9 +36,19 @@ export const CourseInfoModal = ({
   duration,
   level,
   chapters,
-  ThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
 }: CourseInfoModalProps) => {
   const currentLanguage = useLanguage();
+  const { theme } = useTheme();
+
+  const getThemeColor = () => {
+    if (theme === "dark") {
+      return DarkThemeColor;
+    }
+    return ThemeColor;
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -57,7 +69,7 @@ export const CourseInfoModal = ({
                 <div className="my-2 flex items-center">
                   <BookOpen
                     className="h-5 w-5" // fixed width and height (e.g., w-5 = 20px)
-                    style={{ color: ThemeOutlineColor }}
+                    style={{ color: getThemeColor() }}
                   />
                   <span className="ml-1 text-sm">
                     {chapters}{" "}
@@ -71,7 +83,7 @@ export const CourseInfoModal = ({
                 <div className="my-2 flex items-center">
                   <Clock
                     className="h-5 w-5" // ensure fixed width and height here as well
-                    style={{ color: ThemeOutlineColor }}
+                    style={{ color: getThemeColor() }}
                   />
                   <span className="ml-1 text-sm">
                     {formatDuration(duration.toString())}
@@ -82,7 +94,7 @@ export const CourseInfoModal = ({
                 <div className="my-2 flex items-center">
                   <GraduationCap
                     className="h-5 w-5" // fixed size for GraduationCap
-                    style={{ color: ThemeOutlineColor }}
+                    style={{ color: getThemeColor() }}
                   />
                   <span className="ml-1 text-sm">
                     {level || currentLanguage.course_card_no_level}

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
-import { isAdmin } from "@/lib/roleCheckServer"; // Assuming isOperator is not needed, remove if unnecessary
+import { isAdmin, isClientAdmin } from "@/lib/roleCheckServer"; // Assuming isOperator is not needed, remove if unnecessary
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -11,7 +11,7 @@ export async function DELETE(
   { params }: { params: { containerId: string } }
 ) {
   try {
-      const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
     if (!userId || !await isOwner(userId)) {
@@ -51,8 +51,9 @@ export async function PATCH(
     const { containerId } = params;
     const values = await req.json();
 
-    const isRoleAdmins = await isAdmin(); // Assuming isAdmin takes userId as argument
-    const canAccess = isRoleAdmins || await isOwner(userId);
+    const isRoleAdmins = await isAdmin();
+    const isRoleClientAdmin = await isClientAdmin();
+    const canAccess = isRoleAdmins || isRoleClientAdmin || await isOwner(userId);
 
     if (!userId || !canAccess) {
       return new NextResponse("Unauthorized", { status: 401 });

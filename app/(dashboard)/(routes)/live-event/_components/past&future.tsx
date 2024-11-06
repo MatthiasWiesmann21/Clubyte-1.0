@@ -7,11 +7,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export const PastandFuture = ({
-  ThemeOutlineColor,
-  DarkThemeOutlineColor,
+  ThemeColor,
+  DarkThemeColor,
 }: {
-  ThemeOutlineColor: string;
-  DarkThemeOutlineColor: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 }) => {
   const { replace } = useRouter();
   const searchParams = useSearchParams();
@@ -22,7 +22,7 @@ export const PastandFuture = ({
   const { theme } = useTheme();
 
   const getThemeColor = () => {
-    return theme === "dark" ? DarkThemeOutlineColor : ThemeOutlineColor;
+    return theme === "dark" ? DarkThemeColor : ThemeColor;
   };
 
   return (

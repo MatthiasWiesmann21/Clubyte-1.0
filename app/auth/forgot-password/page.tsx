@@ -9,11 +9,23 @@ import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import AppSVG from "@/components/appsvg";
 import { Input } from "@/components/ui/input";
+import { useTheme } from "next-themes";
+import { useContainerData } from "@/hooks/useContainerData";
 
 export default function SignUp() {
   const [sendingEmail, setSendingEmail] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [beingSubmittedGoogle, setBeingSubmittedGoogle] = useState(false);
+  const { container, loading } = useContainerData();
+  const { theme } = useTheme();
+
+  const getButtonColor = () => {
+    if (theme === "dark") {
+      return container?.DarkPrimaryButtonColor;
+    } else {
+      return container?.PrimaryButtonColor;
+    }
+  };
 
   const handleGoogleSignIn = (event: any) => {
     event.preventDefault();
@@ -108,9 +120,10 @@ export default function SignUp() {
             <Button
               onClick={handleForgotPassword}
               type="button"
-              className="h-12 w-full rounded-full bg-[#EB1E8A] hover:bg-pink-600 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ease-in-out duration-200"
+              className="h-14 w-full rounded-full px-4 text-white"
+              style={{ backgroundColor: getButtonColor() }}
             >
-              <div className="flex justify-center text-[22px]">
+              <div className="flex justify-center text-xl">
                 {sendingEmail ? "Submitting..." : "Submit"}
               </div>
             </Button>

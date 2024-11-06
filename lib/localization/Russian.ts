@@ -486,13 +486,6 @@ export const Russian: Record<string, string> = {
   customize_PrimaryButtonColorForm_save: "Сохранить",
   customize_DarkPrimaryButtonColorForm_title:
     "Цвет основной кнопки в темном режиме",
-  customize_ThemeColorForm_title: "Цвет контура темы",
-  customize_ThemeColorForm_cancel: "Отмена",
-  customize_ThemeColorForm_edit: "Редактировать",
-  customize_ThemeColorForm_save: "Сохранить",
-  customize_ThemeColorsDark_title:
-    "Настройте цвет вашей темы для темного режима",
-  customize_DarkThemeColorForm_title: "Цвет контура темы для темного режима",
   dashboard_popularChapter_chapterName_text: "Название главы",
   dashboard_popularChapter_courseName_text: "Название курса",
   dashboard_popularChapter_likes_text: "Лайки",
@@ -633,4 +626,14 @@ export const Russian: Record<string, string> = {
   modal_share_link_title: "Поделиться",
   modal_share_link_label: "Поделиться ссылкой",
   profile_manageBilling: "Оплата",
+  settings_menu_themedesign_title: "Тема дизайна",
+  customize_customizeTheme_title: "Настройте цвет вашей темы",
+  customize_ThemeColors_title: "Настройте цвет вашей темы",
+  customize_ThemeColorForm_title: "Цвет темы",
+  customize_ThemeColorForm_cancel: "Отмена",
+  customize_ThemeColorForm_edit: "Изменить",
+  customize_THemeColorForm_save: "Сохранить",
+  customize_ThemeColorsDark_title: "Настройте цвет темы для тёмного режима",
+  customize_DarkThemeColorForm_title: "Цвет темы для тёмного режима",
+  customize_ThemeColorForm_save: "Сохранить",
 };
