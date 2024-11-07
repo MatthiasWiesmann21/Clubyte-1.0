@@ -35,6 +35,14 @@ export default function SignUp() {
     }
   };
 
+  const getSignUpImage = () => {
+    if (theme === "dark") {
+      return container?.darkSignUpImageUrl;
+    } else {
+      return container?.signUpImageUrl;
+    }
+  };
+
   const handleGoogleSignIn = (event: any) => {
     event.preventDefault();
     signIn("google", { callbackUrl: "/dashboard" });
@@ -108,7 +116,7 @@ export default function SignUp() {
   };
 
   const renderRight = () => {
-    return <AppSVG svg="signUp" customclass="w-full h-full" />;
+    return <Image alt="SignUp-Image" priority src={getSignUpImage()} width={1280} height={720} className="w-full h-full" />; 
   };
 
   const renderGoogleIcon = () => {
