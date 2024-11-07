@@ -71,10 +71,10 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm mr-5 border-[#000000] dark:border-[#ffffff]"
+          className="max-w-sm mr-3 border-[#000000] dark:border-[#ffffff]"
         />
         {isAdmin || isClientAdmin && (
-          <Button onClick={() => onOpen("createLiveEvent")}>
+          <Button className="w-64" onClick={() => onOpen("createLiveEvent")}>
             <PlusCircle className="h-4 w-4 mr-2" />
             {currentLanguage.liveEvent_createEvent_button_text}
           </Button>

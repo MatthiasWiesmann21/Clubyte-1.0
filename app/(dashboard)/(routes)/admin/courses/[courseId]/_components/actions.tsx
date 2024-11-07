@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
-import { useIsAdmin } from "@/lib/roleCheck";
+import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import { useLanguage } from "@/lib/check-language";
 
 interface ActionsProps {
@@ -29,6 +29,9 @@ export const Actions = ({
   const currentLanguage = useLanguage();
 
   const isAdmin = useIsAdmin();
+  const isClientAdmin = useIsClientAdmin();
+
+  const canAccess = isAdmin || isClientAdmin;
 
   const onClick = async () => {
     try {
@@ -77,7 +80,7 @@ export const Actions = ({
       >
         {isPublished ? `${currentLanguage.actions_unpublish}` : `${currentLanguage.actions_publish}`}
       </Button>
-      {isAdmin && (
+      {canAccess && (
       <ConfirmModal onConfirm={onDelete}>
         <Button size="sm" disabled={isLoading}>
           <Trash className="h-4 w-4" />
