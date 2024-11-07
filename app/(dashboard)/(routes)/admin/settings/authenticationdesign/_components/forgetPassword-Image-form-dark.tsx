@@ -45,19 +45,19 @@ export const DarkForgetPasswordImageForm = ({ initialData, containerId }: ImageF
   return (
     <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
       <div className="flex items-center justify-between font-medium">
-        {currentLanguage.customize_ImageForm_title}
+        {currentLanguage.customize_darkForgePasswordImageForm_title}
         <Button onClick={toggleEdit} variant="ghost">
-          {isEditing && <>{currentLanguage.customize_ImageForm_cancel}</>}
+          {isEditing && <>{currentLanguage.customize_darkForgePasswordImageForm_cancel}</>}
           {!isEditing && !initialData.darkForgetPasswordImageUrl && (
             <>
               <PlusCircle className="mr-2 h-4 w-4" />
-              {currentLanguage.customize_ImageForm_addImage}
+              {currentLanguage.customize_darkForgePasswordImageForm_addImage}
             </>
           )}
           {!isEditing && initialData.darkForgetPasswordImageUrl && (
             <>
               <Pencil className="mr-2 h-4 w-4" />
-              {currentLanguage.customize_ImageForm_edit}
+              {currentLanguage.customize_darkForgePasswordImageForm_edit}
             </>
           )}
         </Button>
@@ -89,7 +89,7 @@ export const DarkForgetPasswordImageForm = ({ initialData, containerId }: ImageF
             }}
           />
           <div className="mt-4 text-xs text-muted-foreground">
-            {currentLanguage.customize_ImageForm_imageHint}
+            {currentLanguage.customize_darkForgePasswordImageForm_imageHint}
           </div>
         </div>
       )}
