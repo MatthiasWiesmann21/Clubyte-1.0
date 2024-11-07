@@ -41,10 +41,16 @@ const UserNamePage = async () => {
               {currentLanguage.profile_change_customize_username}
             </h2>
           </div>
-          <TitleForm initialData={profile} profileId={profile.id} />
-          <EmailForm initialData={profile} profileId={profile.id} />
-          <ImageForm initialData={profile} profileId={profile.id} />
-          <NewPasswordForm initialData={profile} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <TitleForm initialData={profile} profileId={profile.id} />
+              <EmailForm initialData={profile} profileId={profile.id} />
+              <NewPasswordForm initialData={profile} />
+            </div>
+            <div>
+              <ImageForm initialData={profile} profileId={profile.id} />
+            </div>
+          </div>
         </div>
       </div>
     </div>

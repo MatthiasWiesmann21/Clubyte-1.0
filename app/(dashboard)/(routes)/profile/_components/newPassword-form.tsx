@@ -99,7 +99,7 @@ export const NewPasswordForm = ({ initialData }: { initialData: Profile }) => {
   };
 
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
+    <div className="mt-4 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
       <div className="flex items-center justify-between font-medium">
         {currentLanguage.profile_newPasswordForm_title}
         <Button onClick={toggleEdit} variant="ghost">

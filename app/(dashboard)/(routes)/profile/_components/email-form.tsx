@@ -61,7 +61,7 @@ export const EmailForm = ({
   }
 
   return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
+    <div className="mt-4 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         {currentLanguage.profile_EmailForm_title}
         <Button onClick={toggleEdit} variant="ghost">

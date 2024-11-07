@@ -74,7 +74,7 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
           }
-          className="mr-5 max-w-sm border-[#000000] dark:border-[#ffffff]"
+          className="mr-3 max-w-sm border-[#000000] dark:border-[#ffffff]"
         />
         {isAdmin || isClientAdmin && (
             <Button className="w-64" onClick={() => onOpen("createCourse")}>
