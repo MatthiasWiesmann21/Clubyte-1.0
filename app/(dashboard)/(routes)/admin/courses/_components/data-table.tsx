@@ -77,7 +77,7 @@ export function DataTable<TData, TValue>({
           className="mr-5 max-w-sm border-[#000000] dark:border-[#ffffff]"
         />
         {isAdmin || isClientAdmin && (
-            <Button onClick={() => onOpen("createCourse")}>
+            <Button className="w-64" onClick={() => onOpen("createCourse")}>
               <PlusCircle className="mr-2 h-4 w-4" />
               {currentLanguage.courses_createCourse_button_text}
             </Button>

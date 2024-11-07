@@ -75,7 +75,7 @@ export function DataTable<TData, TValue>({
           className="max-w-sm mr-5 border-[#000000] dark:border-[#ffffff]"
         />
         {isAdmin || isClientAdmin && (
-            <Button onClick={() => onOpen("createCategory")}>
+            <Button className="w-64" onClick={() => onOpen("createCategory")}>
               <PlusCircle className="h-4 w-4 mr-2" />
               {currentLanguage.categories_createCategory_button_text}
             </Button>
