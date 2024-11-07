@@ -30,11 +30,17 @@ model Container {
   PrimaryButtonColor     String? @default("#e72192")
   DarkPrimaryButtonColor String? @default("#e72192")
 
-  ThemeOutlineColor     String? @default("#e72192")
-  DarkThemeOutlineColor String? @default("#e72192")
-
   ThemeColor     String? @default("#e72192")
   DarkThemeColor String? @default("#e72192")
+
+  signUpImageUrl String? @db.Text
+  darkSignUpImageUrl String? @db.Text
+
+  signInImageUrl String? @db.Text
+  darkSignInImageUrl String? @db.Text
+
+  forgetPasswordImageUrl String? @db.Text
+  darkForgetPasswordImageUrl String? @db.Text
 
   courses    Course[]
   categories Category[]

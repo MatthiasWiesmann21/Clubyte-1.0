@@ -80,6 +80,31 @@ export const ourFileRouter = {
   messageFile: f(["image", "pdf"])
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
+
+  signUpImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+    .middleware(() => handleAuth())
+    .onUploadComplete(() => {}),
+
+  darkSignUpImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+    .middleware(() => handleAuth())
+    .onUploadComplete(() => {}),
+
+  signInImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+    .middleware(() => handleAuth())
+    .onUploadComplete(() => {}),
+  
+  darkSignInImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+    .middleware(() => handleAuth())
+    .onUploadComplete(() => {}),
+
+  forgetPasswordImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+    .middleware(() => handleAuth())
+    .onUploadComplete(() => {}),
+
+  darkForgetPasswordImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+    .middleware(() => handleAuth())
+    .onUploadComplete(() => {}),
+
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

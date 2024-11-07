@@ -27,6 +27,14 @@ export default function SignUp() {
     }
   };
 
+  const getForgotPasswordImage = () => {
+    if (theme === "dark") {
+      return container?.darkForgetPasswordImageUrl;
+    } else {
+      return container?.forgetPasswordImageUrl;
+    }
+  }
+
   const handleGoogleSignIn = (event: any) => {
     event.preventDefault();
     setBeingSubmittedGoogle(true);
@@ -72,7 +80,7 @@ export default function SignUp() {
 
   const renderRight = () => {
     return (
-     <AppSVG svg="forgotPassword" customclass="w-full h-full" />
+     <Image alt="ForgotPassword-Image" priority src={getForgotPasswordImage()} width={1280} height={720} className="w-full h-full" />
     );
   };
   const renderGoogleIcon = () => {
@@ -86,9 +94,9 @@ export default function SignUp() {
 
   return (
     <>
-      <div className="flex h-screen w-full items-center justify-center">
-        <div className="w-full sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
-          <form className="login-form mx-auto flex w-[80%] flex-col sm:w-[70%] md:w-[70%]">
+      <div className="flex h-screen w-full flex-col items-center justify-center md:flex-row">
+        <div className="w-full md:w-2/3 lg:w-2/3 xl:w-2/3">
+          <form className="login-form mx-auto flex w-[80%] flex-col gap-2 p-4 sm:w-[70%] md:w-[65%] md:p-0">
             <div className="form-header">
               <Link
                 href={`/auth/sign-in`}
@@ -97,9 +105,9 @@ export default function SignUp() {
                 <ArrowLeft className="mr-2 h-5 w-5" />
                 Back to login
               </Link>
-              <h2>Forgot your password?</h2>
+              <h2 className="text-4xl font-semibold dark:text-white">Forgot your password?</h2>
             </div>
-            <div className="mb-4 mt-6">
+            <div className="mt-6">
               <label
                 className="mb-2 block text-xl font-medium text-black dark:text-white"
                 htmlFor="email"
@@ -144,7 +152,7 @@ export default function SignUp() {
             <ModeToggle />
           </div>
         </div>
-        <div className="flex items-center justify-center sm:hidden sm:w-full md:block md:w-1/2 lg:w-1/2 xl:w-1/2">
+        <div className="right-section hidden items-center justify-center md:flex md:w-1/2 lg:w-1/2 xl:w-1/2">
           {renderRight()}
         </div>
       </div>

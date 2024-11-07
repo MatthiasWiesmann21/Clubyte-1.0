@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ImageIcon,
   PaletteIcon,
   Settings,
 } from "lucide-react";
@@ -45,6 +46,13 @@ export const MenuRoutes = ({
       icon: PaletteIcon,
       label: `${currentLanguage.settings_menu_themedesign_title}`,
       href: "/admin/settings/themedesign",
+      isNew: false,
+      somethingImportant: false,
+    },
+    {
+      icon: ImageIcon,
+      label: `${currentLanguage.settings_menu_authenticationdesign_title}`,
+      href: "/admin/settings/authenticationdesign",
       isNew: false,
       somethingImportant: false,
     },
