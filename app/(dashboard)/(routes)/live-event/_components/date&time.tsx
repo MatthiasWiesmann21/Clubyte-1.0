@@ -83,7 +83,7 @@ export const DateandTime = ({
             {currentLanguage.live_event_filter_clearFilter_button_text}
           </Button>
         </SheetClose>
-        <SheetClose>
+         <SheetClose>
           <Button
             onClick={async () => {
               const response = await axios?.post(`/api/liveEvent/filter`, {
