@@ -98,7 +98,7 @@ model Profile {
   role                  String           @default("USER")
   isBanned              String           @default("NOT BANNED")
   acceptedPrivacyPolicy Boolean          @default(false)
-  subscriptionType      SubscriptionType @default(monthly)
+  subscriptionType      SubscriptionType @default(MONTHLY)
 
   containerId String
   container   Container @relation(fields: [containerId], references: [id])
@@ -195,12 +195,12 @@ model Course {
 }
 
 model Category {
-  id          String  @id @default(uuid())
-  name        String  @unique
-  colorCode   String  @default("#000000")
-  textColorCode String  @default("#000000")
+  id                String  @id @default(uuid())
+  name              String  @unique
+  colorCode         String  @default("#000000")
+  textColorCode     String  @default("#000000")
   darkTextColorCode String  @default("#ffffff")
-  isPublished Boolean @default(false)
+  isPublished       Boolean @default(false)
 
   isCourseCategory    Boolean @default(true)
   isNewsCategory      Boolean @default(true)

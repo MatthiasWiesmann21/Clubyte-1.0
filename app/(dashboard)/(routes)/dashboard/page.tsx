@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { CheckCircle, Clock, ListChecks, Users } from "lucide-react";
 import { getServerSession } from "next-auth/next";
 
 import { getDashboardCourses } from "@/actions/get-dashboard-courses";
@@ -114,19 +113,19 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
       )}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <InfoCard
-          icon={Clock}
-          label={currentLanguage?.infocard_inprogress}
+          icon={"Clock"}
+          label={"infocard_inprogress"}
           numberOfItems={coursesInProgress.length}
         />
         <InfoCard
-          icon={CheckCircle}
-          label={currentLanguage?.infocard_completed}
+          icon={"CheckCircle"}
+          label={"infocard_completed"}
           numberOfItems={completedCourses.length}
           variant="success"
         />
         <InfoCard
-          icon={ListChecks}
-          label={currentLanguage?.infocard_completedChapters}
+          icon={"ListChecks"}
+          label={"infocard_completedChapters"}
           numberOfItems={UserProgressCompletedChapters}
           variant="default"
         />
