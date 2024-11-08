@@ -72,7 +72,7 @@ export const CourseSidebar = async ({
 
   return (
     <TooltipProvider>
-      <div className="m-3 flex hidden md:block h-full flex-col overflow-y-auto rounded-xl border-2 bg-slate-100 shadow-sm dark:bg-[#0c0319]">
+      <div className="m-3 flex hidden h-full flex-col no-scrollbar overflow-y-auto rounded-xl border-2 bg-slate-100 shadow-sm dark:bg-[#0c0319] md:block">
         <div className="flex flex-col border-b p-6">
           <div className="flex justify-between">
             <Tooltip>
@@ -88,38 +88,49 @@ export const CourseSidebar = async ({
               </TooltipContent>
             </Tooltip>
             <div>
-            <Tooltip>
-              <TooltipTrigger>
-                <CourseInfoModal description={course.description!} title={course.title!} level={course.level!} duration={course.duration!} chapters={course.chapters.length} ThemeColor={ThemeColor} DarkThemeColor={DarkThemeColor}> 
+              <Tooltip>
+                <TooltipTrigger>
+                  <CourseInfoModal
+                    description={course.description!}
+                    title={course.title!}
+                    level={course.level!}
+                    duration={course.duration!}
+                    chapters={course.chapters.length}
+                    ThemeColor={ThemeColor}
+                    DarkThemeColor={DarkThemeColor}
+                  >
+                    <Button variant="ghost" className="h-8 w-8 p-0">
+                      <Info width={16} height={16} />
+                    </Button>
+                  </CourseInfoModal>
+                  <TooltipContent side="bottom">
+                    <p className="h-full max-w-[300px] whitespace-normal font-semibold">
+                      {currentLanguage.courses_sidebar_infoDescription}
+                    </p>
+                  </TooltipContent>
+                </TooltipTrigger>
+              </Tooltip>
+              {canAccess && (
+                <Link href={`/admin/courses/${course.id}`}>
                   <Button variant="ghost" className="h-8 w-8 p-0">
-                    <Info width={16} height={16} />
+                    <Edit width={16} height={16} />
                   </Button>
-                </CourseInfoModal>
-                <TooltipContent side="bottom">
-                  <p className="h-full max-w-[300px] whitespace-normal font-semibold">
-                    {currentLanguage.courses_sidebar_infoDescription}
-                  </p>
-                </TooltipContent>
-              </TooltipTrigger>
-            </Tooltip>
-            {canAccess  && (
-              <Link href={`/admin/courses/${course.id}`}>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <Edit width={16} height={16} />
-              </Button>
-            </Link>
-            )}
-            
+                </Link>
+              )}
             </div>
-        </div>
+          </div>
           {purchase && (
             <div className="mt-4">
-              <Progress progress={progress} ThemeColor={ThemeColor} DarkThemeColor={DarkThemeColor} />
+              <Progress
+                progress={progress}
+                ThemeColor={ThemeColor}
+                DarkThemeColor={DarkThemeColor}
+              />
             </div>
           )}
         </div>
-        <ScrollArea>
-          <div className="flex w-full flex-col border-t-2">
+
+        <div className="flex w-full flex-col border-t-2">
             {course.chapters.map((chapter) => (
               <CourseSidebarItem
                 key={chapter.id}
@@ -130,8 +141,7 @@ export const CourseSidebar = async ({
                 isLocked={!chapter.isFree && !purchase}
               />
             ))}
-          </div>
-        </ScrollArea>
+        </div>
       </div>
     </TooltipProvider>
   );

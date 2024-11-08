@@ -43,6 +43,16 @@ export async function POST(
       return new NextResponse("Not found", { status: 404 });
     }
 
+    const container = await db.container.findUnique({
+      where: {
+        id: course.containerId,
+      },
+    });
+
+    if (!container) {
+      return new NextResponse("Not found", { status: 404 });
+    }
+
     const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [
       {
         quantity: 1,
@@ -83,8 +93,8 @@ export async function POST(
       customer: stripeCustomer.stripeCustomerId,
       line_items,
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?success=1`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=1`,
+      success_url: `${container.domain}/courses/${course.id}?success=1`,
+      cancel_url: `${container.domain}/courses/${course.id}?canceled=1`,
       metadata: {
         courseId: course.id,
         userId: user.id,

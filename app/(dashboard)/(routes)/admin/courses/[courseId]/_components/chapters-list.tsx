@@ -102,7 +102,7 @@ export const ChaptersList = ({
                       </div>
                       <Tooltip>
                         <TooltipTrigger>
-                          <div className="text start line-clamp-2 sm:max-w-[54px] lg:max-w-full">{chapter.title}</div>
+                          <div className="text-start line-clamp-2 max-w-full">{chapter.title}</div>
                         </TooltipTrigger>
                         <TooltipContent>
                           <div className="text-start whitespace-normal max-w-[300px]">{chapter.title}</div>

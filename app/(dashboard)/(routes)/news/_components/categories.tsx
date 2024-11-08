@@ -101,6 +101,11 @@ export const Categories = ({
           const isSelected =
             currentCategoryId === item?.id || (!item?.id && !currentCategoryId);
           const isHovered = hoveredCategoryId === item?.id;
+
+          const textColor = theme === "dark" ? item?.DarkTextColorCode : item?.textColorCode;
+          const borderColor = isSelected || isHovered ? item?.colorCode : "";
+          const backgroundColor = isSelected || isHovered ? item?.colorCode : "transparent";
+
           const onClick = () => {
             const url = qs?.stringifyUrl(
               {
@@ -123,19 +128,19 @@ export const Categories = ({
                   <span
                     key={item?.id}
                     onClick={onClick}
-                    className={`font-600 flex items-center gap-x-1 rounded-lg border-2 px-3 py-2 text-xs transition duration-300`}
-                    style={
-                      isSelected || isHovered
-                        ? {
-                            borderColor: item?.colorCode,
-                            background: item?.colorCode,
-                          }
-                        : { borderColor: isHovered ? item?.colorCode : "" }
-                    }
+                    className="font-600 flex items-center gap-x-1 rounded-lg border-2 px-3 py-2 text-xs transition duration-300"
+                    style={{
+                      borderColor: borderColor,
+                      backgroundColor: backgroundColor,
+                      
+                    }}
                     onMouseEnter={() => setHoveredCategoryId(item?.id)}
                     onMouseLeave={() => setHoveredCategoryId(null)}
                   >
-                    <span className="line-clamp-1 truncate text-start">
+                    <span className="line-clamp-1 truncate text-start"
+                      // TODO: Saif - Please fix the text Color Issue, it should work the same as for course category, right now it is not working.
+                      style={{ color: textColor }}
+                    >
                       {item?.name?.toUpperCase()}
                     </span>
                     <div>({item?._count?.posts})</div>

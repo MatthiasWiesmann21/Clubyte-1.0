@@ -74,6 +74,18 @@ export const DateandTime = ({
         <SheetClose>
           <Button
             onClick={async () => {
+              const response = await axios?.get(`/api/liveEvent`);
+              setLiveEvent(response?.data);
+            }}
+            variant="default"
+            className="border-1 cursor-pointer rounded-lg border p-1 px-2"
+          >
+            {currentLanguage.live_event_filter_clearFilter_button_text}
+          </Button>
+        </SheetClose>
+        <SheetClose>
+          <Button
+            onClick={async () => {
               const response = await axios?.post(`/api/liveEvent/filter`, {
                 ...getEvent,
                 startDateTime,
@@ -85,18 +97,6 @@ export const DateandTime = ({
             className="border-1 cursor-pointer rounded-lg border p-1 px-2"
           >
             {currentLanguage.live_event_filter_applyFilter_button_text}
-          </Button>
-        </SheetClose>
-        <SheetClose>
-          <Button
-            onClick={async () => {
-              const response = await axios?.get(`/api/liveEvent`);
-              setLiveEvent(response?.data);
-            }}
-            variant="default"
-            className="border-1 cursor-pointer rounded-lg border p-1 px-2"
-          >
-            {currentLanguage.live_event_filter_clearFilter_button_text}
           </Button>
         </SheetClose>
       </div>
