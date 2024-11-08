@@ -84,8 +84,7 @@ export const ColorForm = ({
                       {...field}
                       value={field.value}
                       onChange={(e) => field.onChange(e.target.value)}  // Handle onChange event
-                      className="w-10 h-11 rounded-md border-none" 
-                      style={{ backgroundColor: "#334155" }}
+                      className="w-10 h-11 rounded-md border-none bg-transparent" 
                       />
                   </FormControl>
                   <FormLabel className="m-2">

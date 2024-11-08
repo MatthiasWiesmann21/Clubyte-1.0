@@ -12,30 +12,32 @@ import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
-import { Profile } from "@prisma/client";
 
-interface TitleFormProps {
-  initialData: Profile;
-  profileId: string;
+interface DarkTextColorFormProps {
+  initialData: {
+    darkTextColorCode: string;
+  };
+  categoryId: string;
 };
 
 const formSchema = z.object({
-  email: z.string().min(1, {
-    message: "Email is required",
+  darkTextColorCode: z.string().min(1, {
+    message: "Color is required",
   }),
 });
 
-export const EmailForm = ({
+export const DarkTextColorForm = ({
   initialData,
-  profileId
-}: TitleFormProps) => {
+  categoryId
+}: DarkTextColorFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -44,15 +46,15 @@ export const EmailForm = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {email: initialData.name || ""}
+    defaultValues: initialData,
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/profile/${profileId}`, values);
-      toast.success("Email updated");
+      await axios.patch(`/api/category/${categoryId}`, values);
+      toast.success("Category updated");
       toggleEdit();
       router.refresh();
     } catch {
@@ -61,26 +63,10 @@ export const EmailForm = ({
   }
 
   return (
-    <div className="mt-4 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
+    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        {currentLanguage.profile_EmailForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>{currentLanguage.profile_EmailForm_cancel}</>
-          ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              {currentLanguage.profile_EmailForm_edit}
-            </>
-          )}
-        </Button>
+        {currentLanguage.categories_DarkTextColorForm_title}
       </div>
-      {!isEditing && (
-        <p className="text-sm mt-2">
-          {initialData.email}
-        </p>
-      )}
-      {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -88,16 +74,22 @@ export const EmailForm = ({
           >
             <FormField
               control={form.control}
-              name="email"
+              name="darkTextColorCode"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
+                    <input
+                      type="color"
                       disabled={isSubmitting}
-                      placeholder={currentLanguage.profile_EmailForm_placeholder}
                       {...field}
-                    />
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.target.value)}  // Handle onChange event
+                      className="w-10 h-11 rounded-md border-none bg-transparent" 
+                      />
                   </FormControl>
+                  <FormLabel className="m-2">
+                    {field.value || initialData.darkTextColorCode}
+                  </FormLabel>
                   <FormMessage />
                 </FormItem>
               )}
@@ -106,13 +98,13 @@ export const EmailForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
-                onClick={()=>onSubmit(form.getValues())}>
-                {currentLanguage.profile_EmailForm_save}
+                onClick={()=>onSubmit(form.getValues())}
+              >
+                {currentLanguage.categories_DarkTextColorForm_save}
               </Button>
             </div>
           </form>
         </Form>
-      )}
     </div>
   )
 }

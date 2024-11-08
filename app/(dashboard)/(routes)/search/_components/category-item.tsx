@@ -4,11 +4,15 @@ import qs from "query-string";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/tooltip";
+import { text } from "stream/consumers";
+import { useTheme } from "next-themes";
 
 interface CategoryItemProps {
   label: string;
   value?: string;
   colorCode: string;
+  textColorCode: string;
+  darkTextColorCode: string;
   categoryAmmount: number;
 }
 
@@ -16,12 +20,19 @@ export const CategoryItem = ({
   label,
   value,
   colorCode,
+  textColorCode,
+  darkTextColorCode,
   categoryAmmount,
 }: CategoryItemProps) => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isHovered, setIsHovered] = useState(false);
+  const { theme } = useTheme();
+
+  const getTextColor = () => {
+    return theme === "dark" ? darkTextColorCode : textColorCode;
+  };
 
   const currentCategoryId = searchParams?.get("categoryId");
   const currentTitle = searchParams?.get("title");
@@ -46,8 +57,8 @@ export const CategoryItem = ({
   };
 
   const buttonStyle = isSelected
-    ? { borderColor: colorCode, background: colorCode }
-    : { borderColor: isHovered ? colorCode : "", background: isHovered ? colorCode : 'transparent' };
+    ? { borderColor: colorCode, background: colorCode, color: getTextColor() }
+    : { borderColor: isHovered ? colorCode : "", background: isHovered ? colorCode : 'transparent', color: isHovered ? getTextColor() : "" };
 
   return (
     <TooltipProvider>

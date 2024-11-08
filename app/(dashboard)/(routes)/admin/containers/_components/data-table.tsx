@@ -64,7 +64,7 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm mr-5 border-[#000000] dark:border-[#ffffff]"
+          className="max-w mr-3 border-[#000000] dark:border-[#ffffff]"
         />
           <Button onClick={() => onOpen("createContainer")}>
             <PlusCircle className="h-4 w-4 mr-2" />

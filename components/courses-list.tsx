@@ -8,8 +8,10 @@ import { Button } from "./ui/button";
 import { NewspaperIcon, PlusCircle } from "lucide-react";
 import { CourseFavoriteCard } from "@/app/(dashboard)/(routes)/dashboard/_components/courseFavorite-card";
 import { Separator } from "./ui/separator";
+import axios from "axios";
 
 interface CoursesListProps {
+  searchParams: any;
   ThemeColor: string;
   DarkThemeColor: string;
 }
@@ -17,22 +19,23 @@ interface CoursesListProps {
 export const CoursesList = ({
   ThemeColor,
   DarkThemeColor,
+  searchParams,
 }: CoursesListProps) => {
-  const searchParams = useSearchParams();
-  const categoryId = searchParams?.get("categoryId") || "";
-  const title = searchParams?.get("title") || "";
   const currentLanguage = useLanguage();
   const [items, setItems] = useState<any[]>([]);
 
   const getAllCourses = async () => {
-    const response = await fetch(`/api/search?categoryId=${categoryId}`);
-    const data = await response.json();
-    setItems(data);
+    const response = await axios?.get(
+      `/api/search?categoryId=${searchParams?.categoryId || ""}&title=${
+        searchParams?.title || ""
+      }&state=${searchParams?.state}`
+    );
+    setItems(response?.data);
   };
 
   useEffect(() => {
     getAllCourses();
-  }, [categoryId, title]);
+  }, [searchParams]);
 
   return (
     <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">

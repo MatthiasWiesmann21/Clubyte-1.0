@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
-import { useIsAdmin } from "@/lib/roleCheck";
+import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import { useLanguage } from "@/lib/check-language";
 
 interface ChapterActionsProps {
@@ -28,6 +28,9 @@ export const ChapterActions = ({
   const [isLoading, setIsLoading] = useState(false);
   const currentLanguage = useLanguage();
   const isAdmin = useIsAdmin();
+  const isClientAdmin = useIsClientAdmin();
+
+  const canAccess = isAdmin || isClientAdmin;
 
   const onClick = async () => {
     try {
@@ -75,7 +78,7 @@ export const ChapterActions = ({
       >
         {isPublished ? `${currentLanguage.chapter_actions_unpublish}` : `${currentLanguage.chapter_actions_publish}`}
       </Button>
-      {isAdmin && (
+      {canAccess && (
       <ConfirmModal onConfirm={onDelete}>
         <Button size="sm" disabled={isLoading}>
           <Trash className="h-4 w-4" />
