@@ -649,4 +649,8 @@ export const Mandarin: Record<string, string> = {
   customize_darkForgePasswordImageForm_addImage: "添加图片",
   customize_darkForgePasswordImageForm_edit: "编辑",
   customize_darkForgePasswordImageForm_imageHint: "建议 16:9 宽高比",
+  categories_TextColorForm_title: "类别文字颜色",
+  categories_TextColorForm_save: "保存",
+  categories_DarkTextColorForm_title: "暗模式下的类别文字颜色",
+  categories_DarkTextColorForm_save: "保存",
 };

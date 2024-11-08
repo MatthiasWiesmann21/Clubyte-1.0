@@ -167,7 +167,7 @@ const NewsWrapper = ({
         </div>
 
         {/* My Favorites Section (hidden on mobile) */}
-        <div className="top-8 w-full">
+        <div className="top-10 w-full">
           {profileRole === "ADMIN" ? (
             <Button
               className="w-42 inline-flex hidden items-center rounded-lg border-2 text-sm text-slate-400 hover:border-transparent lg:inline-flex"
@@ -178,10 +178,10 @@ const NewsWrapper = ({
               <span>{currentLanguage.post_createPost_button_text}</span>
             </Button>
           ) : (
-            <div className="mb-20"></div>
+            <div className="mb-[61px]"></div>
           )}
           {favoritePosts.length > 0 && (
-            <div className="mt-5 hidden w-full max-w-xl rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
+            <div className="hidden w-full max-w-xl rounded-lg p-2 outline outline-slate-200 dark:outline-[#1e293b] lg:block">
               <h1 className="mb-2 text-2xl font-medium">
                 {currentLanguage.news_myFavorites_title}
               </h1>

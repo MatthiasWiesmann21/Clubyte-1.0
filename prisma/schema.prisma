@@ -192,6 +192,8 @@ model Category {
   id          String  @id @default(uuid())
   name        String  @unique
   colorCode   String  @default("#000000")
+  textColorCode String  @default("#000000")
+  darkTextColorCode String  @default("#ffffff")
   isPublished Boolean @default(false)
 
   isCourseCategory    Boolean @default(true)

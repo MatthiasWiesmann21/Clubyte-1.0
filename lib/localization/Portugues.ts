@@ -676,4 +676,8 @@ export const Portugues: Record<string, string> = {
   customize_darkForgePasswordImageForm_addImage: "Adicionar Imagem",
   customize_darkForgePasswordImageForm_edit: "Editar",
   customize_darkForgePasswordImageForm_imageHint: "Proporção 16:9 recomendada",
+  categories_TextColorForm_title: "Cor do texto da categoria",
+  categories_TextColorForm_save: "Salvar",
+  categories_DarkTextColorForm_title: "Cor do texto da categoria para modo escuro",
+  categories_DarkTextColorForm_save: "Salvar",
 };

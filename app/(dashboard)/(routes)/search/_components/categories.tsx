@@ -34,6 +34,10 @@ export const Categories = ({
     return theme === "dark" ? DarkThemeColor : ThemeColor;
   };
 
+  const getTextColor = () => {
+    return theme === "dark" ? "#ffffff" : "#000000";
+  };
+
   // Ref for the scrollable container
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -70,6 +74,8 @@ export const Categories = ({
         <CategoryItem
           label={"All"}
           colorCode={getThemeColor()}
+          textColorCode={getTextColor()}
+          darkTextColorCode={getTextColor()}
           categoryAmmount={all}
         />
         
@@ -80,6 +86,8 @@ export const Categories = ({
             label={item.name}
             value={item.id}
             colorCode={item.colorCode}
+            textColorCode={item.textColorCode}
+            darkTextColorCode={item.darkTextColorCode}
             categoryAmmount={item._count.courses}
           />
         ))}
