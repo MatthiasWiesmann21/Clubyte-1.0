@@ -33,13 +33,13 @@ model Container {
   ThemeColor     String? @default("#e72192")
   DarkThemeColor String? @default("#e72192")
 
-  signUpImageUrl String? @db.Text
+  signUpImageUrl     String? @db.Text
   darkSignUpImageUrl String? @db.Text
 
-  signInImageUrl String? @db.Text
+  signInImageUrl     String? @db.Text
   darkSignInImageUrl String? @db.Text
 
-  forgetPasswordImageUrl String? @db.Text
+  forgetPasswordImageUrl     String? @db.Text
   darkForgetPasswordImageUrl String? @db.Text
 
   courses    Course[]
@@ -79,20 +79,26 @@ model Server {
   @@index([containerId])
 }
 
+enum SubscriptionType {
+  MONTHLY
+  ANNUAL
+}
+
 model Profile {
-  id                    String  @id @default(cuid())
-  userId                String  @db.Text
-  name                  String? @db.Text
-  imageUrl              String  @db.Text
-  email                 String  @db.Text
-  password              String? @default("")
-  token                 String? @default("")
-  emailVerified         Boolean @default(false)
-  language              String? @db.Text
-  isOnline              String  @default("Online")
-  role                  String  @default("USER")
-  isBanned              String  @default("NOT BANNED")
-  acceptedPrivacyPolicy Boolean @default(false)
+  id                    String           @id @default(cuid())
+  userId                String           @db.Text
+  name                  String?          @db.Text
+  imageUrl              String           @db.Text
+  email                 String           @db.Text
+  password              String?          @default("")
+  token                 String?          @default("")
+  emailVerified         Boolean          @default(false)
+  language              String?          @db.Text
+  isOnline              String           @default("Online")
+  role                  String           @default("USER")
+  isBanned              String           @default("NOT BANNED")
+  acceptedPrivacyPolicy Boolean          @default(false)
+  subscriptionType      SubscriptionType @default(monthly)
 
   containerId String
   container   Container @relation(fields: [containerId], references: [id])
