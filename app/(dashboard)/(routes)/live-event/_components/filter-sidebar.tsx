@@ -76,7 +76,7 @@ const EventFilterSidebar = ({
           </p>
         </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="p-5 pt-12 flex flex-col items-center">
         <SheetHeader>
           <SheetTitle>{currentLanguage.live_event_filter_title}</SheetTitle>
           <SheetDescription>

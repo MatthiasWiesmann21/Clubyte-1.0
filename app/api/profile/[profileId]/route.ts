@@ -74,7 +74,7 @@ export async function PATCH(
       }
     }
 
-    const hashedPassword = await bcrypt.hash(values.password, 10);
+    // const hashedPassword = await bcrypt.hash(values.password, 10);
     const profile = await db.profile.update({
       where: {
         id: params.profileId,
@@ -82,7 +82,9 @@ export async function PATCH(
       },
       data: {
         ...values,
-        ...(values.password && { password: hashedPassword }),
+        ...(values.password && {
+          password: await bcrypt.hash(values.password, 10),
+        }),
       },
     });
 
