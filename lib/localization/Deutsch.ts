@@ -641,4 +641,8 @@ customize_darkForgePasswordImageForm_cancel: "Abbrechen",
 customize_darkForgePasswordImageForm_addImage: "Bild hinzufügen",
 customize_darkForgePasswordImageForm_edit: "Bearbeiten",
 customize_darkForgePasswordImageForm_imageHint: "16:9 Seitenverhältnis empfohlen",
+categories_TextColorForm_title: "Kategorietextfarbe",
+categories_TextColorForm_save: "Speichern",
+categories_DarkTextColorForm_title: "Kategorietextfarbe für Dunkelmodus",
+categories_DarkTextColorForm_save: "Speichern",
 };

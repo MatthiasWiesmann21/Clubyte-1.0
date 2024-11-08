@@ -640,4 +640,8 @@ customize_darkForgePasswordImageForm_cancel: "Cancel",
 customize_darkForgePasswordImageForm_addImage: "Add Iamge",
 customize_darkForgePasswordImageForm_edit: "Edit",
 customize_darkForgePasswordImageForm_imageHint: "16:9 aspect Ratio recommended",
+categories_TextColorForm_title: "Category Text Color",
+categories_TextColorForm_save: "Save",
+categories_DarkTextColorForm_title: "Category Text Color for Darkmode",
+categories_DarkTextColorForm_save: "Save",
 };

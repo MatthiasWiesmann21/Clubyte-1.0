@@ -14,6 +14,8 @@ import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
 import authOptions from "@/lib/auth"; // Ensure this is properly configured
 import GoBackButton from "@/components/goBackButton";
+import { TextColorForm } from "./_components/textcolor-form";
+import { DarkTextColorForm } from "./_components/dark-textcolor-form";
 
 const CategoryIdPage = async ({
   params,
@@ -80,6 +82,8 @@ const CategoryIdPage = async ({
             </div>
             <TitleForm initialData={category} categoryId={category.id} />
             <ColorForm initialData={category} categoryId={category.id} />
+            <TextColorForm initialData={category} categoryId={category.id} />
+            <DarkTextColorForm initialData={category} categoryId={category.id} />
           </div>
           <div className="lg:mt-12">
             <CategoryTypeForm initialData={category} categoryId={category.id} />

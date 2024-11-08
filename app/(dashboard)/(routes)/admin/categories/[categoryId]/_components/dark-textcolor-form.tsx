@@ -21,23 +21,23 @@ import {
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
 
-interface ColorFormProps {
+interface DarkTextColorFormProps {
   initialData: {
-    colorCode: string;
+    darkTextColorCode: string;
   };
   categoryId: string;
 };
 
 const formSchema = z.object({
-  colorCode: z.string().min(1, {
+  darkTextColorCode: z.string().min(1, {
     message: "Color is required",
   }),
 });
 
-export const ColorForm = ({
+export const DarkTextColorForm = ({
   initialData,
   categoryId
-}: ColorFormProps) => {
+}: DarkTextColorFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -65,7 +65,7 @@ export const ColorForm = ({
   return (
     <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        {currentLanguage.categories_ColorForm_title}
+        {currentLanguage.categories_DarkTextColorForm_title}
       </div>
         <Form {...form}>
           <form
@@ -74,7 +74,7 @@ export const ColorForm = ({
           >
             <FormField
               control={form.control}
-              name="colorCode"
+              name="darkTextColorCode"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -88,7 +88,7 @@ export const ColorForm = ({
                       />
                   </FormControl>
                   <FormLabel className="m-2">
-                    {field.value || initialData.colorCode}
+                    {field.value || initialData.darkTextColorCode}
                   </FormLabel>
                   <FormMessage />
                 </FormItem>
@@ -100,7 +100,7 @@ export const ColorForm = ({
                 type="submit"
                 onClick={()=>onSubmit(form.getValues())}
               >
-                {currentLanguage.categories_ColorForm_save}
+                {currentLanguage.categories_DarkTextColorForm_save}
               </Button>
             </div>
           </form>

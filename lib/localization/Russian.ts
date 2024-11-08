@@ -671,4 +671,8 @@ export const Russian: Record<string, string> = {
   customize_darkForgePasswordImageForm_addImage: "Добавить изображение",
   customize_darkForgePasswordImageForm_edit: "Редактировать",
   customize_darkForgePasswordImageForm_imageHint: "Рекомендуемое соотношение сторон 16:9",
+  categories_TextColorForm_title: "Цвет текста категории",
+  categories_TextColorForm_save: "Сохранить",
+  categories_DarkTextColorForm_title: "Цвет текста категории для темного режима",
+  categories_DarkTextColorForm_save: "Сохранить",
 };
