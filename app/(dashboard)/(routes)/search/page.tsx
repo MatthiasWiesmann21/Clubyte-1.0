@@ -106,6 +106,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
         <CoursesList
           ThemeColor={container?.ThemeColor!}
           DarkThemeColor={container?.DarkThemeColor!}
+          searchParams={searchParams}
         />
       </div>
     </>
