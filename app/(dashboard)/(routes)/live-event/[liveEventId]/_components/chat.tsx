@@ -36,7 +36,7 @@ const Chat = () => {
   }, [chat]);
 
   return (
-    <div className="border-2 mx-auto lg:mt-24 flex h-[650px] w-[95%] flex-col justify-between rounded-xl bg-slate-100 dark:bg-[#131313] p-3 pt-0 lg:w-[29%]">
+    <div className="border-2 mx-auto lg:mt-[86px] flex h-[650px] w-[95%] flex-col justify-between rounded-xl bg-slate-100 dark:bg-[#131313] p-3 pt-0 lg:w-[29%]">
       <p className="my-4 text-md font-bold">{currentLanguage.liveEvent_chat_title}</p>
       <Separator className="mb-2 bg-slate-300 dark:bg-slate-700" />
       <div className="h-[80%] w-full">

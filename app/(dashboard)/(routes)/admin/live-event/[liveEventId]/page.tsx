@@ -18,6 +18,7 @@ import { EndDateTimeForm } from "./_components/endDateTime-form";
 import { languageServer } from "@/lib/check-language-server";
 import authOptions from "@/lib/auth"; // Ensure this is configured correctly
 import GoBackButton from "@/components/goBackButton";
+import { IsStreamChatForm } from "./_components/isStreamChat-form";
 
 const LiveEventIdPage = async ({
   params,
@@ -125,6 +126,10 @@ const LiveEventIdPage = async ({
               liveEventId={liveEvent.id}
             />
             <EndDateTimeForm
+              initialData={liveEvent}
+              liveEventId={liveEvent.id}
+            />
+            <IsStreamChatForm
               initialData={liveEvent}
               liveEventId={liveEvent.id}
             />

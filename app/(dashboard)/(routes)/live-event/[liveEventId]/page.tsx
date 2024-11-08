@@ -145,7 +145,7 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
           </div>
         </div>
       </div>
-      <Chat />
+      {liveEvent?.isStreamChat && <Chat />}
     </div>
   ) : (
     <div className="flex h-full w-full items-center justify-center">

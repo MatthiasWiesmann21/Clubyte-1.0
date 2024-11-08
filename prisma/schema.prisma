@@ -301,17 +301,6 @@ model StripeCustomer {
   updatedAt DateTime @updatedAt
 }
 
-// Newsletter subscription Model
-
-model NewsletterSubscription {
-  id        String   @id @default(uuid())
-  userId    String   @db.Text
-  name      String
-  email     String   @db.Text
-  message   String?  @db.Text
-  createdAt DateTime @default(now())
-}
-
 // Document Uploading 
 
 model File {
@@ -408,6 +397,7 @@ model LiveEvent {
   description String?  @db.Text
   imageUrl    String?  @db.Text
   videoUrl    String?  @db.Text
+  isStreamChat Boolean @default(true)
   isPublished Boolean  @default(false)
   isEnded     Boolean? @default(false)
 
