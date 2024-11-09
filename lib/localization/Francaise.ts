@@ -688,4 +688,7 @@ export const Francaise: Record<string, string> = {
   categories_TextColorForm_save: "Enregistrer",
   categories_DarkTextColorForm_title: "Couleur du texte de la catégorie en mode sombre",
   categories_DarkTextColorForm_save: "Enregistrer",
+  liveEvent_isStreamChatForm_title: "Chat en direct",
+  liveEvent_isStreamChatForm_isStreamChat: "Activer le chat en direct",
+  liveEvent_isStreamChatForm_save: "Enregistrer",
 };

@@ -644,4 +644,7 @@ categories_TextColorForm_title: "Category Text Color",
 categories_TextColorForm_save: "Save",
 categories_DarkTextColorForm_title: "Category Text Color for Darkmode",
 categories_DarkTextColorForm_save: "Save",
+liveEvent_isStreamChatForm_title: "Stream Chat",
+liveEvent_isStreamChatForm_isStreamChat: "Activate Stream Chat",
+liveEvent_isStreamChatForm_save: "Save",
 };

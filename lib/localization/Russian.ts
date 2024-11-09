@@ -675,4 +675,7 @@ export const Russian: Record<string, string> = {
   categories_TextColorForm_save: "Сохранить",
   categories_DarkTextColorForm_title: "Цвет текста категории для темного режима",
   categories_DarkTextColorForm_save: "Сохранить",
+  liveEvent_isStreamChatForm_title: "Чат трансляции",
+  liveEvent_isStreamChatForm_isStreamChat: "Активировать чат трансляции",
+  liveEvent_isStreamChatForm_save: "Сохранить",
 };

@@ -70,45 +70,7 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   return liveEvent ? (
     <div className="flex flex-wrap">
       <div className="flex w-full flex-col lg:w-[69%] lg:pb-20">
-        <div className="flex w-full items-end justify-end p-4 pt-6">
-          {" "}
-          {/* Changed justify-items-end to justify-end */}
-          {canAccess && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="ml-auto h-10 w-10 p-0" // Add ml-auto to push it to the right
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <span className="sr-only">Open menu</span>
-                  <MoreVertical className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" side="right">
-                {" "}
-                {/* Ensure the menu is aligned to the right */}
-                <Link href={`/admin/live-event/${params?.liveEventId}`}>
-                  <DropdownMenuItem>
-                    <Pencil className="mr-2 h-4 w-4" />
-                    {currentLanguage.course_card_edit}
-                  </DropdownMenuItem>
-                </Link>
-                <ConfirmModal onConfirm={onDelete}>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="flex w-full justify-start p-2"
-                  >
-                    <Trash className="mr-2 h-4 w-4" />
-                    {currentLanguage.course_card_delete}
-                  </Button>
-                </ConfirmModal>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-        </div>
-        <div className="px-4 py-2">
+        <div className="p-4">
           <VideoPlayer
             // @ts-ignore remove this
             liveEventId={params?.liveEventId}
@@ -123,7 +85,6 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
             isEnded={liveEvent?.isEnded}
           />
         </div>
-
         <div>
           <div className="flex flex-row items-center justify-between p-4">
             <h2 className="mb-2 line-clamp-2 text-lg font-medium">
@@ -132,6 +93,38 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
             <div className="flex items-center space-x-2">
               <Favorite liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
               <Love liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
+              {canAccess && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="ml-auto h-11 w-10 p-0 border-[#fff] bg-slate-100 hover:shadow-sm dark:border-[#1e172a] dark:bg-[#0c0319]" // Add ml-auto to push it to the right
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span className="sr-only">Open menu</span>
+                      <MoreVertical className="h-5 w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" side="right">
+                    <Link href={`/admin/live-event/${params?.liveEventId}`}>
+                      <DropdownMenuItem>
+                        <Pencil className="mr-2 h-4 w-4" />
+                        {currentLanguage.course_card_edit}
+                      </DropdownMenuItem>
+                    </Link>
+                    <ConfirmModal onConfirm={onDelete}>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="flex w-full justify-start p-2"
+                      >
+                        <Trash className="mr-2 h-4 w-4" />
+                        {currentLanguage.course_card_delete}
+                      </Button>
+                    </ConfirmModal>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
           </div>
           <Separator />

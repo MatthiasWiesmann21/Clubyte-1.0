@@ -64,7 +64,7 @@ export const IsStreamChatForm = ({
   return (
     <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
       <div className="flex items-center justify-between font-medium">
-        {currentLanguage.post_CategoryTypeForm_title}
+        {currentLanguage.liveEvent_isStreamChatForm_title}
       </div>
       <Form {...form}>
         <form
@@ -84,7 +84,7 @@ export const IsStreamChatForm = ({
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormDescription>
-                    {currentLanguage.post_CategoryTypeForm_isCourseCategory}
+                    {currentLanguage.liveEvent_isStreamChatForm_isStreamChat}
                   </FormDescription>
                 </div>
               </FormItem>
@@ -98,7 +98,7 @@ export const IsStreamChatForm = ({
           type="submit"
           onClick={() => onSubmit(form.getValues())}
         >
-          {currentLanguage.post_CategoryTypeForm_save}
+          {currentLanguage.liveEvent_isStreamChatForm_save}
         </Button>
       </div>
     </div>

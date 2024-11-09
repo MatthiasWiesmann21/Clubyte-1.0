@@ -653,4 +653,7 @@ export const Mandarin: Record<string, string> = {
   categories_TextColorForm_save: "保存",
   categories_DarkTextColorForm_title: "暗模式下的类别文字颜色",
   categories_DarkTextColorForm_save: "保存",
+  liveEvent_isStreamChatForm_title: "直播聊天",
+  liveEvent_isStreamChatForm_isStreamChat: "启用直播聊天",
+  liveEvent_isStreamChatForm_save: "保存",
 };
