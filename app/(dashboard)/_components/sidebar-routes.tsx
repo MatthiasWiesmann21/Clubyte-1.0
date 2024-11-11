@@ -133,6 +133,12 @@ export const SidebarRoutes = ({
       isNew: false,
     },
     {
+      icon: LayoutGridIcon,
+      label: `${currentLanguage.nav_admin_item_usergroups}`,
+      href: "/admin/usergroups",
+      isNew: false,
+    },
+    {
       icon: BarChartIcon,
       label: `${currentLanguage.nav_admin_item_analytics}`,
       href: "/admin/analytics",

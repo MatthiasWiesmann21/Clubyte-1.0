@@ -44,6 +44,7 @@ model Container {
 
   courses    Course[]
   categories Category[]
+  usergroups Usergroup[]
   posts      Post[]
   liveEvents LiveEvent[]
   servers    Server[]
@@ -103,6 +104,9 @@ model Profile {
   containerId String
   container   Container @relation(fields: [containerId], references: [id])
 
+  usergroupId String?
+  usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
+
   servers   Server[]
   members   Member[]
   channels  Channel[]
@@ -113,6 +117,27 @@ model Profile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([containerId])
+  @@index([usergroupId])
+}
+
+model Usergroup {
+  id                String  @id @default(uuid())
+  name              String  @unique
+  isPublished       Boolean @default(false)
+
+  containerId String
+  container   Container @relation(fields: [containerId], references: [id])
+
+  courses Course[]
+  posts   Post[]
+  LiveEvent LiveEvent[]
+  profiles   Profile[]
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([name])
   @@index([containerId])
 }
 
@@ -180,6 +205,9 @@ model Course {
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
 
+  usergroupId String?
+  usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
+
   chapters    Chapter[]
   attachments Attachment[]
   purchases   Purchase[]
@@ -190,6 +218,7 @@ model Course {
   UserHasCourse UserHasCourse[]
 
   @@index([categoryId])
+  @@index([usergroupId])
   @@index([containerId])
   @@fulltext([title])
 }
@@ -352,10 +381,6 @@ model Folder {
   @@index([containerId])
 }
 
-// TODO: Global Color Settings
-
-// TODO: News Post Models
-
 model Post {
   id String @id @default(uuid())
 
@@ -376,6 +401,9 @@ model Post {
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
 
+  usergroupId String?
+  usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
+
   comments  Comment[]
   likes     Like[]
   favorites Favorite[]
@@ -384,6 +412,7 @@ model Post {
   updatedAt DateTime @updatedAt
 
   @@index([categoryId])
+  @@index([usergroupId])
   @@index([containerId])
   @@fulltext([title])
 }
@@ -407,6 +436,9 @@ model LiveEvent {
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
 
+  usergroupId String?
+  usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
+
   comments  Comment[]
   favorites Favorite[]
 
@@ -419,6 +451,7 @@ model LiveEvent {
   likes Like[]
 
   @@index([categoryId])
+  @@index([usergroupId])
   @@index([containerId])
   @@fulltext([title])
 }
