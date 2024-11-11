@@ -70,7 +70,7 @@ export const columns: ColumnDef<Post>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <Link href={`/admin/usergroup/${id}`}>
+            <Link href={`/admin/usergroups/${id}`}>
               <DropdownMenuItem>
                 <Pencil className="h-4 w-4 mr-2" />
                 Edit
