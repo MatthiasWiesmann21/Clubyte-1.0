@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import authOptions from "@/lib/auth"; // Ensure this is the path to your NextAuth configuration
 import { isOwner } from "@/lib/owner";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { parse } from "url";
 
 export async function POST(req: Request) {
@@ -17,8 +17,9 @@ export async function POST(req: Request) {
     }
 
     const isRoleAdmins = await isAdmin();
+    const isRoleClientAdmin = await isClientAdmin();
     const isRoleOperator = await isOperator();
-    const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
+    const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || isOwner(userId);
 
     if (!canAccess) {
       return new NextResponse("Unauthorized", { status: 401 });

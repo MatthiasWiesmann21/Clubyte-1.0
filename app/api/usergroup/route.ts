@@ -2,7 +2,7 @@ import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 
 export async function POST(req: Request) {
   try {
@@ -17,9 +17,10 @@ export async function POST(req: Request) {
     const { name } = await req.json();
 
     // Check roles and access permissions
+    const isRoleClientAdmin = await isClientAdmin();
     const isRoleAdmins = await isAdmin();
     const isRoleOperator = await isOperator();
-    const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
+    const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || isOwner(userId);
 
     if (!canAccess) {
       return new NextResponse("Unauthorized", { status: 401 });

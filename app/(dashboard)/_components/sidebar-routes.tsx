@@ -16,6 +16,7 @@ import {
   Settings,
   UserCircle,
   UserCircle2Icon,
+  UsersRound,
   Video,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -133,7 +134,7 @@ export const SidebarRoutes = ({
       isNew: false,
     },
     {
-      icon: LayoutGridIcon,
+      icon: UsersRound,
       label: `${currentLanguage.nav_admin_item_usergroups}`,
       href: "/admin/usergroups",
       isNew: false,

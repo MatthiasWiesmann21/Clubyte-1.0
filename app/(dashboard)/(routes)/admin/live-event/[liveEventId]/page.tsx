@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, LayoutDashboard, ListChecks } from "lucide-react";
+import { ArrowLeft, LayoutDashboard, ListChecks, User } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -19,6 +19,7 @@ import { languageServer } from "@/lib/check-language-server";
 import authOptions from "@/lib/auth"; // Ensure this is configured correctly
 import GoBackButton from "@/components/goBackButton";
 import { IsStreamChatForm } from "./_components/isStreamChat-form";
+import { UsergroupForm } from "./_components/usergroup-form";
 
 const LiveEventIdPage = async ({
   params,
@@ -54,6 +55,15 @@ const LiveEventIdPage = async ({
     where: {
       containerId: session?.user?.profile?.containerId,
       isLiveEventCategory: true,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  const usergroups = await db.usergroup.findMany({
+    where: {
+      containerId: session?.user?.profile?.containerId,
     },
     orderBy: {
       name: "asc",
@@ -119,6 +129,14 @@ const LiveEventIdPage = async ({
               options={categories.map((category) => ({
                 label: category.name,
                 value: category.id,
+              }))}
+            />
+            <UsergroupForm
+              initialData={liveEvent}
+              liveEventId={liveEvent.id}
+              options={usergroups.map((usergroup) => ({
+                label: usergroup.name,
+                value: usergroup.id,
               }))}
             />
             <StartDateTimeForm
