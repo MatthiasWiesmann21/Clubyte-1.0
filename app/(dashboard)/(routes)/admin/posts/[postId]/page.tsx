@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
-import { ArrowLeft, Image, LayoutGridIcon } from "lucide-react";
+import { ArrowLeft, Image, LayoutGridIcon, User } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -16,6 +16,7 @@ import Link from "next/link";
 import { ScheduleDateForm } from "./_components/schedule-date-form";
 import authOptions from "@/lib/auth"; // Ensure this is configured correctly
 import GoBackButton from "@/components/goBackButton";
+import { UsergroupForm } from "./_components/usergroup-form";
 
 const PostIdPage = async ({
   params
@@ -41,6 +42,15 @@ const PostIdPage = async ({
     where: {
       containerId: session?.user?.profile?.containerId,
       isNewsCategory: true,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  const usergroups = await db.usergroup.findMany({
+    where: {
+      containerId: session?.user?.profile?.containerId,
     },
     orderBy: {
       name: "asc",
@@ -123,6 +133,14 @@ const PostIdPage = async ({
               options={categories.map((category) => ({
                 label: category.name,
                 value: category.id,
+              }))}
+            />
+            <UsergroupForm
+              initialData={post}
+              postId={post.id}
+              options={usergroups.map((usergroup) => ({
+                label: usergroup.name,
+                value: usergroup.id,
               }))}
             />
           </div>

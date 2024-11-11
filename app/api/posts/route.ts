@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
 export async function POST(req: Request) {
@@ -13,8 +13,9 @@ export async function POST(req: Request) {
 
     // Check user roles and ownership
     const isRoleAdmins = await isAdmin();
+    const isRoleClientAdmin = await isClientAdmin();
     const isRoleOperator = await isOperator();
-    const canAccess = isRoleAdmins || isRoleOperator || isOwner(userId);
+    const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || isOwner(userId);
 
     if (!userId || !canAccess) {
       return new NextResponse("Unauthorized", { status: 401 });

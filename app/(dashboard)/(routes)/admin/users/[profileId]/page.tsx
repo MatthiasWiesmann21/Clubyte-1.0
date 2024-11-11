@@ -10,6 +10,7 @@ import { IsBannedForm } from "./_components/isBanned-form";
 import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
 import GoBackButton from "@/components/goBackButton";
+import { UsergroupForm } from "./_components/usergroup-form";
 
 const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
   const currentLanguage = await languageServer();
@@ -23,6 +24,15 @@ const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
   if (!profile) {
     return redirect("/");
   }
+
+  const usergroups = await db.usergroup.findMany({
+    where: {
+      containerId: profile?.containerId,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
 
   const requiredFields = [profile.name, profile.email];
 
@@ -71,6 +81,14 @@ const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
                 { label: "MODERATOR", value: "MODERATOR" },
                 { label: "USER", value: "USER" },
               ]}
+            />
+            <UsergroupForm 
+              initialData={profile}
+              profileId={profile.id}
+              options={usergroups.map((usergroup) => ({
+                label: usergroup.name,
+                value: usergroup.id,
+              }))}
             />
           </div>
           <div>

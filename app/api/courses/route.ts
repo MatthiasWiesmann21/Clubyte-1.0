@@ -3,7 +3,7 @@ import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
 import { isOwner } from "@/lib/owner";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 
 export async function GET(req: Request) {
   try {
@@ -49,8 +49,9 @@ export async function POST(req: Request) {
     const { title } = await req.json();
 
     const isRoleAdmins = await isAdmin();
+    const isRoleClientAdmin = await isClientAdmin();
     const isRoleOperator = await isOperator();
-    const canAccess = isRoleAdmins || isRoleOperator || await isOwner(userId);
+    const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || await isOwner(userId);
 
     if (!userId || !canAccess) {
       return new NextResponse("Unauthorized", { status: 401 });

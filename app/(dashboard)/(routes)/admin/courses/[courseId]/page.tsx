@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, CircleDollarSign, File, LayoutDashboard, ListChecks } from "lucide-react";
+import { ArrowLeft, CircleDollarSign, File, LayoutDashboard, ListChecks, User } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -23,6 +23,7 @@ import { DurationForm } from "./_components/duration-form";
 import { LevelForm } from "./_components/level-form";
 import { SpecialTypeForm } from "./_components/specialType-form";
 import GoBackButton from "@/components/goBackButton";
+import { UsergroupForm } from "./_components/usergroup-form";
 
 const CourseIdPage = async ({
   params
@@ -61,6 +62,15 @@ const CourseIdPage = async ({
     where: {
       containerId: session?.user?.profile?.containerId,
       isCourseCategory: true,
+    },
+    orderBy: {
+      name: "asc",
+    }
+  });
+
+  const usergroups = await db.usergroup.findMany({
+    where: {
+      containerId: session?.user?.profile?.containerId,
     },
     orderBy: {
       name: "asc",
@@ -142,6 +152,14 @@ const CourseIdPage = async ({
               options={categories.map((category) => ({
                 label: category.name,
                 value: category.id,
+              }))}
+            />
+            <UsergroupForm
+              initialData={course}
+              courseId={course.id}
+              options={usergroups.map((usergroup) => ({
+                label: usergroup.name,
+                value: usergroup.id,
               }))}
             />
             <DurationForm

@@ -14,11 +14,11 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { name, color } = await req.json();
+    const { name } = await req.json();
 
     // Check roles and access permissions
-    const isRoleAdmins = await isAdmin();
     const isRoleClientAdmin = await isClientAdmin();
+    const isRoleAdmins = await isAdmin();
     const isRoleOperator = await isOperator();
     const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || isOwner(userId);
 
@@ -26,18 +26,17 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    // Create the category
-    const category = await db.category.create({
+    // Create the UserGroup
+    const usergroup = await db.usergroup.create({
       data: {
         name,
-        colorCode: color,
         containerId: session?.user?.profile?.containerId!,
       }
     });
 
-    return NextResponse.json(category);
+    return NextResponse.json(usergroup);
   } catch (error) {
-    console.log("[CATEGORY_CREATE]", error);
+    console.log("[USERGROUP_CREATE]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

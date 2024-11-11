@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 import authOptions from "@/lib/auth";
 import { isOwner } from "@/lib/owner";
-import { isAdmin } from "@/lib/roleCheckServer";
+import { isAdmin, isClientAdmin } from "@/lib/roleCheckServer";
 import bcrypt from "bcrypt";
 
 export async function DELETE(
@@ -14,7 +14,8 @@ export async function DELETE(
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const isRoleAdmins = await isAdmin();
-    const canAccess = isRoleAdmins || (userId && (await isOwner(userId)));
+    const isRoleClientAdmin = await isClientAdmin();
+    const canAccess = isRoleAdmins || isRoleClientAdmin || (userId && (await isOwner(userId)));
     const profile = await db.profile.findUnique({
       where: {
         id: params.profileId,
