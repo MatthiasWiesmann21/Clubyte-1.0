@@ -4,40 +4,214 @@ import { useSelector } from "react-redux";
 import { UserAvatar } from "@/components/user-avatar";
 import axios from "axios";
 import moment from "moment";
-import { Heart, MessageSquare, Trash } from "lucide-react";
+import { Check, Edit, Heart, MessageSquare, Star, X } from "lucide-react";
 import { ChatInputPost } from "./chatInput";
+import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
-import { isOwner } from "@/lib/owner";
-import { isAdmin, isOperator } from "@/lib/roleCheckServer";
-import { ActionTooltip } from "@/components/action-tooltip";
+import { Profile } from "@prisma/client";
 
-const SubReply = ({ val, updateLikeComment }: any) => (
-  <div>
-    <div className="flex justify-between">
+const SubReply = ({ val, updateLikeComment, currentProfileId }: any) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState(val?.text);
+
+  // Toggle edit mode
+  const handleEditClick = () => {
+    setIsEditing(!isEditing);
+  };
+
+  // Handle save for edited sub-reply
+  const handleEditSubmit = async () => {
+    try {
+      const response = await axios.patch(`/api/comment/update`, {
+        commentId: val?.id,
+        text: editedText,
+      });
+      if (response.status === 200) {
+        updateLikeComment(true);
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error("Failed to update sub-reply:", error);
+    }
+  };
+
+  return (
+    <div className="my-4 flex justify-between">
       <UserAvatar
         className="min-h-64 min-w-64 max-w-64 mr-3 max-h-64"
         src={val?.profile.imageUrl}
       />
       <div className="w-full">
-        <div>
-          <div className="font-500 line-clamp-1 text-base font-bold">
-            {val?.profile?.name}
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="font-500 line-clamp-1 text-base font-bold">
+              {val?.profile?.name}
+            </div>
+            <div className="text-xs">
+              {moment(new Date(val?.createdAt))?.fromNow()}
+            </div>
           </div>
-          <div className="text-xs">
-            {moment(new Date(val?.createdAt))?.fromNow()}
+          {currentProfileId === val?.profileId && (
+          <div className="flex items-center space-x-2">
+            {!isEditing ? (
+              <Button
+                variant="ghost"
+                className="h-8 w-8 p-0"
+                onClick={handleEditClick}
+              >
+                <Edit className="h-4 w-4 cursor-pointer" />
+              </Button>
+            ) : (
+              <>
+                <Check
+                  className="cursor-pointer text-green-500"
+                  onClick={handleEditSubmit}
+                />
+                <X
+                  className="cursor-pointer text-red-500"
+                  onClick={() => setIsEditing(false)}
+                />
+              </>
+            )}
+          </div>
+          )}
+        </div>
+
+        {!isEditing ? (
+          <p className="break-words text-sm">{val?.text}</p>
+        ) : (
+          <textarea
+            value={editedText}
+            onChange={(e) => setEditedText(e.target.value)}
+            className="mt-2 w-full rounded-md border p-2 dark:bg-[#131618] dark:text-gray-300"
+            rows={3}
+          />
+        )}
+
+        <div className="my-2 flex items-center">
+          <div
+            onClick={async () => {
+              const response = await axios.post(`/api/like/create`, {
+                commentId: val?.id,
+              });
+              if (response?.status === 200) updateLikeComment(true);
+            }}
+            className="font-500 flex cursor-pointer items-center text-sm"
+          >
+            <Heart
+              size={18}
+              className={!!val?.currentCommentLike ? "text-[#f43f5e]" : ""}
+              fill={!!val?.currentCommentLike ? "#f43f5e" : "transparent"}
+            />
+            <span className="ml-2 mr-1">{val?.likes?.length}</span> Likes
           </div>
         </div>
-        <p className="break-words text-[14px]">{val?.text}</p>
+      </div>
+    </div>
+  );
+};
+
+const Reply = ({
+  val,
+  id,
+  updateLikeComment,
+  profileImage,
+  currentProfileId,
+}: {
+  val: any;
+  id: string;
+  updateLikeComment: any;
+  profileImage: string;
+  currentProfileId: string;
+}) => {
+  const user = useSelector((state: any) => state?.user);
+  const [showReplyInput, setShowReplyInput] = useState(false);
+  const currentLanguage = useLanguage();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState(val?.text);
+
+  const handleEditClick = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleEditSubmit = async () => {
+    try {
+      const response = await axios.patch(`/api/comment/update`, {
+        commentId: val?.id,
+        text: editedText,
+      });
+      if (response.status === 200) {
+        updateLikeComment(true);
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error("Failed to update comment:", error);
+    }
+  };
+
+  return (
+    <div className="my-4 flex justify-between rounded-lg border p-4 dark:bg-[#131618]">
+      <UserAvatar
+        className="min-h-64 min-w-64 max-w-64 mr-3 max-h-64"
+        src={val?.profile?.imageUrl}
+      />
+      <div className="w-full">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="font-500 line-clamp-1 text-base font-bold">
+              {val?.profile?.name}
+            </div>
+            <div className="text-xs">
+              {moment(new Date(val?.createdAt))?.fromNow()}
+            </div>
+          </div>
+
+          {currentProfileId === val?.profile?.id && (
+            <div className="flex items-center space-x-2">
+              {!isEditing ? (
+                <Button
+                  variant="ghost"
+                  className="h-8 w-8 p-0"
+                  onClick={handleEditClick}
+                >
+                  <Edit className="h-4 w-4 cursor-pointer" />
+                </Button>
+              ) : (
+                <>
+                  <Check
+                    className="cursor-pointer text-green-500"
+                    onClick={handleEditSubmit}
+                  />
+                  <X
+                    className="cursor-pointer text-red-500"
+                    onClick={() => setIsEditing(false)}
+                  />
+                </>
+              )}
+            </div>
+          )}
+        </div>
+
+        {!isEditing ? (
+          <p className="break-words text-sm">{val?.text}</p>
+        ) : (
+          <textarea
+            value={editedText}
+            onChange={(e) => setEditedText(e.target.value)}
+            className="mt-2 w-full rounded-md border p-2 dark:bg-[#131618] dark:text-gray-300"
+            rows={3}
+          />
+        )}
         <div className="my-2 flex items-center">
           <div
             onClick={async () => {
               const response = await axios?.post(`/api/like/create`, {
                 commentId: val?.id,
               });
-              if (response?.status === 200)
-                updateLikeComment(response?.data?.post);
+              if (response?.status === 200) updateLikeComment(true);
             }}
-            className="font-500 flex cursor-pointer items-center justify-between text-[14px]"
+            className="font-500 flex cursor-pointer items-center justify-between text-sm"
           >
             <Heart
               size={18}
@@ -47,98 +221,42 @@ const SubReply = ({ val, updateLikeComment }: any) => (
             <span className="ml-2 mr-1">{val?.likes?.length}</span>
             Likes
           </div>
+          <div
+            className="font-500 m-0 ml-[1.25rem] cursor-pointer text-[14px]"
+            onClick={() => setShowReplyInput(!showReplyInput)}
+          >
+            {`${val?.subCommentsWithLikes?.length} ${currentLanguage?.news_comments_reply_button_label}`}
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-);
 
-const Reply = ({
-  val,
-  id,
-  updateLikeComment,
-  profileImage,
-}: {
-  val: any;
-  id: string;
-  updateLikeComment: any;
-  profileImage: string;
-}) => {
-  const user = useSelector((state: any) => state?.user);
-  const [showReplyInput, setShowReplyInput] = useState(false);
-  const currentLanguage = useLanguage();
-  return (
-    <div>
-      <div className="my-4 flex justify-between rounded-lg border p-4 dark:bg-[#131618]">
-        <UserAvatar
-          className="min-h-64 min-w-64 max-w-64 mr-3 max-h-64"
-          src={val?.profile?.imageUrl}
-        />
-        <div className="w-full">
-          <div>
-            <div className="font-500 line-clamp-1 text-base font-bold">
-              {val?.profile?.name}
-            </div>
-            <div className="text-xs">
-              {moment(new Date(val?.createdAt))?.fromNow()}
-            </div>
-            <text className="break-words text-sm">{val?.text}</text>
-          </div>
-          <div className="my-2 flex items-center">
-            <div
-              onClick={async () => {
-                const response = await axios?.post(`/api/like/create`, {
-                  commentId: val?.id,
-                });
-                if (response?.status === 200)
-                  updateLikeComment(response?.data?.post);
-              }}
-              className="font-500 flex cursor-pointer items-center justify-between text-sm"
-            >
-              <Heart
-                size={18}
-                className={!!val?.currentCommentLike ? "text-[#f43f5e]" : ""}
-                fill={!!val?.currentCommentLike ? "#f43f5e" : "transparent"}
-              />
-              <span className="ml-2 mr-1">{val?.likes?.length}</span>
-              Likes
-            </div>
-            <div
-              className="font-500 m-0 ml-[1.25rem] cursor-pointer text-[14px]"
-              onClick={() => setShowReplyInput(!showReplyInput)}
-            >
-              {`${val?.subCommentsWithLikes?.length} ${currentLanguage?.news_comments_reply_button_label}`}
-            </div>
-          </div>
-
-          {val?.subCommentsWithLikes?.map((val: any) => (
-            <SubReply
-              key={val?.id}
-              val={val}
-              updateLikeComment={updateLikeComment}
+        {val?.subCommentsWithLikes?.map((val: any) => (
+          <SubReply
+            key={val?.id}
+            val={val}
+            updateLikeComment={updateLikeComment}
+            currentProfileId={currentProfileId}
+          />
+        ))}
+        {showReplyInput && (
+          <div className="flex items-center justify-between">
+            <UserAvatar
+              className="min-h-64 min-w-64 max-w-64 mr-3 max-h-64"
+              src={profileImage}
             />
-          ))}
-          {showReplyInput && (
-            <div className="flex items-center justify-between">
-              <UserAvatar
-                className="min-h-64 min-w-64 max-w-64 mr-3 max-h-64"
-                src={profileImage}
+            <div className="w-full">
+              <ChatInputPost
+                placeHolder={currentLanguage.news_comments_input_placeholder}
+                apiUrl="/api/comment/create"
+                query={{
+                  postId: id,
+                  parentCommentId: val?.id,
+                }}
+                className="w-full"
+                updateLikeComment={updateLikeComment}
               />
-              <div className="w-full">
-                <ChatInputPost
-                  placeHolder={currentLanguage.news_comments_input_placeholder}
-                  apiUrl="/api/comment/create"
-                  query={{
-                    chapterId: id,
-                    parentCommentId: val?.id,
-                  }}
-                  className="w-full"
-                  updateLikeComment={updateLikeComment}
-                />
-              </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -146,10 +264,13 @@ const Reply = ({
 
 const LikeComment = ({
   id,
+  likesCount,
+  currentLike,
   commentsWithLikes,
   commentsCount,
   updateLikeComment,
   profileImage,
+  currentProfileId,
 }: {
   id: string;
   likesCount: number;
@@ -158,14 +279,37 @@ const LikeComment = ({
   commentsCount: number;
   updateLikeComment: any;
   profileImage: string;
+  currentProfileId: string;
 }) => {
-  const user = useSelector((state: any) => state?.user);
-  const [isShowComments, setShowComments] = useState(true);
+  const [commentCount, setCommentCount] = useState(3);
+  const [isShowComments, setShowComments] = useState(false);
   const currentLanguage = useLanguage();
 
   return (
     <div className="mx-3">
-      <div className="flex items-center justify-end py-3">
+      <div className="flex items-center justify-between py-3">
+        <div className="flex">
+          <div
+            onClick={async () => {
+              const response = await axios?.post(`/api/like/create`, {
+                postId: id,
+              });
+              if (response?.status === 200) updateLikeComment(true);
+            }}
+            className="m-2 flex cursor-pointer items-center justify-around "
+          >
+            <Heart
+              className={
+                !!currentLike
+                  ? "text-[#f43f5e] transition duration-200 ease-in-out hover:scale-110"
+                  : "border-black transition duration-200 ease-in-out hover:scale-110"
+              }
+              fill={!!currentLike ? "#f43f5e" : "transparent"}
+            />
+            <span className="ml-2 mr-1">{likesCount}</span>
+            Likes
+          </div>
+        </div>
         <div
           className="flex cursor-pointer items-center rounded-lg bg-slate-200 p-3 text-sm transition duration-300 ease-in-out hover:bg-slate-300 dark:bg-slate-800/50 dark:hover:bg-slate-700/80"
           onClick={() => setShowComments(!isShowComments)}
@@ -187,7 +331,7 @@ const LikeComment = ({
                 placeHolder={currentLanguage?.news_comments_input_placeholder}
                 apiUrl="/api/comment/create"
                 query={{
-                  chapterId: id,
+                  postId: id,
                   parentCommentId: null,
                 }}
                 className=""
@@ -196,16 +340,32 @@ const LikeComment = ({
             </div>
           </div>
           <div className="w-full">
-            {commentsWithLikes?.map((val: any, index: number) => (
-              <Reply
-                key={val?.id}
-                val={val}
-                id={id}
-                updateLikeComment={updateLikeComment}
-                profileImage={profileImage}
-              />
-            ))}
+            {commentsWithLikes?.map(
+              (val: any, index: number) =>
+                index < commentCount && (
+                  <Reply
+                    key={val?.id}
+                    val={val}
+                    id={id}
+                    updateLikeComment={updateLikeComment}
+                    profileImage={profileImage}
+                    currentProfileId={currentProfileId}
+                  />
+                )
+            )}
           </div>
+          {commentCount < commentsWithLikes?.length - 1 && (
+            <div className="flex items-center justify-center p-2">
+              <Button
+                onClick={() => setCommentCount(commentCount + 3)}
+                className="cursor-pointer rounded-full p-4 text-center"
+                variant="secondary"
+                size="lg"
+              >
+                {currentLanguage.news_comments_showmore_label}
+              </Button>
+            </div>
+          )}
         </>
       )}
     </div>
