@@ -41,6 +41,6 @@
     "app/(dashboard)/(routes)/chat/page.jsx",
     "app/api/roles/admin/checkAdminRole.js",
     "app/(dashboard)/_components/sidebar-routes.jsx"
-  ],
+, "app/api/comment/update"  ],
   "exclude": ["node_modules"]
 }

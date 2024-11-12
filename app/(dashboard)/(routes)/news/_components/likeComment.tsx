@@ -9,6 +9,7 @@ import { ChatInputPost } from "./chatInput";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
 import { Profile } from "@prisma/client";
+import toast from "react-hot-toast";
 
 const SubReply = ({ val, updateLikeComment, currentProfileId }: any) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -22,15 +23,17 @@ const SubReply = ({ val, updateLikeComment, currentProfileId }: any) => {
   // Handle save for edited sub-reply
   const handleEditSubmit = async () => {
     try {
-      const response = await axios.patch(`/api/comment/update`, {
+      const response = await axios.patch(`/api/comment/update/${val?.id}`, {
         commentId: val?.id,
         text: editedText,
       });
       if (response.status === 200) {
         updateLikeComment(true);
         setIsEditing(false);
+        toast.success("Comment updated");
       }
     } catch (error) {
+      toast.error("Something went wrong");
       console.error("Failed to update sub-reply:", error);
     }
   };
@@ -137,15 +140,17 @@ const Reply = ({
 
   const handleEditSubmit = async () => {
     try {
-      const response = await axios.patch(`/api/comment/update`, {
+      const response = await axios.patch(`/api/comment/update/${val?.id}`, {
         commentId: val?.id,
         text: editedText,
       });
       if (response.status === 200) {
         updateLikeComment(true);
         setIsEditing(false);
+        toast.success("Comment updated");
       }
     } catch (error) {
+      toast.error("Something went wrong");
       console.error("Failed to update comment:", error);
     }
   };
