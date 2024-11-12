@@ -34,6 +34,7 @@ interface NewsWrapperProps {
   DarkThemeColor: string;
   profileImage: string;
   profileRole: string;
+  currentProfileId: string;
 }
 
 const NewsWrapper = ({
@@ -43,6 +44,7 @@ const NewsWrapper = ({
   DarkThemeColor,
   profileImage,
   profileRole,
+  currentProfileId,
 }: NewsWrapperProps) => {
   const { categoryId } = searchParams;
   const [posts, setPosts] = useState<PostWithProgressWithCategory[]>([]);
@@ -137,6 +139,7 @@ const NewsWrapper = ({
               commentsCount={item?.commentsCount}
               updateLikeComment={getPosts}
               profileImage={profileImage}
+              currentProfileId={currentProfileId}
             />
           ))}
           <div className="loading-indicator" />
@@ -205,6 +208,7 @@ const NewsWrapper = ({
                   commentsCount={item?.commentsCount}
                   updateLikeComment={getPosts}
                   profileImage={profileImage}
+                  currentProfileId={currentProfileId}
                 />
               ))}
             </div>

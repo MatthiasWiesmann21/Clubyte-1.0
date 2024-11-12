@@ -64,6 +64,7 @@ interface CourseWrapperProps {
   purchaseLabel: string;
   ThemeColor: string;
   DarkThemeColor: string;
+  currentProfileId: string;
 }
 
 interface Chapter {
@@ -108,6 +109,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
   purchaseLabel,
   ThemeColor,
   DarkThemeColor,
+  currentProfileId,
 }) => {
   const [data, setData] = useState<DataObject>({
     chapter: null,
@@ -243,6 +245,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
               commentsCount={data?.chapter?.comments?.length!}
               updateLikeComment={getData}
               profileImage={profileImage}
+              currentProfileId={currentProfileId}
             />
           </div>
         </div>

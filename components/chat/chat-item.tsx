@@ -222,7 +222,7 @@ export const ChatItem = ({
                     </FormItem>
                   )}
                 />
-                <Button disabled={isLoading} size="sm" variant="primary">
+                <Button disabled={isLoading} size="sm">
                   {currentLanguage.chat_ChatItem_saveChanges}
                 </Button>
               </form>

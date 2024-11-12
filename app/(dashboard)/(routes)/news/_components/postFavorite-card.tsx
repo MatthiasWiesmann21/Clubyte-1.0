@@ -45,6 +45,7 @@ interface PostFavoriteCardProps {
   commentsCount: number;
   updateLikeComment: any;
   profileImage: string;
+  currentProfileId: string;
 }
 
 export const PostFavoriteCard = ({
@@ -63,6 +64,7 @@ export const PostFavoriteCard = ({
   commentsCount,
   updateLikeComment,
   profileImage,
+  currentProfileId,
 }: PostFavoriteCardProps) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const { theme } = useTheme();
@@ -191,6 +193,7 @@ export const PostFavoriteCard = ({
               commentsWithLikes={commentsWithLikes}
               commentsCount={commentsCount}
               updateLikeComment={updateLikeComment}
+              currentProfileId={currentProfileId}
             />
           </div>
         </div>

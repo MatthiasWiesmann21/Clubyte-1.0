@@ -46,6 +46,7 @@ interface PostCardProps {
   commentsCount: number;
   updateLikeComment: any;
   profileImage: string;
+  currentProfileId: string;
 }
 
 export const PostCard = ({
@@ -65,6 +66,7 @@ export const PostCard = ({
   commentsCount,
   updateLikeComment,
   profileImage,
+  currentProfileId,
 }: PostCardProps) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const { theme } = useTheme();
@@ -204,6 +206,7 @@ export const PostCard = ({
           commentsWithLikes={commentsWithLikes}
           commentsCount={commentsCount}
           updateLikeComment={updateLikeComment}
+          currentProfileId={currentProfileId}
         />
       </div>
     </TooltipProvider>
