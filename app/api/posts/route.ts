@@ -48,9 +48,6 @@ export async function GET(req: any): Promise<void | Response> {
 
     if (!userId) throw new Error("Unauthorized");
     const profile = await db.profile.findFirst({
-      select: {
-        id: true,
-      },
       where: {
         userId: userId,
       },
@@ -59,89 +56,94 @@ export async function GET(req: any): Promise<void | Response> {
     if (!profile) return new NextResponse("Profile not found", { status: 404 });
 
     const posts =
-      (await db.post.findMany({
-        where: {
-          isPublished: true,
-          containerId: session?.user?.profile?.containerId,
-          publishTime: {
-            lte: currentDate, // Ensure the scheduled time is less than or equal to the current date and time
-          },
-          ...(categoryId && { categoryId: categoryId }),
+    (await db.post.findMany({
+      where: {
+        isPublished: true,
+        containerId: session?.user?.profile?.containerId,
+        publishTime: {
+          lte: currentDate,
         },
-        include: {
-          category: true,
-          comments: {
-            include: {
-              likes: true,
-              subComment: {
-                include: {
-                  likes: true,
-                  profile: true,
-                },
+        ...(categoryId && { categoryId }),
+        // Filter posts by matching usergroupId or allowing public (null) posts
+        OR: [
+          { usergroupId: profile.usergroupId },
+          { usergroupId: null },
+        ],
+      },
+      include: {
+        category: true,
+        comments: {
+          include: {
+            likes: true,
+            subComment: {
+              include: {
+                likes: true,
+                profile: true,
               },
-              profile: true,
             },
-            where: {
-              parentComment: null,
-            },
+            profile: true,
           },
-          likes: true,
-          favorites: true,
+          where: {
+            parentComment: null,
+          },
         },
-        take: pageSize,
-        skip: skip,
-        orderBy: {
-          updatedAt: "desc", // Order by updatedAt in descending order
-        },
-      })) || [];
+        likes: true,
+        favorites: true,
+      },
+      take: pageSize,
+      skip: skip,
+      orderBy: {
+        updatedAt: "desc",
+      },
+    })) || [];
 
-    const postsWithData = posts.map((post) => {
-      const commentsCount = post.comments.length;
-      const likesCount = post.likes.length;
-      const favoritesCount = post.favorites.length;
+  const postsWithData = posts.map((post) => {
+    const commentsCount = post.comments.length;
+    const likesCount = post.likes.length;
+    const favoritesCount = post.favorites.length;
 
-      const commentsWithLikes = post.comments
-        .map((comment) => ({
-          ...comment,
-          commentLikesCount: comment.likes.length,
-          currentCommentLike: comment.likes.some(
+    const commentsWithLikes = post.comments
+      .map((comment) => ({
+        ...comment,
+        commentLikesCount: comment.likes.length,
+        currentCommentLike: comment.likes.some(
+          (like) => like.profileId === profile.id
+        ),
+        subCommentsWithLikes: comment.subComment.map((subcomment) => ({
+          ...subcomment,
+          commentLikesCount: subcomment.likes.length,
+          currentCommentLike: subcomment.likes.some(
             (like) => like.profileId === profile.id
           ),
-          subCommentsWithLikes: comment.subComment.map((subcomment) => ({
-            ...subcomment,
-            commentLikesCount: subcomment.likes.length,
-            currentCommentLike: subcomment.likes.some(
-              (like) => like.profileId === profile.id
-            ),
-          })),
-        }))
-        .sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-
-      const currentLike = post.likes.some(
-        (like) => like.profileId === profile.id
+        })),
+      }))
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
 
-      const currentFavorite = post.favorites.some(
-        (favorite) => favorite.profileId === profile.id
-      );
+    const currentLike = post.likes.some(
+      (like) => like.profileId === profile.id
+    );
 
-      return {
-        ...post,
-        commentsCount,
-        likesCount,
-        favoritesCount,
-        currentLike,
-        currentFavorite,
-        commentsWithLikes,
-      };
-    });
+    const currentFavorite = post.favorites.some(
+      (favorite) => favorite.profileId === profile.id
+    );
 
-    return NextResponse.json({ data: postsWithData });
-  } catch (error) {
-    console.log("[GET_POSTS_ERROR]", error);
-    return new NextResponse("Internal Error", { status: 500 });
-  }
+    return {
+      ...post,
+      commentsCount,
+      likesCount,
+      favoritesCount,
+      currentLike,
+      currentFavorite,
+      commentsWithLikes,
+    };
+  });
+
+  return NextResponse.json({ data: postsWithData });
+} catch (error) {
+  console.log("[GET_POSTS_ERROR]", error);
+  return new NextResponse("Internal Error", { status: 500 });
+}
 }
