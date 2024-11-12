@@ -60,13 +60,23 @@ export async function GET(req: Request) {
       dateFilter = { startDateTime: { gt: currentDate } }; // Future events
     }
 
-    const liveEvent = await db.liveEvent.findMany({
+    const profile = await db.profile.findFirst({
+      where: { userId },
+    });
+    if (!profile) return new NextResponse("Profile not found", { status: 404 });
+
+
+    const liveEvents = await db.liveEvent.findMany({
       where: {
         isPublished: true,
         containerId: session?.user?.profile?.containerId,
-        ...(categoryId && { categoryId: categoryId as string }), // Conditionally apply the filter for categoryId
-        ...(title && { title: { contains: title as string } }), // Conditionally apply the filter for title
+        ...(categoryId && { categoryId: categoryId as string }),
+        ...(title && { title: { contains: title as string } }),
         ...dateFilter,
+        OR: [
+          { usergroupId: profile.usergroupId }, // Only show if usergroupId matches
+          { usergroupId: null },                // Show public events (usergroupId is null)
+        ],
       },
       include: {
         favorites: true,
@@ -77,21 +87,14 @@ export async function GET(req: Request) {
       },
     });
 
-    const profile = await db?.profile?.findFirst({
-      select: {
-        id: true,
-      },
-      where: {
-        userId: userId,
-      },
+    // Map over the live events to add favorite status
+    const result = liveEvents.map((event) => {
+      const currentFavorite = event.favorites.some(
+        (favorite: any) => favorite.profileId === profile.id
+      );
+      return { ...event, currentFavorite };
     });
 
-    const result = liveEvent?.map((each) => {
-      const currentFavorite = each?.favorites?.some(
-        (favorite: any) => favorite?.profileId === profile?.id
-      );
-      return { ...each, currentFavorite };
-    });
     return NextResponse.json(result);
   } catch (error) {
     console.log("[LIVE_EVENT_GET_ERROR]", error);

@@ -10,6 +10,7 @@ export async function GET(req: Request) {
   const title = searchParams?.get("title") || "";
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
+
   try {
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
@@ -20,16 +21,16 @@ export async function GET(req: Request) {
       containerId: session?.user?.profile?.containerId,
     });
 
-    const profile = await db?.profile?.findFirst({
-      select: {
-        id: true,
-      },
-      where: {
-        userId: userId,
-      },
+    const profile = await db.profile.findFirst({
+      where: { userId },
     });
 
-    const result = courses?.map((each) => {
+    // Filter courses to only include those that match userGroupId or have no usergroupId (public)
+    const filteredCourses = courses.filter(
+      (course) => !course.usergroupId || course.usergroupId === profile?.usergroupId
+    );
+
+    const result = filteredCourses.map((each) => {
       const currentFavorite = each?.favorites?.some(
         (favorite: any) => favorite?.profileId === profile?.id
       );
