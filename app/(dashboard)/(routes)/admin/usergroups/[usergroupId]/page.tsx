@@ -11,7 +11,7 @@ import { Actions } from "./_components/actions";
 import { languageServer } from "@/lib/check-language-server";
 import authOptions from "@/lib/auth"; // Ensure this is properly configured
 import GoBackButton from "@/components/goBackButton";
-
+import AddUserListForm from "./_components/addUserList-form";
 
 const UsergroupIdPage = async ({
   params,
@@ -65,7 +65,7 @@ const UsergroupIdPage = async ({
             isPublished={usergroup.isPublished}
           />
         </div>
-        <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="mt-16 grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={LayoutGridIcon} />
@@ -79,6 +79,23 @@ const UsergroupIdPage = async ({
             <TitleForm initialData={usergroup} usergroupId={usergroup.id} />
           </div>
         </div>
+         {/** 
+          * TODO: @saif Add User List Form
+        <div className="mt-16 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={LayoutGridIcon} />
+              <h2 className="text-xl">
+                {currentLanguage.category_setup_customize_title}
+              </h2>
+              <span className="pl-1 text-xs text-rose-600">
+                {currentLanguage.requiredFields}
+              </span>
+            </div>
+            <AddUserListForm profiles={profiles} usergroupId={usergroup.id} />
+          </div>
+        </div>
+        */}
       </div>
     </>
   );
