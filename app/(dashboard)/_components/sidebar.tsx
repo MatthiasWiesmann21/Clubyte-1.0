@@ -13,6 +13,11 @@ export const Sidebar = async () => {
   const userId = session?.user?.id;
   const currentLanguage = await languageServer();
 
+  if (!session?.user?.profile?.containerId) {
+    // Handle the case where containerId is undefined
+    return null;
+  }
+
   const container = await db.container.findUnique({
     where: {
       id: session?.user?.profile?.containerId,
@@ -155,26 +160,26 @@ export const Sidebar = async () => {
           </a>
         </div>
       )}
-      <div className="flex items-center justify-center space-x-2 pb-5 px-5">
-            <Link
-              className="flex items-center text-xs font-semibold text-gray-600 hover:underline"
-              href="https://docs.clubyte.live"
-              target="_blank"
-            >
-              <HelpCircle className="mr-1" size={16} />
-              {currentLanguage.sidebar_help}
-            </Link>
-            {/* Separator */}
-            <div className="text-gray-600">|</div>
-            <Link
-              className="flex items-center text-xs font-semibold text-gray-600 hover:underline"
-              href="https://clubyte.live/privacy-policy/"
-              target="_blank"
-            >
-              <Lock className="mr-1" size={16}/>
-              {currentLanguage.sidebar_privacy_policy}
-            </Link>
-          </div>
+      <div className="flex items-center justify-center space-x-2 px-5 pb-5">
+        <Link
+          className="flex items-center text-xs font-semibold text-gray-600 hover:underline"
+          href="https://docs.clubyte.live"
+          target="_blank"
+        >
+          <HelpCircle className="mr-1" size={16} />
+          {currentLanguage.sidebar_help}
+        </Link>
+        {/* Separator */}
+        <div className="text-gray-600">|</div>
+        <Link
+          className="flex items-center text-xs font-semibold text-gray-600 hover:underline"
+          href="https://clubyte.live/privacy-policy/"
+          target="_blank"
+        >
+          <Lock className="mr-1" size={16} />
+          {currentLanguage.sidebar_privacy_policy}
+        </Link>
+      </div>
     </div>
   );
 };
