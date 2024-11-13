@@ -688,4 +688,6 @@ courses_UsergroupForm_cancel: "Abbrechen",
 courses_UsergroupForm_edit: "Benutzergruppe bearbeiten",
 courses_UsergroupForm_allUsers: "Alle Benutzer",
 courses_UsergroupForm_save: "Speichern",
+course_counter_courses: "Kurse",
+course_counter_outOf: "von",
 };

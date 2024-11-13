@@ -156,7 +156,6 @@ export default function BillingPage() {
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="plans">Plans</TabsTrigger>
-          <TabsTrigger value="usage">Usage</TabsTrigger>
           <TabsTrigger value="payment">Payment</TabsTrigger>
           <TabsTrigger value="history">Billing History</TabsTrigger>
         </TabsList>
@@ -239,39 +238,6 @@ export default function BillingPage() {
             })}
           </div>
         </TabsContent>
-
-        <TabsContent value="usage">
-          <Card>
-            <CardHeader>
-              <CardTitle>Usage Statistics</CardTitle>
-              <CardDescription>Your current usage for this billing period</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <div className="flex justify-between mb-2">
-                  <Label>Emails Sent</Label>
-                  <span>{usageStats.emails.used} / {usageStats.emails.limit}</span>
-                </div>
-                <Progress value={(usageStats.emails.used / usageStats.emails.limit) * 100} />
-              </div>
-              <div>
-                <div className="flex justify-between mb-2">
-                  <Label>Projects</Label>
-                  <span>{usageStats.projects.used} / {usageStats.projects.limit}</span>
-                </div>
-                <Progress value={(usageStats.projects.used / usageStats.projects.limit) * 100} />
-              </div>
-              <div>
-                <div className="flex justify-between mb-2">
-                  <Label>Team Members</Label>
-                  <span>{usageStats.members.used} / {usageStats.members.limit}</span>
-                </div>
-                <Progress value={(usageStats.members.used / usageStats.members.limit) * 100} />
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
         <TabsContent value="payment">
           <Card>
             <CardHeader>

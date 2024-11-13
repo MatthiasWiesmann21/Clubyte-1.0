@@ -718,4 +718,6 @@ export const Russian: Record<string, string> = {
   courses_UsergroupForm_edit: "Редактировать Группу Пользователей",
   courses_UsergroupForm_allUsers: "Все Пользователи",
   courses_UsergroupForm_save: "Сохранить",
+  course_counter_courses: "курсы",
+  course_counter_outOf: "из",
 };
