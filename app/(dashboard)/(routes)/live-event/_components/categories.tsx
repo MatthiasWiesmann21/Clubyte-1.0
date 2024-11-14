@@ -91,9 +91,14 @@ export const Categories = ({
           style={
             !currentCategoryId
               ? { borderColor: getThemeColor(), background: getThemeColor() }
-              : { borderColor: "#cbd5e1" }
+              : {
+                  borderColor:
+                    hoveredCategoryId === "all" ? getThemeColor() : "#cbd5e1",
+                  background:
+                    hoveredCategoryId === "all" ? getThemeColor() : "",
+                }
           }
-          onMouseEnter={() => setHoveredCategoryId(null)}
+          onMouseEnter={() => setHoveredCategoryId("all")}
           onMouseLeave={() => setHoveredCategoryId(null)}
           type="button"
         >
@@ -104,6 +109,9 @@ export const Categories = ({
           const isSelected =
             currentCategoryId === item?.id || (!item?.id && !currentCategoryId);
           const isHovered = hoveredCategoryId === item?.id;
+          const borderColor = isSelected || isHovered ? item?.colorCode : "";
+          const backgroundColor =
+            isSelected || isHovered ? item?.colorCode : "transparent";
           const onClick = () => {
             const url = qs?.stringifyUrl(
               {
@@ -119,6 +127,22 @@ export const Categories = ({
 
             router?.push(url);
           };
+          const getTextColor = () => {
+            return theme === "dark"
+              ? item?.darkTextColorCode
+              : item?.textColorCode;
+          };
+          const buttonStyle = isSelected
+            ? {
+                borderColor: borderColor,
+                background: backgroundColor,
+                color: getTextColor(),
+              }
+            : {
+                borderColor: isHovered ? borderColor : "",
+                background: isHovered ? backgroundColor : "transparent",
+                color: isHovered ? getTextColor() : "",
+              };
           return (
             <TooltipProvider key={item.id}>
               <Tooltip>
@@ -127,14 +151,7 @@ export const Categories = ({
                     key={item?.id}
                     onClick={onClick}
                     className={`font-600 flex items-center gap-x-1 rounded-lg border-2 px-3 py-2 text-xs transition duration-300`}
-                    style={
-                      isSelected || isHovered
-                        ? {
-                            borderColor: item?.colorCode,
-                            background: item?.colorCode,
-                          }
-                        : { borderColor: isHovered ? item?.colorCode : "" }
-                    }
+                    style={buttonStyle}
                     onMouseEnter={() => setHoveredCategoryId(item?.id)}
                     onMouseLeave={() => setHoveredCategoryId(null)}
                   >
