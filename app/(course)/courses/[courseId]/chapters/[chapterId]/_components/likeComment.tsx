@@ -55,28 +55,28 @@ const SubReply = ({ val, updateLikeComment, currentProfileId }: any) => {
             </div>
           </div>
           {currentProfileId === val?.profileId && (
-          <div className="flex items-center space-x-2">
-            {!isEditing ? (
-              <Button
-                variant="ghost"
-                className="h-8 w-8 p-0"
-                onClick={handleEditClick}
-              >
-                <Edit className="h-4 w-4 cursor-pointer" />
-              </Button>
-            ) : (
-              <>
-                <Check
-                  className="cursor-pointer text-green-500"
-                  onClick={handleEditSubmit}
-                />
-                <X
-                  className="cursor-pointer text-red-500"
-                  onClick={() => setIsEditing(false)}
-                />
-              </>
-            )}
-          </div>
+            <div className="flex items-center space-x-2">
+              {!isEditing ? (
+                <Button
+                  variant="ghost"
+                  className="h-8 w-8 p-0"
+                  onClick={handleEditClick}
+                >
+                  <Edit className="h-4 w-4 cursor-pointer" />
+                </Button>
+              ) : (
+                <>
+                  <Check
+                    className="cursor-pointer text-green-500"
+                    onClick={handleEditSubmit}
+                  />
+                  <X
+                    className="cursor-pointer text-red-500"
+                    onClick={() => setIsEditing(false)}
+                  />
+                </>
+              )}
+            </div>
           )}
         </div>
 
@@ -253,7 +253,7 @@ const Reply = ({
                 placeHolder={currentLanguage.news_comments_input_placeholder}
                 apiUrl="/api/comment/create"
                 query={{
-                  postId: id,
+                  chapterId: id,
                   parentCommentId: val?.id,
                 }}
                 className="w-full"
@@ -297,7 +297,7 @@ const LikeComment = ({
           <div
             onClick={async () => {
               const response = await axios?.post(`/api/like/create`, {
-                postId: id,
+                chapterId: id,
               });
               if (response?.status === 200) updateLikeComment(true);
             }}
@@ -336,7 +336,7 @@ const LikeComment = ({
                 placeHolder={currentLanguage?.news_comments_input_placeholder}
                 apiUrl="/api/comment/create"
                 query={{
-                  postId: id,
+                  chapterId: id,
                   parentCommentId: null,
                 }}
                 className=""
