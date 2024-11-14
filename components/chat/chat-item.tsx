@@ -33,6 +33,7 @@ interface ChatItemProps {
   isUpdated: boolean;
   socketUrl: string;
   socketQuery: Record<string, string>;
+  apiUrl: string;
 }
 
 const roleIconMap = {
@@ -56,6 +57,7 @@ export const ChatItem = ({
   isUpdated,
   socketUrl,
   socketQuery,
+  apiUrl,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { onOpen } = useModal();
@@ -78,7 +80,7 @@ export const ChatItem = ({
       }
     };
     if (typeof window === "undefined") return;
-    
+
     window.addEventListener("keydown", handleKeyDown);
 
     return () => window.removeEventListener("keyDown", handleKeyDown);
@@ -96,7 +98,7 @@ export const ChatItem = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: `${socketUrl}/${id}`,
+        url: `${apiUrl}/${id}`,
         query: socketQuery,
       });
 
@@ -222,7 +224,11 @@ export const ChatItem = ({
                     </FormItem>
                   )}
                 />
-                <Button disabled={isLoading} size="sm">
+                <Button
+                  disabled={isLoading}
+                  size="sm"
+                  onClick={form.handleSubmit(onSubmit)}
+                >
                   {currentLanguage.chat_ChatItem_saveChanges}
                 </Button>
               </form>
