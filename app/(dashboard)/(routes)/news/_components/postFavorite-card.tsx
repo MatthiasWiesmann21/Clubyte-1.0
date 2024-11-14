@@ -24,7 +24,7 @@ import { Heart, MoreVertical, Pencil, Star, Trash } from "lucide-react";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import { useLanguage } from "@/lib/check-language";
 import { useRouter } from "next/navigation";
-import { useIsAdmin } from "@/lib/roleCheck";
+import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -71,6 +71,10 @@ export const PostFavoriteCard = ({
   const currentLanguage = useLanguage();
   const router = useRouter();
   const isAdmin = useIsAdmin();
+  const isClientAdmin = useIsClientAdmin();
+
+  const canAccess = isAdmin || isClientAdmin;
+
   const onDelete = async () => {
     try {
       await axios.delete(`/api/posts/${id}`);
@@ -122,7 +126,7 @@ export const PostFavoriteCard = ({
                     <div className="truncate">{category}</div>
                   </div>
                 )}
-                {isAdmin && (
+                {canAccess && (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button
