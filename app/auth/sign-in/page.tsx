@@ -41,7 +41,7 @@ export default function SignIn() {
     } else {
       return container?.signInImageUrl;
     }
-  }
+  };
 
   const handleGoogleSignIn = async (event: any) => {
     try {
@@ -81,7 +81,7 @@ export default function SignIn() {
   };
 
   const renderRight = () => {
-    return <Image alt="SignIn-Image" priority src={getSignInImage()} width={1280} height={720} className="w-full h-full" />;
+    return <Image alt="SignIn-Image" priority src={getSignInImage()} width={1280} height={720} className="h-full w-full" />
   };
 
   const renderGoogleIcon = () => {

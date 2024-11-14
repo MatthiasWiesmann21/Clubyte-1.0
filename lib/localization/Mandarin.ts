@@ -696,4 +696,6 @@ export const Mandarin: Record<string, string> = {
   courses_UsergroupForm_edit: "编辑用户组",
   courses_UsergroupForm_allUsers: "所有用户",
   courses_UsergroupForm_save: "保存",
+  course_counter_courses: "课程",
+  course_counter_outOf: "中的",
 };

@@ -723,4 +723,6 @@ export const Portugues: Record<string, string> = {
   courses_UsergroupForm_edit: "Editar Grupo de Usuários",
   courses_UsergroupForm_allUsers: "Todos os Usuários",
   courses_UsergroupForm_save: "Salvar",
+  course_counter_courses: "cursos",
+  course_counter_outOf: "de",
 };

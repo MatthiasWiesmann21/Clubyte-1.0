@@ -687,4 +687,6 @@ courses_UsergroupForm_cancel: "Cancel",
 courses_UsergroupForm_edit: "Edit Usergroup",
 courses_UsergroupForm_allUsers: "All Users",
 courses_UsergroupForm_save: "Save",
+course_counter_courses: "courses",
+course_counter_outOf: "out of",
 };
