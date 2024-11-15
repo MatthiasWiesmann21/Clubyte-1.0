@@ -121,14 +121,21 @@ export const PostCard = ({
                 </div>
               </div>
               <div className="flex items-center">
-                {category && (
-                  <div
-                    className={`flex items-center rounded-lg border-2 px-3 py-1 text-xs`}
-                    style={{ borderColor: colorCode }}
-                  >
-                    <div className="truncate">{category}</div>
-                  </div>
-                )}
+                <Tooltip>
+                  <TooltipTrigger>
+                    {category && (
+                      <div
+                        className={`flex items-center rounded-lg border-2 px-3 py-1 text-xs`}
+                        style={{ borderColor: colorCode }}
+                      >
+                        <div className="truncate">{category}</div>
+                      </div>
+                    )}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="whitespace-normal text-sm">{category}</div>
+                  </TooltipContent>
+                </Tooltip>
                 {canAccess && (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

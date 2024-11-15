@@ -14,13 +14,13 @@ import { useRef, useState } from "react";
 
 interface CategoriesProps {
   items: Category[] | any[];
-  ThemeOutlineColor: string;
+  ThemeColor: string;
   DarkThemeColor: string;
 }
 
 export const Categories = ({
   items,
-  ThemeOutlineColor,
+  ThemeColor,
   DarkThemeColor,
 }: CategoriesProps) => {
   const router = useRouter();
@@ -41,7 +41,7 @@ export const Categories = ({
     0;
 
   const getThemeColor = () => {
-    return theme === "dark" ? DarkThemeColor : ThemeOutlineColor;
+    return theme === "dark" ? DarkThemeColor : ThemeColor;
   };
 
   const scrollLeft = () => {
@@ -87,13 +87,13 @@ export const Categories = ({
               )
             );
           }}
-          className={`flex items-center gap-x-1 rounded-lg border px-3 py-2 text-xs font-medium transition`}
+          className={`font-600 flex items-center gap-x-1 rounded-lg border-2 px-3 py-2 text-xs transition duration-300`}
           style={
             !currentCategoryId
               ? { borderColor: getThemeColor(), background: getThemeColor() }
               : {
                   borderColor:
-                    hoveredCategoryId === "all" ? getThemeColor() : "#cbd5e1",
+                    hoveredCategoryId === "all" ? getThemeColor() : "",
                   background:
                     hoveredCategoryId === "all" ? getThemeColor() : "",
                 }

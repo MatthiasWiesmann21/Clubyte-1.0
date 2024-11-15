@@ -31,7 +31,7 @@ export const PastandFuture = ({
         onClick={async () => updateQueryParams({ state: "" }, replace)}
         onMouseEnter={() => setIsHoveredFuture(true)}
         onMouseLeave={() => setIsHoveredFuture(false)}
-        className={`border-1 mb-2 mr-2 flex cursor-pointer items-center justify-center p-1 text-sm font-semibold text-gray-600 transition duration-500 ease-in-out dark:text-white ${
+        className={`border-1 mr-2 flex cursor-pointer items-center justify-center p-1 text-sm font-semibold text-gray-600 transition duration-500 ease-in-out dark:text-white ${
           state === "" ? "border-b-2 text-black" : ""
         }`}
         style={{
@@ -45,7 +45,7 @@ export const PastandFuture = ({
         onClick={async () => updateQueryParams({ state: "future" }, replace)}
         onMouseEnter={() => setIsHoveredFuture(true)}
         onMouseLeave={() => setIsHoveredFuture(false)}
-        className={`border-1 mb-2 mr-2 flex cursor-pointer items-center justify-center p-1 text-sm font-semibold text-gray-600 transition duration-500 ease-in-out dark:text-white ${
+        className={`border-1 mr-2 flex cursor-pointer items-center justify-center p-1 text-sm font-semibold text-gray-600 transition duration-500 ease-in-out dark:text-white ${
           state === "future" ? "border-b-2 text-black" : ""
         }`}
         style={{
@@ -61,7 +61,7 @@ export const PastandFuture = ({
         onClick={async () => updateQueryParams({ state: "past" }, replace)}
         onMouseEnter={() => setIsHoveredPast(true)}
         onMouseLeave={() => setIsHoveredPast(false)}
-        className={`border-1 mb-2 mr-2 flex cursor-pointer items-center justify-center p-1 text-sm font-semibold text-gray-600 transition duration-500 ease-in-out dark:text-white ${
+        className={`border-1 mr-2 flex cursor-pointer items-center justify-center p-1 text-sm font-semibold text-gray-600 transition duration-500 ease-in-out dark:text-white ${
           state === "past" ? "border-b-2 text-black" : ""
         }`}
         style={{
