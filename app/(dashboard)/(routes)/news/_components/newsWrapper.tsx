@@ -30,7 +30,7 @@ interface NewsWrapperProps {
     categoryId: string;
   };
   categories: any;
-  ThemeOutlineColor: string;
+  ThemeColor: string;
   DarkThemeColor: string;
   profileImage: string;
   profileRole: string;
@@ -40,7 +40,7 @@ interface NewsWrapperProps {
 const NewsWrapper = ({
   searchParams,
   categories,
-  ThemeOutlineColor,
+  ThemeColor,
   DarkThemeColor,
   profileImage,
   profileRole,
@@ -116,7 +116,7 @@ const NewsWrapper = ({
         <div className="w-full flex-grow">
           <Categories
             items={categories}
-            ThemeOutlineColor={ThemeOutlineColor}
+            ThemeColor={ThemeColor}
             DarkThemeColor={DarkThemeColor}
           />
           {posts?.map((item) => (

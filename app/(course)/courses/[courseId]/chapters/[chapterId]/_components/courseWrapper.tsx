@@ -239,8 +239,6 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
             </div>
             <LikeComment
               id={params.chapterId}
-              likesCount={data?.chapter?.likes?.length!}
-              currentLike={data?.chapter?.currentLike!}
               commentsWithLikes={data?.chapter?.commentsWithLikes}
               commentsCount={data?.chapter?.comments?.length!}
               updateLikeComment={getData}

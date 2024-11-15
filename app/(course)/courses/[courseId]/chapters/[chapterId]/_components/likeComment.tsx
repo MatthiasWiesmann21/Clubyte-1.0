@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { UserAvatar } from "@/components/user-avatar";
 import axios from "axios";
 import moment from "moment";
-import { Check, Edit, Heart, MessageSquare, Star, X } from "lucide-react";
+import { Check, Edit, Heart, MessageSquare, ReplyAll, Star, X } from "lucide-react";
 import { ChatInputPost } from "./chatInput";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
@@ -92,22 +92,31 @@ const SubReply = ({ val, updateLikeComment, currentProfileId }: any) => {
         )}
 
         <div className="my-2 flex items-center">
-          <div
+          <button
             onClick={async () => {
               const response = await axios.post(`/api/like/create`, {
                 commentId: val?.id,
               });
               if (response?.status === 200) updateLikeComment(true);
             }}
-            className="font-500 flex cursor-pointer items-center text-sm"
+            className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-medium transition-all duration-200 ease-in-out
+                 hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-opacity-50 dark:hover:bg-rose-900"
+            aria-label={!!val?.currentCommentLike ? "Unlike" : "Like"}
           >
             <Heart
               size={18}
-              className={!!val?.currentCommentLike ? "text-[#f43f5e]" : ""}
-              fill={!!val?.currentCommentLike ? "#f43f5e" : "transparent"}
+              className={`transition-all duration-200 ease-in-out ${
+                val?.currentCommentLike
+                  ? "scale-110 fill-rose-500 text-rose-500"
+                  : "text-gray-800 hover:text-rose-500 dark:text-gray-100 dark:hover:text-rose-400"
+              }`}
             />
-            <span className="ml-2 mr-1">{val?.likes?.length}</span> Likes
-          </div>
+             <span
+              className={`${val?.currentCommentLike ? "text-rose-500" : ""}`}
+            >
+              {val?.likes?.length}
+            </span>
+          </button>
         </div>
       </div>
     </div>
@@ -133,6 +142,7 @@ const Reply = ({
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(val?.text);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -209,29 +219,47 @@ const Reply = ({
           />
         )}
         <div className="my-2 flex items-center">
-          <div
+          <button
             onClick={async () => {
               const response = await axios?.post(`/api/like/create`, {
                 commentId: val?.id,
               });
               if (response?.status === 200) updateLikeComment(true);
             }}
-            className="font-500 flex cursor-pointer items-center justify-between text-sm"
+            className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-medium transition-all duration-200 ease-in-out
+                 hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-opacity-50 dark:hover:bg-rose-900"
+            aria-label={!!val?.currentCommentLike ? "Unlike" : "Like"}
           >
             <Heart
               size={18}
-              className={!!val?.currentCommentLike ? "text-[#f43f5e]" : ""}
-              fill={!!val?.currentCommentLike ? "#f43f5e" : "transparent"}
+              className={`transition-all duration-200 ease-in-out ${
+                val?.currentCommentLike
+                  ? "scale-110 fill-rose-500 text-rose-500"
+                  : "text-gray-800 hover:text-rose-500 dark:text-gray-100 dark:hover:text-rose-400"
+              }`}
             />
-            <span className="ml-2 mr-1">{val?.likes?.length}</span>
-            Likes
-          </div>
-          <div
-            className="font-500 m-0 ml-[1.25rem] cursor-pointer text-[14px]"
+            <span
+              className={`${val?.currentCommentLike ? "text-rose-500" : ""}`}
+            >
+              {val?.likes?.length}
+            </span>
+          </button>
+          <button
+             className={`
+              mx-1 inline-flex items-center gap-2 rounded-full px-2
+              py-1.5 text-xs font-medium transition-colors duration-200 ease-in-out
+            ${isHovered ? "bg-[#e2e8f0] dark:bg-[#334155]" : ""}
+          `}
             onClick={() => setShowReplyInput(!showReplyInput)}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
-            {`${val?.subCommentsWithLikes?.length} ${currentLanguage?.news_comments_reply_button_label}`}
-          </div>
+            <ReplyAll size={18} />
+            <span>{val?.subCommentsWithLikes?.length}</span>
+            <span className="sr-only">
+              {currentLanguage?.news_comments_reply_button_label}
+            </span>
+          </button>
         </div>
 
         {val?.subCommentsWithLikes?.map((val: any) => (
@@ -269,8 +297,6 @@ const Reply = ({
 
 const LikeComment = ({
   id,
-  likesCount,
-  currentLike,
   commentsWithLikes,
   commentsCount,
   updateLikeComment,
@@ -278,8 +304,6 @@ const LikeComment = ({
   currentProfileId,
 }: {
   id: string;
-  likesCount: number;
-  currentLike: boolean;
   commentsWithLikes: any;
   commentsCount: number;
   updateLikeComment: any;
@@ -291,30 +315,8 @@ const LikeComment = ({
   const currentLanguage = useLanguage();
 
   return (
-    <div className="mx-3">
+    <div className="mx-4">
       <div className="flex items-center justify-between py-3">
-        <div className="flex">
-          <div
-            onClick={async () => {
-              const response = await axios?.post(`/api/like/create`, {
-                chapterId: id,
-              });
-              if (response?.status === 200) updateLikeComment(true);
-            }}
-            className="m-2 flex cursor-pointer items-center justify-around "
-          >
-            <Heart
-              className={
-                !!currentLike
-                  ? "text-[#f43f5e] transition duration-200 ease-in-out hover:scale-110"
-                  : "border-black transition duration-200 ease-in-out hover:scale-110"
-              }
-              fill={!!currentLike ? "#f43f5e" : "transparent"}
-            />
-            <span className="ml-2 mr-1">{likesCount}</span>
-            Likes
-          </div>
-        </div>
         <div
           className="flex cursor-pointer items-center rounded-lg bg-slate-200 p-3 text-sm transition duration-300 ease-in-out hover:bg-slate-300 dark:bg-slate-800/50 dark:hover:bg-slate-700/80"
           onClick={() => setShowComments(!isShowComments)}

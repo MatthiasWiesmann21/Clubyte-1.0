@@ -87,13 +87,13 @@ export const Categories = ({
               )
             );
           }}
-          className={`flex items-center gap-x-1 rounded-lg border px-3 py-2 text-xs font-medium transition`}
+          className={`font-600 flex items-center gap-x-1 rounded-lg border-2 px-3 py-2 text-xs transition duration-300`}
           style={
             !currentCategoryId
               ? { borderColor: getThemeColor(), background: getThemeColor() }
               : {
                   borderColor:
-                    hoveredCategoryId === "all" ? getThemeColor() : "#cbd5e1",
+                    hoveredCategoryId === "all" ? getThemeColor() : "",
                   background:
                     hoveredCategoryId === "all" ? getThemeColor() : "",
                 }

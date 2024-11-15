@@ -4,7 +4,17 @@ import { useSelector } from "react-redux";
 import { UserAvatar } from "@/components/user-avatar";
 import axios from "axios";
 import moment from "moment";
-import { Check, Edit, Heart, MessageSquare, Star, X } from "lucide-react";
+import {
+  Check,
+  Edit,
+  Heart,
+  MessageCircle,
+  MessageSquare,
+  ReplyAll,
+  ReplyIcon,
+  Star,
+  X,
+} from "lucide-react";
 import { ChatInputPost } from "./chatInput";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
@@ -55,28 +65,28 @@ const SubReply = ({ val, updateLikeComment, currentProfileId }: any) => {
             </div>
           </div>
           {currentProfileId === val?.profileId && (
-          <div className="flex items-center space-x-2">
-            {!isEditing ? (
-              <Button
-                variant="ghost"
-                className="h-8 w-8 p-0"
-                onClick={handleEditClick}
-              >
-                <Edit className="h-4 w-4 cursor-pointer" />
-              </Button>
-            ) : (
-              <>
-                <Check
-                  className="cursor-pointer text-green-500"
-                  onClick={handleEditSubmit}
-                />
-                <X
-                  className="cursor-pointer text-red-500"
-                  onClick={() => setIsEditing(false)}
-                />
-              </>
-            )}
-          </div>
+            <div className="flex items-center space-x-2">
+              {!isEditing ? (
+                <Button
+                  variant="ghost"
+                  className="h-8 w-8 p-0"
+                  onClick={handleEditClick}
+                >
+                  <Edit className="h-4 w-4 cursor-pointer" />
+                </Button>
+              ) : (
+                <>
+                  <Check
+                    className="cursor-pointer text-green-500"
+                    onClick={handleEditSubmit}
+                  />
+                  <X
+                    className="cursor-pointer text-red-500"
+                    onClick={() => setIsEditing(false)}
+                  />
+                </>
+              )}
+            </div>
           )}
         </div>
 
@@ -92,22 +102,31 @@ const SubReply = ({ val, updateLikeComment, currentProfileId }: any) => {
         )}
 
         <div className="my-2 flex items-center">
-          <div
+          <button
             onClick={async () => {
-              const response = await axios.post(`/api/like/create`, {
+              const response = await axios?.post(`/api/like/create`, {
                 commentId: val?.id,
               });
               if (response?.status === 200) updateLikeComment(true);
             }}
-            className="font-500 flex cursor-pointer items-center text-sm"
+            className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-medium transition-all duration-200 ease-in-out
+                 hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-opacity-50 dark:hover:bg-rose-900"
+            aria-label={!!val?.currentCommentLike ? "Unlike" : "Like"}
           >
             <Heart
               size={18}
-              className={!!val?.currentCommentLike ? "text-[#f43f5e]" : ""}
-              fill={!!val?.currentCommentLike ? "#f43f5e" : "transparent"}
+              className={`transition-all duration-200 ease-in-out ${
+                val?.currentCommentLike
+                  ? "scale-110 fill-rose-500 text-rose-500"
+                  : "text-gray-800 hover:text-rose-500 dark:text-gray-100 dark:hover:text-rose-400"
+              }`}
             />
-            <span className="ml-2 mr-1">{val?.likes?.length}</span> Likes
-          </div>
+            <span
+              className={`${val?.currentCommentLike ? "text-rose-500" : ""}`}
+            >
+              {val?.likes?.length}
+            </span>
+          </button>
         </div>
       </div>
     </div>
@@ -133,6 +152,7 @@ const Reply = ({
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(val?.text);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -209,29 +229,47 @@ const Reply = ({
           />
         )}
         <div className="my-2 flex items-center">
-          <div
+          <button
             onClick={async () => {
               const response = await axios?.post(`/api/like/create`, {
                 commentId: val?.id,
               });
               if (response?.status === 200) updateLikeComment(true);
             }}
-            className="font-500 flex cursor-pointer items-center justify-between text-sm"
+            className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-medium transition-all duration-200 ease-in-out
+                 hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-opacity-50 dark:hover:bg-rose-900"
+            aria-label={!!val?.currentCommentLike ? "Unlike" : "Like"}
           >
             <Heart
               size={18}
-              className={!!val?.currentCommentLike ? "text-[#f43f5e]" : ""}
-              fill={!!val?.currentCommentLike ? "#f43f5e" : "transparent"}
+              className={`transition-all duration-200 ease-in-out ${
+                val?.currentCommentLike
+                  ? "scale-110 fill-rose-500 text-rose-500"
+                  : "text-gray-800 hover:text-rose-500 dark:text-gray-100 dark:hover:text-rose-400"
+              }`}
             />
-            <span className="ml-2 mr-1">{val?.likes?.length}</span>
-            Likes
-          </div>
-          <div
-            className="font-500 m-0 ml-[1.25rem] cursor-pointer text-[14px]"
+            <span
+              className={`${val?.currentCommentLike ? "text-rose-500" : ""}`}
+            >
+              {val?.likes?.length}
+            </span>
+          </button>
+          <button
+            className={`
+              mx-1 inline-flex items-center gap-2 rounded-full px-2
+              py-1.5 text-xs font-medium transition-colors duration-200 ease-in-out
+            ${isHovered ? "bg-[#e2e8f0] dark:bg-[#334155]" : ""}
+          `}
             onClick={() => setShowReplyInput(!showReplyInput)}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
-            {`${val?.subCommentsWithLikes?.length} ${currentLanguage?.news_comments_reply_button_label}`}
-          </div>
+            <ReplyAll size={18} />
+            <span>{val?.subCommentsWithLikes?.length}</span>
+            <span className="sr-only">
+              {currentLanguage?.news_comments_reply_button_label}
+            </span>
+          </button>
         </div>
 
         {val?.subCommentsWithLikes?.map((val: any) => (
@@ -296,44 +334,61 @@ const LikeComment = ({
     <div className="mx-3">
       <div className="flex items-center justify-between py-3">
         <div className="flex">
-          <div
+          <button
             onClick={async () => {
               const response = await axios?.post(`/api/like/create`, {
                 postId: id,
               });
               if (response?.status === 200) updateLikeComment(true);
             }}
-            className="m-2 flex cursor-pointer items-center justify-around "
+            className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-2 text-sm font-medium transition-all duration-200 ease-in-out
+                 hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-opacity-50 dark:hover:bg-rose-900/40"
+            aria-label={!!currentLike ? "Unlike" : "Like"}
           >
             <Heart
-              className={
+              size={20}
+              className={`transition-all duration-200 ease-in-out ${
                 !!currentLike
-                  ? "text-[#f43f5e] transition duration-200 ease-in-out hover:scale-110"
-                  : "border-black transition duration-200 ease-in-out hover:scale-110"
-              }
-              fill={!!currentLike ? "#f43f5e" : "transparent"}
+                  ? "scale-110 fill-rose-500 text-rose-500"
+                  : "text-gray-800 hover:text-rose-500 dark:text-gray-100 dark:hover:text-rose-400"
+              }`}
             />
-            <span className="ml-2 mr-1">{likesCount}</span>
-            Likes
-          </div>
-          <div
+            <span className={`${!!currentLike ? "text-rose-500" : ""}`}>
+              {likesCount}
+            </span>
+          </button>
+          <button
             onClick={async () => {
               const response = await axios?.post(`/api/favorite/create`, {
                 postId: id,
               });
               if (response?.status === 200) updateLikeComment(true);
             }}
-            className="m-2 flex cursor-pointer items-center justify-around "
+            className={`
+              mx-1 flex items-center justify-center rounded-full p-2
+              transition-all duration-300 ease-in-out
+            ${
+              currentFavorite
+                ? "bg-amber-100 border border-amber-300 dark:bg-amber-900/30 dark:border-amber-600"
+                : "hover:bg-amber-50 dark:hover:bg-amber-900/20"
+            }
+          `}
+            aria-label={
+              currentFavorite ? "Remove from favorites" : "Add to favorites"
+            }
           >
             <Star
-              className={
-                !!currentFavorite
-                  ? "text-[#FFD700] transition duration-200 ease-in-out hover:scale-110"
-                  : "border-black transition duration-200 ease-in-out hover:scale-110"
-              }
-              fill={!!currentFavorite ? "#FFD700" : "transparent"}
+              size={20}
+              className={`
+                transition-all duration-300 ease-in-out
+            ${
+              currentFavorite
+                ? "scale-110 fill-amber-400 text-amber-400"
+                : "text-gray-800 hover:text-amber-400 dark:text-gray-100 dark:hover:text-amber-300"
+            }
+          `}
             />
-          </div>
+          </button>
         </div>
         <div
           className="flex cursor-pointer items-center rounded-lg bg-slate-200 p-3 text-sm transition duration-300 ease-in-out hover:bg-slate-300 dark:bg-slate-800/50 dark:hover:bg-slate-700/80"

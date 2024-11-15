@@ -61,7 +61,7 @@ const NewsPage = async ({ searchParams }: SearchPageProps) => {
     <NewsWrapper
       searchParams={searchParams}
       categories={categories}
-      ThemeOutlineColor={container?.ThemeOutlineColor!}
+      ThemeColor={container?.ThemeColor!}
       DarkThemeColor={container?.DarkThemeColor!}
       profileImage={profile?.imageUrl!}
       profileRole={profile?.role!}

@@ -272,7 +272,7 @@ export const EventCard = ({
                   {title}
                 </div>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent side="bottom">
                 <div className="whitespace-normal text-sm font-medium">
                   {title}
                 </div>
