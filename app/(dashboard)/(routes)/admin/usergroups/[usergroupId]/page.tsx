@@ -42,25 +42,8 @@ const UsergroupIdPage = async ({
   const users = allUsers.map((user) => ({
     ...user,
     isMember: user.usergroupId === usergroup.id,
+    name: user.name || "",
   }));
-
-  // Handle click to toggle membership status
-  const toggleUserMembership = async (userId: string, isMember: boolean) => {
-    if (isMember) {
-      // Remove user from user group
-      await db.profile.update({
-        where: { id: userId },
-        data: { usergroupId: null },
-      });
-    } else {
-      // Add user to user group
-      await db.profile.update({
-        where: { id: userId },
-        data: { usergroupId: usergroup.id },
-      });
-    }
-    // Note: You'll need to re-fetch or update the users list to reflect the changes in the UI
-  };
 
   const requiredFields = [usergroup.name];
   const totalFields = requiredFields.length;
@@ -101,6 +84,15 @@ const UsergroupIdPage = async ({
             </span>
           </div>
           <TitleForm initialData={usergroup} usergroupId={usergroup.id} />
+          <div className="flex items-center gap-x-2 mt-4">
+            <IconBadge icon={LayoutGridIcon} />
+            <h2 className="text-xl">
+              {currentLanguage.category_setup_customize_title}
+            </h2>
+            <span className="pl-1 text-xs text-rose-600">
+              {currentLanguage.requiredFields}
+            </span>
+          </div>
           <UserList initialUsers={users} usergroupId={usergroup.id} />
         </div>
         {/** 
