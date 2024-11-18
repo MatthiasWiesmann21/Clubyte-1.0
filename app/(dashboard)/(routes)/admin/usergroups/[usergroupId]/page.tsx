@@ -11,7 +11,7 @@ import { Actions } from "./_components/actions";
 import { languageServer } from "@/lib/check-language-server";
 import authOptions from "@/lib/auth"; // Ensure this is properly configured
 import GoBackButton from "@/components/goBackButton";
-import AddUserListForm from "./_components/addUserList-form";
+import UserList from "./_components/userList";
 
 const UsergroupIdPage = async ({
   params,
@@ -36,6 +36,31 @@ const UsergroupIdPage = async ({
   if (!usergroup) {
     return redirect("/");
   }
+
+  // Fetch all users and mark them based on their membership status
+  const allUsers = await db.profile.findMany();
+  const users = allUsers.map((user) => ({
+    ...user,
+    isMember: user.usergroupId === usergroup.id,
+  }));
+
+  // Handle click to toggle membership status
+  const toggleUserMembership = async (userId: string, isMember: boolean) => {
+    if (isMember) {
+      // Remove user from user group
+      await db.profile.update({
+        where: { id: userId },
+        data: { usergroupId: null },
+      });
+    } else {
+      // Add user to user group
+      await db.profile.update({
+        where: { id: userId },
+        data: { usergroupId: usergroup.id },
+      });
+    }
+    // Note: You'll need to re-fetch or update the users list to reflect the changes in the UI
+  };
 
   const requiredFields = [usergroup.name];
   const totalFields = requiredFields.length;
@@ -65,21 +90,20 @@ const UsergroupIdPage = async ({
             isPublished={usergroup.isPublished}
           />
         </div>
-        <div className="mt-16 grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <div>
-            <div className="flex items-center gap-x-2">
-              <IconBadge icon={LayoutGridIcon} />
-              <h2 className="text-xl">
-                {currentLanguage.category_setup_customize_title}
-              </h2>
-              <span className="pl-1 text-xs text-rose-600">
-                {currentLanguage.requiredFields}
-              </span>
-            </div>
-            <TitleForm initialData={usergroup} usergroupId={usergroup.id} />
+        <div className="mt-16">
+          <div className="flex items-center gap-x-2">
+            <IconBadge icon={LayoutGridIcon} />
+            <h2 className="text-xl">
+              {currentLanguage.category_setup_customize_title}
+            </h2>
+            <span className="pl-1 text-xs text-rose-600">
+              {currentLanguage.requiredFields}
+            </span>
           </div>
+          <TitleForm initialData={usergroup} usergroupId={usergroup.id} />
+          <UserList initialUsers={users} usergroupId={usergroup.id} />
         </div>
-         {/** 
+        {/** 
           * TODO: @saif Add User List Form
         <div className="mt-16 grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div>
