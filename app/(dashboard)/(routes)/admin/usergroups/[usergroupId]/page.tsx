@@ -77,17 +77,17 @@ const UsergroupIdPage = async ({
           <div className="flex items-center gap-x-2">
             <IconBadge icon={LayoutGridIcon} />
             <h2 className="text-xl">
-              {currentLanguage.category_setup_customize_title}
+              {currentLanguage.usergroup_setup_customize_title}
             </h2>
             <span className="pl-1 text-xs text-rose-600">
               {currentLanguage.requiredFields}
             </span>
           </div>
           <TitleForm initialData={usergroup} usergroupId={usergroup.id} />
-          <div className="flex items-center gap-x-2 mt-4">
+          <div className="my-5 flex items-center gap-x-2">
             <IconBadge icon={LayoutGridIcon} />
             <h2 className="text-xl">
-              {currentLanguage.category_setup_customize_title}
+              {currentLanguage.usergroup_setup_members_title}
             </h2>
             <span className="pl-1 text-xs text-rose-600">
               {currentLanguage.requiredFields}
@@ -95,23 +95,6 @@ const UsergroupIdPage = async ({
           </div>
           <UserList initialUsers={users} usergroupId={usergroup.id} />
         </div>
-        {/** 
-          * TODO: @saif Add User List Form
-        <div className="mt-16 grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <div>
-            <div className="flex items-center gap-x-2">
-              <IconBadge icon={LayoutGridIcon} />
-              <h2 className="text-xl">
-                {currentLanguage.category_setup_customize_title}
-              </h2>
-              <span className="pl-1 text-xs text-rose-600">
-                {currentLanguage.requiredFields}
-              </span>
-            </div>
-            <AddUserListForm profiles={profiles} usergroupId={usergroup.id} />
-          </div>
-        </div>
-        */}
       </div>
     </>
   );
