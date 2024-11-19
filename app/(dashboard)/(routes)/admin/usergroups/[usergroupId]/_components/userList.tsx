@@ -7,6 +7,7 @@ import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { Loader2, Search, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { useLanguage } from '@/lib/check-language'
 
 interface User {
   id: string
@@ -142,12 +143,14 @@ function Header({
   searchTerm: string
   setSearchTerm: (term: string) => void
 }) {
+  const currentLanguage = useLanguage()
+
   return (
     <div className="flex items-center justify-between">
       <div className="relative w-full">
         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search users..."
+          placeholder={currentLanguage.userList_search_placeholder}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="pl-8"
@@ -180,18 +183,20 @@ function UserTable({
     return sortOrder === 'asc' ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />
   }
 
+  const currentLanguage = useLanguage();
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead onClick={() => onSort('name')} className="cursor-pointer">
-            Name {getSortIcon('name')}
+            {currentLanguage.userList_table_header_name} {getSortIcon('name')}
           </TableHead>
           <TableHead onClick={() => onSort('email')} className="cursor-pointer">
-            Email {getSortIcon('email')}
+            {currentLanguage.userList_table_header_email} {getSortIcon('email')}
           </TableHead>
           <TableHead onClick={() => onSort('isMember')} className="cursor-pointer">
-            Membership {getSortIcon('isMember')}
+            {currentLanguage.userList_table_header_membership} {getSortIcon('isMember')}
             {filterByMember !== null && <span>({filterByMember ? 'Members' : 'Non-members'})</span>}
           </TableHead>
         </TableRow>
@@ -210,7 +215,7 @@ function UserTable({
                   aria-checked={user.isMember}
                   aria-label={`Toggle membership for ${user.name}`}
                 />
-                <span>{user.isMember ? 'Member' : 'Not a member'}</span>
+                <span>{user.isMember ? `${currentLanguage.userlist_table_body_isMember}` : `${currentLanguage.userlist_table_body_notMember}`}</span>
                 {loading === user.id && <Loader2 className="h-4 w-4 animate-spin" />}
               </div>
             </TableCell>
@@ -236,11 +241,12 @@ function Pagination({
 }) {
   const start = (currentPage - 1) * itemsPerPage + 1
   const end = Math.min(currentPage * itemsPerPage, itemsCount)
+  const currentLanguage = useLanguage();
 
   return (
     <div className="flex items-center justify-between">
       <p className="text-sm text-muted-foreground">
-        Showing {start} to {end} of {itemsCount} users
+        {currentLanguage.userList_pagination_showing} {start} {currentLanguage.userList_pagination_to} {end} {currentLanguage.userList_pagination_of} {itemsCount} {currentLanguage.userList_pagination_users}
       </p>
       <div className="flex items-center space-x-2">
         <Button
@@ -251,7 +257,7 @@ function Pagination({
           aria-label="Previous page"
         >
           <ChevronLeft className="h-4 w-4" />
-          Previous
+          {currentLanguage.userList_pagination_previous}
         </Button>
         <Button
           variant="outline"
@@ -260,7 +266,7 @@ function Pagination({
           disabled={currentPage === totalPages}
           aria-label="Next page"
         >
-          Next
+          {currentLanguage.userList_pagination_next}
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
