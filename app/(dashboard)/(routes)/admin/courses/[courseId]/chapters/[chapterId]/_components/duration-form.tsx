@@ -62,14 +62,14 @@ export const DurationForm = ({ initialData, courseId, chapterId }: DurationFormP
   return (
     <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
       <div className="flex items-center justify-between font-medium">
-        {currentLanguage.course_durationForm_title}
+        {currentLanguage.chapters_durationForm_title}
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
-            <>{currentLanguage.courses_durationForm_cancel}</>
+            <>{currentLanguage.chapters_durationForm_cancel}</>
           ) : (
             <>
               <Pencil className="mr-2 h-4 w-4" />
-              {currentLanguage.courses_durationForm_edit}
+              {currentLanguage.chapters_durationForm_edit}
             </>
           )}
         </Button>
@@ -101,7 +101,7 @@ export const DurationForm = ({ initialData, courseId, chapterId }: DurationFormP
                       step="0.01"
                       disabled={isSubmitting}
                       placeholder={
-                        currentLanguage.courses_durationForm_placeholder
+                        currentLanguage.chapters_durationForm_placeholder
                       }
                       {...field}
                     />
@@ -116,7 +116,7 @@ export const DurationForm = ({ initialData, courseId, chapterId }: DurationFormP
                 type="submit"
                 onClick={() => onSubmit(form.getValues())}
               >
-                {currentLanguage.courses_durationForm_save}
+                {currentLanguage.chapters_durationForm_save}
               </Button>
             </div>
           </form>
