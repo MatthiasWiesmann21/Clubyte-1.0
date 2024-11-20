@@ -26,10 +26,9 @@ export async function POST(request: Request) {
       expiresIn: "24h",
     });
 
-    const url =
-      new URL(request.url)?.origin === "http://localhost:3000"
-        ? "https://cludev1.clubyte.live"
-        : new URL(request.url)?.origin;
+    const url = new URL(request.url)?.origin.includes("localhost")
+      ? process.env.CONTAINER_PATH
+      : new URL(request.url)?.origin;
 
     // Fetch the container where the domain matches the URL
     const container = await db.container.findFirst({
