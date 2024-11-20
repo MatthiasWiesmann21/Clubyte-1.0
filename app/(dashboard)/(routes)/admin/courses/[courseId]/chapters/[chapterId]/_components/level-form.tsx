@@ -70,14 +70,14 @@ export const LevelForm = ({
   return (
     <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        {currentLanguage.courses_levelForm_title}
+        {currentLanguage.chapters_levelForm_title}
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
-            <>{currentLanguage.courses_levelForm_cancel}</>
+            <>{currentLanguage.chapters_levelForm_cancel}</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              {currentLanguage.courses_levelForm_edit}
+              {currentLanguage.chapters_levelForm_edit}
             </>
           )}
         </Button>
@@ -87,7 +87,7 @@ export const LevelForm = ({
           "text-sm mt-2",
           !initialData.level && "text-slate-500 italic"
         )}>
-          {selectedOption?.label || `${currentLanguage.courses_levelForm_noLevel}`}
+          {selectedOption?.label || `${currentLanguage.chapters_levelForm_noLevel}`}
         </p>
       )}
       {isEditing && (
@@ -117,7 +117,7 @@ export const LevelForm = ({
                 type="submit"
                 onClick={()=>onSubmit(form.getValues())}
               >
-                {currentLanguage.courses_levelForm_save}
+                {currentLanguage.chapters_levelForm_save}
               </Button>
             </div>
           </form>
