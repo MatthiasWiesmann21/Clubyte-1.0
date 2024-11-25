@@ -167,9 +167,13 @@ export default function BillingPage() {
     : packages.slice(0, 3);
 
   const handlePayment = (selectedPlan: any) => {
-    const price = selectedPlan.prices.find(
-      (price: any) => price.recurring.interval === (isYearly ? "year" : "month")
-    );
+    console.log("selectedPlan", selectedPlan);
+    // const price =  selectedPlan.prices.find(
+    //   (price: any) => price.recurring.interval === (isYearly ? "year" : "month")
+    // );
+    const price = selectedPlan.prices[0];
+
+    // console.log("price", selectedPlan.prices[0]);
 
     if (price) {
       setSelectedPriceId(price.id);
@@ -293,10 +297,11 @@ export default function BillingPage() {
 
               <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {filteredPackages.map((pkg) => {
-                  const price = pkg.prices.find(
-                    (price) =>
-                      price.recurring.interval === (isYearly ? "year" : "month")
-                  );
+                  // const price = pkg.prices.find(
+                  //   (price) =>
+                  //     price.recurring.interval === (isYearly ? "year" : "month")
+                  // );
+                  const price = pkg.prices[0];
 
                   return (
                     <Card

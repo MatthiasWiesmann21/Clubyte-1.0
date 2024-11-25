@@ -1,11 +1,9 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === "POST") {
-    const { userId, paymentIntentId, priceId } = req.body;
+export async function POST(req: Request) {
+  try {
+    const body = await req.json(); // Parse the JSON body
+    const { userId, paymentIntentId, priceId } = body;
 
     // Save subscription details in your database
     try {
@@ -15,13 +13,22 @@ export default async function handler(
       // });
 
       console.log("Subscription saved for user:", userId);
-      res.status(200).json({ message: "Subscription saved." });
+      return NextResponse.json(
+        { message: "Subscription saved." },
+        { status: 200 }
+      );
     } catch (error) {
       console.error("Error saving subscription:", error);
-      res.status(500).json({ error: "Failed to save subscription." });
+      return NextResponse.json(
+        { error: "Failed to save subscription." },
+        { status: 500 }
+      );
     }
-  } else {
-    res.setHeader("Allow", ["POST"]);
-    res.status(405).end("Method Not Allowed");
+  } catch (error) {
+    console.error("Error parsing request body:", error);
+    return NextResponse.json(
+      { error: "Invalid request body." },
+      { status: 400 }
+    );
   }
 }
