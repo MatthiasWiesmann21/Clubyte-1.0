@@ -34,6 +34,7 @@ import { Progress } from "@/components/ui/progress";
 import { loadStripe } from "@stripe/stripe-js";
 import CardPaymentForm from "./_components/cardPaymentForm";
 import { Elements } from "@stripe/react-stripe-js";
+import CardAddForm from "./_components/cardAddForm";
 
 interface Price {
   id: string;
@@ -128,6 +129,11 @@ export default function BillingPage() {
   const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+  const [setupIntentClientSecret, setSetupIntentClientSecret] = useState<
+    string | null
+  >(null);
+  const [isSavingPaymentMethod, setIsSavingPaymentMethod] = useState(false);
 
   const currentPlan = {
     name: "Pro Plan",
@@ -147,6 +153,28 @@ export default function BillingPage() {
     { date: "2023-04-01", amount: 29, status: "paid" },
     { date: "2023-03-01", amount: 29, status: "paid" },
   ];
+
+  useEffect(() => {
+    const fetchPaymentMethods = async () => {
+      try {
+        const response = await fetch(`/api/list-payment-methods`, {
+          method: "GET",
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setPaymentMethods(data);
+        } else {
+          console.error("Failed to fetch payment methods:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching payment methods:", error);
+      }
+    };
+
+    if (selectedTab === "payment") {
+      fetchPaymentMethods();
+    }
+  }, [selectedTab]);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -357,26 +385,72 @@ export default function BillingPage() {
             <TabsContent value="payment">
               <Card>
                 <CardHeader>
-                  <CardTitle>Payment Method</CardTitle>
+                  <CardTitle>Payment Methods</CardTitle>
                   <CardDescription>Manage your payment details</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center space-x-4">
-                    <CreditCard className="h-6 w-6" />
-                    <div>
-                      <p className="font-medium">
-                        {paymentMethod.type} ending in {paymentMethod.last4}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        Expires {paymentMethod.expiry}
-                      </p>
-                    </div>
-                  </div>
+                  {/* List existing payment methods */}
+                  {paymentMethods.length > 0 ? (
+                    <ul className="space-y-4">
+                      {paymentMethods.map((method, index) => (
+                        <li
+                          key={index}
+                          className="flex items-center justify-between"
+                        >
+                          <div>
+                            <CreditCard className="mr-2 inline h-6 w-6" />
+                            <span>
+                              {method.type.toUpperCase()} ending in{" "}
+                              {method.last4}
+                            </span>
+                            <p className="text-sm text-muted-foreground">
+                              Expires {method.expiry}
+                            </p>
+                          </div>
+                          <Button variant="outline">Remove</Button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-muted-foreground">
+                      No saved payment methods.
+                    </p>
+                  )}
+                  <hr className="my-4" />
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const response = await fetch(
+                          "/api/create-setup-intent"
+                        );
+                        const { clientSecret } = await response.json();
+                        setSetupIntentClientSecret(clientSecret);
+                      } catch (error) {
+                        console.error("Error creating setup intent:", error);
+                      }
+                    }}
+                    variant="default"
+                  >
+                    Add Payment Method
+                  </Button>
                 </CardContent>
-                <CardFooter>
-                  <Button variant="outline">Update Payment Method</Button>
-                </CardFooter>
               </Card>
+              {setupIntentClientSecret && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Add New Payment Method</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardAddForm
+                      clientSecret={setupIntentClientSecret}
+                      onComplete={() => {
+                        setSetupIntentClientSecret(null);
+                        setSelectedTab("payment"); // Refresh payment methods
+                      }}
+                    />
+                  </CardContent>
+                </Card>
+              )}
             </TabsContent>
 
             <TabsContent value="history">
