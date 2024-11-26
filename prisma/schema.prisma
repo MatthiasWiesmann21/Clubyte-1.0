@@ -16,9 +16,9 @@ model Container {
   domain        String? @unique
   clientMail    String? @db.Text
   link          String? @db.Text
-  icon          String? @db.Text
-  imageUrl      String? @db.Text
-  imageUrlDark  String? @db.Text
+  icon          String? @db.Text @default("https://utfs.io/f/ba857523-9c9e-4f38-8069-5cfdccbe03c3-m8j6ml.png")
+  imageUrl      String? @db.Text @default("https://utfs.io/f/d85a9400-185c-48ae-a8bc-d429b0b3dfd0-mokt05.png")
+  imageUrlDark  String? @db.Text @default("https://utfs.io/f/a8KXLgULfRCShbtFAVaYFAan09MlWtLwN3Bob4d6xPCUj5vV")
   clientPackage String? @db.Text
   maxCourses    Int?    @default(0)
 
@@ -33,14 +33,14 @@ model Container {
   ThemeColor     String? @default("#e72192")
   DarkThemeColor String? @default("#e72192")
 
-  signUpImageUrl     String? @db.Text
-  darkSignUpImageUrl String? @db.Text
+  signUpImageUrl     String? @db.Text @default("https://utfs.io/f/d85a9400-185c-48ae-a8bc-d429b0b3dfd0-mokt05.png")
+  darkSignUpImageUrl String? @db.Text @default("https://utfs.io/f/a8KXLgULfRCShbtFAVaYFAan09MlWtLwN3Bob4d6xPCUj5vV")
 
-  signInImageUrl     String? @db.Text
-  darkSignInImageUrl String? @db.Text
+  signInImageUrl     String? @db.Text @default("https://utfs.io/f/d85a9400-185c-48ae-a8bc-d429b0b3dfd0-mokt05.png")
+  darkSignInImageUrl String? @db.Text @default("https://utfs.io/f/a8KXLgULfRCShbtFAVaYFAan09MlWtLwN3Bob4d6xPCUj5vV")
 
-  forgetPasswordImageUrl     String? @db.Text
-  darkForgetPasswordImageUrl String? @db.Text
+  forgetPasswordImageUrl     String? @db.Text @default("https://utfs.io/f/d85a9400-185c-48ae-a8bc-d429b0b3dfd0-mokt05.png")
+  darkForgetPasswordImageUrl String? @db.Text @default("https://utfs.io/f/a8KXLgULfRCShbtFAVaYFAan09MlWtLwN3Bob4d6xPCUj5vV")
 
   courses    Course[]
   categories Category[]
