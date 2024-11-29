@@ -133,6 +133,9 @@ export default function BillingPage() {
   const [setupIntentClientSecret, setSetupIntentClientSecret] = useState<
     string | null
   >(null);
+  const [invoices, setInvoices] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [isSavingPaymentMethod, setIsSavingPaymentMethod] = useState(false);
 
   const currentPlan = {
@@ -176,18 +179,35 @@ export default function BillingPage() {
     }
   }, [selectedTab]);
 
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const response = await fetch("/api/packages", { method: "GET" });
-        const data = await response.json();
-        setPackages(data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
+  async function fetchProducts() {
+    try {
+      const response = await fetch("/api/packages", { method: "GET" });
+      const data = await response.json();
+      setPackages(data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
     }
+  }
+  const fetchBillingHistory = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/get-billing-history");
+      const data = await response.json();
 
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setInvoices(data.invoices);
+      }
+    } catch (err) {
+      setError("Failed to fetch billing history.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchProducts();
+    fetchBillingHistory();
   }, []);
 
   const filteredPackages = isYearly
@@ -469,51 +489,27 @@ export default function BillingPage() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Amount</TableHead>
+                        <TableHead>Invoice ID</TableHead>
+                        <TableHead>Amount Paid</TableHead>
                         <TableHead>Status</TableHead>
-                        <TableHead></TableHead>
+                        <TableHead>Date</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {billingHistory.map((item, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{item.date}</TableCell>
-                          <TableCell>${item.amount.toFixed(2)}</TableCell>
+                      {invoices.map((invoice) => (
+                        <TableRow key={invoice.id}>
+                          <TableCell>{invoice.id}</TableCell>
                           <TableCell>
-                            <span
-                              className={`inline-block rounded-full px-2 py-1 text-xs font-semibold ${
-                                item.status === "paid"
-                                  ? "bg-green-100 text-green-800"
-                                  : item.status === "pending"
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-red-100 text-red-800"
-                              }`}
-                            >
-                              {item.status.charAt(0).toUpperCase() +
-                                item.status.slice(1)}
-                            </span>
+                            {(invoice.amount_paid / 100).toFixed(2)} USD
                           </TableCell>
+                          {/* Convert from cents */}
+                          <TableCell>{invoice.status}</TableCell>
                           <TableCell>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem>
-                                  <Download className="mr-2 h-4 w-4" />
-                                  Download Invoice
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                  View Details
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                            {new Date(
+                              invoice.created * 1000
+                            ).toLocaleDateString()}
                           </TableCell>
+                          {/* Format the date */}
                         </TableRow>
                       ))}
                     </TableBody>
