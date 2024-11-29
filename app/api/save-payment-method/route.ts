@@ -5,7 +5,7 @@ import authOptions from "@/lib/auth";
 import { db } from "@/lib/db";
 
 // Initialize Stripe with your secret API key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe: any = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2023-08-16",
 });
 

@@ -102,6 +102,9 @@ model Profile {
   isBanned              String           @default("NOT BANNED")
   acceptedPrivacyPolicy Boolean          @default(false)
   subscriptionType      SubscriptionType @default(NONE)
+  stripeSubscriptionId  String?          @db.Text // Add this field
+  stripePriceId         String?          @db.Text // Add this field
+  paymentIntentId       String?          @db.Text // Add this field
 
   containerId String
   container   Container @relation(fields: [containerId], references: [id])

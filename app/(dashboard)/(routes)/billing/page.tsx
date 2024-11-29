@@ -195,7 +195,6 @@ export default function BillingPage() {
     : packages.slice(0, 3);
 
   const handlePayment = (selectedPlan: any) => {
-    console.log("selectedPlan", selectedPlan);
     // const price =  selectedPlan.prices.find(
     //   (price: any) => price.recurring.interval === (isYearly ? "year" : "month")
     // );
@@ -329,16 +328,18 @@ export default function BillingPage() {
                   //   (price) =>
                   //     price.recurring.interval === (isYearly ? "year" : "month")
                   // );
-                  const price = pkg.prices[0];
+                  const price = pkg?.prices[0];
 
                   return (
                     <Card
-                      key={pkg.id}
+                      key={pkg?.id}
                       className="flex flex-col justify-between"
                     >
                       <CardHeader>
-                        <CardTitle>{pkg.name.trim().split("-")[0]}</CardTitle>
-                        <CardDescription>{pkg.description}</CardDescription>
+                        <CardTitle>
+                          {pkg?.name?.trim()?.split("-")[0]}
+                        </CardTitle>
+                        <CardDescription>{pkg?.description}</CardDescription>
                       </CardHeader>
                       <CardContent>
                         <div className="mb-4 text-center">
@@ -350,29 +351,32 @@ export default function BillingPage() {
                           </span>
                         </div>
                         <ul className="space-y-2">
-                          {pkg.features.map((feature, index) => (
-                            <li key={index} className="flex items-center">
-                              <Check className="mr-2 h-4 w-4 text-green-500" />
-                              {feature}
-                            </li>
-                          ))}
+                          {pkg?.features?.length &&
+                            pkg?.features?.map((feature: any, index) => {
+                              return (
+                                <li key={index} className="flex items-center">
+                                  <Check className="mr-2 h-4 w-4 text-green-500" />
+                                  {feature?.name}
+                                </li>
+                              );
+                            })}
                         </ul>
                       </CardContent>
                       <CardFooter>
                         <Button
                           className="w-full"
                           variant={
-                            pkg.name
-                              .toLowerCase()
-                              .includes(currentPlan.name.toLowerCase())
+                            pkg?.name
+                              ?.toLowerCase()
+                              ?.includes(currentPlan?.name?.toLowerCase())
                               ? "outline"
                               : "default"
                           }
                           onClick={() => handlePayment(pkg)}
                         >
-                          {pkg.name
-                            .toLowerCase()
-                            .includes(currentPlan.name.toLowerCase())
+                          {pkg?.name
+                            ?.toLowerCase()
+                            ?.includes(currentPlan?.name?.toLowerCase())
                             ? "Current Plan"
                             : "Switch to this plan"}
                         </Button>

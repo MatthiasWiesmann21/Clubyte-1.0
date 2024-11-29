@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import authOptions from "@/lib/auth";
 import { db } from "@/lib/db";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe: any = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2023-08-16",
 });
 
