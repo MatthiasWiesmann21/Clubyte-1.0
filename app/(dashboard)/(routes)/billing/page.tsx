@@ -136,7 +136,7 @@ export default function BillingPage() {
   const [invoices, setInvoices] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [isSavingPaymentMethod, setIsSavingPaymentMethod] = useState(false);
+  const [selectedPlanId, setSelectedPlanId] = useState<string>("");
 
   const currentPlan = {
     name: "Pro Plan",
@@ -221,6 +221,7 @@ export default function BillingPage() {
     const price = selectedPlan.prices[0];
 
     // console.log("price", selectedPlan.prices[0]);
+    setSelectedPlanId(selectedPlan?.id);
 
     if (price) {
       setSelectedPriceId(price.id);
@@ -246,6 +247,7 @@ export default function BillingPage() {
           priceId: selectedPriceId,
           amount: selectedAmount,
           currency: selectedCurrency,
+          stripeSubscriptionId: selectedPlanId,
         }),
       });
 
@@ -406,6 +408,7 @@ export default function BillingPage() {
                 })}
               </div>
             </TabsContent>
+
             <TabsContent value="payment">
               <Card>
                 <CardHeader>
