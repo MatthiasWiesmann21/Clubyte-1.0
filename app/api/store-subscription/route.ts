@@ -49,7 +49,6 @@ export async function POST(req: Request) {
         where: { id: user.id },
         data: {
           paymentIntentId, // Save the paymentIntent ID from Stripe
-          stripeSubscriptionId, // Save the subscription ID from Stripe
           stripePriceId: priceId, // Save the price ID
           subscriptionType: priceId === "price_monthly" ? "MONTHLY" : "ANNUAL", // Example logic
         },

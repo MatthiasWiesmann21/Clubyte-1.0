@@ -53,7 +53,34 @@ export async function POST(req: Request) {
       metadata, // Optional metadata (e.g., priceId)
     });
 
-    return NextResponse.json({ clientSecret: paymentIntent.client_secret });
+    const subscriptionSchedule = await stripe.subscriptionSchedules.create({
+      customer: stripeCustomerId,
+      start_date: Math.floor(Date.now() / 1000),
+      end_behavior: "release",
+      phases: [
+        {
+          items: [
+            {
+              price: metadata.priceId,
+              quantity: 1,
+            },
+          ],
+          iterations: 12,
+        },
+      ],
+    });
+
+    user = await db.profile.update({
+      where: { id: user.id },
+      data: {
+        stripeSubscriptionId: subscriptionSchedule.id, // Save the subscription ID from Stripe
+      },
+    });
+
+    return NextResponse.json({
+      clientSecret: paymentIntent.client_secret,
+      subscriptionSchedule: subscriptionSchedule,
+    });
   } catch (error: any) {
     console.error("Error creating checkout session:", error);
     return NextResponse.json(
