@@ -1,4 +1,7 @@
+import authOptions from "@/lib/auth";
+import { db } from "@/lib/db";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -14,7 +17,27 @@ export async function POST(req: Request) {
   try {
     const body = await req.json(); // Parse the request body
     const { amount, currency, metadata } = body;
+    const session = await getServerSession(authOptions);
 
+    if (!session?.user?.id || !session.user.email) {
+      return new NextResponse("Session not found", { status: 404 });
+    }
+
+    const userId = session.user.id;
+
+    // Fetch user from the database
+    let user = await db.profile.findFirst({
+      where: { userId },
+    });
+
+    if (!user || !user.stripeCustomerId) {
+      return NextResponse.json(
+        { error: "User or Stripe customer not found." },
+        { status: 404 }
+      );
+    }
+
+    const stripeCustomerId = user.stripeCustomerId;
     // Validate input
     if (!amount || !currency) {
       return NextResponse.json(
@@ -26,6 +49,7 @@ export async function POST(req: Request) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency,
+      customer: stripeCustomerId,
       metadata, // Optional metadata (e.g., priceId)
     });
 

@@ -134,9 +134,8 @@ export default function BillingPage() {
     string | null
   >(null);
   const [invoices, setInvoices] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
   const [selectedPlanId, setSelectedPlanId] = useState<string>("");
+  const [subscriptionDetails, setSubscriptionDetails] = useState<any>(null);
 
   const currentPlan = {
     name: "Pro Plan",
@@ -189,25 +188,37 @@ export default function BillingPage() {
     }
   }
   const fetchBillingHistory = async () => {
-    setLoading(true);
     try {
       const response = await fetch("/api/get-billing-history");
       const data = await response.json();
 
       if (data.error) {
-        setError(data.error);
       } else {
         setInvoices(data.invoices);
       }
     } catch (err) {
-      setError("Failed to fetch billing history.");
     } finally {
-      setLoading(false);
     }
   };
+
+  const fetchSubscriptionDetails = async () => {
+    try {
+      const res = await fetch("/api/get-subscription-details");
+      const data = await res.json();
+
+      if (res.status === 200) {
+        setSubscriptionDetails(data);
+      } else {
+      }
+    } catch (error) {
+    } finally {
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
     fetchBillingHistory();
+    fetchSubscriptionDetails();
   }, []);
 
   const filteredPackages = isYearly

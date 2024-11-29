@@ -1,0 +1,79 @@
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth";
+import { db } from "@/lib/db";
+import Stripe from "stripe";
+
+// Initialize Stripe
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2023-08-16",
+});
+
+export async function GET(req: Request) {
+  try {
+    // Retrieve user session
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id || !session.user.email) {
+      return new NextResponse("Session not found", { status: 404 });
+    }
+
+    const userId = session.user.id;
+
+    // Fetch user from the database
+    const user = await db.profile.findFirst({
+      where: { userId },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "User not found in the database." },
+        { status: 404 }
+      );
+    }
+
+    const stripeSubscriptionId = user.stripeSubscriptionId;
+
+    if (!stripeSubscriptionId) {
+      return NextResponse.json(
+        { error: "No active subscription found for this user." },
+        { status: 404 }
+      );
+    }
+
+    // Fetch the subscription details from Stripe
+    const subscription = await stripe.subscriptions.retrieve(
+      stripeSubscriptionId
+    );
+
+    // Check if the subscription is active
+    if (subscription.status !== "active") {
+      return NextResponse.json(
+        { error: "Subscription is not active." },
+        { status: 400 }
+      );
+    }
+
+    // Extract relevant subscription details
+    const subscriptionDetails = {
+      status: subscription.status,
+      current_period_start: new Date(
+        subscription.current_period_start * 1000
+      ).toLocaleDateString(),
+      current_period_end: new Date(
+        subscription.current_period_end * 1000
+      ).toLocaleDateString(),
+      plan: subscription.items.data[0].plan.nickname, // Assuming the plan nickname is stored in Stripe
+      amount: subscription?.items?.data[0]?.plan?.amount || 0, // Convert to dollars
+      currency: subscription.items.data[0].plan.currency.toUpperCase(),
+    };
+
+    return NextResponse.json(subscriptionDetails, { status: 200 });
+  } catch (error: any) {
+    console.error("Error fetching subscription details:", error.message);
+    return NextResponse.json(
+      { error: error.message || "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}

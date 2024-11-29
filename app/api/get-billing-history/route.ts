@@ -34,7 +34,7 @@ export async function GET(req: Request) {
     const stripeCustomerId = user.stripeCustomerId;
 
     // Fetch the user's invoices from Stripe
-    const invoices = await stripe.invoices.list({
+    const invoices = await stripe.charges.list({
       customer: stripeCustomerId,
       limit: 10, // Limit number of invoices (adjust as needed)
     });
