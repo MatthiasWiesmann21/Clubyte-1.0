@@ -191,8 +191,8 @@ export default function BillingPage() {
   }, []);
 
   const filteredPackages = isYearly
-    ? packages.slice(3, 6)
-    : packages.slice(0, 3);
+    ? packages.slice(0, 3)
+    : packages.slice(3, 6);
 
   const handlePayment = (selectedPlan: any) => {
     // const price =  selectedPlan.prices.find(
