@@ -105,6 +105,7 @@ model Profile {
   stripeSubscriptionId  String?          @db.Text // Add this field
   stripePriceId         String?          @db.Text // Add this field
   paymentIntentId       String?          @db.Text // Add this field
+  productId             String?          @db.Text // Add this field
 
   containerId String
   container   Container @relation(fields: [containerId], references: [id])

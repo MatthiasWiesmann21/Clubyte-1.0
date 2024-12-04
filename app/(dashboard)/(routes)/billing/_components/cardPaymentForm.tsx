@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 
 export default function CardPaymentForm({
   priceId,
+  planId,
   amount,
   currency,
   onComplete,
 }: {
   priceId: string;
+  planId: string;
   amount: number; // Amount in cents
   currency: string; // Currency code (e.g., "usd")
   onComplete: (paymentIntentId: string) => void; // Callback after successful payment
@@ -33,7 +35,7 @@ export default function CardPaymentForm({
       const response = await fetch("/api/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, currency, metadata: { priceId } }),
+        body: JSON.stringify({ amount, currency, metadata: { priceId, productId: planId } }),
       });
 
       const { clientSecret } = await response.json();

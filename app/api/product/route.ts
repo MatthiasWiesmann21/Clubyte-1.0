@@ -33,8 +33,10 @@ export async function GET(req: Request) {
     }
 
     const stripeSubscriptionId = user.stripeSubscriptionId;
+    const productId = user.productId;
+    const priceId = user.stripePriceId;
 
-    if (!stripeSubscriptionId) {
+    if (!productId) {
       return NextResponse.json(
         { error: "No active subscription found for this user." },
         { status: 404 }
@@ -42,12 +44,17 @@ export async function GET(req: Request) {
     }
 
     // Fetch the subscription details from Stripe
+    const product = await stripe.products.retrieve(
+      productId
+    );
+
     const subscription = await stripe.subscriptions.retrieve(
       stripeSubscriptionId
     );
+    const pricingDetails = await stripe.prices.retrieve(priceId as string);
 
     // Check if the subscription is active
-    if (subscription.status !== "active") {
+    if (!subscription.active ) {
       return NextResponse.json(
         { error: "Subscription is not active." },
         { status: 400 }
@@ -56,16 +63,10 @@ export async function GET(req: Request) {
 
     // Extract relevant subscription details
     const subscriptionDetails = {
-      status: subscription.status,
-      current_period_start: new Date(
-        subscription.current_period_start * 1000
-      ).toLocaleDateString(),
-      current_period_end: new Date(
-        subscription.current_period_end * 1000
-      ).toLocaleDateString(),
-      plan: subscription.items.data[0].plan.nickname, // Assuming the plan nickname is stored in Stripe
-      amount: subscription?.items?.data[0]?.plan?.amount || 0, // Convert to dollars
-      currency: subscription.items.data[0].plan.currency.toUpperCase(),
+      features: product.features,
+      name: product.name,
+      amount: pricingDetails.unit_amount && +pricingDetails.unit_amount/100,
+      interval: pricingDetails?.recurring?.interval,
     };
 
     return NextResponse.json(subscriptionDetails, { status: 200 });

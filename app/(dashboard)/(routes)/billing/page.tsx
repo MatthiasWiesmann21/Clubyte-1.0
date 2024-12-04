@@ -129,7 +129,7 @@ export default function BillingPage() {
   const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+  const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
   const [setupIntentClientSecret, setSetupIntentClientSecret] = useState<
     string | null
   >(null);
@@ -156,29 +156,23 @@ export default function BillingPage() {
     { date: "2023-03-01", amount: 29, status: "paid" },
   ];
 
-  useEffect(() => {
-    const fetchPaymentMethods = async () => {
-      try {
-        const response = await fetch(`/api/list-payment-methods`, {
-          method: "GET",
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setPaymentMethods(data);
-        } else {
-          console.error("Failed to fetch payment methods:", data.error);
-        }
-      } catch (error) {
-        console.error("Error fetching payment methods:", error);
+  const fetchPaymentMethods = async () => {
+    try {
+      const response = await fetch(`/api/list-payment-methods`, {
+        method: "GET",
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setPaymentMethods(data);
+      } else {
+        console.error("Failed to fetch payment methods:", data.error);
       }
-    };
-
-    if (selectedTab === "payment") {
-      fetchPaymentMethods();
+    } catch (error) {
+      console.error("Error fetching payment methods:", error);
     }
-  }, [selectedTab]);
+  };
 
-  async function fetchProducts() {
+  const fetchProducts = async () => {
     try {
       const response = await fetch("/api/packages", { method: "GET" });
       const data = await response.json();
@@ -186,7 +180,7 @@ export default function BillingPage() {
     } catch (error) {
       console.error("Error fetching products:", error);
     }
-  }
+  };
   const fetchBillingHistory = async () => {
     try {
       const response = await fetch("/api/get-billing-history");
@@ -203,7 +197,7 @@ export default function BillingPage() {
 
   const fetchSubscriptionDetails = async () => {
     try {
-      const res = await fetch("/api/get-subscription-details");
+      const res = await fetch("/api/product");
       const data = await res.json();
 
       if (res.status === 200) {
@@ -219,6 +213,7 @@ export default function BillingPage() {
     fetchProducts();
     fetchBillingHistory();
     fetchSubscriptionDetails();
+    fetchPaymentMethods();
   }, []);
 
   const filteredPackages = isYearly
@@ -253,7 +248,6 @@ export default function BillingPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId: "example_user_id", // Replace with actual user ID
           paymentIntentId,
           priceId: selectedPriceId,
           amount: selectedAmount,
@@ -287,6 +281,7 @@ export default function BillingPage() {
             <CardContent>
               <CardPaymentForm
                 priceId={selectedPriceId!}
+                planId={selectedPlanId!}
                 amount={selectedAmount || 0} // Fallback to 0 if amount is null
                 currency={selectedCurrency || "usd"} // Default to "usd"
                 onComplete={handleCheckoutComplete}
@@ -314,19 +309,24 @@ export default function BillingPage() {
             <TabsContent value="overview">
               <Card>
                 <CardHeader>
-                  <CardTitle>Current Plan: {currentPlan.name}</CardTitle>
+                  <CardTitle>
+                    Current Plan: {subscriptionDetails?.name}
+                  </CardTitle>
                   <CardDescription>
-                    ${currentPlan.price}/{currentPlan.interval}
+                    ${subscriptionDetails?.amount}/
+                    {subscriptionDetails?.interval}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
-                    {currentPlan.features.map((feature, index) => (
-                      <li key={index} className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-green-500" />
-                        {feature}
-                      </li>
-                    ))}
+                    {subscriptionDetails?.features?.map(
+                      (feature: any, index: number) => (
+                        <li key={index} className="flex items-center">
+                          <Check className="mr-2 h-4 w-4 text-green-500" />
+                          {feature?.name}
+                        </li>
+                      )
+                    )}
                   </ul>
                 </CardContent>
                 <CardFooter className="flex justify-between">
@@ -438,11 +438,12 @@ export default function BillingPage() {
                           <div>
                             <CreditCard className="mr-2 inline h-6 w-6" />
                             <span>
-                              {method.type.toUpperCase()} ending in{" "}
-                              {method.last4}
+                              {method?.card?.display_brand} {method?.type} ends
+                              with {method?.card?.last4}
                             </span>
                             <p className="text-sm text-muted-foreground">
-                              Expires {method.expiry}
+                              Expires-{method?.card?.exp_month}/
+                              {method?.card?.exp_year}
                             </p>
                           </div>
                           <Button variant="outline">Remove</Button>
