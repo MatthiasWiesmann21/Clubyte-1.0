@@ -32,7 +32,7 @@ export async function GET(req: Request) {
       );
     }
 
-    const stripeSubscriptionId = user.stripeSubscriptionId;
+    const stripeSubscriptionId: any = user.stripeSubscriptionId;
     const productId = user.productId;
     const priceId = user.stripePriceId;
 
@@ -44,17 +44,15 @@ export async function GET(req: Request) {
     }
 
     // Fetch the subscription details from Stripe
-    const product = await stripe.products.retrieve(
-      productId
-    );
+    const product = await stripe.products.retrieve(productId);
 
-    const subscription = await stripe.subscriptions.retrieve(
+    const subscription: any = await stripe.subscriptions.retrieve(
       stripeSubscriptionId
     );
     const pricingDetails = await stripe.prices.retrieve(priceId as string);
 
     // Check if the subscription is active
-    if (!subscription.active ) {
+    if (!subscription?.plan?.active) {
       return NextResponse.json(
         { error: "Subscription is not active." },
         { status: 400 }
@@ -65,7 +63,7 @@ export async function GET(req: Request) {
     const subscriptionDetails = {
       features: product.features,
       name: product.name,
-      amount: pricingDetails.unit_amount && +pricingDetails.unit_amount/100,
+      amount: pricingDetails.unit_amount && +pricingDetails.unit_amount / 100,
       interval: pricingDetails?.recurring?.interval,
     };
 

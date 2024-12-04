@@ -266,6 +266,8 @@ export default function BillingPage() {
     }
 
     setIsPaymentPage(false);
+    fetchSubscriptionDetails();
+    setSelectedTab("overview");
   };
 
   return (
@@ -401,15 +403,20 @@ export default function BillingPage() {
                           variant={
                             pkg?.name
                               ?.toLowerCase()
-                              ?.includes(currentPlan?.name?.toLowerCase())
+                              ?.includes(subscriptionDetails?.name?.toLowerCase())
                               ? "outline"
                               : "default"
+                          }
+                          disabled={
+                            pkg?.name
+                              ?.toLowerCase()
+                              ?.includes(subscriptionDetails?.name?.toLowerCase())
                           }
                           onClick={() => handlePayment(pkg)}
                         >
                           {pkg?.name
                             ?.toLowerCase()
-                            ?.includes(currentPlan?.name?.toLowerCase())
+                            ?.includes(subscriptionDetails?.name?.toLowerCase())
                             ? "Current Plan"
                             : "Switch to this plan"}
                         </Button>
