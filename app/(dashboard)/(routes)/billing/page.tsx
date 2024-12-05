@@ -172,6 +172,24 @@ export default function BillingPage() {
     }
   };
 
+  const removePaymentMethod = async (paymentMethodId: string) => {
+    try {
+      const response = await fetch(`/api/list-payment-methods`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ paymentMethodId }), // Pass it in the body
+      });
+      console.log({ response });
+      if(response.ok){
+        fetchPaymentMethods();
+      }
+    } catch (error) {
+      console.error("Error removing payment method:", error);
+    }
+  };
+  
   const fetchProducts = async () => {
     try {
       const response = await fetch("/api/packages", { method: "GET" });
@@ -453,7 +471,7 @@ export default function BillingPage() {
                               {method?.card?.exp_year}
                             </p>
                           </div>
-                          <Button variant="outline">Remove</Button>
+                          <Button variant="outline" onClick={() => removePaymentMethod(method.id)}>Remove</Button>
                         </li>
                       ))}
                     </ul>
@@ -492,6 +510,7 @@ export default function BillingPage() {
                       onComplete={() => {
                         setSetupIntentClientSecret(null);
                         setSelectedTab("payment"); // Refresh payment methods
+                        fetchPaymentMethods();
                       }}
                     />
                   </CardContent>
