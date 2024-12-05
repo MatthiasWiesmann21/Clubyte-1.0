@@ -28,8 +28,11 @@ export async function GET(req: Request) {
       })
     );
     return NextResponse.json(productsWithPrices);
-  } catch (error) {
-    console.log("[LIVE_EVENT_GET_ERROR]", error);
-    return new NextResponse("Internal Error", { status: 500 });
+  } catch (error: any) {
+    console.error("Error fetching products and prices:", error);
+    return new NextResponse(
+      JSON.stringify({ error: error.message || "Internal Server Error" }),
+      { status: 500 }
+    );
   }
 }
