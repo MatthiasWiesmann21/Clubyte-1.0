@@ -45,7 +45,7 @@ export const DeleteProfileForm = ({
       await axios.delete(`/api/profile/${profileId}`);
 
       toast.success("Profile deleted");
-      router.push(`/admin/users`);
+      router.push(`/auth/sign-in`);
       router.refresh();
     } catch {
       toast.error("Something went wrong");
