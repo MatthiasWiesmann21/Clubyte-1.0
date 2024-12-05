@@ -12,6 +12,7 @@ import { ImageForm } from "./_components/image-form";
 import Link from "next/link";
 import GoBackButton from "@/components/goBackButton";
 import { NewPasswordForm } from "./_components/newPassword-form";
+import { DeleteProfileForm } from "./_components/deleteProfile-form";
 
 const UserNamePage = async () => {
   const user = await currentProfile();
@@ -49,6 +50,11 @@ const UserNamePage = async () => {
             </div>
             <div>
               <ImageForm initialData={profile} profileId={profile.id} />
+            </div>
+          </div>
+          <div>
+            <div>
+              <DeleteProfileForm profileId={profile.id} />
             </div>
           </div>
         </div>

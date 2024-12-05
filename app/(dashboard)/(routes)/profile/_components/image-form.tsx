@@ -44,7 +44,7 @@ export const ImageForm = ({ initialData, profileId }: ImageFormProps) => {
   };
 
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
+    <div className="mt-6 h-fit rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
       <div className="flex items-center justify-between font-medium">
         {currentLanguage.profile_ImageForm_title}
         <Button onClick={toggleEdit} variant="ghost">
