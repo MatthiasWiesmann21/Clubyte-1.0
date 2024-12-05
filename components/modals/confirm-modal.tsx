@@ -19,7 +19,7 @@ interface ConfirmModalProps {
   dialogTitleClass?: string;
   dialogDescriptionClass?: string;
   dialogCancelClass?: string;
-  dialogActionClass: string
+  dialogActionClass?: string
 };
 
 export const ConfirmModal = ({
