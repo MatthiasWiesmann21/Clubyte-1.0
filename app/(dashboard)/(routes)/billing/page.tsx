@@ -90,31 +90,6 @@ interface Product {
   prices: Price[];
 }
 
-interface CurrentPlan {
-  name: string;
-  price: number;
-  interval: "month" | "year";
-  features: string[];
-}
-
-interface UsageStats {
-  emails: { used: number; limit: number };
-  projects: { used: number; limit: number };
-  members: { used: number; limit: number };
-}
-
-interface PaymentMethod {
-  type: string;
-  last4: string;
-  expiry: string;
-}
-
-interface BillingHistory {
-  date: string;
-  amount: number;
-  status: "paid" | "pending" | "failed";
-}
-
 if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
   console.error("Missing Stripe Publishable Key");
 }
@@ -136,25 +111,7 @@ export default function BillingPage() {
   const [invoices, setInvoices] = useState<any[]>([]);
   const [selectedPlanId, setSelectedPlanId] = useState<string>("");
   const [subscriptionDetails, setSubscriptionDetails] = useState<any>(null);
-
-  const currentPlan = {
-    name: "Pro Plan",
-    price: 29,
-    interval: "month",
-    features: ["500 emails/month", "10 projects", "5 team members"],
-  };
-
-  const paymentMethod = {
-    type: "Visa",
-    last4: "4242",
-    expiry: "12/2024",
-  };
-
-  const billingHistory = [
-    { date: "2023-05-01", amount: 29, status: "paid" },
-    { date: "2023-04-01", amount: 29, status: "paid" },
-    { date: "2023-03-01", amount: 29, status: "paid" },
-  ];
+  const [isFreeTrial, setFreeTrial] = useState(false);
 
   const fetchPaymentMethods = async () => {
     try {
@@ -169,6 +126,24 @@ export default function BillingPage() {
       }
     } catch (error) {
       console.error("Error fetching payment methods:", error);
+    }
+  };
+
+  const removePaymentMethod = async (paymentMethodId: string) => {
+    try {
+      const response = await fetch(`/api/list-payment-methods`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ paymentMethodId }), // Pass it in the body
+      });
+      console.log({ response });
+      if (response.ok) {
+        fetchPaymentMethods();
+      }
+    } catch (error) {
+      console.error("Error removing payment method:", error);
     }
   };
 
@@ -202,6 +177,9 @@ export default function BillingPage() {
 
       if (res.status === 200) {
         setSubscriptionDetails(data);
+        if (data.interval === "year") {
+          setIsYearly(true);
+        }
       } else {
       }
     } catch (error) {
@@ -287,6 +265,7 @@ export default function BillingPage() {
                 amount={selectedAmount || 0} // Fallback to 0 if amount is null
                 currency={selectedCurrency || "usd"} // Default to "usd"
                 onComplete={handleCheckoutComplete}
+                isFreeTrial={isFreeTrial}
               />
             </CardContent>
             <CardFooter>
@@ -315,8 +294,24 @@ export default function BillingPage() {
                     Current Plan: {subscriptionDetails?.name}
                   </CardTitle>
                   <CardDescription>
-                    ${subscriptionDetails?.amount}/
-                    {subscriptionDetails?.interval}
+                    {subscriptionDetails ? (
+                      `${subscriptionDetails?.amount}/
+                    ${subscriptionDetails?.interval}`
+                    ) : (
+                      <div
+                        onClick={() => {
+                          setFreeTrial(true);
+                          handlePayment(
+                            filteredPackages?.find(
+                              (pkg) => pkg?.name === "Expert Pack - Monthly"
+                            )
+                          );
+                        }}
+                        className="cursor-pointer"
+                      >
+                        No Plan Selected - Click to start your 14 days trial
+                      </div>
+                    )}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -336,11 +331,17 @@ export default function BillingPage() {
                     onClick={() => setSelectedTab("plans")}
                     variant="outline"
                   >
-                    {" "}
                     {/* Step 2: Implement the onClick */}
                     Change Plan
                   </Button>
-                  <Button variant="destructive">Cancel Subscription</Button>
+                  <Button
+                    onClick={async () => {
+                      await fetch("/api/cancel-subscription");
+                    }}
+                    variant="destructive"
+                  >
+                    Cancel Subscription
+                  </Button>
                 </CardFooter>
               </Card>
             </TabsContent>
@@ -403,16 +404,21 @@ export default function BillingPage() {
                           variant={
                             pkg?.name
                               ?.toLowerCase()
-                              ?.includes(subscriptionDetails?.name?.toLowerCase())
+                              ?.includes(
+                                subscriptionDetails?.name?.toLowerCase()
+                              )
                               ? "outline"
                               : "default"
                           }
-                          disabled={
-                            pkg?.name
-                              ?.toLowerCase()
-                              ?.includes(subscriptionDetails?.name?.toLowerCase())
-                          }
-                          onClick={() => handlePayment(pkg)}
+                          disabled={pkg?.name
+                            ?.toLowerCase()
+                            ?.includes(
+                              subscriptionDetails?.name?.toLowerCase()
+                            )}
+                          onClick={() => {
+                            setFreeTrial(false);
+                            handlePayment(pkg);
+                          }}
                         >
                           {pkg?.name
                             ?.toLowerCase()
@@ -453,7 +459,12 @@ export default function BillingPage() {
                               {method?.card?.exp_year}
                             </p>
                           </div>
-                          <Button variant="outline">Remove</Button>
+                          <Button
+                            variant="outline"
+                            onClick={() => removePaymentMethod(method.id)}
+                          >
+                            Remove
+                          </Button>
                         </li>
                       ))}
                     </ul>
@@ -492,6 +503,7 @@ export default function BillingPage() {
                       onComplete={() => {
                         setSetupIntentClientSecret(null);
                         setSelectedTab("payment"); // Refresh payment methods
+                        fetchPaymentMethods();
                       }}
                     />
                   </CardContent>
@@ -522,7 +534,8 @@ export default function BillingPage() {
                         <TableRow key={invoice.id}>
                           <TableCell>{invoice.id}</TableCell>
                           <TableCell>
-                            {(invoice.amount_paid / 100).toFixed(2)} USD
+                            {(+invoice.amount / 100).toFixed(2)}{" "}
+                            {invoice.currency.toUpperCase()}
                           </TableCell>
                           {/* Convert from cents */}
                           <TableCell>{invoice.status}</TableCell>

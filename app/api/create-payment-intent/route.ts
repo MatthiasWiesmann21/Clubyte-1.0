@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json(); // Parse the request body
-    const { amount, currency, metadata } = body;
+    const { amount, currency, metadata, isFreeTrial } = body;
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id || !session.user.email) {
@@ -78,6 +78,7 @@ export async function POST(req: Request) {
           quantity: 1,
         },
       ],
+      ...(isFreeTrial ? { trial_period_days: 14 } : {}),
     });
 
     user = await db.profile.update({
