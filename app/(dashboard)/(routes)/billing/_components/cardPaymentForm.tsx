@@ -8,12 +8,14 @@ export default function CardPaymentForm({
   amount,
   currency,
   onComplete,
+  isFreeTrial,
 }: {
   priceId: string;
   planId: string;
   amount: number; // Amount in cents
   currency: string; // Currency code (e.g., "usd")
   onComplete: (paymentIntentId: string) => void; // Callback after successful payment
+  isFreeTrial: boolean;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -35,7 +37,12 @@ export default function CardPaymentForm({
       const response = await fetch("/api/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, currency, metadata: { priceId, productId: planId } }),
+        body: JSON.stringify({
+          amount,
+          currency,
+          metadata: { priceId, productId: planId },
+          isFreeTrial,
+        }),
       });
 
       const { clientSecret } = await response.json();
