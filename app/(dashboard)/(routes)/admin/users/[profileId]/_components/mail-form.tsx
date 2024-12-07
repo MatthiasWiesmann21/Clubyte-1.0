@@ -22,18 +22,18 @@ import { useLanguage } from "@/lib/check-language";
 import { Profile } from "@prisma/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-interface TitleFormProps {
+interface MailFormProps {
   initialData: Profile;
   profileId: string;
 }
 
 const formSchema = z.object({
-  name: z.string().min(1, {
-    message: "Name is required",
+  email: z.string().min(1, {
+    message: "Mail is required",
   }),
 });
 
-export const TitleForm = ({ initialData, profileId }: TitleFormProps) => {
+export const MailForm = ({ initialData, profileId }: MailFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -42,7 +42,7 @@ export const TitleForm = ({ initialData, profileId }: TitleFormProps) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { name: initialData.name || "" },
+    defaultValues: { email: initialData.email || "" },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -50,7 +50,7 @@ export const TitleForm = ({ initialData, profileId }: TitleFormProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/profile/${profileId}`, values);
-      toast.success("Username updated");
+      toast.success("E-mail updated");
       toggleEdit();
       router.refresh();
     } catch {
@@ -62,7 +62,7 @@ export const TitleForm = ({ initialData, profileId }: TitleFormProps) => {
     <Card className="my-4 w-full">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-xl">
-          <span>{currentLanguage.profile_TitleForm_title}</span>
+          <span>{currentLanguage.user_MailForm_title}</span>
           <Button
             onClick={toggleEdit}
             variant="ghost"
@@ -79,14 +79,14 @@ export const TitleForm = ({ initialData, profileId }: TitleFormProps) => {
       </CardHeader>
       <CardContent>
         {!isEditing && (
-          <p className="text-md font-medium">{initialData.name}</p>
+          <p className="text-md font-medium">{initialData.email}</p>
         )}
         {isEditing && (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
               <FormField
                 control={form.control}
-                name="name"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
