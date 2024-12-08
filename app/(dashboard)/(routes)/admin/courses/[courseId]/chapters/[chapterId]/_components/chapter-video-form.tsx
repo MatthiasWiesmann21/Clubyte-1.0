@@ -129,17 +129,10 @@ export const ChapterVideoForm = ({
             <Select
               value={videoType?.value}
               onValueChange={(value) => {
-                const selectedOption = options.find(
-                  (opt) => opt.value === value
-                );
-                setVideoType(selectedOption);
-                // Only update the prefix if the provider changes, but do not change the URL unless explicitly entered by the user
+                const selectedOption = options.find(opt => opt.value === value)
+                setVideoType(selectedOption)
                 if (selectedOption?.value !== "https://utfs.io/") {
-                  setVideoUrl((prevUrl) => {
-                    // Keep the video identifier intact, only change the prefix
-                    const urlParts = prevUrl.split("/");
-                    return selectedOption.value + urlParts.slice(3).join("/");
-                  });
+                  setVideoUrl("") // Clear videoUrl for non-upload options
                 }
               }}
             >

@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/check-language";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Combobox } from "@/components/ui/combobox";
+import { ComboboxNumber } from "@/components/ui/combobox-number";
 
 interface CategoryFormProps {
   initialData: {
@@ -108,7 +108,7 @@ export const MaxCoursesForm = ({
                 <FormItem>
                   <FormLabel>{currentLanguage.user_RoleForm_Label}</FormLabel>
                   <FormControl>
-                    <Combobox options={options} {...field} />
+                    <ComboboxNumber options={options} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

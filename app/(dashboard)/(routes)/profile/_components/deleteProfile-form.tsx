@@ -60,8 +60,6 @@ export const DeleteProfileForm = ({
         <ConfirmModal 
           dialogActionClass="bg-red-600 mt-2" 
           onConfirm={onDelete}
-          title={currentLanguage.user_DeleteProfileForm_ConfirmModalTitle}
-          description={currentLanguage.user_DeleteProfileForm_ConfirmModalDescription}
         >
           <Button size="sm" variant="destructive" disabled={isLoading}>
             <Trash2 className="h-4 w-4 mr-2" />

@@ -114,6 +114,7 @@ export const ScheduleDateForm = ({ initialData, postId }: DateFormProps) => {
               onChange={(e) => setSelectedDate(e.target.value)}
             />
             <Input
+              // @ts-ignore
               onClick={() => dateInputRef.current?.showPicker()}
               type="text"
               placeholder="Select Date & Time"

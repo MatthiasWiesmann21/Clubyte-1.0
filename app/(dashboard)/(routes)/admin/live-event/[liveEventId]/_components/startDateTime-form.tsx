@@ -18,7 +18,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 
 interface DateFormProps {
   initialData: {
-    startDateTime: Date | string
+    startDateTime: Date | any
   }
   liveEventId: string
 }
@@ -46,6 +46,7 @@ export const StartDateTimeForm = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    // @ts-ignore
     defaultValues: initialData,
   })
 
@@ -106,6 +107,7 @@ export const StartDateTimeForm = ({
               onChange={(e) => setSelectedDate(e.target.value)}
             />
             <Input
+              // @ts-ignore
               onClick={() => dateInputRef.current?.showPicker()}
               type="text"
               placeholder="Select Date & Time"

@@ -109,6 +109,7 @@ export const EndDateTimeForm = ({
               onChange={(e) => setSelectedDate(e.target.value)}
             />
             <Input
+              // @ts-ignore
               onClick={() => dateInputRef.current?.showPicker()}
               type="text"
               placeholder="Select Date & Time"
