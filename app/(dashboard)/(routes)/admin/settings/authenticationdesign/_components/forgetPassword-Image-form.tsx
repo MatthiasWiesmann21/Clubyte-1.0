@@ -84,7 +84,7 @@ export const ForgetPasswordImageForm = ({ initialData, containerId }: ImageFormP
       {isEditing && (
         <div className="space-y-4">
           <FileUpload
-            endpoint="ContainerIcon"
+            endpoint="forgetPasswordImage"
             onChange={(url) => {
               if (url) {
                 onSubmit({ forgetPasswordImageUrl: url })

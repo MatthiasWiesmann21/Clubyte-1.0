@@ -769,4 +769,10 @@ export const Russian: Record<string, string> = {
   customize_navDarkBackgroundColorForm_ColorLabel: "Цвет фона навигации для темного режима",
   customize_ThemeColorForm_ColorLabel: "Цвет темы",
   customize_DarkThemeColorForm_ColorLabel: "Цвет темной темы",
+  user_DeleteProfileForm_AlerTitle: "Предупреждение",
+  user_DeleteProfileForm_AlerDescription: "Удаление вашего профиля является постоянным и не может быть отменено. Все ваши данные будут утеряны.",
+  user_DeleteProfileForm_ConfirmModalTitle: "Вы уверены?",
+  user_DeleteProfileForm_ConfirmModalDescription: "Это действие невозможно отменить. Ваш аккаунт будет удален навсегда, и ваши данные будут удалены с наших серверов.",
+  user_DeleteProfileForm_ConfirmModalDeleteProfile: "Удалить профиль",
+  chapters_levelForm_noAuthor: "Нет автора",
 };

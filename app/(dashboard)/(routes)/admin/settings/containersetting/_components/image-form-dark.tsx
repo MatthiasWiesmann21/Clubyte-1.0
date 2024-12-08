@@ -87,7 +87,7 @@ export const ImageFormDark = ({
       {isEditing && (
         <div className="space-y-4">
           <FileUpload
-            endpoint="ContainerIcon"
+            endpoint="ContainerImageDark"
             onChange={(url) => {
               if (url) {
                 onSubmit({ imageUrlDark: url })

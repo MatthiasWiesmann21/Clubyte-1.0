@@ -84,7 +84,7 @@ export const DarkSignInImageForm = ({ initialData, containerId }: ImageFormProps
       {isEditing && (
         <div className="space-y-4">
           <FileUpload
-            endpoint="ContainerIcon"
+            endpoint="darkSignInImage"
             onChange={(url) => {
               if (url) {
                 onSubmit({ darkSignInImageUrl: url })

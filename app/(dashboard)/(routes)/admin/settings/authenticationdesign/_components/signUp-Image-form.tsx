@@ -84,7 +84,7 @@ export const SignUpImageForm = ({ initialData, containerId }: ImageFormProps) =>
       {isEditing && (
         <div className="space-y-4">
           <FileUpload
-            endpoint="ContainerIcon"
+            endpoint="signUpImage"
             onChange={(url) => {
               if (url) {
                 onSubmit({ signUpImageUrl: url })
