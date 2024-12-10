@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 export default function CardPaymentForm({
   priceId,
   planId,
+  planName,
   amount,
   currency,
   onComplete,
@@ -12,6 +13,7 @@ export default function CardPaymentForm({
 }: {
   priceId: string;
   planId: string;
+  planName: string;
   amount: number; // Amount in cents
   currency: string; // Currency code (e.g., "usd")
   onComplete: (paymentIntentId: string) => void; // Callback after successful payment
@@ -23,7 +25,6 @@ export default function CardPaymentForm({
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("here");
     e.preventDefault();
 
     if (!stripe || !elements) {
@@ -40,6 +41,7 @@ export default function CardPaymentForm({
         body: JSON.stringify({
           amount,
           currency,
+          planName,
           metadata: { priceId, productId: planId },
           isFreeTrial,
         }),
