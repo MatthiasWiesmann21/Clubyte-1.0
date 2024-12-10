@@ -30,7 +30,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
 import { loadStripe } from "@stripe/stripe-js";
 import CardPaymentForm from "./_components/cardPaymentForm";
 import { Elements } from "@stripe/react-stripe-js";
