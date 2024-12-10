@@ -228,3 +228,9 @@ body,
   color: rgb(255, 255, 255); /* Change color of the checkmark */
   font-size: 1rem; /* Adjust size of the checkmark */
 }
+
+.ReactModal__Overlay.ReactModal__Overlay--after-open {
+  background-color: transparent !important; /* Semi-transparent background */
+  backdrop-filter: blur(5px); /* Apply blur effect */
+  -webkit-backdrop-filter: blur(5px); /* For Safari */
+}
