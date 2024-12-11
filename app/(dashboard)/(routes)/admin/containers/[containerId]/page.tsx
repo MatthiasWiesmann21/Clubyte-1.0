@@ -47,7 +47,7 @@ const ContainerIdPage = async ({
     return redirect("/");
   }
 
-  const requiredFields = [container.name, container.imageUrl];
+  const requiredFields = [container.name, container.clientPackage, container.domain, container.maxCourses, container.clientMail];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
