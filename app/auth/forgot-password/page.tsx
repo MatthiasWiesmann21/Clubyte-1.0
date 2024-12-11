@@ -92,6 +92,16 @@ export default function SignUp() {
     );
   };
 
+  if (!container?.active) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
+          The platform is currently not available.
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex h-screen w-full flex-col items-center justify-center md:flex-row">
