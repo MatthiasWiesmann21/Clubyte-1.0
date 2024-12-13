@@ -26,11 +26,6 @@ export async function POST(request: Request) {
       expiresIn: "24h",
     });
 
-    const url = new URL(request.url)?.origin.includes("localhost")
-      ? process.env.CONTAINER_PATH
-      : new URL(request.url)?.origin;
-
-
     if (!containerId) {
       throw Error ("Container not found for this domain");
     }
@@ -43,7 +38,6 @@ export async function POST(request: Request) {
         email,
         password: hashedPassword,
         token,
-        // containerId: process.env.CONTAINER_ID || "",
         containerId: containerId!,
         imageUrl: "",
         isOnline: "Online",
