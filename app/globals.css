@@ -130,37 +130,37 @@ body,
   width: 80%;
   margin: auto;
 } */
-.form-header h2{
+.form-header h2 {
   font-size: 38px;
   font-weight: 600;
 }
-.login-with{
+.login-with {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.login-with::before{
+.login-with::before {
   position: absolute;
   content: "";
   width: 35%;
   height: 1px;
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
   top: 50%;
   left: 0;
 }
-.login-with::after{
+.login-with::after {
   position: absolute;
   content: "";
   width: 35%;
   height: 1px;
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
   top: 50%;
   right: 0;
 }
-.box{
+.box {
   height: 60px;
-  border: 1px solid #F7D4F0;
+  border: 1px solid #f7d4f0;
   border-radius: 7px;
   display: flex;
   justify-content: center;
@@ -168,7 +168,7 @@ body,
 }
 
 @media screen and (max-width: 768px) {
-  .login-form{
+  .login-form {
     width: 100%;
     padding: 20px;
     margin: auto;
@@ -178,27 +178,28 @@ body,
   /* .login-form{
     width: 80%;
   } */
-  .right-section-svg{
+  .right-section-svg {
     width: 80%;
   }
-  .login-with::before, .login-with::after{
+  .login-with::before,
+  .login-with::after {
     width: 25% !important;
   }
 }
 
 @media screen and (min-width: 994px) {
-  .right-section-svg{
+  .right-section-svg {
     width: 100%;
     margin: auto;
   }
-  .login-right-section-svg{
+  .login-right-section-svg {
     width: 70%;
   }
-  .fogot-password-right-section-svg{
+  .fogot-password-right-section-svg {
     width: 70%;
     margin: auto;
   }
-  .login-form{
+  .login-form {
     width: 85%;
     padding: 20px;
   }
@@ -216,15 +217,21 @@ body,
 }
 
 .custom-checkbox:checked {
-  background-color: #EC2089;
+  background-color: #ec2089;
 }
 
 .custom-checkbox:checked::after {
-  content: '✔'; /* Add a checkmark or use an icon */
+  content: "✔"; /* Add a checkmark or use an icon */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: rgb(255, 255, 255); /* Change color of the checkmark */
   font-size: 1rem; /* Adjust size of the checkmark */
+}
+
+.ReactModal__Overlay.ReactModal__Overlay--after-open {
+  background-color: transparent !important; /* Semi-transparent background */
+  backdrop-filter: blur(5px); /* Apply blur effect */
+  -webkit-backdrop-filter: blur(5px); /* For Safari */
 }

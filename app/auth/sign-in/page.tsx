@@ -58,7 +58,7 @@ export default function SignIn() {
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault(); // Prevent default form submission behavior
     setBeingSubmitted(true);
     const email = form.email;
@@ -101,6 +101,16 @@ export default function SignIn() {
       </div>
     );
   };
+
+  if (!container?.active) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
+          The platform is currently not available.
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <>

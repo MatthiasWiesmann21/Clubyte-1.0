@@ -101,7 +101,7 @@ export const TitleForm = ({
                       {...field}
                       disabled={isSubmitting}
                       placeholder={currentLanguage.categories_TitleForm_placeholder}
-                      className="text-lg"
+                      className="text-md"
                     />
                   </FormControl>
                   <FormMessage />
@@ -122,6 +122,7 @@ export const TitleForm = ({
                 type="submit"
                 size="sm"
                 disabled={!isValid || isSubmitting}
+                onClick={() => onSubmit(form.getValues())}
               >
                 {currentLanguage.categories_TitleForm_save}
               </Button>

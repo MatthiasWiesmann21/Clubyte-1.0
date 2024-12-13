@@ -11,6 +11,7 @@ import { useLanguage } from "@/lib/check-language";
 import { Button } from "@/components/ui/button";
 import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Courses",
@@ -75,7 +76,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
       },
     },
   });
-
+  
   return (
     <>
       <div className="space-y-4 p-4">

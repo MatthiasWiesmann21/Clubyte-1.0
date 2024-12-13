@@ -100,7 +100,7 @@ export const SidebarItem = ({
           `bg-sky-200/50 hover:bg-sky-200/50 hover:text-sky-700 dark:bg-sky-200/10 dark:hover:bg-sky-200/10`
       )}
     >
-      <div className="flex items-center gap-x-2 py-4">
+      <div className="flex items-center gap-x-4 px-1 py-4">
         <Icon
           size={22}
           style={{

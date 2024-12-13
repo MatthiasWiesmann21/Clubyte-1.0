@@ -16,8 +16,9 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json(); // Parse the request body
-    const { amount, currency, metadata, isFreeTrial } = body;
+    const { amount, currency, metadata, isFreeTrial, planName } = body;
     const session = await getServerSession(authOptions);
+    const clientPackage = planName.split(" ")[0].toUpperCase();
 
     if (!session?.user?.id || !session.user.email) {
       return new NextResponse("Session not found", { status: 404 });
@@ -45,13 +46,36 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+    let paymentIntent;
+    if (!metadata.paymentMethodId) {
+      paymentIntent = await stripe.paymentIntents.create({
+        amount,
+        currency,
+        customer: stripeCustomerId,
+        metadata, // Optional metadata (e.g., priceId)
+      });
+    }
+    if (metadata.paymentMethodId) {
+      paymentIntent = await stripe.paymentIntents.create({
+        amount,
+        currency,
+        customer: stripeCustomerId,
+        payment_method: metadata.paymentMethodId,
+        metadata,
+      });
+    }
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency,
-      customer: stripeCustomerId,
-      metadata, // Optional metadata (e.g., priceId)
+    const container = await db.container.findFirst({
+      where: { id: user.containerId },
     });
+    if (container) {
+      await db.container.update({
+        where: { id: container.id },
+        data: {
+          clientPackage,
+        },
+      });
+    }
 
     const subscriptionSchedule = await stripe.subscriptionSchedules.create({
       customer: stripeCustomerId,
@@ -90,7 +114,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({
-      clientSecret: paymentIntent.client_secret,
+      clientSecret: paymentIntent?.client_secret,
       subscriptionSchedule: subscriptionSchedule,
       subscription: subscription,
     });

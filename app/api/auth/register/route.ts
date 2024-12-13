@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password } = await request.json();
+    const { name, email, password, containerId } = await request.json();
     if (!name || !email || !password) {
       throw "Please provide all fields";
     }
@@ -30,14 +30,9 @@ export async function POST(request: Request) {
       ? process.env.CONTAINER_PATH
       : new URL(request.url)?.origin;
 
-    // Fetch the container where the domain matches the URL
-    const container = await db.container.findFirst({
-      where: { domain: url },
-      select: { id: true },
-    });
 
-    if (!container?.id) {
-      throw "Container not found for this domain";
+    if (!containerId) {
+      throw Error ("Container not found for this domain");
     }
 
     console.log("Token created for registration", token);
@@ -49,7 +44,7 @@ export async function POST(request: Request) {
         password: hashedPassword,
         token,
         // containerId: process.env.CONTAINER_ID || "",
-        containerId: container?.id,
+        containerId: containerId!,
         imageUrl: "",
         isOnline: "Online",
         isBanned: "NOT BANNED",

@@ -29,7 +29,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { EventPreview } from "@/components/event-preview";
 
 interface DescriptionFormProps {
   initialData: Post;
@@ -102,7 +101,7 @@ export const DescriptionForm = ({
           >
             {!initialData.description && "No description"}
             {initialData.description && (
-              <EventPreview value={initialData.description} isAdmin={true} />
+              <PostPreview value={initialData.description} />
             )}
           </div>
         )}

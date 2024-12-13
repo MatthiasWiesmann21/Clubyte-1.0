@@ -30,11 +30,11 @@ export async function GET(req: Request) {
       return new NextResponse("No active subscription found", { status: 404 });
     }
 
-    // const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
 
-    // if (subscription.status === "canceled") {
-    //   return new NextResponse("Subscription already canceled", { status: 400 });
-    // }
+    if (subscription.status === "canceled") {
+      return new NextResponse("Subscription already canceled", { status: 400 });
+    }
 
     const response = await stripe.subscriptions.cancel(subscriptionId);
 

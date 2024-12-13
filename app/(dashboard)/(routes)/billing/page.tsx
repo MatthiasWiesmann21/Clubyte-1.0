@@ -30,7 +30,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
 import { loadStripe } from "@stripe/stripe-js";
 import CardPaymentForm from "./_components/cardPaymentForm";
 import { Elements } from "@stripe/react-stripe-js";
@@ -110,6 +109,7 @@ export default function BillingPage() {
   >(null);
   const [invoices, setInvoices] = useState<any[]>([]);
   const [selectedPlanId, setSelectedPlanId] = useState<string>("");
+  const [selectedPlanName, setSelectedPlanName] = useState<string>("");
   const [subscriptionDetails, setSubscriptionDetails] = useState<any>(null);
   const [isFreeTrial, setFreeTrial] = useState(false);
 
@@ -206,6 +206,7 @@ export default function BillingPage() {
 
     // console.log("price", selectedPlan.prices[0]);
     setSelectedPlanId(selectedPlan?.id);
+    setSelectedPlanName(selectedPlan?.name);
 
     if (price) {
       setSelectedPriceId(price.id);
@@ -248,6 +249,37 @@ export default function BillingPage() {
     setSelectedTab("overview");
   };
 
+  const handlePaymentWithPaymentMethod = async (paymentMethodId: string) => {
+    try {
+      const response = await fetch("/api/create-payment-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: selectedAmount,
+          currency: selectedCurrency || "usd",
+          planName: selectedPlanName,
+          metadata: {
+            priceId: selectedPriceId,
+            productId: selectedPlanId,
+            paymentMethodId,
+          },
+          isFreeTrial,
+        }),
+      });
+
+      const { clientSecret } = await response.json();
+
+      if (!clientSecret) {
+        throw new Error("Failed to Subscribe. Please try again.");
+      }
+
+      alert("Payment successful and subscription stored!");
+      fetchSubscriptionDetails();
+    } catch (error: any) {
+      console.error("Error storing subscription:", error.message);
+    }
+  };
+
   return (
     <Elements stripe={stripePromise}>
       <div className="container mx-auto px-4 py-8">
@@ -262,11 +294,38 @@ export default function BillingPage() {
               <CardPaymentForm
                 priceId={selectedPriceId!}
                 planId={selectedPlanId!}
+                planName={selectedPlanName!}
                 amount={selectedAmount || 0} // Fallback to 0 if amount is null
                 currency={selectedCurrency || "usd"} // Default to "usd"
                 onComplete={handleCheckoutComplete}
                 isFreeTrial={isFreeTrial}
               />
+              {paymentMethods.length > 0 && (
+                <ul className="mt-4 w-full space-y-4">
+                  {paymentMethods.map((method, index) => (
+                    <li
+                      key={index}
+                      className="group relative flex w-full cursor-pointer items-center justify-between rounded-lg border px-4 py-2"
+                      onClick={() => handlePaymentWithPaymentMethod(method.id)}
+                    >
+                      <div>
+                        <CreditCard className="mr-2 inline h-6 w-6" />
+                        <span>
+                          {method?.card?.display_brand} {method?.type} ends with{" "}
+                          {method?.card?.last4}
+                        </span>
+                        <p className="text-sm text-muted-foreground">
+                          Expires-{method?.card?.exp_month}/
+                          {method?.card?.exp_year}
+                        </p>
+                      </div>
+                      <span className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-2 transform rounded bg-gray-800 px-2 py-1 text-sm text-white opacity-0 shadow-lg transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">
+                        Click to pay with this card
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </CardContent>
             <CardFooter>
               <Button variant="outline" onClick={() => setIsPaymentPage(false)}>
