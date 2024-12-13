@@ -10,10 +10,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 export async function POST(req: Request) {
-  //   if (req.method !== "POST") {
-  //     return res.status(405).json({ error: "Method Not Allowed" });
-  //   }
-
   try {
     const body = await req.json(); // Parse the request body
     const { amount, currency, metadata, isFreeTrial, planName } = body;
@@ -46,23 +42,28 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
     let paymentIntent;
-    if (!metadata.paymentMethodId) {
-      paymentIntent = await stripe.paymentIntents.create({
-        amount,
-        currency,
-        customer: stripeCustomerId,
-        metadata, // Optional metadata (e.g., priceId)
-      });
-    }
-    if (metadata.paymentMethodId) {
-      paymentIntent = await stripe.paymentIntents.create({
-        amount,
-        currency,
-        customer: stripeCustomerId,
-        payment_method: metadata.paymentMethodId,
-        metadata,
-      });
+
+    console.log("qwerty2", isFreeTrial);
+
+    if (!isFreeTrial) {
+      if (!metadata.paymentMethodId) {
+        paymentIntent = await stripe.paymentIntents.create({
+          amount,
+          currency,
+          customer: stripeCustomerId,
+          metadata, // Optional metadata (e.g., priceId)
+        });
+      } else {
+        paymentIntent = await stripe.paymentIntents.create({
+          amount,
+          currency,
+          customer: stripeCustomerId,
+          payment_method: metadata.paymentMethodId,
+          metadata,
+        });
+      }
     }
 
     const container = await db.container.findFirst({
@@ -105,11 +106,14 @@ export async function POST(req: Request) {
       ...(isFreeTrial ? { trial_period_days: 14 } : {}),
     });
 
+    console.log("asdfghjkl", subscription);
+
     user = await db.profile.update({
       where: { id: user.id },
       data: {
         stripeSubscriptionId: subscription.id, // Save the subscription ID from Stripe
         productId: metadata.productId,
+        subscriptionEndDate: subscription.current_period_end?.toString(),
       },
     });
 
