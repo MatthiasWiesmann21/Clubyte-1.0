@@ -354,7 +354,7 @@ export default function BillingPage() {
                   </CardTitle>
                   <CardDescription>
                     {subscriptionDetails ? (
-                      `${subscriptionDetails?.amount}/
+                      `${subscriptionDetails?.amount}$ /
                     ${subscriptionDetails?.interval}`
                     ) : (
                       <div
@@ -552,7 +552,7 @@ export default function BillingPage() {
                 </CardContent>
               </Card>
               {setupIntentClientSecret && (
-                <Card>
+                <Card className="my-5">
                   <CardHeader>
                     <CardTitle>Add New Payment Method</CardTitle>
                   </CardHeader>

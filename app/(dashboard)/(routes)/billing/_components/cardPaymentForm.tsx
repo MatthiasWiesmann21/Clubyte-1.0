@@ -82,7 +82,7 @@ export default function CardPaymentForm({
   const cardStyle = {
     style: {
       base: {
-        color: "#ffffff",
+        color: "#64758b",
         fontSize: "16px",
         "::placeholder": {
           color: "#cccccc",
@@ -99,7 +99,7 @@ export default function CardPaymentForm({
       <div className="mb-4">
         <CardElement
           options={cardStyle}
-          className="rounded-md border p-4 text-[#fff]"
+          className="rounded-md border p-4"
         />
       </div>
       {error && <p className="mb-4 text-red-500">{error}</p>}
