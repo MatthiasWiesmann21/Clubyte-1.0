@@ -43,7 +43,7 @@ const Chat = () => {
         <div ref={scrollRef} className="no-scrollbar h-full overflow-y-scroll">
           {chat?.map((val: any) => (
             <div key={val?.id}>
-              <div className="my-2 flex justify-between rounded-lg border-2 p-3 bg-slate-200 dark:bg-[#131618]">
+              <div className="my-2 flex justify-between rounded-lg border-2 p-3 bg-slate-50 dark:bg-[#131618]">
                 <UserAvatar
                   className="mr-3 h-[40px] max-h-[40px] min-h-[40px] w-[40px] min-w-[40px] max-w-[40px]"
                   src={val?.profile?.imageUrl}

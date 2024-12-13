@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Check, CreditCard, Download, MoreHorizontal } from "lucide-react";
+import { Check, CreditCard, Download, MoreHorizontal } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -280,6 +280,10 @@ export default function BillingPage() {
     }
   };
 
+  useEffect(() => {
+    if (selectedTab === "overview") setFreeTrial(false);
+  }, [selectedTab]);
+
   return (
     <Elements stripe={stripePromise}>
       <div className="container mx-auto px-4 py-8">
@@ -354,17 +358,13 @@ export default function BillingPage() {
                   </CardTitle>
                   <CardDescription>
                     {subscriptionDetails ? (
-                      `${subscriptionDetails?.amount}/
+                      `${subscriptionDetails?.amount}$ /
                     ${subscriptionDetails?.interval}`
                     ) : (
                       <div
                         onClick={() => {
                           setFreeTrial(true);
-                          handlePayment(
-                            filteredPackages?.find(
-                              (pkg) => pkg?.name === "Expert Pack - Monthly"
-                            )
-                          );
+                          setSelectedTab("plans");
                         }}
                         className="cursor-pointer"
                       >
@@ -475,13 +475,17 @@ export default function BillingPage() {
                               subscriptionDetails?.name?.toLowerCase()
                             )}
                           onClick={() => {
-                            setFreeTrial(false);
+                            // setFreeTrial(false);
                             handlePayment(pkg);
                           }}
                         >
-                          {pkg?.name
-                            ?.toLowerCase()
-                            ?.includes(subscriptionDetails?.name?.toLowerCase())
+                          {isFreeTrial
+                            ? "Start Your Free Trial"
+                            : pkg?.name
+                                ?.toLowerCase()
+                                ?.includes(
+                                  subscriptionDetails?.name?.toLowerCase()
+                                )
                             ? "Current Plan"
                             : "Switch to this plan"}
                         </Button>
@@ -551,8 +555,25 @@ export default function BillingPage() {
                   </Button>
                 </CardContent>
               </Card>
+              <Card className="mt-5">
+                <CardHeader>
+                  <CardTitle>Connect Stripe Account</CardTitle>
+                  <CardDescription>Link your Stripe account to receive payments</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button
+                  className="bg-[#635bff] text-white"
+                  variant="ghost"
+                  onClick={() => {
+                    // Add logic here to initiate Stripe Connect process
+                    console.log("Connecting Stripe account...");
+                  }}>
+                    Connect Stripe Account
+                  </Button>
+                </CardContent>
+              </Card>
               {setupIntentClientSecret && (
-                <Card>
+                <Card className="my-5">
                   <CardHeader>
                     <CardTitle>Add New Payment Method</CardTitle>
                   </CardHeader>

@@ -65,7 +65,7 @@ const CardAddForm = ({
         options={{
           style: {
             base: {
-              color: "#ffffff",
+              color: "#64758b",
               fontSize: "16px",
               "::placeholder": {
                 color: "#cccccc",
@@ -76,7 +76,7 @@ const CardAddForm = ({
             },
           },
         }}
-        className="rounded-md border p-4 text-[#fff]"
+        className="rounded-md border p-4 mb-5"
       />
       {error && <p className="text-red-500">{error}</p>}
       <Button onClick={handleSubmit} disabled={isProcessing}>
