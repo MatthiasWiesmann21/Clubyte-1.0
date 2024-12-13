@@ -33,12 +33,18 @@ export default function SignUp() {
     } else {
       return container?.forgetPasswordImageUrl!;
     }
-  }
+  };
 
   const handleGoogleSignIn = (event: any) => {
-    event.preventDefault();
-    setBeingSubmittedGoogle(true);
-    signIn("google", { callbackUrl: "/dashboard" });
+    if (!container?.active) {
+      toast.error(
+        "This Clubyte Container is deactivated, please ask the owner of this container for more information"
+      );
+    } else {
+      event.preventDefault();
+      setBeingSubmittedGoogle(true);
+      signIn("google", { callbackUrl: "/dashboard" });
+    }
   };
 
   const handleForgotPassword = async () => {
@@ -64,6 +70,10 @@ export default function SignUp() {
           console.log("Password reset email sent:");
           toast.success("Password reset email sent");
           setUserEmail("");
+        } else if (!container?.active) {
+          toast.error(
+            "This Clubyte Container is deactivated, please ask the owner of this container for more information"
+          );
         } else {
           // Handle error response
           toast.error(data.message);
@@ -80,27 +90,24 @@ export default function SignUp() {
 
   const renderRight = () => {
     return (
-     <Image alt="ForgotPassword-Image" priority src={getForgotPasswordImage() || ""} width={1280} height={720} className="w-full h-full" />
+      <Image
+        alt="ForgotPassword-Image"
+        priority
+        src={getForgotPasswordImage() || ""}
+        width={1280}
+        height={720}
+        className="h-full w-full"
+      />
     );
   };
   const renderGoogleIcon = () => {
     return (
-      <div className="flex items-center justify-center hover:bg-gray-100 dark:hover:text-black rounded-md px-12 py-3 border border-gray-300 transition ease-in-out duration-200">
+      <div className="flex items-center justify-center rounded-md border border-gray-300 px-12 py-3 transition duration-200 ease-in-out hover:bg-gray-100 dark:hover:text-black">
         <Image src="/images/google.png" alt="Google" width={24} height={24} />
         &nbsp; Sign{beingSubmittedGoogle ? "ing in..." : " in with Google"}
       </div>
     );
   };
-
-  if (!container?.active) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-gray-100 dark:bg-gray-900">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-          The platform is currently not available.
-        </h1>
-      </div>
-    );
-  }
 
   return (
     <>
@@ -110,12 +117,14 @@ export default function SignUp() {
             <div className="form-header">
               <Link
                 href={`/auth/sign-in`}
-                className="mb-2 flex items-center text-md transition hover:opacity-75"
+                className="text-md mb-2 flex items-center transition hover:opacity-75"
               >
                 <ArrowLeft className="mr-2 h-5 w-5" />
                 Back to login
               </Link>
-              <h2 className="text-4xl font-semibold dark:text-white">Forgot your password?</h2>
+              <h2 className="text-4xl font-semibold dark:text-white">
+                Forgot your password?
+              </h2>
             </div>
             <div className="mt-6">
               <label
@@ -129,7 +138,7 @@ export default function SignUp() {
                 type="email"
                 name="email"
                 onChange={(e) => setUserEmail(e.target.value)}
-                className="w-full rounded-lg border text-lg border-gray-400 px-2 py-2 h-12 text-gray-700 dark:text-gray-200 focus:border-gray-500 focus:outline-none"
+                className="h-12 w-full rounded-lg border border-gray-400 px-2 py-2 text-lg text-gray-700 focus:border-gray-500 focus:outline-none dark:text-gray-200"
                 placeholder="Enter your email"
                 autoComplete="off"
                 autoFocus
@@ -151,7 +160,7 @@ export default function SignUp() {
 
             <div className="button-boxes flex w-full justify-center gap-2">
               <div
-                className="flex items-center cursor-pointer"
+                className="flex cursor-pointer items-center"
                 onClick={handleGoogleSignIn}
               >
                 {renderGoogleIcon()}

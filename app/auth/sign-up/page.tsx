@@ -15,7 +15,6 @@ import { useTheme } from "next-themes";
 
 export default function SignUp() {
   const { container, loading } = useContainerData();
-  const containerId = container?.id!;
   const router = useRouter();
   const [beingSubmitted, setBeingSubmitted] = useState(false);
   const { theme } = useTheme();
@@ -45,8 +44,12 @@ export default function SignUp() {
   };
 
   const handleGoogleSignIn = (event: any) => {
+    if (!container?.active) {
+      toast.error("This Clubyte Container is deactivated, please ask the owner of this container for more information")
+    } else {
     event.preventDefault();
     signIn("google", { callbackUrl: "/dashboard" });
+    }
   };
 
   const validatePasswordStrength = (password: string) => {
@@ -98,12 +101,16 @@ export default function SignUp() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password, containerId }),
+        body: JSON.stringify({ name, email, password, container }),
       });
       const jsonObj = await response.json();
 
       if (jsonObj.error) {
         toast.error(jsonObj.error);
+      } else if (!container?.active) {
+        toast.error(
+          "This Clubyte Container is deactivated, please ask the owner of this container for more information"
+        );
       } else {
         const response = await signIn("credentials", {
           email,
@@ -117,7 +124,16 @@ export default function SignUp() {
   };
 
   const renderRight = () => {
-    return <Image alt="SignUp-Image" priority src={getSignUpImage() || ""} width={1280} height={720} className="w-full h-full" />; 
+    return (
+      <Image
+        alt="SignUp-Image"
+        priority
+        src={getSignUpImage() || ""}
+        width={1280}
+        height={720}
+        className="h-full w-full"
+      />
+    );
   };
 
   const renderGoogleIcon = () => {
@@ -128,16 +144,6 @@ export default function SignUp() {
       </div>
     );
   };
-
-  if (!container?.active) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-gray-100 dark:bg-gray-900">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-          The platform is currently not available.
-        </h1>
-      </div>
-    );
-  }
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center md:flex-row">
