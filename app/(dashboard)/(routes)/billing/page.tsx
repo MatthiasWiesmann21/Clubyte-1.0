@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Check, CreditCard, Download, MoreHorizontal } from "lucide-react";
+import { Check, CreditCard, Download, MoreHorizontal } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -548,6 +548,23 @@ export default function BillingPage() {
                     variant="default"
                   >
                     Add Payment Method
+                  </Button>
+                </CardContent>
+              </Card>
+              <Card className="mt-5">
+                <CardHeader>
+                  <CardTitle>Connect Stripe Account</CardTitle>
+                  <CardDescription>Link your Stripe account to receive payments</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button
+                  className="bg-[#635bff] text-white"
+                  variant="ghost"
+                  onClick={() => {
+                    // Add logic here to initiate Stripe Connect process
+                    console.log("Connecting Stripe account...");
+                  }}>
+                    Connect Stripe Account
                   </Button>
                 </CardContent>
               </Card>
