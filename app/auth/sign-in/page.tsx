@@ -45,12 +45,18 @@ export default function SignIn() {
 
   const handleGoogleSignIn = async (event: any) => {
     try {
-      setBeingSubmittedGoogle(true);
-      event.preventDefault();
-      const googleSignInResp = await signIn("google", {
-        callbackUrl: "/dashboard",
-      });
-      console.log("Google sign in response", googleSignInResp);
+      if (!container?.active) {
+        toast.error(
+          "This Clubyte Container is deactivated, please ask the owner of this container for more information"
+        );
+      } else {
+        setBeingSubmittedGoogle(true);
+        event.preventDefault();
+        const googleSignInResp = await signIn("google", {
+          callbackUrl: "/dashboard",
+        });
+        console.log("Google sign in response", googleSignInResp);
+      }
     } catch (error) {
       console.error("Google sign-in error:", error);
     } finally {
@@ -72,6 +78,10 @@ export default function SignIn() {
     console.log("The response from submission login", response);
     if (response?.error) {
       toast.error(response?.error || "Invalid Credentials");
+    } else if (!container?.active) {
+      toast.error(
+        "This Clubyte Container is deactivated, please ask the owner of this container for more information"
+      );
     } else {
       router.replace("/dashboard");
       toast.success("Login Successful");
@@ -101,16 +111,6 @@ export default function SignIn() {
       </div>
     );
   };
-
-  if (!container?.active) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-gray-100 dark:bg-gray-900">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-          The platform is currently not available.
-        </h1>
-      </div>
-    );
-  }
 
   return (
     <>
