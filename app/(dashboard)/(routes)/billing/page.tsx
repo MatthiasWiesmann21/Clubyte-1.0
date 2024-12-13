@@ -280,6 +280,10 @@ export default function BillingPage() {
     }
   };
 
+  useEffect(() => {
+    if (selectedTab === "overview") setFreeTrial(false);
+  }, [selectedTab]);
+
   return (
     <Elements stripe={stripePromise}>
       <div className="container mx-auto px-4 py-8">
@@ -360,11 +364,7 @@ export default function BillingPage() {
                       <div
                         onClick={() => {
                           setFreeTrial(true);
-                          handlePayment(
-                            filteredPackages?.find(
-                              (pkg) => pkg?.name === "Expert Pack - Monthly"
-                            )
-                          );
+                          setSelectedTab("plans");
                         }}
                         className="cursor-pointer"
                       >
@@ -475,13 +475,17 @@ export default function BillingPage() {
                               subscriptionDetails?.name?.toLowerCase()
                             )}
                           onClick={() => {
-                            setFreeTrial(false);
+                            // setFreeTrial(false);
                             handlePayment(pkg);
                           }}
                         >
-                          {pkg?.name
-                            ?.toLowerCase()
-                            ?.includes(subscriptionDetails?.name?.toLowerCase())
+                          {isFreeTrial
+                            ? "Start Your Free Trial"
+                            : pkg?.name
+                                ?.toLowerCase()
+                                ?.includes(
+                                  subscriptionDetails?.name?.toLowerCase()
+                                )
                             ? "Current Plan"
                             : "Switch to this plan"}
                         </Button>

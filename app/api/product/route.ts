@@ -51,6 +51,8 @@ export async function GET(req: Request) {
     );
     const pricingDetails = await stripe.prices.retrieve(priceId as string);
 
+    console.log("qwerty", subscription);
+
     // Check if the subscription is active
     if (!subscription?.plan?.active) {
       return NextResponse.json(
