@@ -162,9 +162,9 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
             <span className="font-bold font-medium">
               {calculateDaysDifference(expiryDate)} days left in your
               subscription period, please visit{" "}
-              <a href="" className="font-bold capitalize underline">
+              <a href="/billing" className="font-bold capitalize underline">
                 billings page 
-              </a>
+              </a>{" "}
               to renew your subscription.
             </span>
           </div>
