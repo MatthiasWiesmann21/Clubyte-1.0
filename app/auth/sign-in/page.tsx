@@ -90,6 +90,12 @@ export default function SignIn() {
     setBeingSubmitted(false);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === "Enter") {
+      handleSubmit(event);
+    }
+  };
+
   const renderRight = () => {
     return (
       <Image
@@ -116,7 +122,10 @@ export default function SignIn() {
     <>
       <div className="flex h-screen w-full flex-col items-center justify-center md:flex-row">
         <div className="w-full md:w-2/3 lg:w-2/3 xl:w-2/3">
-          <form className="mx-auto flex w-[80%] flex-col gap-2 p-4 sm:w-[70%] md:w-[65%] md:p-0">
+          <form
+            className="mx-auto flex w-[80%] flex-col gap-2 p-4 sm:w-[70%] md:w-[65%] md:p-0"
+            onKeyDown={handleKeyDown}
+          >
             <div className="form-header">
               <h2 className="text-4xl font-semibold dark:text-white">Login</h2>
             </div>
