@@ -143,7 +143,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
           </div>
         </div>
       )}
-      {calculateDaysDifference(expiryDate) < 15 && (
+      {calculateDaysDifference(expiryDate) < 15 && user?.role === "CLIENT ADMIN" && (
         <div
           className="mb-4 flex items-center rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:border-red-800 dark:bg-gray-800 dark:text-red-400"
           role="alert"
@@ -162,9 +162,9 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
             <span className="font-bold font-medium">
               {calculateDaysDifference(expiryDate)} days left in your
               subscription period, please visit{" "}
-              <span className="font-bold capitalize underline">
-                billings page
-              </span>{" "}
+              <a href="" className="font-bold capitalize underline">
+                billings page 
+              </a>
               to renew your subscription.
             </span>
           </div>
