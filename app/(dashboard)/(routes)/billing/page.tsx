@@ -34,6 +34,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import CardPaymentForm from "./_components/cardPaymentForm";
 import { Elements } from "@stripe/react-stripe-js";
 import CardAddForm from "./_components/cardAddForm";
+import { useLanguage } from "@/lib/check-language";
 
 interface Price {
   id: string;
@@ -112,6 +113,7 @@ export default function BillingPage() {
   const [selectedPlanName, setSelectedPlanName] = useState<string>("");
   const [subscriptionDetails, setSubscriptionDetails] = useState<any>(null);
   const [isFreeTrial, setFreeTrial] = useState(false);
+  const currentLanguage = useLanguage();
 
   const fetchPaymentMethods = async () => {
     try {
@@ -287,12 +289,12 @@ export default function BillingPage() {
   return (
     <Elements stripe={stripePromise}>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="mb-8 text-4xl font-bold">Billing & Subscription</h1>
+        <h1 className="mb-8 text-4xl font-bold">{currentLanguage.biliing_page_header}</h1>
 
         {isPaymentPage && selectedPriceId ? (
           <Card>
             <CardHeader>
-              <CardTitle>Enter Payment Details</CardTitle>
+              <CardTitle>{currentLanguage.billing_page_enterPaymentDetails}</CardTitle>
             </CardHeader>
             <CardContent>
               <CardPaymentForm
@@ -315,16 +317,16 @@ export default function BillingPage() {
                       <div>
                         <CreditCard className="mr-2 inline h-6 w-6" />
                         <span>
-                          {method?.card?.display_brand} {method?.type} ends with{" "}
+                          {method?.card?.display_brand} {method?.type} {currentLanguage.billing_page_payment_endswith}{" "}
                           {method?.card?.last4}
                         </span>
                         <p className="text-sm text-muted-foreground">
-                          Expires-{method?.card?.exp_month}/
+                          {currentLanguage.billing_page_payment_expires}-{method?.card?.exp_month}/
                           {method?.card?.exp_year}
                         </p>
                       </div>
                       <span className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-2 transform rounded bg-gray-800 px-2 py-1 text-sm text-white opacity-0 shadow-lg transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">
-                        Click to pay with this card
+                        {currentLanguage.biliing_page_addCard}
                       </span>
                     </li>
                   ))}
@@ -333,7 +335,7 @@ export default function BillingPage() {
             </CardContent>
             <CardFooter>
               <Button variant="outline" onClick={() => setIsPaymentPage(false)}>
-                Back to Plans
+                {currentLanguage.biliing_page_backToPlans}
               </Button>
             </CardFooter>
           </Card>
@@ -344,17 +346,17 @@ export default function BillingPage() {
             className="space-y-8"
           >
             <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="plans">Plans</TabsTrigger>
-              <TabsTrigger value="payment">Payment</TabsTrigger>
-              <TabsTrigger value="history">Billing History</TabsTrigger>
+              <TabsTrigger value="overview">{currentLanguage.billing_page_Tabs_Overview}</TabsTrigger>
+              <TabsTrigger value="plans">{currentLanguage.billing_page_Tabs_Plans}</TabsTrigger>
+              <TabsTrigger value="payment">{currentLanguage.billing_page_Tabs_Payment}</TabsTrigger>
+              <TabsTrigger value="history">{currentLanguage.billing_page_Tabs_BillingHistory}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview">
               <Card>
                 <CardHeader>
                   <CardTitle>
-                    Current Plan: {subscriptionDetails?.name}
+                    {currentLanguage.billing_page_overview_currentPlan} {subscriptionDetails?.name}
                   </CardTitle>
                   <CardDescription>
                     {subscriptionDetails ? (
@@ -368,7 +370,7 @@ export default function BillingPage() {
                         }}
                         className="cursor-pointer"
                       >
-                        No Plan Selected - Click to start your 14 days trial
+                        {currentLanguage.billing_page_overview_startTrialText}
                       </div>
                     )}
                   </CardDescription>
@@ -391,7 +393,7 @@ export default function BillingPage() {
                     variant="outline"
                   >
                     {/* Step 2: Implement the onClick */}
-                    Change Plan
+                    {currentLanguage.billing_page_overview_changePlan}
                   </Button>
                   <Button
                     onClick={async () => {
@@ -399,7 +401,7 @@ export default function BillingPage() {
                     }}
                     variant="destructive"
                   >
-                    Cancel Subscription
+                    {currentLanguage.billing_page_overview_cancelSubscription}
                   </Button>
                 </CardFooter>
               </Card>
@@ -407,14 +409,14 @@ export default function BillingPage() {
 
             <TabsContent value="plans">
               <div className="mb-8 flex items-center justify-center space-x-2">
-                <Label htmlFor="billing-switch">Monthly</Label>
+                <Label htmlFor="billing-switch">{currentLanguage.billing_page_plans_monthly}</Label>
                 <Switch
                   id="billing-switch"
                   checked={isYearly}
                   onCheckedChange={setIsYearly}
                   aria-label="Toggle between monthly and yearly billing"
                 />
-                <Label htmlFor="billing-switch">Yearly</Label>
+                <Label htmlFor="billing-switch">{currentLanguage.billing_page_plans_yearly}</Label>
               </div>
 
               <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -499,8 +501,8 @@ export default function BillingPage() {
             <TabsContent value="payment">
               <Card>
                 <CardHeader>
-                  <CardTitle>Payment Methods</CardTitle>
-                  <CardDescription>Manage your payment details</CardDescription>
+                  <CardTitle>{currentLanguage.billing_page_payment_title}</CardTitle>
+                  <CardDescription>{currentLanguage.billing_page_payment_description}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {/* List existing payment methods */}
@@ -514,11 +516,10 @@ export default function BillingPage() {
                           <div>
                             <CreditCard className="mr-2 inline h-6 w-6" />
                             <span>
-                              {method?.card?.display_brand} {method?.type} ends
-                              with {method?.card?.last4}
+                              {method?.card?.display_brand} {method?.type} {currentLanguage.billing_page_payment_endsWith} {method?.card?.last4}
                             </span>
                             <p className="text-sm text-muted-foreground">
-                              Expires-{method?.card?.exp_month}/
+                              {currentLanguage.billing_page_payment_expires}-{method?.card?.exp_month}/
                               {method?.card?.exp_year}
                             </p>
                           </div>
@@ -526,14 +527,14 @@ export default function BillingPage() {
                             variant="outline"
                             onClick={() => removePaymentMethod(method.id)}
                           >
-                            Remove
+                            {currentLanguage.billing_page_payment_removeCard}
                           </Button>
                         </li>
                       ))}
                     </ul>
                   ) : (
                     <p className="text-muted-foreground">
-                      No saved payment methods.
+                      {currentLanguage.billing_page_payment_noSavedPayment}
                     </p>
                   )}
                   <hr className="my-4" />
@@ -551,14 +552,14 @@ export default function BillingPage() {
                     }}
                     variant="default"
                   >
-                    Add Payment Method
+                    {currentLanguage.billing_page_payment_AddPaymentMethod}
                   </Button>
                 </CardContent>
               </Card>
               <Card className="mt-5">
                 <CardHeader>
-                  <CardTitle>Connect Stripe Account</CardTitle>
-                  <CardDescription>Link your Stripe account to receive payments</CardDescription>
+                  <CardTitle>{currentLanguage.billing_page_payment_connectStripe_title}</CardTitle>
+                  <CardDescription>{currentLanguage.billing_page_payment_connectStripe_description}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Button
@@ -568,7 +569,7 @@ export default function BillingPage() {
                     // Add logic here to initiate Stripe Connect process
                     console.log("Connecting Stripe account...");
                   }}>
-                    Connect Stripe Account
+                    {currentLanguage.billing_page_payment_connectStripe_button}
                   </Button>
                 </CardContent>
               </Card>
@@ -594,19 +595,19 @@ export default function BillingPage() {
             <TabsContent value="history">
               <Card>
                 <CardHeader>
-                  <CardTitle>Billing History</CardTitle>
+                  <CardTitle>{currentLanguage.billing_page_billingHistory_Title}</CardTitle>
                   <CardDescription>
-                    Your recent billing activity
+                    {currentLanguage.billing_page_billingHistory_Description}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Invoice ID</TableHead>
-                        <TableHead>Amount Paid</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Date</TableHead>
+                        <TableHead>{currentLanguage.billing_page_billingHistory_TableHead_InvoiceId}</TableHead>
+                        <TableHead>{currentLanguage.billing_page_billingHistory_TableHead_PaidAmount}</TableHead>
+                        <TableHead>{currentLanguage.billing_page_billingHistory_TableHead_Status}</TableHead>
+                        <TableHead>{currentLanguage.billing_page_billingHistory_TableHead_Date}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
