@@ -35,6 +35,7 @@ import CardPaymentForm from "./_components/cardPaymentForm";
 import { Elements } from "@stripe/react-stripe-js";
 import CardAddForm from "./_components/cardAddForm";
 import { useLanguage } from "@/lib/check-language";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface Price {
   id: string;
@@ -114,6 +115,7 @@ export default function BillingPage() {
   const [subscriptionDetails, setSubscriptionDetails] = useState<any>(null);
   const [isFreeTrial, setFreeTrial] = useState(false);
   const currentLanguage = useLanguage();
+    const { onOpen } = useModal();
 
   const fetchPaymentMethods = async () => {
     try {
@@ -396,9 +398,7 @@ export default function BillingPage() {
                     {currentLanguage.billing_page_overview_changePlan}
                   </Button>
                   <Button
-                    onClick={async () => {
-                      await fetch("/api/cancel-subscription");
-                    }}
+                    onClick={() => onOpen("cancelSubscription")}
                     variant="destructive"
                   >
                     {currentLanguage.billing_page_overview_cancelSubscription}
