@@ -19,6 +19,7 @@ import { CreateLiveEventModal } from "@/components/modals/create-LiveEvent-modal
 import { CreateCategoryModal } from "@/components/modals/create-category-modal";
 import { CreateContainerModal } from "@/components/modals/create-container-modal";
 import { CreateUserGroupModal } from "../modals/create-usergroup-modal";
+import { CancelSubscriptionModal } from "../modals/cancel-subscription-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -50,6 +51,7 @@ export const ModalProvider = () => {
       <CreateCategoryModal />
       <CreateContainerModal />
       <CreateUserGroupModal />
+      <CancelSubscriptionModal />
     </>
   );
 };
