@@ -1,11 +1,10 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth/next";
-
 import { getDashboardCourses } from "@/actions/get-dashboard-courses";
 import { InfoCard } from "./_components/info-card";
 import { getSearchCourses } from "@/actions/get-searchcourses";
 import { db } from "@/lib/db";
-import { languageServer } from "@/lib/check-language-server";
+// import { languageServer } from "@/lib/check-language-server";
 import PolygonChar from "./_components/polygonChar";
 import CourseTable from "./_components/courseTable";
 import { getCourses } from "@/actions/get-courses";
@@ -26,7 +25,7 @@ interface SearchPageProps {
 }
 
 const Dashboard = async ({ searchParams }: SearchPageProps) => {
-  const currentLanguage = await languageServer();
+  // const currentLanguage = await languageServer();
   const profile = await currentProfile();
   const profileId = profile?.id ?? "guest";
   // console.log("profileId", profileId);
@@ -55,11 +54,20 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
 
   const purchasedCourses = courses.filter((course) => course.isPurchased);
 
-  const container: any = await db.container.findUnique({
+  let container: any = await db.container.findUnique({
     where: {
       id: session?.user?.profile?.containerId,
     },
   });
+
+  // console.log("container.....", container);
+
+  // if (!container?.id) {
+  //   const response = await fetch("/api/auth/container", {
+  //     method: "GET",
+  //   });
+  //   container = await response.json();
+  // }
 
   const UserProgressCompletedChapters = await db.userProgress.count({
     where: {
@@ -88,6 +96,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
   const expiryDate = user?.subscriptionEndDate;
 
   function calculateDaysDifference(targetTimestamp: any) {
+    if (!container) return 0;
     // Convert target timestamp (in seconds) to milliseconds
     const targetDate: any = new Date(targetTimestamp * 1000);
 
@@ -105,8 +114,8 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
     return differenceInDays;
   }
 
-  if (calculateDaysDifference(expiryDate) < 0)
-    await db.container.update({
+  if (calculateDaysDifference(expiryDate) < 0 && user?.containerId)
+    await db?.container?.update({
       where: { id: user?.containerId },
       data: {
         clientPackage: "",
@@ -139,37 +148,39 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
               <span className="font-bold capitalize underline">
                 {userEmail}
               </span>
+              Please check your inbox and spam folder.
             </div>
           </div>
         </div>
       )}
-      {calculateDaysDifference(expiryDate) < 15 && user?.role === "CLIENT ADMIN" && (
-        <div
-          className="mb-4 flex items-center rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:border-red-800 dark:bg-gray-800 dark:text-red-400"
-          role="alert"
-        >
-          <svg
-            className="me-3 inline h-4 w-4 flex-shrink-0"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 20 20"
+      {calculateDaysDifference(expiryDate) < 15 &&
+        user?.role === "CLIENT ADMIN" && (
+          <div
+            className="mb-4 flex items-center rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:border-red-800 dark:bg-gray-800 dark:text-red-400"
+            role="alert"
           >
-            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-          </svg>
-          <span className="sr-only"></span>
-          <div>
-            <span className="font-bold font-medium">
-              {calculateDaysDifference(expiryDate)} days left in your
-              subscription period, please visit{" "}
-              <a href="/billing" className="font-bold capitalize underline">
-                billings page 
-              </a>{" "}
-              to renew your subscription.
-            </span>
+            <svg
+              className="me-3 inline h-4 w-4 flex-shrink-0"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span className="sr-only"></span>
+            <div>
+              <span className="font-bold font-medium">
+                {calculateDaysDifference(expiryDate)} days left in your
+                subscription period, please visit{" "}
+                <a href="/billing" className="font-bold capitalize underline">
+                  billings page
+                </a>{" "}
+                to renew your subscription.
+              </span>
+            </div>
           </div>
-        </div>
-      )}
+        )}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <InfoCard
           icon={"Clock"}
@@ -188,7 +199,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
           numberOfItems={UserProgressCompletedChapters}
           variant="default"
         />
-        <OnlineCard profileId={profileId} />
+        <OnlineCard profileId={profileId} user={session?.user} />
       </div>
       <PolygonChar colors={container} courses={coursess} />
       <CourseTable courses={purchasedCourses} colors={container} />
