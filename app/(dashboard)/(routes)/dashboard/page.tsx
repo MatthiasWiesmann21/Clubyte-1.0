@@ -148,6 +148,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
               <span className="font-bold capitalize underline">
                 {userEmail}
               </span>
+              Please check your inbox and spam folder.
             </div>
           </div>
         </div>
